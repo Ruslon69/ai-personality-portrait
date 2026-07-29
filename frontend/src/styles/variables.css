@@ -1,0 +1,9 @@
+:root {
+  --content-width-reading: 42rem;
+  --content-width-default: 72rem;
+  --content-width-wide: 90rem;
+  --page-gutter: clamp(var(--space-4), 4vw, var(--space-7));
+  --control-min-height: 2.75rem;
+  --focus-ring-width: 0.125rem;
+  --focus-ring-offset: 0.125rem;
+}

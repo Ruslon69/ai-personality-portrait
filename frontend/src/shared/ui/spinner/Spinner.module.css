@@ -1,0 +1,52 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.indicator {
+  display: block;
+  border: 0.125rem solid var(--color-border);
+  border-block-start-color: var(--color-interactive);
+  border-radius: var(--radius-full);
+  animation: spin var(--transition-duration-slow) linear infinite;
+}
+
+.indicator[data-size='sm'] {
+  block-size: 1rem;
+  inline-size: 1rem;
+}
+
+.indicator[data-size='md'] {
+  block-size: 1.5rem;
+  inline-size: 1.5rem;
+}
+
+.indicator[data-size='lg'] {
+  block-size: 2rem;
+  inline-size: 2rem;
+}
+
+.label {
+  position: absolute;
+  overflow: hidden;
+  inline-size: 0.0625rem;
+  block-size: 0.0625rem;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    animation: none;
+  }
+}

@@ -1,0 +1,20 @@
+.root {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.root[data-elevation='none'] {
+  box-shadow: var(--shadow-none);
+}
+
+.root[data-elevation='low'] {
+  box-shadow: var(--shadow-low);
+}
+
+.root[data-elevation='medium'] {
+  box-shadow: var(--shadow-medium);
+}
+
+.root[data-elevation='high'] {
+  box-shadow: var(--shadow-high);
+}

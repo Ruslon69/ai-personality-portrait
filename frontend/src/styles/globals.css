@@ -1,0 +1,25 @@
+html {
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-family-body);
+  line-height: var(--line-height-normal);
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--color-background);
+}
+
+#root {
+  min-block-size: 100dvh;
+}
+
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+::selection {
+  background: var(--color-interactive);
+  color: var(--color-on-interactive);
+}

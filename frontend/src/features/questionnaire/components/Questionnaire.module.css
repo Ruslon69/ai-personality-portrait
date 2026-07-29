@@ -1,0 +1,125 @@
+.root {
+  padding-block: clamp(var(--space-5), 5vw, var(--space-8));
+}
+
+.content {
+  display: grid;
+  inline-size: min(100%, 56rem);
+  margin-inline: auto;
+  gap: clamp(var(--space-5), 5vw, var(--space-7));
+}
+
+.progressBlock {
+  inline-size: 100%;
+}
+
+.stepLabel {
+  color: var(--color-text);
+  font-weight: var(--font-weight-semibold);
+}
+
+.questionCard {
+  padding: clamp(var(--space-5), 5vw, var(--space-7));
+  animation: question-enter var(--transition-duration-normal) var(--transition-easing-standard);
+  box-shadow: var(--shadow-low);
+}
+
+.questionTitle {
+  max-inline-size: 22ch;
+  font-family: var(--font-family-heading);
+  font-size: clamp(var(--font-size-2xl), 4vw, var(--font-size-3xl));
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.025em;
+  line-height: var(--line-height-tight);
+  text-wrap: balance;
+}
+
+.questionDescription,
+.selectionHint {
+  color: var(--color-text-muted);
+}
+
+.optionGroup {
+  display: grid;
+  min-inline-size: 0;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  gap: var(--space-3);
+}
+
+.actions,
+.forwardActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.actions {
+  justify-content: space-between;
+}
+
+.forwardActions {
+  justify-content: flex-end;
+}
+
+.primaryButton {
+  border-color: var(--color-interactive);
+  background: var(--color-interactive);
+  color: var(--color-on-interactive);
+  font-weight: var(--font-weight-semibold);
+}
+
+.primaryButton:hover:not(:disabled) {
+  border-color: var(--color-interactive);
+  box-shadow: var(--shadow-medium);
+}
+
+.visuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  inline-size: 0.0625rem;
+  block-size: 0.0625rem;
+  padding: 0;
+  border: 0;
+  margin: -0.0625rem;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes question-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-2));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 47.999rem) {
+  .actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .actions > *,
+  .forwardActions,
+  .forwardActions > * {
+    inline-size: 100%;
+  }
+
+  .forwardActions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+}
+
+@media (min-width: 48rem) {
+  .optionGroup {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

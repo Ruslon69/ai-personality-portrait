@@ -1,0 +1,11 @@
+:root {
+  /*
+   * CSS custom properties document responsive thresholds.
+   * Native media queries should use the same values because custom properties
+   * are not supported in media query conditions.
+   */
+  --breakpoint-mobile: 30rem;
+  --breakpoint-tablet: 48rem;
+  --breakpoint-desktop: 64rem;
+  --breakpoint-wide: 90rem;
+}

@@ -1,0 +1,71 @@
+.root {
+  display: flex;
+}
+
+.root[data-direction='row'] {
+  flex-direction: row;
+}
+
+.root[data-direction='column'] {
+  flex-direction: column;
+}
+
+.root[data-align='start'] {
+  align-items: flex-start;
+}
+
+.root[data-align='center'] {
+  align-items: center;
+}
+
+.root[data-align='end'] {
+  align-items: flex-end;
+}
+
+.root[data-align='stretch'] {
+  align-items: stretch;
+}
+
+.root[data-justify='start'] {
+  justify-content: flex-start;
+}
+
+.root[data-justify='center'] {
+  justify-content: center;
+}
+
+.root[data-justify='end'] {
+  justify-content: flex-end;
+}
+
+.root[data-justify='between'] {
+  justify-content: space-between;
+}
+
+.root[data-gap='none'] {
+  gap: var(--space-0);
+}
+
+.root[data-gap='xs'] {
+  gap: var(--space-1);
+}
+
+.root[data-gap='sm'] {
+  gap: var(--space-2);
+}
+
+.root[data-gap='md'] {
+  gap: var(--space-4);
+}
+
+.root[data-gap='lg'] {
+  gap: var(--space-6);
+}
+
+.root[data-gap='xl'] {
+  gap: var(--space-8);
+}
+
+.root[data-wrap='true'] {
+  flex-wrap: wrap;
+}

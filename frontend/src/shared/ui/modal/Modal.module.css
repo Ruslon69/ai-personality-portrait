@@ -1,0 +1,14 @@
+.root {
+  max-inline-size: min(100% - (2 * var(--page-gutter)), var(--content-width-reading));
+  max-block-size: calc(100dvh - (2 * var(--page-gutter)));
+  padding: var(--space-5);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-overlay);
+  color: var(--color-text);
+  box-shadow: var(--shadow-high);
+}
+
+.root::backdrop {
+  background: var(--color-overlay);
+}

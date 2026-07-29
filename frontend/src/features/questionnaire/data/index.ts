@@ -1,0 +1,1 @@
+export { portraitQuestions } from './portraitQuestions';

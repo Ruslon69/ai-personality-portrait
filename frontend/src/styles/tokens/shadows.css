@@ -1,0 +1,6 @@
+:root {
+  --shadow-none: none;
+  --shadow-low: 0 0.125rem 0.5rem color-mix(in srgb, CanvasText 8%, transparent);
+  --shadow-medium: 0 0.5rem 1.5rem color-mix(in srgb, CanvasText 12%, transparent);
+  --shadow-high: 0 1rem 3rem color-mix(in srgb, CanvasText 18%, transparent);
+}

@@ -1,0 +1,23 @@
+:root {
+  /*
+   * Semantic color roles intentionally use platform colors.
+   * Brand values will be assigned only after the visual direction is approved.
+   */
+  --color-background: Canvas;
+  --color-surface: Canvas;
+  --color-surface-raised: ButtonFace;
+  --color-surface-overlay: Canvas;
+  --color-text: CanvasText;
+  --color-text-muted: GrayText;
+  --color-text-disabled: GrayText;
+  --color-border: ButtonBorder;
+  --color-border-strong: CanvasText;
+  --color-interactive: Highlight;
+  --color-on-interactive: HighlightText;
+  --color-focus: Highlight;
+  --color-feedback-success: CanvasText;
+  --color-feedback-warning: CanvasText;
+  --color-feedback-error: CanvasText;
+  --color-feedback-info: CanvasText;
+  --color-overlay: color-mix(in srgb, CanvasText 48%, transparent);
+}

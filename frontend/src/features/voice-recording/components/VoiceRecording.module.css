@@ -1,0 +1,190 @@
+.root {
+  overflow: clip;
+  padding-block-end: clamp(var(--space-7), 8vw, var(--space-9));
+}
+
+.introduction {
+  padding-block: clamp(var(--space-5), 5vw, var(--space-8));
+}
+
+.introductionContent {
+  max-inline-size: 48rem;
+}
+
+.eyebrow {
+  color: var(--color-text);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.title {
+  max-inline-size: 14ch;
+  font-family: var(--font-family-heading);
+  font-size: clamp(2.5rem, 6vw, 4.75rem);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.lead {
+  max-inline-size: var(--content-width-reading);
+  color: var(--color-text-muted);
+  font-size: clamp(var(--font-size-lg), 2vw, var(--font-size-xl));
+  line-height: var(--line-height-relaxed);
+}
+
+.privacySection {
+  padding-block-end: clamp(var(--space-6), 6vw, var(--space-8));
+}
+
+.privacySurface {
+  padding: clamp(var(--space-5), 4vw, var(--space-7));
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-interactive) 7%, var(--color-surface));
+}
+
+.privacyGrid {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.privacyList {
+  display: grid;
+  padding-inline-start: var(--space-5);
+  margin: 0;
+  gap: var(--space-2);
+}
+
+.workspaceSection {
+  padding-block: var(--space-5);
+}
+
+.workspaceGrid {
+  display: grid;
+  align-items: start;
+  gap: var(--space-5);
+}
+
+.scriptCard,
+.recordingCard {
+  padding: clamp(var(--space-5), 4vw, var(--space-7));
+  box-shadow: var(--shadow-low);
+}
+
+.readingText {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+}
+
+.statusText,
+.signalText {
+  color: var(--color-text-muted);
+}
+
+.recordingMetrics {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.metric {
+  display: grid;
+  min-inline-size: 0;
+  padding: var(--space-4);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  gap: var(--space-2);
+}
+
+.timer {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.levelMeter {
+  inline-size: 100%;
+  block-size: 0.75rem;
+  accent-color: var(--color-interactive);
+}
+
+.playbackBlock,
+.qualityBlock {
+  padding: var(--space-4);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.audio {
+  inline-size: 100%;
+  max-inline-size: 100%;
+}
+
+.actions,
+.forwardActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.actions {
+  justify-content: space-between;
+}
+
+.forwardActions {
+  justify-content: flex-end;
+}
+
+.primaryButton,
+.stopButton {
+  border-color: var(--color-interactive);
+  background: var(--color-interactive);
+  color: var(--color-on-interactive);
+  font-weight: var(--font-weight-semibold);
+}
+
+.primaryButton:hover:not(:disabled),
+.stopButton:hover:not(:disabled) {
+  border-color: var(--color-interactive);
+  box-shadow: var(--shadow-medium);
+}
+
+@media (max-width: 47.999rem) {
+  .actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .actions > *,
+  .forwardActions,
+  .forwardActions > * {
+    inline-size: 100%;
+  }
+
+  .forwardActions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+}
+
+@media (min-width: 48rem) {
+  .privacyGrid,
+  .recordingMetrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .workspaceGrid {
+    grid-template-columns: minmax(0, 0.9fr) minmax(24rem, 1.1fr);
+  }
+
+  .recordingCard {
+    position: sticky;
+    inset-block-start: calc(var(--space-5) + var(--control-min-height));
+  }
+}

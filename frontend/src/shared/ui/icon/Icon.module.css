@@ -1,0 +1,28 @@
+.root {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  line-height: 1;
+}
+
+.root[data-size='sm'] {
+  block-size: 1rem;
+  inline-size: 1rem;
+}
+
+.root[data-size='md'] {
+  block-size: 1.25rem;
+  inline-size: 1.25rem;
+}
+
+.root[data-size='lg'] {
+  block-size: 1.5rem;
+  inline-size: 1.5rem;
+}
+
+.root > svg {
+  block-size: 100%;
+  inline-size: 100%;
+}

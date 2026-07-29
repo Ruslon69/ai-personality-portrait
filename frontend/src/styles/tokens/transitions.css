@@ -1,0 +1,16 @@
+:root {
+  --transition-duration-instant: 0ms;
+  --transition-duration-fast: 120ms;
+  --transition-duration-normal: 200ms;
+  --transition-duration-slow: 320ms;
+  --transition-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --transition-easing-emphasized: cubic-bezier(0.2, 0, 0, 1.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-duration-fast: 0ms;
+    --transition-duration-normal: 0ms;
+    --transition-duration-slow: 0ms;
+  }
+}

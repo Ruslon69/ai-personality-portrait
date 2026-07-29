@@ -1,0 +1,20 @@
+.root {
+  white-space: nowrap;
+}
+
+.symbol {
+  font-size: var(--font-size-lg);
+  line-height: 1;
+}
+
+@media (max-width: 47.999rem) {
+  .label {
+    position: absolute;
+    overflow: hidden;
+    inline-size: 0.0625rem;
+    block-size: 0.0625rem;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

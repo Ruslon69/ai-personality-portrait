@@ -1,0 +1,35 @@
+.root {
+  margin: 0;
+  color: inherit;
+}
+
+.root[data-variant='body'] {
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+}
+
+.root[data-variant='caption'] {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}
+
+.root[data-variant='heading-sm'],
+.root[data-variant='heading-md'],
+.root[data-variant='heading-lg'] {
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+}
+
+.root[data-variant='heading-sm'] {
+  font-size: var(--font-size-lg);
+}
+
+.root[data-variant='heading-md'] {
+  font-size: var(--font-size-xl);
+}
+
+.root[data-variant='heading-lg'] {
+  font-size: var(--font-size-2xl);
+}

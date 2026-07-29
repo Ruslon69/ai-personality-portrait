@@ -1,0 +1,17 @@
+.root {
+  inline-size: min(100%, var(--content-width-default));
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+}
+
+.root[data-size='reading'] {
+  inline-size: min(100%, var(--content-width-reading));
+}
+
+.root[data-size='wide'] {
+  inline-size: min(100%, var(--content-width-wide));
+}
+
+.root[data-size='full'] {
+  inline-size: 100%;
+}

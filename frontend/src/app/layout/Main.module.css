@@ -1,0 +1,5 @@
+.root {
+  min-inline-size: 0;
+  min-block-size: 100%;
+  background: var(--color-background);
+}

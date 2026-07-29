@@ -1,0 +1,7 @@
+.root {
+  padding-block: clamp(var(--space-6), 7vw, var(--space-9));
+}
+
+.introduction {
+  max-inline-size: var(--content-width-reading);
+}

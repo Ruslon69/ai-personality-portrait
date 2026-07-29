@@ -1,0 +1,17 @@
+.root {
+  flex: none;
+  margin: 0;
+  border: 0;
+  background: var(--color-border);
+}
+
+.root[data-orientation='horizontal'] {
+  block-size: 0.0625rem;
+  inline-size: 100%;
+}
+
+.root[data-orientation='vertical'] {
+  align-self: stretch;
+  block-size: auto;
+  inline-size: 0.0625rem;
+}

@@ -1,0 +1,10 @@
+.root {
+  display: flex;
+  min-block-size: 3rem;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--page-gutter);
+  border-block-start: 0.0625rem solid var(--color-border);
+  background: var(--color-surface);
+  text-align: center;
+}

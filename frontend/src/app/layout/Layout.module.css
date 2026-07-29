@@ -1,0 +1,38 @@
+.root {
+  display: grid;
+  overflow-x: clip;
+  min-block-size: 100dvh;
+  max-inline-size: 100%;
+  grid-template-rows: auto 1fr auto;
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+.body {
+  display: grid;
+  min-inline-size: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.skipLink {
+  position: fixed;
+  z-index: var(--z-index-toast);
+  inset-block-start: var(--space-2);
+  inset-inline-start: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-interactive);
+  color: var(--color-on-interactive);
+  text-decoration: none;
+  transform: translateY(calc(-100% - var(--space-4)));
+}
+
+.skipLink:focus {
+  transform: translateY(0);
+}
+
+@media (min-width: 64rem) {
+  .body {
+    grid-template-columns: 16rem minmax(0, 1fr);
+  }
+}

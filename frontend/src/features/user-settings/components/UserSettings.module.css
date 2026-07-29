@@ -1,0 +1,41 @@
+.root {
+  overflow: clip;
+}
+
+.dialogActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.confirmButton {
+  border-color: var(--color-feedback-error);
+  background: var(--color-feedback-error);
+  color: var(--color-background);
+  font-weight: var(--font-weight-semibold);
+}
+
+.visuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  inline-size: 0.0625rem;
+  block-size: 0.0625rem;
+  padding: 0;
+  border: 0;
+  margin: -0.0625rem;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 29.999rem) {
+  .dialogActions,
+  .dialogActions > * {
+    inline-size: 100%;
+  }
+
+  .dialogActions {
+    flex-direction: column;
+  }
+}

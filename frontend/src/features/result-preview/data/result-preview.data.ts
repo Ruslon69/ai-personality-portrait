@@ -1,4 +1,4 @@
-import type { FullPreviewSection, PreviewObservation, PreviewRecommendation } from '../types';
+import type { PreviewObservation, PreviewRecommendation } from '../types';
 
 export const previewObservations: readonly PreviewObservation[] = [
   {
@@ -36,20 +36,5 @@ export const previewRecommendations: readonly PreviewRecommendation[] = [
       'Если разговор становится напряжённым, назовите сначала то, что вы хотите сохранить в контакте, а затем — что изменить.',
     id: 'conversation',
     title: 'Начните сложный разговор с общей опоры',
-  },
-] as const;
-
-export const fullPreviewSections: readonly FullPreviewSection[] = [
-  {
-    description:
-      'Потребность в собственном темпе может сочетаться с готовностью к близости: пространство помогает вам возвращаться в разговор собраннее.',
-    id: 'connections',
-    title: 'Как наблюдения связаны между собой',
-  },
-  {
-    description:
-      'Проверьте один из советов в реальной ситуации и отметьте, что оказалось полезным. Обратная связь важнее попытки сразу изменить всё.',
-    id: 'next-step',
-    title: 'Один следующий шаг',
   },
 ] as const;

@@ -1,0 +1,171 @@
+.root {
+  overflow: clip;
+}
+
+.hero {
+  padding-block: clamp(var(--space-6), 7vw, var(--space-9));
+}
+
+.heroGrid {
+  display: grid;
+  align-items: end;
+  gap: var(--space-6);
+}
+
+.eyebrow {
+  color: var(--color-text);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heroTitle {
+  max-inline-size: 15ch;
+  font-family: var(--font-family-heading);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.heroLead {
+  max-inline-size: var(--content-width-reading);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+}
+
+.listSection {
+  padding-block: 0 clamp(var(--space-8), 10vw, calc(var(--space-9) * 1.5));
+}
+
+.historyList {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.historyCard {
+  padding: clamp(var(--space-5), 4vw, var(--space-6));
+  background: color-mix(in srgb, var(--color-surface) 95%, var(--color-interactive) 5%);
+  transition:
+    border-color var(--transition-duration-normal) var(--transition-easing-standard),
+    box-shadow var(--transition-duration-normal) var(--transition-easing-standard);
+}
+
+.historyCard:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-low);
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+.keyPhrase {
+  max-inline-size: var(--content-width-reading);
+  color: var(--color-text-muted);
+}
+
+.moduleList,
+.cardActions,
+.dialogActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.cardActions {
+  justify-content: space-between;
+  padding-block-start: var(--space-4);
+  border-block-start: 0.0625rem solid var(--color-border);
+}
+
+.deleteButton,
+.dangerButton {
+  border-color: var(--color-feedback-error);
+}
+
+.deleteButton {
+  color: var(--color-feedback-error);
+}
+
+.dangerButton {
+  background: var(--color-feedback-error);
+  color: var(--color-background);
+  font-weight: var(--font-weight-semibold);
+}
+
+.dialogActions {
+  justify-content: flex-end;
+}
+
+.emptyState {
+  padding: clamp(var(--space-6), 7vw, var(--space-9));
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.emptyState > div {
+  max-inline-size: var(--content-width-reading);
+  margin-inline: auto;
+}
+
+.primaryButton {
+  border-color: var(--color-interactive);
+  background: var(--color-interactive);
+  color: var(--color-on-interactive);
+  font-weight: var(--font-weight-semibold);
+}
+
+.visuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  inline-size: 0.0625rem;
+  block-size: 0.0625rem;
+  padding: 0;
+  border: 0;
+  margin: -0.0625rem;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 29.999rem) {
+  .heroGrid > button,
+  .cardActions,
+  .cardActions > *,
+  .dialogActions,
+  .dialogActions > *,
+  .primaryButton {
+    inline-size: 100%;
+  }
+
+  .cardActions,
+  .dialogActions {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 48rem) {
+  .heroGrid {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .historyList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 90rem) {
+  .historyList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .historyCard {
+    transition: none;
+  }
+}

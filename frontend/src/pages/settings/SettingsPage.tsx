@@ -1,10 +1,22 @@
-import { ContentLayout } from '@app/layout';
+import {
+  appearanceOptions,
+  dangerZoneActions,
+  demoCompatibilityInvitations,
+  demoSettingsAccount,
+  portraitDataActions,
+  privacyConsentSettings,
+  UserSettings,
+} from '@features/user-settings';
 
 export function SettingsPage() {
   return (
-    <ContentLayout
-      description="Раздел настроек подготовлен для будущих системных параметров."
-      title="Settings"
+    <UserSettings
+      account={demoSettingsAccount}
+      appearanceOptions={appearanceOptions}
+      dangerActions={dangerZoneActions}
+      dataActions={portraitDataActions}
+      initialInvitations={demoCompatibilityInvitations}
+      privacyConsents={privacyConsentSettings}
     />
   );
 }

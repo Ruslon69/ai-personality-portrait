@@ -1,24 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { Badge, Button, Card, Container, Stack, Surface, Typography } from '@shared/ui';
 
-import { fullPreviewSections, previewObservations, previewRecommendations } from '../data';
+import { previewObservations, previewRecommendations } from '../data';
 import styles from './ResultPreview.module.css';
 
-export function ResultPreview() {
-  const [isFullPreviewOpen, setFullPreviewOpen] = useState(false);
+type ResultPreviewProps = {
+  onOpenFullResult: () => void;
+};
 
+export function ResultPreview({ onOpenFullResult }: ResultPreviewProps) {
   useEffect(() => {
     window.requestAnimationFrame(() => document.getElementById('result-preview-title')?.focus());
   }, []);
-
-  useEffect(() => {
-    if (!isFullPreviewOpen) {
-      return;
-    }
-
-    window.requestAnimationFrame(() => document.getElementById('full-preview-title')?.focus());
-  }, [isFullPreviewOpen]);
 
   return (
     <div className={styles.root}>
@@ -145,35 +139,9 @@ export function ResultPreview() {
                 </Typography>
               </Stack>
 
-              <Button
-                aria-controls="full-preview"
-                aria-expanded={isFullPreviewOpen}
-                className={styles.primaryButton}
-                disabled={isFullPreviewOpen}
-                onClick={() => setFullPreviewOpen(true)}
-              >
-                {isFullPreviewOpen ? 'Полный портрет открыт' : 'Открыть полный портрет'}
+              <Button className={styles.primaryButton} onClick={onOpenFullResult}>
+                Открыть полный портрет
               </Button>
-
-              {isFullPreviewOpen ? (
-                <div className={styles.fullPreview} id="full-preview">
-                  <Typography as="h3" id="full-preview-title" tabIndex={-1} variant="heading-md">
-                    Расширенный контекст
-                  </Typography>
-                  <div className={styles.fullPreviewGrid}>
-                    {fullPreviewSections.map((section) => (
-                      <Card key={section.id}>
-                        <Stack gap="sm">
-                          <Typography as="h4" variant="heading-sm">
-                            {section.title}
-                          </Typography>
-                          <Typography className={styles.muted}>{section.description}</Typography>
-                        </Stack>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
             </Stack>
           </Surface>
         </Container>

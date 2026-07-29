@@ -1,5 +1,1 @@
-export type {
-  FullPreviewSection,
-  PreviewObservation,
-  PreviewRecommendation,
-} from './result-preview';
+export type { PreviewObservation, PreviewRecommendation } from './result-preview';

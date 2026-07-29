@@ -147,20 +147,6 @@
   box-shadow: var(--shadow-medium);
 }
 
-.fullPreview {
-  display: grid;
-  inline-size: 100%;
-  padding-block-start: var(--space-6);
-  border-block-start: 0.0625rem solid var(--color-border);
-  gap: var(--space-5);
-  text-align: start;
-}
-
-.fullPreviewGrid {
-  display: grid;
-  gap: var(--space-4);
-}
-
 @media (max-width: 29.999rem) {
   .primaryButton {
     inline-size: 100%;
@@ -168,8 +154,7 @@
 }
 
 @media (min-width: 48rem) {
-  .recommendationList,
-  .fullPreviewGrid {
+  .recommendationList {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

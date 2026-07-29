@@ -1,5 +1,9 @@
 import { ResultPreview } from '@features/result-preview';
+import { useRouter } from '@router';
+import { ROUTES } from '@shared/config';
 
 export function ResultPreviewPage() {
-  return <ResultPreview />;
+  const { navigate } = useRouter();
+
+  return <ResultPreview onOpenFullResult={() => navigate(ROUTES.portraitResult)} />;
 }

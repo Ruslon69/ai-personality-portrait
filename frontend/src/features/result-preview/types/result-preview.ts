@@ -10,9 +10,3 @@ export type PreviewRecommendation = {
   id: string;
   title: string;
 };
-
-export type FullPreviewSection = {
-  description: string;
-  id: string;
-  title: string;
-};

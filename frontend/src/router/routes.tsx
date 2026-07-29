@@ -1,11 +1,13 @@
 import {
   BirthDatePage,
   CompatibilityPage,
+  GeneratingPage,
   HomePage,
   NotFoundPage,
   PortraitPage,
   ProfilePage,
   QuestionsPage,
+  ResultPreviewPage,
   SettingsPage,
   VoicePage,
 } from '@pages';
@@ -19,6 +21,8 @@ export const appRoutes: readonly AppRoute[] = [
   { component: QuestionsPage, path: ROUTES.portraitQuestions },
   { component: VoicePage, path: ROUTES.portraitVoice },
   { component: BirthDatePage, path: ROUTES.portraitBirthDate },
+  { component: GeneratingPage, path: ROUTES.portraitGenerating },
+  { component: ResultPreviewPage, path: ROUTES.portraitResultPreview },
   { component: CompatibilityPage, path: ROUTES.compatibility },
   { component: ProfilePage, path: ROUTES.profile },
   { component: SettingsPage, path: ROUTES.settings },

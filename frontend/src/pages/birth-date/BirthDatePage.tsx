@@ -1,10 +1,14 @@
-import { ContentLayout } from '@app/layout';
+import { BirthDateStep } from '@features/birth-date';
+import { useRouter } from '@router';
+import { ROUTES } from '@shared/config';
 
 export function BirthDatePage() {
+  const { navigate } = useRouter();
+
   return (
-    <ContentLayout
-      description="Следующий этап пользовательского пути начинается здесь."
-      title="Дата рождения"
+    <BirthDateStep
+      onBack={() => navigate(ROUTES.portraitVoice)}
+      onComplete={() => navigate(ROUTES.portraitGenerating)}
     />
   );
 }

@@ -1,0 +1,142 @@
+.root {
+  min-block-size: min(46rem, calc(100dvh - 8rem));
+  padding-block: clamp(var(--space-6), 8vw, var(--space-9));
+}
+
+.content {
+  display: grid;
+  inline-size: min(100%, 48rem);
+  margin-inline: auto;
+  gap: clamp(var(--space-5), 5vw, var(--space-7));
+}
+
+.introduction {
+  text-align: center;
+}
+
+.eyebrow {
+  color: var(--color-text);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.title {
+  max-inline-size: 18ch;
+  font-family: var(--font-family-heading);
+  font-size: clamp(var(--font-size-2xl), 5vw, var(--font-size-3xl));
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.03em;
+  line-height: var(--line-height-tight);
+  text-wrap: balance;
+}
+
+.lead {
+  max-inline-size: var(--content-width-reading);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+}
+
+.stageSurface {
+  padding: clamp(var(--space-5), 5vw, var(--space-7));
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      color-mix(in srgb, var(--color-interactive) 11%, transparent),
+      transparent 44%
+    ),
+    var(--color-surface);
+}
+
+.liveStatus {
+  min-block-size: 0;
+  color: var(--color-text-muted);
+}
+
+.stageList {
+  display: grid;
+  padding: 0;
+  margin: 0;
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.stage {
+  display: grid;
+  align-items: start;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  gap: var(--space-3);
+  grid-template-columns: auto minmax(0, 1fr);
+  transition:
+    background-color var(--transition-duration-normal) var(--transition-easing-standard),
+    color var(--transition-duration-normal) var(--transition-easing-standard),
+    transform var(--transition-duration-normal) var(--transition-easing-standard);
+}
+
+.stage[data-status='current'] {
+  background: color-mix(in srgb, var(--color-interactive) 9%, var(--color-surface));
+  color: var(--color-text);
+  transform: translateX(var(--space-1));
+}
+
+.stage[data-status='complete'] {
+  color: var(--color-text);
+}
+
+.marker {
+  display: inline-flex;
+  inline-size: 2rem;
+  block-size: 2rem;
+  align-items: center;
+  justify-content: center;
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  color: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.stage[data-status='current'] .marker {
+  border-color: var(--color-interactive);
+}
+
+.stageTitle {
+  color: inherit;
+}
+
+.stageDescription {
+  color: inherit;
+}
+
+.note {
+  text-align: center;
+}
+
+.visuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  inline-size: 0.0625rem;
+  block-size: 0.0625rem;
+  padding: 0;
+  border: 0;
+  margin: -0.0625rem;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage {
+    transition: none;
+  }
+
+  .stage[data-status='current'] {
+    transform: none;
+  }
+}

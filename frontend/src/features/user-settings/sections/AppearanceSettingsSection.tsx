@@ -1,4 +1,4 @@
-import type { ThemeMode } from '@app';
+import type { ThemeMode } from '@app/providers/theme';
 import { Container, Stack, Surface, Typography } from '@shared/ui';
 
 import type { AppearanceOption } from '../types';

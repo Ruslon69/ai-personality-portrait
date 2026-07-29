@@ -1,4 +1,4 @@
-import { useTheme } from '@app';
+import { useTheme } from '@app/providers/theme';
 import { Button } from '@shared/ui';
 
 import styles from './ThemeSwitcher.module.css';

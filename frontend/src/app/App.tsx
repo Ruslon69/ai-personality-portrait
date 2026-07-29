@@ -1,4 +1,5 @@
-import { RouterOutlet, RouterProvider } from '@router';
+import { RouterOutlet } from '@router';
+import { RouterProvider } from '@router/navigation';
 
 import { Layout } from './layout';
 import { AppProvider } from './providers';

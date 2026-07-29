@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { useRouter } from '@router';
+import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
 import { Button, Typography } from '@shared/ui';
 

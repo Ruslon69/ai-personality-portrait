@@ -1,5 +1,5 @@
 import { portraitQuestions, Questionnaire } from '@features/questionnaire';
-import { useRouter } from '@router';
+import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
 
 export function QuestionsPage() {

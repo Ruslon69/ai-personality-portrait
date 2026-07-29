@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
 import { Badge, Button, Card, Container, Stack, Surface, Typography } from '@shared/ui';
 
 import { previewObservations, previewRecommendations } from '../data';
@@ -10,9 +11,7 @@ type ResultPreviewProps = {
 };
 
 export function ResultPreview({ onOpenFullResult }: ResultPreviewProps) {
-  useEffect(() => {
-    window.requestAnimationFrame(() => document.getElementById('result-preview-title')?.focus());
-  }, []);
+  useEffect(() => focusElementByIdOnNextFrame('result-preview-title'), []);
 
   return (
     <div className={styles.root}>

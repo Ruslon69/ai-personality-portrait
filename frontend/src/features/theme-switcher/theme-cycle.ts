@@ -1,4 +1,4 @@
-import type { ThemeMode } from '@app';
+import type { ThemeMode } from '@app/providers/theme';
 
 export const themeLabels = {
   dark: 'тёмная',

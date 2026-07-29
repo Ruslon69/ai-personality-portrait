@@ -20,6 +20,10 @@ export function RouterProvider({ children }: RouterProviderProps) {
   const currentPath = useSyncExternalStore(subscribeToHistory, getCurrentPath, getServerPath);
 
   const navigate = useCallback<RouterContextValue['navigate']>((path, options) => {
+    if (window.location.pathname === path) {
+      return;
+    }
+
     const method = options?.replace ? 'replaceState' : 'pushState';
     window.history[method](null, '', path);
     window.dispatchEvent(new PopStateEvent('popstate'));

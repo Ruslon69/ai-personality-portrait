@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef } from 'react';
 
+import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
 import { Button, Card, Container, Progress, Stack, Typography } from '@shared/ui';
 
 import { useQuestionnaire } from '../hooks';
@@ -47,7 +48,7 @@ export function Questionnaire({
     }
 
     previousQuestionIdRef.current = currentQuestion.id;
-    window.requestAnimationFrame(() => document.getElementById(questionTitleId)?.focus());
+    return focusElementByIdOnNextFrame(questionTitleId);
   }, [currentQuestion, questionTitleId]);
 
   if (!currentQuestion) {

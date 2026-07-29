@@ -1,5 +1,5 @@
-import { ThemeSwitcher } from '@features';
-import { useRouter } from '@router';
+import { ThemeSwitcher } from '@features/theme-switcher';
+import { useRouter } from '@router/navigation';
 import { appConfig, ROUTES } from '@shared/config';
 import { Button, Typography } from '@shared/ui';
 

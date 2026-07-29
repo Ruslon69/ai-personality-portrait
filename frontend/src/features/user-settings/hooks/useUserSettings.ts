@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useTheme } from '@app';
+import { useTheme } from '@app/providers/theme';
 
 import type {
   CompatibilityInvitation,

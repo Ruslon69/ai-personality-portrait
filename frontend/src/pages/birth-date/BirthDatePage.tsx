@@ -1,5 +1,5 @@
 import { BirthDateStep } from '@features/birth-date';
-import { useRouter } from '@router';
+import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
 
 export function BirthDatePage() {

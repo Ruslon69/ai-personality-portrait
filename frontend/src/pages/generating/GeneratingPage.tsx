@@ -1,5 +1,5 @@
 import { PortraitGenerating } from '@features/portrait-generation';
-import { useRouter } from '@router';
+import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
 
 export function GeneratingPage() {

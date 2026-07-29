@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
 import { Container, Progress, Spinner, Stack, Surface, Typography } from '@shared/ui';
 
 import { usePortraitGeneration } from '../hooks';
@@ -15,9 +16,7 @@ export function PortraitGenerating({ onComplete }: PortraitGeneratingProps) {
     onComplete,
   });
 
-  useEffect(() => {
-    window.requestAnimationFrame(() => document.getElementById('generating-title')?.focus());
-  }, []);
+  useEffect(() => focusElementByIdOnNextFrame('generating-title'), []);
 
   return (
     <section aria-labelledby="generating-title" className={styles.root}>

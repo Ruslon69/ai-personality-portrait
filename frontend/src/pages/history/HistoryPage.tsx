@@ -1,5 +1,5 @@
 import { demoPortraitHistory, PortraitHistory } from '@features/portrait-history';
-import { useRouter } from '@router';
+import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
 
 export function HistoryPage() {

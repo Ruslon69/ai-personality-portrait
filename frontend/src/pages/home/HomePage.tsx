@@ -1,4 +1,4 @@
-import { useRouter } from '@router';
+import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
 import { Button, Card, Container, Stack, Surface, Typography } from '@shared/ui';
 

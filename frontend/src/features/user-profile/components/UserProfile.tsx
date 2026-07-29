@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
+
 import {
   LatestPortraitSection,
   ProfileCompletionSection,
@@ -27,9 +29,7 @@ export function UserProfile({
   onOpenPortrait,
   onOpenSettings,
 }: UserProfileProps) {
-  useEffect(() => {
-    window.requestAnimationFrame(() => document.getElementById('profile-title')?.focus());
-  }, []);
+  useEffect(() => focusElementByIdOnNextFrame('profile-title'), []);
 
   return (
     <div className={styles.root}>

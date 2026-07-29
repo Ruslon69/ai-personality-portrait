@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
+
 import {
   AccountSettingsSection,
   AppearanceSettingsSection,
@@ -51,9 +53,7 @@ export function UserSettings({
     theme,
   } = useUserSettings({ initialInvitations });
 
-  useEffect(() => {
-    window.requestAnimationFrame(() => document.getElementById('settings-title')?.focus());
-  }, []);
+  useEffect(() => focusElementByIdOnNextFrame('settings-title'), []);
 
   return (
     <div className={styles.root}>

@@ -1,0 +1,13 @@
+.root {
+  display: grid;
+  min-block-size: 100dvh;
+  padding: var(--page-gutter);
+  background: var(--color-background);
+  color: var(--color-text);
+  place-items: center;
+}
+
+.panel {
+  inline-size: min(100%, var(--content-width-reading));
+  padding: clamp(var(--space-5), 6vw, var(--space-8));
+}

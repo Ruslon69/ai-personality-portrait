@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
 import { Button, Container, Stack, Typography } from '@shared/ui';
 
 import { usePortraitHistory } from '../hooks';
@@ -32,9 +33,7 @@ export function PortraitHistory({
     requestDelete,
   } = usePortraitHistory(initialItems);
 
-  useEffect(() => {
-    window.requestAnimationFrame(() => document.getElementById('history-title')?.focus());
-  }, []);
+  useEffect(() => focusElementByIdOnNextFrame('history-title'), []);
 
   useEffect(() => {
     if (!lastRemovedId) {
@@ -42,7 +41,7 @@ export function PortraitHistory({
     }
 
     const targetId = items.length === 0 ? 'history-empty-title' : 'history-list-title';
-    window.requestAnimationFrame(() => document.getElementById(targetId)?.focus());
+    return focusElementByIdOnNextFrame(targetId);
   }, [items.length, lastRemovedId]);
 
   return (

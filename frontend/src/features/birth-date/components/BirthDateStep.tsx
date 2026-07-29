@@ -1,5 +1,6 @@
 import { useEffect, useId } from 'react';
 
+import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
 import { Badge, Button, Container, Input, Stack, Surface, Typography } from '@shared/ui';
 
 import { useBirthDate } from '../hooks';
@@ -42,15 +43,13 @@ export function BirthDateStep({ initialValue, onBack, onChange, onComplete }: Bi
   const errorId = `${instanceId}-birth-date-error`;
   const skipId = `${instanceId}-skip-birth-date`;
 
-  useEffect(() => {
-    window.requestAnimationFrame(() => document.getElementById('birth-date-title')?.focus());
-  }, []);
+  useEffect(() => focusElementByIdOnNextFrame('birth-date-title'), []);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!submit()) {
-      window.requestAnimationFrame(() => document.getElementById(fieldId)?.focus());
+      focusElementByIdOnNextFrame(fieldId);
     }
   };
 
@@ -109,7 +108,6 @@ export function BirthDateStep({ initialValue, onBack, onChange, onComplete }: Bi
                     Для текущей предварительной версии минимальный возраст — {minimumAgeYears} лет.
                   </Typography>
                   <Typography
-                    aria-live="polite"
                     className={styles.error}
                     id={errorId}
                     role={visibleError ? 'alert' : undefined}

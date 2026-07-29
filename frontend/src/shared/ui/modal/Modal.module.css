@@ -1,4 +1,5 @@
 .root {
+  overflow-y: auto;
   max-inline-size: min(100% - (2 * var(--page-gutter)), var(--content-width-reading));
   max-block-size: calc(100dvh - (2 * var(--page-gutter)));
   padding: var(--space-5);

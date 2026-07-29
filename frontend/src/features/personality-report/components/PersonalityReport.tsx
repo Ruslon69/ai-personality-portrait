@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
+
 import { useDisclosureState } from '../hooks';
 import {
   InsightGridSection,
@@ -20,9 +22,7 @@ type PersonalityReportProps = {
 export function PersonalityReport({ onShare, report }: PersonalityReportProps) {
   const { isExpanded, toggle } = useDisclosureState([report.overview.id]);
 
-  useEffect(() => {
-    window.requestAnimationFrame(() => document.getElementById('full-report-title')?.focus());
-  }, []);
+  useEffect(() => focusElementByIdOnNextFrame('full-report-title'), []);
 
   return (
     <div className={styles.root}>

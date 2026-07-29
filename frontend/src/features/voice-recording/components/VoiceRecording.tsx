@@ -302,11 +302,7 @@ export function VoiceRecording({ onBack, onContinue }: VoiceRecordingProps) {
                       <Typography as="h3" variant="heading-sm">
                         {quality.valid ? 'Запись подходит' : 'Запись лучше повторить'}
                       </Typography>
-                      <Typography
-                        aria-live="polite"
-                        className={styles.statusText}
-                        id="voice-quality-description"
-                      >
+                      <Typography className={styles.statusText} id="voice-quality-description">
                         {quality.message}
                       </Typography>
                     </Stack>

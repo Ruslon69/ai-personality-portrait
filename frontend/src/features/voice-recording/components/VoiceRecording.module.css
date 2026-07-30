@@ -1,49 +1,33 @@
 .root {
   overflow: clip;
-  padding-block-end: clamp(var(--space-7), 8vw, var(--space-9));
+  padding-block-end: var(--page-hero-padding-block);
 }
 
 .introduction {
-  padding-block: clamp(var(--space-5), 5vw, var(--space-8));
+  padding-block: var(--page-hero-padding-block);
 }
 
 .introductionContent {
-  max-inline-size: 48rem;
-}
-
-.eyebrow {
-  color: var(--color-text);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  max-inline-size: var(--content-width-flow);
 }
 
 .title {
-  max-inline-size: 14ch;
-  font-family: var(--font-family-heading);
-  font-size: clamp(2.5rem, 6vw, 4.75rem);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: -0.04em;
-  line-height: 1.02;
-  text-wrap: balance;
+  max-inline-size: var(--flow-title-max-width);
 }
 
 .lead {
   max-inline-size: var(--content-width-reading);
-  color: var(--color-text-muted);
-  font-size: clamp(var(--font-size-lg), 2vw, var(--font-size-xl));
-  line-height: var(--line-height-relaxed);
 }
 
 .privacySection {
-  padding-block-end: clamp(var(--space-6), 6vw, var(--space-8));
+  padding-block-end: var(--flow-content-gap);
 }
 
 .privacySurface {
-  padding: clamp(var(--space-5), 4vw, var(--space-7));
+  padding: var(--flow-surface-padding);
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--color-interactive) 7%, var(--color-surface));
+  background: var(--surface-accent-subtle);
 }
 
 .privacyGrid {
@@ -59,7 +43,7 @@
 }
 
 .workspaceSection {
-  padding-block: var(--space-5);
+  padding-block: 0;
 }
 
 .workspaceGrid {
@@ -70,7 +54,7 @@
 
 .scriptCard,
 .recordingCard {
-  padding: clamp(var(--space-5), 4vw, var(--space-7));
+  padding: var(--flow-surface-padding);
   box-shadow: var(--shadow-low);
 }
 
@@ -137,20 +121,6 @@
 
 .forwardActions {
   justify-content: flex-end;
-}
-
-.primaryButton,
-.stopButton {
-  border-color: var(--color-interactive);
-  background: var(--color-interactive);
-  color: var(--color-on-interactive);
-  font-weight: var(--font-weight-semibold);
-}
-
-.primaryButton:hover:not(:disabled),
-.stopButton:hover:not(:disabled) {
-  border-color: var(--color-interactive);
-  box-shadow: var(--shadow-medium);
 }
 
 @media (max-width: 47.999rem) {

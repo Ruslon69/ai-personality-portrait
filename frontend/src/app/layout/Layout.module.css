@@ -35,4 +35,8 @@
   .body {
     grid-template-columns: 16rem minmax(0, 1fr);
   }
+
+  .body[data-marketing='true'] {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

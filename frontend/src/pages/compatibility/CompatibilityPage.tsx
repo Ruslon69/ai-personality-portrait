@@ -1,10 +1,13 @@
 import { ContentLayout } from '@app/layout';
+import { useI18n } from '@shared/i18n';
 
 export function CompatibilityPage() {
+  const { messages } = useI18n();
+
   return (
     <ContentLayout
-      description="Раздел совместимости подготовлен без продуктовых функций."
-      title="Compatibility"
+      description={messages.system.compatibility.description}
+      title={messages.system.compatibility.title}
     />
   );
 }

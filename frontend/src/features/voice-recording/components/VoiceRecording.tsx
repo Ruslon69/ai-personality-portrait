@@ -110,43 +110,45 @@ export function VoiceRecording({ onBack, onContinue }: VoiceRecordingProps) {
 
   const primaryAction =
     status === 'idle' ? (
-      <Button className={styles.primaryButton} onClick={requestPermission}>
+      <Button onClick={requestPermission} prominence="primary" size="large">
         Разрешить микрофон
       </Button>
     ) : status === 'ready' ? (
-      <Button className={styles.primaryButton} onClick={startRecording}>
+      <Button onClick={startRecording} prominence="primary" size="large">
         Начать запись
       </Button>
     ) : status === 'recording' ? (
-      <Button className={styles.stopButton} onClick={stopRecording}>
+      <Button onClick={stopRecording} prominence="primary" size="large">
         Остановить запись
       </Button>
     ) : status === 'valid' ? (
       <Button
         aria-describedby="voice-quality-description"
-        className={styles.primaryButton}
         onClick={useRecording}
+        prominence="primary"
+        size="large"
       >
         Использовать запись
       </Button>
     ) : status === 'invalid' ? (
       <Button
         aria-describedby="voice-quality-description"
-        className={styles.primaryButton}
         onClick={recordAgain}
+        prominence="primary"
+        size="large"
       >
         Записать заново
       </Button>
     ) : status === 'permission-denied' || status === 'error' ? (
-      <Button className={styles.primaryButton} onClick={requestPermission}>
+      <Button onClick={requestPermission} prominence="primary" size="large">
         Проверить микрофон снова
       </Button>
     ) : status === 'unsupported' ? (
-      <Button className={styles.primaryButton} onClick={() => leaveStep(onContinue)}>
+      <Button onClick={() => leaveStep(onContinue)} prominence="primary" size="large">
         Продолжить без голоса
       </Button>
     ) : (
-      <Button className={styles.primaryButton} disabled>
+      <Button disabled prominence="primary" size="large">
         {status === 'validating' ? 'Проверяем запись' : 'Ожидаем разрешение'}
       </Button>
     );
@@ -156,13 +158,13 @@ export function VoiceRecording({ onBack, onContinue }: VoiceRecordingProps) {
       <section aria-labelledby="voice-title" className={styles.introduction}>
         <Container size="default">
           <Stack className={styles.introductionContent} gap="md">
-            <Typography as="p" className={styles.eyebrow} variant="caption">
+            <Typography as="p" variant="eyebrow">
               Необязательный этап
             </Typography>
-            <Typography as="h1" className={styles.title} id="voice-title">
+            <Typography as="h1" className={styles.title} id="voice-title" variant="flow-title">
               Добавьте голос к портрету
             </Typography>
-            <Typography className={styles.lead}>
+            <Typography className={styles.lead} variant="flow-lead">
               Короткая запись добавит наблюдения только об особенностях речи в этом фрагменте. Она
               не определяет личность и не используется для идентификации.
             </Typography>
@@ -175,7 +177,7 @@ export function VoiceRecording({ onBack, onContinue }: VoiceRecordingProps) {
           <Surface className={styles.privacySurface} elevation="low">
             <div className={styles.privacyGrid}>
               <Stack gap="sm">
-                <Typography as="p" className={styles.eyebrow} variant="caption">
+                <Typography as="p" variant="eyebrow">
                   Приватность
                 </Typography>
                 <Typography as="h2" id="voice-privacy-title" variant="heading-md">
@@ -199,7 +201,7 @@ export function VoiceRecording({ onBack, onContinue }: VoiceRecordingProps) {
             <Card aria-labelledby="reading-text-title" className={styles.scriptCard}>
               <Stack gap="lg">
                 <Stack gap="sm">
-                  <Typography as="p" className={styles.eyebrow} variant="caption">
+                  <Typography as="p" variant="eyebrow">
                     Текст для чтения
                   </Typography>
                   <Typography as="h2" id="reading-text-title" variant="heading-lg">

@@ -4,4 +4,5 @@ export type HeaderProps = {
   isMenuOpen: boolean;
   menuButtonRef?: Ref<HTMLButtonElement>;
   onMenuToggle: () => void;
+  variant?: 'application' | 'marketing';
 };

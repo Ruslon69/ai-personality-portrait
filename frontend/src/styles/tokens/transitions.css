@@ -3,8 +3,29 @@
   --transition-duration-fast: 120ms;
   --transition-duration-normal: 200ms;
   --transition-duration-slow: 320ms;
+  --transition-duration-reveal: 560ms;
   --transition-easing-standard: cubic-bezier(0.2, 0, 0, 1);
   --transition-easing-emphasized: cubic-bezier(0.2, 0, 0, 1.2);
+  --transition-easing-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Semantic interaction motion. */
+  --motion-card-hover-duration: 560ms;
+  --motion-card-return-duration: 260ms;
+  --motion-detail-reveal-delay: 70ms;
+  --motion-line-draw-duration: 620ms;
+  --motion-layer-shift-distance: 0.5rem;
+  --motion-surface-lift-distance: -0.125rem;
+  --motion-glow-opacity: 16%;
+  --motion-interaction-easing: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Compatibility aliases for existing marketing motifs. */
+  --motion-detail-drift-duration: var(--motion-card-hover-duration);
+  --motion-orbit-reveal-duration: var(--motion-card-hover-duration);
+  --motion-number-arrange-duration: var(--motion-card-hover-duration);
+  --motion-constellation-connect-duration: var(--motion-line-draw-duration);
+  --motion-choice-confirm-duration: var(--motion-card-hover-duration);
+  --motion-interest-connect-duration: var(--motion-line-draw-duration);
+  --motion-voice-trace-duration: var(--motion-line-draw-duration);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -12,5 +33,20 @@
     --transition-duration-fast: 0ms;
     --transition-duration-normal: 0ms;
     --transition-duration-slow: 0ms;
+    --transition-duration-reveal: 0ms;
+    --motion-card-hover-duration: 0ms;
+    --motion-card-return-duration: 0ms;
+    --motion-detail-reveal-delay: 0ms;
+    --motion-line-draw-duration: 0ms;
+    --motion-layer-shift-distance: 0rem;
+    --motion-surface-lift-distance: 0rem;
+    --motion-glow-opacity: 8%;
+    --motion-detail-drift-duration: 0ms;
+    --motion-orbit-reveal-duration: 0ms;
+    --motion-number-arrange-duration: 0ms;
+    --motion-constellation-connect-duration: 0ms;
+    --motion-choice-confirm-duration: 0ms;
+    --motion-interest-connect-duration: 0ms;
+    --motion-voice-trace-duration: 0ms;
   }
 }

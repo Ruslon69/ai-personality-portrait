@@ -1,12 +1,12 @@
 .root {
-  padding-block: clamp(var(--space-5), 5vw, var(--space-8));
+  padding-block: var(--page-hero-padding-block);
 }
 
 .content {
   display: grid;
-  inline-size: min(100%, 56rem);
+  inline-size: min(100%, var(--content-width-questionnaire));
   margin-inline: auto;
-  gap: clamp(var(--space-5), 5vw, var(--space-7));
+  gap: var(--flow-content-gap);
 }
 
 .progressBlock {
@@ -19,19 +19,13 @@
 }
 
 .questionCard {
-  padding: clamp(var(--space-5), 5vw, var(--space-7));
+  padding: var(--flow-surface-padding);
   animation: question-enter var(--transition-duration-normal) var(--transition-easing-standard);
   box-shadow: var(--shadow-low);
 }
 
 .questionTitle {
   max-inline-size: 22ch;
-  font-family: var(--font-family-heading);
-  font-size: clamp(var(--font-size-2xl), 4vw, var(--font-size-3xl));
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: -0.025em;
-  line-height: var(--line-height-tight);
-  text-wrap: balance;
 }
 
 .questionDescription,
@@ -61,18 +55,6 @@
 
 .forwardActions {
   justify-content: flex-end;
-}
-
-.primaryButton {
-  border-color: var(--color-interactive);
-  background: var(--color-interactive);
-  color: var(--color-on-interactive);
-  font-weight: var(--font-weight-semibold);
-}
-
-.primaryButton:hover:not(:disabled) {
-  border-color: var(--color-interactive);
-  box-shadow: var(--shadow-medium);
 }
 
 .visuallyHidden {

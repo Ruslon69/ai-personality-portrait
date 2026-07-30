@@ -16,7 +16,7 @@ export function PrivacySettingsSection({ consents, items, onChange }: PrivacySet
         <Surface className={styles.settingsSurface} elevation="low">
           <Stack gap="lg">
             <Stack className={styles.sectionIntroduction} gap="sm">
-              <Typography as="p" className={styles.eyebrow} variant="caption">
+              <Typography as="p" variant="eyebrow">
                 Приватность
               </Typography>
               <Typography as="h2" id="privacy-settings-title" variant="heading-lg">

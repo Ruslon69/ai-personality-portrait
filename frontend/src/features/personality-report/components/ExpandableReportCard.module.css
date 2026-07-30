@@ -1,7 +1,7 @@
 .card {
   min-block-size: 100%;
-  padding: clamp(var(--space-5), 3vw, var(--space-6));
-  background: color-mix(in srgb, var(--color-surface) 94%, var(--color-interactive) 6%);
+  padding: var(--page-card-padding);
+  background: var(--surface-accent-subtle);
 }
 
 .card[data-variant='featured'] {
@@ -58,8 +58,6 @@
   align-self: flex-start;
   min-block-size: 2.5rem;
   padding-inline: var(--space-3);
-  background: transparent;
-  color: var(--color-text);
   font-weight: var(--font-weight-medium);
 }
 

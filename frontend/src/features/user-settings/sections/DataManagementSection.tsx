@@ -14,7 +14,7 @@ export function DataManagementSection({ actions, onAction }: DataManagementSecti
       <Container size="wide">
         <Stack gap="lg">
           <Stack className={styles.sectionIntroduction} gap="sm">
-            <Typography as="p" className={styles.eyebrow} variant="caption">
+            <Typography as="p" variant="eyebrow">
               Данные портрета
             </Typography>
             <Typography as="h2" id="data-settings-title" variant="heading-lg">

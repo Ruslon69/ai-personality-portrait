@@ -23,7 +23,7 @@ export function SourcesSection({ isExpanded, items, onToggle }: SourcesSectionPr
         <Surface className={styles.sourcesSurface} elevation="low">
           <Stack gap="lg">
             <Stack className={styles.sectionIntroduction} gap="sm">
-              <Typography as="p" className={styles.eyebrow} variant="caption">
+              <Typography as="p" variant="eyebrow">
                 Источники выводов
               </Typography>
               <Typography as="h2" id="sources-section-title" variant="heading-lg">

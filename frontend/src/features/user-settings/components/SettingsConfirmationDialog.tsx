@@ -31,7 +31,7 @@ export function SettingsConfirmationDialog({
           <Button autoFocus onClick={onCancel}>
             Отмена
           </Button>
-          <Button className={styles.confirmButton} onClick={onConfirm}>
+          <Button onClick={onConfirm} prominence="danger">
             {confirmation?.confirmLabel ?? 'Подтвердить'}
           </Button>
         </div>

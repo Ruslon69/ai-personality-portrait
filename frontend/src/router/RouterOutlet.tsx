@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import { resolveRoute } from './routes';
+import styles from './RouterOutlet.module.css';
 import { useRouter } from './useRouter';
 
 export function RouterOutlet() {
@@ -27,5 +28,9 @@ export function RouterOutlet() {
     return () => window.cancelAnimationFrame(animationFrame);
   }, [currentPath]);
 
-  return <Page />;
+  return (
+    <div className={styles.route} key={currentPath}>
+      <Page />
+    </div>
+  );
 }

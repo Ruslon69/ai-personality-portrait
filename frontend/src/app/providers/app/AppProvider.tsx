@@ -1,4 +1,6 @@
 import type { AppProviderProps } from './AppProvider.types';
+import { I18nProvider } from '@shared/i18n';
+
 import { ErrorBoundary } from '../error-boundary';
 import { NotificationProvider } from '../notification';
 import { QueryProvider } from '../query';
@@ -8,9 +10,11 @@ export function AppProvider({ children }: AppProviderProps) {
   return (
     <ErrorBoundary>
       <ThemeProvider>
-        <QueryProvider>
-          <NotificationProvider>{children}</NotificationProvider>
-        </QueryProvider>
+        <I18nProvider>
+          <QueryProvider>
+            <NotificationProvider>{children}</NotificationProvider>
+          </QueryProvider>
+        </I18nProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

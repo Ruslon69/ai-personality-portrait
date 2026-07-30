@@ -1,4 +1,5 @@
 export * from './birth-date';
+export * from './language-switcher';
 export * from './personality-report';
 export * from './portrait-history';
 export * from './portrait-generation';

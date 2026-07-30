@@ -15,7 +15,7 @@ export function LatestPortraitSection({ onOpenPortrait, portrait }: LatestPortra
       <Container size="wide">
         <Stack gap="lg">
           <Stack className={styles.sectionIntroduction} gap="sm">
-            <Typography as="p" className={styles.eyebrow} variant="caption">
+            <Typography as="p" variant="eyebrow">
               Последний портрет
             </Typography>
             <Typography as="h2" id="latest-portrait-title" variant="heading-lg">
@@ -42,7 +42,7 @@ export function LatestPortraitSection({ onOpenPortrait, portrait }: LatestPortra
                 </div>
               </Stack>
 
-              <Button className={styles.primaryButton} onClick={onOpenPortrait}>
+              <Button onClick={onOpenPortrait} prominence="primary" size="large">
                 Открыть портрет
               </Button>
             </div>

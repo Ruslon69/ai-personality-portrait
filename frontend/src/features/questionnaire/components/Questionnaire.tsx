@@ -88,6 +88,7 @@ export function Questionnaire({
                   className={styles.questionTitle}
                   id={questionTitleId}
                   tabIndex={-1}
+                  variant="flow-title"
                 >
                   {currentQuestion.title}
                 </Typography>
@@ -146,9 +147,10 @@ export function Questionnaire({
                   ) : null}
                   <Button
                     aria-describedby={selectionHintId}
-                    className={styles.primaryButton}
                     disabled={!canContinue}
                     onClick={continueQuestionnaire}
+                    prominence="primary"
+                    size="large"
                   >
                     Продолжить
                   </Button>

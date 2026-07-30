@@ -30,7 +30,7 @@ export function InsightGridSection({
       <Container size="wide">
         <Stack gap="lg">
           <Stack className={styles.sectionIntroduction} gap="sm">
-            <Typography as="p" className={styles.eyebrow} variant="caption">
+            <Typography as="p" variant="eyebrow">
               {eyebrow}
             </Typography>
             <Typography as="h2" id={titleId} variant="heading-lg">

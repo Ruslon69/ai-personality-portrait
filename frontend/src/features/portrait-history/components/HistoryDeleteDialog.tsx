@@ -27,7 +27,7 @@ export function HistoryDeleteDialog({ item, onCancel, onConfirm }: HistoryDelete
           <Button autoFocus onClick={onCancel}>
             Отмена
           </Button>
-          <Button className={styles.dangerButton} onClick={onConfirm}>
+          <Button onClick={onConfirm} prominence="danger">
             Скрыть из истории
           </Button>
         </div>

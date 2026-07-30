@@ -1,15 +1,18 @@
 .root {
   overflow: clip;
-  padding-block: clamp(var(--space-5), 5vw, var(--space-8));
+  padding-block: var(--page-hero-padding-block);
 }
 
-.introduction,
+.introduction {
+  padding-block-end: var(--flow-content-gap);
+}
+
 .formSection {
-  padding-block: var(--space-4);
+  padding-block: 0;
 }
 
 .introductionContent {
-  inline-size: min(100%, 48rem);
+  inline-size: min(100%, var(--content-width-flow));
   margin-inline: auto;
 }
 
@@ -18,32 +21,23 @@
 }
 
 .title {
-  max-inline-size: 18ch;
-  font-family: var(--font-family-heading);
-  font-size: clamp(var(--font-size-2xl), 5vw, var(--font-size-3xl));
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: -0.03em;
-  line-height: var(--line-height-tight);
-  text-wrap: balance;
+  max-inline-size: var(--flow-title-max-width);
 }
 
 .lead {
   max-inline-size: var(--content-width-reading);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-lg);
-  line-height: var(--line-height-relaxed);
 }
 
 .form {
   display: grid;
-  inline-size: min(100%, 48rem);
+  inline-size: min(100%, var(--content-width-flow));
   margin-inline: auto;
-  gap: var(--space-5);
+  gap: var(--flow-content-gap);
 }
 
 .formSurface,
 .privacySurface {
-  padding: clamp(var(--space-5), 5vw, var(--space-7));
+  padding: var(--flow-surface-padding);
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
 }
@@ -59,7 +53,7 @@
 }
 
 .privacySurface {
-  background: color-mix(in srgb, var(--color-interactive) 6%, var(--color-surface));
+  background: var(--surface-accent-subtle);
 }
 
 .field {
@@ -131,18 +125,6 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-}
-
-.primaryButton {
-  border-color: var(--color-interactive);
-  background: var(--color-interactive);
-  color: var(--color-on-interactive);
-  font-weight: var(--font-weight-semibold);
-}
-
-.primaryButton:hover:not(:disabled) {
-  border-color: var(--color-interactive);
-  box-shadow: var(--shadow-medium);
 }
 
 @media (max-width: 47.999rem) {

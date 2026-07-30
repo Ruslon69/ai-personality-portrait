@@ -58,7 +58,7 @@ export function QuickActionsSection({
       <Container size="wide">
         <Stack gap="lg">
           <Stack className={styles.sectionIntroduction} gap="sm">
-            <Typography as="p" className={styles.eyebrow} variant="caption">
+            <Typography as="p" variant="eyebrow">
               Быстрые действия
             </Typography>
             <Typography as="h2" id="quick-actions-title" variant="heading-lg">

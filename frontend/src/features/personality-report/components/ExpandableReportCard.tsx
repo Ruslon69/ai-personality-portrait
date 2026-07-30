@@ -59,6 +59,7 @@ export function ExpandableReportCard({
           aria-expanded={expanded}
           className={styles.toggle}
           onClick={() => onToggle(item.id)}
+          prominence="quiet"
         >
           {expanded ? 'Свернуть' : 'Подробнее'}
         </Button>

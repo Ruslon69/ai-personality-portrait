@@ -1,9 +1,46 @@
 :root {
   --content-width-reading: 42rem;
+  --content-width-flow: 48rem;
+  --content-width-questionnaire: 56rem;
   --content-width-default: 72rem;
   --content-width-wide: 90rem;
   --page-gutter: clamp(var(--space-4), 4vw, var(--space-7));
+  --page-hero-padding-block: clamp(var(--space-5), 5vw, var(--space-8));
+  --page-section-padding-block: clamp(var(--space-7), 8vw, var(--space-9));
+  --page-ending-padding-block: clamp(var(--space-8), 10vw, calc(var(--space-9) * 1.5));
+  --page-hero-padding: clamp(var(--space-5), 5vw, var(--space-9));
+  --page-hero-gap: clamp(var(--space-6), 7vw, var(--space-9));
+  --page-surface-padding: clamp(var(--space-5), 5vw, var(--space-8));
+  --page-aside-padding: clamp(var(--space-5), 4vw, var(--space-6));
+  --page-card-padding: clamp(var(--space-5), 3vw, var(--space-6));
+  --page-ending-surface-padding: clamp(var(--space-6), 6vw, var(--space-9));
+  --page-title-max-width: 15ch;
+  --page-title-size: clamp(2.5rem, 6vw, 4.75rem);
+  --page-title-letter-spacing: -0.04em;
+  --page-title-line-height: 1.02;
+  --page-lead-size: clamp(var(--font-size-lg), 2vw, var(--font-size-xl));
+  --flow-content-gap: clamp(var(--space-5), 5vw, var(--space-7));
+  --flow-surface-padding: clamp(var(--space-5), 5vw, var(--space-7));
+  --flow-title-max-width: 18ch;
+  --flow-title-size: clamp(var(--font-size-2xl), 5vw, var(--font-size-3xl));
+  --surface-accent-subtle: color-mix(
+    in srgb,
+    var(--color-surface) 94%,
+    var(--color-interactive) 6%
+  );
+  --page-hero-background:
+    radial-gradient(
+      circle at 92% 8%,
+      color-mix(in srgb, var(--color-interactive) 16%, transparent),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      var(--color-surface),
+      color-mix(in srgb, var(--color-interactive) 6%, var(--color-surface))
+    );
   --control-min-height: 2.75rem;
+  --control-large-min-height: 3.25rem;
   --focus-ring-width: 0.125rem;
   --focus-ring-offset: 0.125rem;
 }

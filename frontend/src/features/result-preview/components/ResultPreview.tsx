@@ -27,10 +27,11 @@ export function ResultPreview({ onOpenFullResult }: ResultPreviewProps) {
                     className={styles.title}
                     id="result-preview-title"
                     tabIndex={-1}
+                    variant="display"
                   >
                     Ваш первый портрет готов
                   </Typography>
-                  <Typography className={styles.lead}>
+                  <Typography className={styles.lead} variant="lead">
                     Начните с трёх коротких наблюдений. Формулировки ниже показывают структуру
                     будущего результата и используют локальные демонстрационные данные.
                   </Typography>
@@ -57,7 +58,7 @@ export function ResultPreview({ onOpenFullResult }: ResultPreviewProps) {
         <Container size="wide">
           <Stack gap="lg">
             <Stack className={styles.sectionIntroduction} gap="sm">
-              <Typography as="p" className={styles.eyebrow} variant="caption">
+              <Typography as="p" variant="eyebrow">
                 Первые наблюдения
               </Typography>
               <Typography as="h2" id="observations-title" variant="heading-lg">
@@ -93,7 +94,7 @@ export function ResultPreview({ onOpenFullResult }: ResultPreviewProps) {
           <Surface className={styles.recommendationsSurface}>
             <Stack gap="lg">
               <Stack className={styles.sectionIntroduction} gap="sm">
-                <Typography as="p" className={styles.eyebrow} variant="caption">
+                <Typography as="p" variant="eyebrow">
                   Небольшие действия
                 </Typography>
                 <Typography as="h2" id="recommendations-title" variant="heading-lg">
@@ -126,7 +127,7 @@ export function ResultPreview({ onOpenFullResult }: ResultPreviewProps) {
           <Surface className={styles.continueSurface} elevation="low">
             <Stack align="center" gap="lg">
               <Stack align="center" className={styles.continueCopy} gap="sm">
-                <Typography as="p" className={styles.eyebrow} variant="caption">
+                <Typography as="p" variant="eyebrow">
                   Продолжить исследование
                 </Typography>
                 <Typography as="h2" id="continue-research-title" variant="heading-lg">
@@ -138,7 +139,7 @@ export function ResultPreview({ onOpenFullResult }: ResultPreviewProps) {
                 </Typography>
               </Stack>
 
-              <Button className={styles.primaryButton} onClick={onOpenFullResult}>
+              <Button onClick={onOpenFullResult} prominence="primary" size="large">
                 Открыть полный портрет
               </Button>
             </Stack>

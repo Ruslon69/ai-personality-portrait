@@ -14,7 +14,7 @@ export function AccountSettingsSection({ account }: AccountSettingsSectionProps)
         <Surface className={styles.accountSurface} elevation="low">
           <div className={styles.accountGrid}>
             <Stack gap="sm">
-              <Typography as="p" className={styles.eyebrow} variant="caption">
+              <Typography as="p" variant="eyebrow">
                 Аккаунт
               </Typography>
               <Typography as="h2" id="account-settings-title" variant="heading-lg">

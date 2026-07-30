@@ -20,7 +20,7 @@ export function RecommendationsSection({
       <Container size="wide">
         <Stack gap="lg">
           <Stack className={styles.sectionIntroduction} gap="sm">
-            <Typography as="p" className={styles.eyebrow} variant="caption">
+            <Typography as="p" variant="eyebrow">
               Практические рекомендации
             </Typography>
             <Typography as="h2" id="recommendations-section-title" variant="heading-lg">

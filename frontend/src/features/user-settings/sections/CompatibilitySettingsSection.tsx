@@ -18,7 +18,7 @@ export function CompatibilitySettingsSection({
       <Container size="wide">
         <Stack gap="lg">
           <Stack className={styles.sectionIntroduction} gap="sm">
-            <Typography as="p" className={styles.eyebrow} variant="caption">
+            <Typography as="p" variant="eyebrow">
               Совместимость
             </Typography>
             <Typography

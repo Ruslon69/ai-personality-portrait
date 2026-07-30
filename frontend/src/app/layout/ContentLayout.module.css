@@ -1,5 +1,5 @@
 .root {
-  padding-block: clamp(var(--space-6), 7vw, var(--space-9));
+  padding-block: var(--page-hero-padding-block);
 }
 
 .introduction {

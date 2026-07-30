@@ -3,41 +3,25 @@
 }
 
 .hero {
-  padding-block: clamp(var(--space-6), 7vw, var(--space-9));
+  padding-block: var(--page-hero-padding-block);
 }
 
 .heroGrid {
   display: grid;
   align-items: end;
-  gap: var(--space-6);
-}
-
-.eyebrow {
-  color: var(--color-text);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  gap: var(--page-hero-gap);
 }
 
 .heroTitle {
-  max-inline-size: 15ch;
-  font-family: var(--font-family-heading);
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: -0.04em;
-  line-height: 1.02;
-  text-wrap: balance;
+  max-inline-size: var(--page-title-max-width);
 }
 
 .heroLead {
   max-inline-size: var(--content-width-reading);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-lg);
-  line-height: var(--line-height-relaxed);
 }
 
 .listSection {
-  padding-block: 0 clamp(var(--space-8), 10vw, calc(var(--space-9) * 1.5));
+  padding-block: 0 var(--page-ending-padding-block);
 }
 
 .historyList {
@@ -46,8 +30,8 @@
 }
 
 .historyCard {
-  padding: clamp(var(--space-5), 4vw, var(--space-6));
-  background: color-mix(in srgb, var(--color-surface) 95%, var(--color-interactive) 5%);
+  padding: var(--page-card-padding);
+  background: var(--surface-accent-subtle);
   transition:
     border-color var(--transition-duration-normal) var(--transition-easing-standard),
     box-shadow var(--transition-duration-normal) var(--transition-easing-standard);
@@ -81,19 +65,9 @@
   border-block-start: 0.0625rem solid var(--color-border);
 }
 
-.deleteButton,
-.dangerButton {
-  border-color: var(--color-feedback-error);
-}
-
 .deleteButton {
+  border-color: var(--color-feedback-error);
   color: var(--color-feedback-error);
-}
-
-.dangerButton {
-  background: var(--color-feedback-error);
-  color: var(--color-background);
-  font-weight: var(--font-weight-semibold);
 }
 
 .dialogActions {
@@ -101,7 +75,7 @@
 }
 
 .emptyState {
-  padding: clamp(var(--space-6), 7vw, var(--space-9));
+  padding: var(--page-ending-surface-padding);
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
   text-align: center;
@@ -110,13 +84,6 @@
 .emptyState > div {
   max-inline-size: var(--content-width-reading);
   margin-inline: auto;
-}
-
-.primaryButton {
-  border-color: var(--color-interactive);
-  background: var(--color-interactive);
-  color: var(--color-on-interactive);
-  font-weight: var(--font-weight-semibold);
 }
 
 .visuallyHidden {
@@ -137,8 +104,7 @@
   .cardActions,
   .cardActions > *,
   .dialogActions,
-  .dialogActions > *,
-  .primaryButton {
+  .dialogActions > * {
     inline-size: 100%;
   }
 

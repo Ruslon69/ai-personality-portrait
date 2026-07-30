@@ -15,7 +15,7 @@ export function DangerZoneSection({ actions, onAction }: DangerZoneSectionProps)
         <Surface className={styles.dangerSurface} elevation="low">
           <Stack gap="lg">
             <Stack className={styles.sectionIntroduction} gap="sm">
-              <Typography as="p" className={styles.eyebrow} variant="caption">
+              <Typography as="p" variant="eyebrow">
                 Опасная зона
               </Typography>
               <Typography as="h2" id="danger-zone-title" variant="heading-lg">
@@ -40,9 +40,9 @@ export function DangerZoneSection({ actions, onAction }: DangerZoneSectionProps)
                       <Typography className={styles.muted}>{action.description}</Typography>
                     </Stack>
                     <Button
-                      className={styles.dangerButton}
                       id={buttonId}
                       onClick={() => onAction(action, buttonId)}
+                      prominence="danger"
                     >
                       {action.label}
                     </Button>

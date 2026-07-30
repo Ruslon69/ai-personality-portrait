@@ -1,9 +1,9 @@
 import { ROUTES } from '@shared/config';
 
 export const navigationItems = [
-  { label: 'Home', path: ROUTES.home },
-  { label: 'Portrait', path: ROUTES.portrait },
-  { label: 'Compatibility', path: ROUTES.compatibility },
-  { label: 'Profile', path: ROUTES.profile },
-  { label: 'Settings', path: ROUTES.settings },
+  { labelKey: 'home', path: ROUTES.home },
+  { labelKey: 'portrait', path: ROUTES.portrait },
+  { labelKey: 'compatibility', path: ROUTES.compatibility },
+  { labelKey: 'profile', path: ROUTES.profile },
+  { labelKey: 'settings', path: ROUTES.settings },
 ] as const;

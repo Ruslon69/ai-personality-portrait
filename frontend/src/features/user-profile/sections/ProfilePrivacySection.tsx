@@ -14,7 +14,7 @@ export function ProfilePrivacySection({ onOpenSettings, reminder }: ProfilePriva
         <Surface className={styles.privacySurface} elevation="low">
           <div className={styles.privacyGrid}>
             <Stack gap="sm">
-              <Typography as="p" className={styles.eyebrow} variant="caption">
+              <Typography as="p" variant="eyebrow">
                 Приватность
               </Typography>
               <Typography as="h2" id="profile-privacy-title" variant="heading-lg">

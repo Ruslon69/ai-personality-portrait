@@ -3,4 +3,10 @@
   --shadow-low: 0 0.125rem 0.5rem color-mix(in srgb, CanvasText 8%, transparent);
   --shadow-medium: 0 0.5rem 1.5rem color-mix(in srgb, CanvasText 12%, transparent);
   --shadow-high: 0 1rem 3rem color-mix(in srgb, CanvasText 18%, transparent);
+  --shadow-marketing-card:
+    0 1rem 3rem color-mix(in srgb, CanvasText 10%, transparent),
+    0 0.0625rem 0 color-mix(in srgb, CanvasText 5%, transparent);
+  --shadow-marketing-glow:
+    0 1.25rem 3.5rem color-mix(in srgb, var(--color-marketing-accent) 22%, transparent),
+    0 0.0625rem 0 color-mix(in srgb, var(--color-on-action-primary) 22%, transparent) inset;
 }

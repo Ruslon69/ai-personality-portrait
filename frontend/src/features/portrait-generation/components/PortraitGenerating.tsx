@@ -25,13 +25,19 @@ export function PortraitGenerating({ onComplete }: PortraitGeneratingProps) {
           <Stack align="center" className={styles.introduction} gap="md">
             <Spinner label="Создаём предварительный портрет" size="lg" />
             <Stack align="center" gap="sm">
-              <Typography as="p" className={styles.eyebrow} variant="caption">
+              <Typography as="p" variant="eyebrow">
                 Почти готово
               </Typography>
-              <Typography as="h1" className={styles.title} id="generating-title" tabIndex={-1}>
+              <Typography
+                as="h1"
+                className={styles.title}
+                id="generating-title"
+                tabIndex={-1}
+                variant="flow-title"
+              >
                 Собираем ваш портрет
               </Typography>
-              <Typography className={styles.lead}>
+              <Typography className={styles.lead} variant="flow-lead">
                 Последовательно соединяем доступные данные. Ничего не добавляем от себя.
               </Typography>
             </Stack>

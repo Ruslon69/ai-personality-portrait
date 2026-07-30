@@ -50,13 +50,19 @@ export function PortraitHistory({
         <Container size="wide">
           <div className={styles.heroGrid}>
             <Stack gap="sm">
-              <Typography as="p" className={styles.eyebrow} variant="caption">
+              <Typography as="p" variant="eyebrow">
                 Сохранённые результаты
               </Typography>
-              <Typography as="h1" className={styles.heroTitle} id="history-title" tabIndex={-1}>
+              <Typography
+                as="h1"
+                className={styles.heroTitle}
+                id="history-title"
+                tabIndex={-1}
+                variant="display"
+              >
                 История портретов
               </Typography>
-              <Typography className={styles.heroLead}>
+              <Typography className={styles.heroLead} variant="lead">
                 Сравнивайте ключевые мысли и возвращайтесь к нужному результату.
               </Typography>
             </Stack>

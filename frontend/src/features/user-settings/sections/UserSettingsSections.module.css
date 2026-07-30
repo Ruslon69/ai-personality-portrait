@@ -1,5 +1,5 @@
 .hero {
-  padding-block: clamp(var(--space-6), 7vw, var(--space-9));
+  padding-block: var(--page-hero-padding-block);
 }
 
 .heroContent,
@@ -12,31 +12,12 @@
 }
 
 .heroTitle {
-  max-inline-size: 15ch;
-  font-family: var(--font-family-heading);
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: -0.04em;
-  line-height: 1.02;
-  text-wrap: balance;
-}
-
-.heroLead {
-  color: var(--color-text-muted);
-  font-size: var(--font-size-lg);
-  line-height: var(--line-height-relaxed);
+  max-inline-size: var(--page-title-max-width);
 }
 
 .section,
 .dangerSection {
-  padding-block: clamp(var(--space-7), 8vw, var(--space-9));
-}
-
-.eyebrow {
-  color: var(--color-text);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  padding-block: var(--page-section-padding-block);
 }
 
 .muted,
@@ -47,14 +28,14 @@
 .settingsSurface,
 .accountSurface,
 .dangerSurface {
-  padding: clamp(var(--space-5), 5vw, var(--space-8));
+  padding: var(--page-surface-padding);
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
 }
 
 .settingsSurface,
 .accountSurface {
-  background: color-mix(in srgb, var(--color-interactive) 4%, var(--color-surface));
+  background: var(--surface-accent-subtle);
 }
 
 .fieldset {
@@ -134,7 +115,7 @@
 .actionCard,
 .invitationCard {
   min-block-size: 100%;
-  padding: var(--space-5);
+  padding: var(--page-card-padding);
 }
 
 .actionCard button,
@@ -153,7 +134,7 @@
 }
 
 .dangerSection {
-  padding-block-end: clamp(var(--space-8), 10vw, calc(var(--space-9) * 1.5));
+  padding-block-end: var(--page-ending-padding-block);
 }
 
 .dangerSurface {
@@ -172,13 +153,6 @@
   padding-block-start: var(--space-4);
   border-block-start: 0.0625rem solid var(--color-border);
   gap: var(--space-4);
-}
-
-.dangerButton {
-  border-color: var(--color-feedback-error);
-  background: var(--color-feedback-error);
-  color: var(--color-background);
-  font-weight: var(--font-weight-semibold);
 }
 
 .visuallyHidden {

@@ -61,10 +61,16 @@ export function BirthDateStep({ initialValue, onBack, onChange, onComplete }: Bi
             <Badge className={styles.stepBadge} tone="info">
               Последний шаг
             </Badge>
-            <Typography as="h1" className={styles.title} id="birth-date-title" tabIndex={-1}>
+            <Typography
+              as="h1"
+              className={styles.title}
+              id="birth-date-title"
+              tabIndex={-1}
+              variant="flow-title"
+            >
               Добавьте дату рождения
             </Typography>
-            <Typography className={styles.lead}>
+            <Typography className={styles.lead} variant="flow-lead">
               Она нужна только для нумерологического и зодиакального слоёв портрета. Время рождения
               сейчас не требуется.
             </Typography>
@@ -156,8 +162,9 @@ export function BirthDateStep({ initialValue, onBack, onChange, onComplete }: Bi
               <Button onClick={onBack}>Назад</Button>
               <Button
                 aria-describedby={visibleError ? errorId : hintId}
-                className={styles.primaryButton}
                 disabled={!canSubmit}
+                prominence="primary"
+                size="large"
                 type="submit"
               >
                 Создать мой портрет

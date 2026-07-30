@@ -24,10 +24,13 @@ export function ReportHero({ createdAt, greeting, introduction, onShare }: Repor
                   className={styles.heroTitle}
                   id="full-report-title"
                   tabIndex={-1}
+                  variant="display"
                 >
                   {greeting}
                 </Typography>
-                <Typography className={styles.heroLead}>{introduction}</Typography>
+                <Typography className={styles.heroLead} variant="lead">
+                  {introduction}
+                </Typography>
               </Stack>
               <Button aria-label="Поделиться полным портретом" onClick={onShare}>
                 Поделиться

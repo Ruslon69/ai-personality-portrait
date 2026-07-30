@@ -13,10 +13,10 @@ export function ContentLayout({ children, description, title }: ContentLayoutPro
       <Container size="wide">
         <Stack gap="lg">
           <Stack className={styles.introduction} gap="sm">
-            <Typography as="h1" id={titleId} variant="heading-lg">
+            <Typography as="h1" id={titleId} variant="display">
               {title}
             </Typography>
-            <Typography>{description}</Typography>
+            <Typography variant="lead">{description}</Typography>
           </Stack>
           {children}
         </Stack>

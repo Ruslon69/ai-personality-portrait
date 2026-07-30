@@ -1,10 +1,29 @@
 .root {
+  min-block-size: 2.625rem;
+  padding-inline: var(--space-3);
+  border-color: color-mix(in srgb, var(--color-marketing-border) 72%, transparent);
+  background: color-mix(in srgb, var(--color-marketing-surface) 74%, transparent);
+  box-shadow: none;
   white-space: nowrap;
 }
 
 .symbol {
-  font-size: var(--font-size-lg);
-  line-height: 1;
+  position: relative;
+  display: inline-flex;
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  align-items: center;
+  justify-content: center;
+  border: 0.0625rem solid var(--color-text);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.symbolCore {
+  inline-size: 50%;
+  block-size: 100%;
+  margin-inline-start: auto;
+  background: var(--color-text);
 }
 
 @media (max-width: 47.999rem) {

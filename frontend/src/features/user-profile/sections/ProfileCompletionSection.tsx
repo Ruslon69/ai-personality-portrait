@@ -17,7 +17,7 @@ export function ProfileCompletionSection({ items }: ProfileCompletionSectionProp
       <Container size="wide">
         <Stack gap="lg">
           <Stack className={styles.sectionIntroduction} gap="sm">
-            <Typography as="p" className={styles.eyebrow} variant="caption">
+            <Typography as="p" variant="eyebrow">
               Заполнение профиля
             </Typography>
             <Typography as="h2" id="profile-completion-title" variant="heading-lg">

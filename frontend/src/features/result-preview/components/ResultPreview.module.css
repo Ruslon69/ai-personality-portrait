@@ -3,68 +3,42 @@
 }
 
 .hero {
-  padding-block: clamp(var(--space-5), 5vw, var(--space-8));
+  padding-block: var(--page-hero-padding-block);
 }
 
 .heroSurface {
-  padding: clamp(var(--space-5), 5vw, var(--space-9));
+  padding: var(--page-hero-padding);
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
-  background:
-    radial-gradient(
-      circle at 92% 8%,
-      color-mix(in srgb, var(--color-interactive) 15%, transparent),
-      transparent 38%
-    ),
-    linear-gradient(
-      145deg,
-      var(--color-surface),
-      color-mix(in srgb, var(--color-interactive) 5%, var(--color-surface))
-    );
+  background: var(--page-hero-background);
 }
 
 .heroGrid {
   display: grid;
   align-items: center;
-  gap: clamp(var(--space-6), 7vw, var(--space-9));
+  gap: var(--page-hero-gap);
 }
 
 .title {
-  max-inline-size: 15ch;
-  font-family: var(--font-family-heading);
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: -0.04em;
-  line-height: 1.02;
-  text-wrap: balance;
+  max-inline-size: var(--page-title-max-width);
 }
 
 .lead {
   max-inline-size: var(--content-width-reading);
-  color: var(--color-text-muted);
-  font-size: clamp(var(--font-size-lg), 2vw, var(--font-size-xl));
-  line-height: var(--line-height-relaxed);
 }
 
 .heroNote {
-  padding: clamp(var(--space-4), 4vw, var(--space-6));
+  padding: var(--page-aside-padding);
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
 }
 
 .section {
-  padding-block: clamp(var(--space-7), 8vw, var(--space-9));
+  padding-block: var(--page-section-padding-block);
 }
 
 .sectionIntroduction {
   max-inline-size: var(--content-width-reading);
-}
-
-.eyebrow {
-  color: var(--color-text);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .observationGrid {
@@ -75,8 +49,8 @@
 
 .observationCard {
   min-block-size: 100%;
-  padding: clamp(var(--space-5), 3vw, var(--space-6));
-  background: color-mix(in srgb, var(--color-surface) 92%, var(--color-interactive) 8%);
+  padding: var(--page-card-padding);
+  background: var(--surface-accent-subtle);
 }
 
 .sourceBadge {
@@ -88,7 +62,7 @@
 }
 
 .recommendationsSurface {
-  padding: clamp(var(--space-5), 5vw, var(--space-8));
+  padding: var(--page-surface-padding);
   border-block: 0.0625rem solid var(--color-border);
 }
 
@@ -119,11 +93,11 @@
 }
 
 .finalSection {
-  padding-block: clamp(var(--space-8), 10vw, calc(var(--space-9) * 1.5));
+  padding-block: var(--page-ending-padding-block);
 }
 
 .continueSurface {
-  padding: clamp(var(--space-6), 6vw, var(--space-9));
+  padding: var(--page-ending-surface-padding);
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
   text-align: center;
@@ -131,26 +105,6 @@
 
 .continueCopy {
   max-inline-size: var(--content-width-reading);
-}
-
-.primaryButton {
-  min-block-size: 3.25rem;
-  padding-inline: var(--space-6);
-  border-color: var(--color-interactive);
-  background: var(--color-interactive);
-  color: var(--color-on-interactive);
-  font-weight: var(--font-weight-semibold);
-}
-
-.primaryButton:hover:not(:disabled) {
-  border-color: var(--color-interactive);
-  box-shadow: var(--shadow-medium);
-}
-
-@media (max-width: 29.999rem) {
-  .primaryButton {
-    inline-size: 100%;
-  }
 }
 
 @media (min-width: 48rem) {

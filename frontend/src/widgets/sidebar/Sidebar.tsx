@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
+import { useI18n } from '@shared/i18n';
 import { Button, Typography } from '@shared/ui';
 
 import { navigationItems } from './navigation';
@@ -16,6 +17,7 @@ function isModifiedClick(event: React.MouseEvent<HTMLAnchorElement>) {
 
 export function Sidebar({ isDrawer, isOpen, onClose }: SidebarProps) {
   const { currentPath, navigate } = useRouter();
+  const { messages } = useI18n();
   const sidebarRef = useRef<HTMLElement>(null);
   const isVisible = !isDrawer || isOpen;
 
@@ -73,7 +75,7 @@ export function Sidebar({ isDrawer, isOpen, onClose }: SidebarProps) {
     <>
       {isDrawer && isOpen ? (
         <button
-          aria-label="Закрыть навигацию"
+          aria-label={messages.shell.header.closeNavigation}
           className={styles.backdrop}
           onClick={onClose}
           tabIndex={-1}
@@ -82,7 +84,7 @@ export function Sidebar({ isDrawer, isOpen, onClose }: SidebarProps) {
       ) : null}
 
       <aside
-        aria-label="Основная навигация"
+        aria-label={messages.shell.navigation.sectionsLabel}
         aria-modal={isDrawer ? true : undefined}
         className={styles.root}
         data-drawer={isDrawer || undefined}
@@ -94,16 +96,16 @@ export function Sidebar({ isDrawer, isOpen, onClose }: SidebarProps) {
       >
         <div className={styles.heading}>
           <Typography as="span" variant="heading-sm">
-            Навигация
+            {messages.shell.navigation.label}
           </Typography>
           {isDrawer ? (
-            <Button aria-label="Закрыть меню" onClick={onClose}>
-              Закрыть
+            <Button aria-label={messages.shell.navigation.closeLabel} onClick={onClose}>
+              {messages.shell.navigation.close}
             </Button>
           ) : null}
         </div>
 
-        <nav aria-label="Разделы приложения">
+        <nav aria-label={messages.shell.navigation.sectionsLabel}>
           <ul className={styles.list}>
             {navigationItems.map((item) => {
               const isCurrent =
@@ -128,7 +130,7 @@ export function Sidebar({ isDrawer, isOpen, onClose }: SidebarProps) {
                       }
                     }}
                   >
-                    {item.label}
+                    {messages.navigation[item.labelKey]}
                   </a>
                 </li>
               );

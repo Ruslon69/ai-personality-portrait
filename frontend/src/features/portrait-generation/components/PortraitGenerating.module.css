@@ -1,45 +1,29 @@
 .root {
   min-block-size: min(46rem, calc(100dvh - 8rem));
-  padding-block: clamp(var(--space-6), 8vw, var(--space-9));
+  padding-block: var(--page-hero-padding-block);
 }
 
 .content {
   display: grid;
-  inline-size: min(100%, 48rem);
+  inline-size: min(100%, var(--content-width-flow));
   margin-inline: auto;
-  gap: clamp(var(--space-5), 5vw, var(--space-7));
+  gap: var(--flow-content-gap);
 }
 
 .introduction {
   text-align: center;
 }
 
-.eyebrow {
-  color: var(--color-text);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .title {
-  max-inline-size: 18ch;
-  font-family: var(--font-family-heading);
-  font-size: clamp(var(--font-size-2xl), 5vw, var(--font-size-3xl));
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: -0.03em;
-  line-height: var(--line-height-tight);
-  text-wrap: balance;
+  max-inline-size: var(--flow-title-max-width);
 }
 
 .lead {
   max-inline-size: var(--content-width-reading);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-lg);
-  line-height: var(--line-height-relaxed);
 }
 
 .stageSurface {
-  padding: clamp(var(--space-5), 5vw, var(--space-7));
+  padding: var(--flow-surface-padding);
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
   background:

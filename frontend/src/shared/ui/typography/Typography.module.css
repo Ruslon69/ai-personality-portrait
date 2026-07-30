@@ -14,6 +14,49 @@
   line-height: var(--line-height-normal);
 }
 
+.root[data-variant='eyebrow'] {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  line-height: var(--line-height-normal);
+  text-transform: uppercase;
+}
+
+.root[data-variant='display'],
+.root[data-variant='flow-title'] {
+  font-family: var(--font-family-heading);
+  text-wrap: balance;
+}
+
+.root[data-variant='display'] {
+  font-size: var(--page-title-size);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--page-title-letter-spacing);
+  line-height: var(--page-title-line-height);
+}
+
+.root[data-variant='flow-title'] {
+  font-size: var(--flow-title-size);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.03em;
+  line-height: var(--line-height-tight);
+}
+
+.root[data-variant='lead'],
+.root[data-variant='flow-lead'] {
+  color: var(--color-text-muted);
+  line-height: var(--typography-lead-line-height, var(--line-height-relaxed));
+}
+
+.root[data-variant='lead'] {
+  font-size: var(--page-lead-size);
+}
+
+.root[data-variant='flow-lead'] {
+  font-size: var(--font-size-lg);
+}
+
 .root[data-variant='heading-sm'],
 .root[data-variant='heading-md'],
 .root[data-variant='heading-lg'] {

@@ -20,7 +20,9 @@ export function ErrorFallback() {
               Обновите страницу. Локальные данные текущего прохождения могут быть сброшены.
             </Typography>
           </Stack>
-          <Button onClick={() => window.location.reload()}>Обновить страницу</Button>
+          <Button onClick={() => window.location.reload()} prominence="primary" size="large">
+            Обновить страницу
+          </Button>
         </Stack>
       </Surface>
     </main>

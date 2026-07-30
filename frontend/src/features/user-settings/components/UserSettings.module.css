@@ -9,13 +9,6 @@
   gap: var(--space-2);
 }
 
-.confirmButton {
-  border-color: var(--color-feedback-error);
-  background: var(--color-feedback-error);
-  color: var(--color-background);
-  font-weight: var(--font-weight-semibold);
-}
-
 .visuallyHidden {
   position: absolute;
   overflow: hidden;

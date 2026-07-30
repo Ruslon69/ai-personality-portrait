@@ -1,7 +1,7 @@
 :root {
   /*
-   * Semantic color roles intentionally use platform colors.
-   * Brand values will be assigned only after the visual direction is approved.
+   * Product surfaces keep platform-aware defaults. Marketing roles are temporary
+   * semantic direction tokens and can be retuned without changing components.
    */
   --color-background: Canvas;
   --color-surface: Canvas;
@@ -20,4 +20,30 @@
   --color-feedback-error: CanvasText;
   --color-feedback-info: CanvasText;
   --color-overlay: color-mix(in srgb, CanvasText 48%, transparent);
+
+  --color-action-primary: light-dark(oklch(0.47 0.18 282), oklch(0.76 0.14 282));
+  --color-action-primary-hover: light-dark(oklch(0.42 0.19 282), oklch(0.81 0.13 282));
+  --color-on-action-primary: light-dark(oklch(0.99 0.004 285), oklch(0.15 0.025 282));
+  --color-action-secondary: light-dark(oklch(0.98 0.012 282), oklch(0.22 0.03 282));
+  --color-action-secondary-hover: light-dark(oklch(0.95 0.025 282), oklch(0.27 0.04 282));
+
+  --color-marketing-canvas: light-dark(oklch(0.985 0.008 278), oklch(0.135 0.022 278));
+  --color-marketing-surface: light-dark(oklch(0.995 0.005 278), oklch(0.18 0.027 278));
+  --color-marketing-surface-raised: light-dark(oklch(0.97 0.018 278), oklch(0.225 0.035 278));
+  --color-marketing-border: light-dark(oklch(0.84 0.035 278), oklch(0.38 0.045 278));
+  --color-marketing-border-strong: light-dark(oklch(0.67 0.07 278), oklch(0.56 0.075 278));
+  --color-marketing-accent: light-dark(oklch(0.53 0.17 282), oklch(0.74 0.145 282));
+  --color-marketing-accent-secondary: light-dark(oklch(0.58 0.12 210), oklch(0.75 0.11 210));
+  --color-marketing-accent-warm: light-dark(oklch(0.68 0.12 55), oklch(0.77 0.11 55));
+  --color-marketing-glow-primary: color-mix(
+    in srgb,
+    var(--color-marketing-accent) 24%,
+    transparent
+  );
+  --color-marketing-glow-secondary: color-mix(
+    in srgb,
+    var(--color-marketing-accent-secondary) 18%,
+    transparent
+  );
+  --color-marketing-grid: color-mix(in srgb, var(--color-marketing-border-strong) 22%, transparent);
 }

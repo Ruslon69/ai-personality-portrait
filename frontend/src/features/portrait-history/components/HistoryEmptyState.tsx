@@ -21,7 +21,7 @@ export function HistoryEmptyState({ onCreatePortrait }: HistoryEmptyStateProps) 
         <Typography className={styles.muted}>
           Создайте новый портрет, чтобы результат появился здесь.
         </Typography>
-        <Button className={styles.primaryButton} onClick={onCreatePortrait}>
+        <Button onClick={onCreatePortrait} prominence="primary" size="large">
           Создать портрет
         </Button>
       </Stack>

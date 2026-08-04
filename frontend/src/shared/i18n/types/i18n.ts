@@ -46,9 +46,12 @@ export type I18nMessages = {
   navigation: {
     compatibility: string;
     home: string;
+    myPath: string;
+    numerology: string;
     portrait: string;
     profile: string;
     settings: string;
+    tarot: string;
   };
   system: {
     compatibility: {

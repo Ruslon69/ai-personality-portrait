@@ -1,0 +1,486 @@
+.root {
+  overflow: clip;
+}
+.reveal {
+  padding-block: var(--page-hero-padding-block);
+}
+.revealSurface {
+  overflow: hidden;
+  padding: var(--page-hero-padding);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--page-hero-background);
+  animation: report-reveal var(--transition-duration-reveal) var(--transition-easing-reveal) both;
+}
+.revealGrid {
+  display: grid;
+  gap: var(--page-hero-gap);
+  align-items: center;
+}
+.heroPhrase {
+  max-inline-size: 30ch;
+  color: var(--color-interactive);
+  text-wrap: balance;
+}
+.keyTraits,
+.sourceRow {
+  display: flex;
+  min-inline-size: 0;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.keyTraits span {
+  padding: var(--space-2) var(--space-3);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+}
+.depthPanel {
+  min-inline-size: 0;
+  padding: var(--page-aside-padding);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+.section {
+  padding-block: var(--page-section-padding-block);
+  scroll-margin-block-start: var(--space-8);
+}
+.sectionHeading {
+  max-inline-size: var(--content-width-reading);
+  margin-block-end: var(--space-7);
+}
+.muted {
+  color: var(--color-text-muted);
+  overflow-wrap: break-word;
+}
+.map {
+  position: relative;
+  min-block-size: 31rem;
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--color-interactive) 10%, transparent),
+      transparent 37%
+    ),
+    var(--surface-accent-subtle);
+  overflow: hidden;
+}
+.mapCore {
+  position: absolute;
+  z-index: 2;
+  inset: 50% auto auto 50%;
+  display: grid;
+  inline-size: 8rem;
+  aspect-ratio: 1;
+  place-items: center;
+  translate: -50% -50%;
+  border: 0.0625rem solid color-mix(in srgb, var(--color-interactive) 55%, var(--color-border));
+  border-radius: 50%;
+  background: var(--color-surface);
+  box-shadow: 0 0 3rem color-mix(in srgb, var(--color-interactive) 15%, transparent);
+  font-weight: var(--font-weight-semibold);
+}
+.mapLines {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  pointer-events: none;
+}
+.mapLines path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-interactive) 30%, var(--color-border));
+  stroke-width: 1.25;
+  transition:
+    stroke var(--transition-duration-normal) var(--transition-easing-standard),
+    stroke-width var(--transition-duration-normal) var(--transition-easing-standard);
+}
+.map:has(.facet[data-position='1']:is(:hover, :focus-visible)) .mapLines path:nth-child(1),
+.map:has(.facet[data-position='2']:is(:hover, :focus-visible)) .mapLines path:nth-child(2),
+.map:has(.facet[data-position='3']:is(:hover, :focus-visible)) .mapLines path:nth-child(3),
+.map:has(.facet[data-position='4']:is(:hover, :focus-visible)) .mapLines path:nth-child(4),
+.map:has(.facet[data-position='5']:is(:hover, :focus-visible)) .mapLines path:nth-child(5),
+.map:has(.facet[data-position='6']:is(:hover, :focus-visible)) .mapLines path:nth-child(6) {
+  stroke: var(--color-interactive);
+  stroke-width: 2;
+}
+.facet {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  inline-size: min(14rem, 32%);
+  min-inline-size: 0;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color var(--transition-duration-normal),
+    background-color var(--transition-duration-normal);
+}
+.facet:hover,
+.facet:focus-visible {
+  border-color: var(--color-interactive);
+  background: var(--color-surface);
+  outline: 0.1875rem solid color-mix(in srgb, var(--color-interactive) 34%, transparent);
+  outline-offset: 0.125rem;
+}
+.facetLabel {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+.facetReveal {
+  display: -webkit-box;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.facet[data-position='1'] {
+  inset: 8% auto auto 7%;
+}
+.facet[data-position='2'] {
+  inset: 5% 8% auto auto;
+}
+.facet[data-position='3'] {
+  inset: 40% 3% auto auto;
+}
+.facet[data-position='4'] {
+  inset: auto 10% 6% auto;
+}
+.facet[data-position='5'] {
+  inset: auto auto 6% 12%;
+}
+.facet[data-position='6'] {
+  inset: 40% auto auto 3%;
+}
+.patternGrid,
+.secondaryPatterns,
+.narrativeGrid,
+.contrastGrid,
+.recommendations,
+.interpretations {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 23rem), 1fr));
+  gap: var(--space-4);
+}
+.patternGrid > *,
+.secondaryPatterns > *,
+.narrativeGrid > *,
+.contrastGrid > *,
+.recommendations > *,
+.interpretations > * {
+  min-inline-size: 0;
+}
+.patternGrid > [data-expanded='true'],
+.secondaryPatterns > [data-expanded='true'],
+.narrativeGrid > [data-expanded='true'] {
+  grid-column: 1/-1;
+}
+.patternGrid > article:first-child {
+  grid-column: 1/-1;
+}
+.morePatterns {
+  margin-block-start: var(--space-5);
+}
+.morePatterns > summary {
+  inline-size: fit-content;
+  cursor: pointer;
+  color: var(--color-interactive);
+  font-weight: var(--font-weight-semibold);
+}
+.secondaryPatterns {
+  margin-block-start: var(--space-4);
+}
+.contrastCard,
+.recommendation,
+.interpretationCard {
+  min-inline-size: 0;
+  padding: var(--page-card-padding);
+  overflow: hidden;
+  transition:
+    border-color var(--transition-duration-normal) var(--transition-easing-standard),
+    background-color var(--transition-duration-normal) var(--transition-easing-standard);
+}
+.contrastCard:hover,
+.recommendation:hover,
+.interpretationCard:hover {
+  border-color: color-mix(in srgb, var(--color-interactive) 42%, var(--color-border));
+}
+.contrastPair {
+  display: grid;
+  gap: var(--space-3);
+}
+.contrastToggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-end: var(--space-4);
+}
+.contrastPair > div {
+  transition:
+    opacity var(--motion-transform-duration),
+    transform var(--motion-transform-duration) var(--motion-easing-discover);
+}
+.contrastCard[data-view='usual'] [data-panel='when'],
+.contrastCard[data-view='when'] [data-panel='usual'] {
+  opacity: 0.58;
+  transform: scale(0.98);
+}
+.contrastPair > div {
+  padding: var(--space-4);
+  border-inline-start: 0.2rem solid var(--color-interactive);
+  background: var(--surface-accent-subtle);
+}
+.contrastPair span {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+.contrastPair p,
+.contrastMeaning p {
+  margin-block: var(--space-2) 0;
+  overflow-wrap: break-word;
+}
+.contrastMeaning {
+  display: grid;
+  gap: var(--space-2);
+  margin-block: var(--space-5);
+}
+.recommendation {
+  position: relative;
+}
+.recommendationHeader {
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-block-end: var(--space-3);
+}
+.recommendation::after {
+  position: absolute;
+  inset: auto var(--space-4) 0;
+  block-size: 0.125rem;
+  background: linear-gradient(90deg, var(--color-interactive), transparent);
+  content: '';
+  opacity: 0;
+  transform: scaleX(0.4);
+  transform-origin: left;
+  transition:
+    opacity var(--transition-duration-normal) var(--transition-easing-standard),
+    transform var(--transition-duration-slow) var(--transition-easing-reveal);
+}
+.recommendation:hover::after,
+.recommendation:focus-within::after {
+  opacity: 0.65;
+  transform: scaleX(1);
+}
+.recommendationIndex {
+  display: inline-grid;
+  min-inline-size: 2.5rem;
+  min-block-size: 2.5rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 0.0625rem solid color-mix(in srgb, var(--color-interactive) 30%, var(--color-border));
+  border-radius: var(--radius-full);
+  color: color-mix(in srgb, var(--color-interactive) 35%, transparent);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+.reactionGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.reactionGroup button {
+  flex: 1 1 auto;
+}
+.reactionStatus {
+  min-block-size: 1.5em;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+.miniPlan {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-inline-start: 0.2rem solid var(--color-interactive);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: color-mix(in srgb, var(--color-interactive) 8%, var(--color-surface));
+  animation: plan-complete var(--motion-complete-duration) var(--motion-easing-discover) both;
+}
+.miniPlan button {
+  justify-self: start;
+}
+.recommendation[data-reaction='want'] {
+  border-color: color-mix(in srgb, var(--color-interactive) 48%, var(--color-border));
+}
+.interpretationControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.interpretationCard {
+  position: relative;
+  border-color: color-mix(in srgb, var(--color-feedback-warning) 35%, var(--color-border));
+}
+.interpretationVisual {
+  position: absolute;
+  inset-block-start: var(--space-3);
+  inset-inline-end: var(--space-4);
+  color: color-mix(in srgb, var(--color-feedback-warning) 38%, transparent);
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1;
+  pointer-events: none;
+  transition:
+    opacity var(--transition-duration-normal) var(--transition-easing-standard),
+    transform var(--transition-duration-slow) var(--transition-easing-reveal);
+}
+.interpretationCard:hover .interpretationVisual,
+.interpretationCard:focus-within .interpretationVisual {
+  opacity: 0.8;
+  transform: translateY(var(--space-1));
+}
+.futurePreview {
+  margin-block-start: var(--space-4);
+  padding: var(--page-card-padding);
+  border: 0.0625rem dashed var(--color-border);
+  border-radius: var(--radius-lg);
+}
+.hiddenLayers {
+  margin-block-start: var(--space-5);
+  padding: var(--page-card-padding);
+  border: 0.0625rem dashed var(--color-border);
+  animation: restore-layer var(--motion-restore-duration, var(--motion-reveal-duration))
+    var(--motion-easing-discover) both;
+}
+.hiddenLayersHeader,
+.hiddenLayerList li {
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+.hiddenLayerList {
+  display: grid;
+  padding: 0;
+  margin: 0;
+  gap: var(--space-2);
+  list-style: none;
+}
+.hiddenLayerList li {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--surface-accent-subtle);
+}
+.final {
+  padding-block: var(--page-section-padding-block) var(--page-ending-padding-block);
+}
+.finalSurface {
+  padding: var(--page-hero-padding);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--page-hero-background);
+}
+.finalCopy {
+  max-inline-size: var(--content-width-reading);
+  text-align: center;
+}
+@keyframes report-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-3));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes plan-complete {
+  from {
+    opacity: 0;
+    transform: translateY(var(--motion-distance-sm));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes restore-layer {
+  from {
+    opacity: 0;
+    transform: translateY(var(--motion-distance-sm));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (min-width: 48rem) {
+  .revealGrid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(17rem, 0.8fr);
+  }
+  .contrastPair {
+    grid-template-columns: 1fr 1fr;
+  }
+  .narrativeGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 47.99rem) {
+  .map {
+    display: grid;
+    min-block-size: 0;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+  .mapCore {
+    position: static;
+    inline-size: auto;
+    min-block-size: 4rem;
+    aspect-ratio: auto;
+    translate: none;
+    border-radius: var(--radius-md);
+  }
+  .mapLines {
+    display: none;
+  }
+  .facet {
+    position: static;
+    inline-size: 100%;
+  }
+  .facetReveal {
+    -webkit-line-clamp: 3;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .revealSurface {
+    animation: none;
+  }
+  .recommendation::after,
+  .interpretationVisual {
+    transition: none;
+  }
+  .recommendation::after {
+    transform: none;
+  }
+  .miniPlan {
+    animation: none;
+  }
+  .hiddenLayers {
+    animation: none;
+  }
+  .facet,
+  .mapLines path {
+    transition: none;
+  }
+}

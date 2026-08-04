@@ -9,11 +9,31 @@
   background: var(--color-surface);
   cursor: pointer;
   gap: var(--space-3);
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr) auto;
   transition:
     border-color var(--transition-duration-fast) var(--transition-easing-standard),
     background-color var(--transition-duration-fast) var(--transition-easing-standard),
     box-shadow var(--transition-duration-fast) var(--transition-easing-standard);
+}
+
+.root[data-presentation='binary'] {
+  min-block-size: 5.5rem;
+  align-content: center;
+}
+
+.root[data-presentation='branch']::after {
+  color: var(--color-text-muted);
+  content: '→';
+  transition: transform var(--transition-duration-fast) var(--transition-easing-standard);
+}
+
+.root[data-presentation='branch']:hover::after,
+.root[data-presentation='branch']:has(.control:focus-visible)::after {
+  transform: translateX(var(--space-1));
+}
+
+.root[data-presentation='ranked'] {
+  border-inline-start-width: 0.1875rem;
 }
 
 .root:hover {
@@ -24,6 +44,17 @@
 .root:has(.control:checked) {
   border-color: var(--color-interactive);
   background: color-mix(in srgb, var(--color-interactive) 9%, var(--color-surface));
+}
+.root:has(.control:checked) .label {
+  animation: option-confirm var(--motion-confirm-duration) var(--motion-easing-discover) both;
+}
+.root:has(.control:checked)::before {
+  position: absolute;
+  inset: auto var(--space-4) var(--space-2);
+  block-size: 0.1rem;
+  background: linear-gradient(90deg, var(--color-interactive), transparent);
+  content: '';
+  animation: option-connect var(--motion-connect-duration) var(--motion-easing-connect) both;
 }
 
 .root:has(.control:focus-visible) {
@@ -60,4 +91,49 @@
 .label {
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-normal);
+}
+
+.order {
+  display: inline-grid;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  place-items: center;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-interactive) 13%, var(--color-surface));
+  color: var(--color-interactive);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}
+@keyframes option-confirm {
+  from {
+    opacity: 0.72;
+    transform: translateX(calc(-1 * var(--motion-distance-sm)));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes option-connect {
+  from {
+    opacity: 0;
+    transform: scaleX(0.1);
+    transform-origin: left;
+  }
+  to {
+    opacity: 0.65;
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .root[data-presentation='branch']::after {
+    transition: none;
+  }
+  .root:has(.control:checked) .label,
+  .root:has(.control:checked)::before {
+    animation: none;
+  }
 }

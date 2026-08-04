@@ -110,7 +110,9 @@ export function Sidebar({ isDrawer, isOpen, onClose }: SidebarProps) {
             {navigationItems.map((item) => {
               const isCurrent =
                 currentPath === item.path ||
-                (item.path !== ROUTES.home && currentPath.startsWith(`${item.path}/`));
+                (!('exact' in item) &&
+                  item.path !== ROUTES.home &&
+                  currentPath.startsWith(`${item.path}/`));
 
               return (
                 <li key={item.path}>

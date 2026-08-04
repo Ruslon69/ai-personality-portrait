@@ -23,6 +23,37 @@
   animation: question-enter var(--transition-duration-normal) var(--transition-easing-standard);
   box-shadow: var(--shadow-low);
 }
+.questionCard[data-confirming] {
+  border-color: color-mix(in srgb, var(--color-interactive) 48%, var(--color-border));
+}
+.questionCard[data-confirming]::after {
+  display: block;
+  block-size: 0.125rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--color-interactive), transparent);
+  content: '';
+  animation: answer-confirm var(--motion-confirm-duration) var(--motion-easing-connect) both;
+}
+
+.checkpoint {
+  display: flex;
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  border: 0.0625rem solid color-mix(in srgb, var(--color-interactive) 28%, var(--color-border));
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-interactive) 6%, var(--color-surface));
+  gap: var(--space-3);
+  animation: checkpoint-enter var(--transition-duration-normal) var(--transition-easing-standard);
+}
+
+.checkpointMark {
+  inline-size: 0.65rem;
+  block-size: 0.65rem;
+  flex: 0 0 auto;
+  border-radius: var(--radius-full);
+  background: var(--color-interactive);
+  box-shadow: 0 0 0 var(--space-2) color-mix(in srgb, var(--color-interactive) 12%, transparent);
+}
 
 .questionTitle {
   max-inline-size: 22ch;
@@ -82,6 +113,29 @@
   }
 }
 
+@keyframes checkpoint-enter {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--space-2)));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes answer-confirm {
+  from {
+    opacity: 0.2;
+    transform: scaleX(0.25);
+    transform-origin: left;
+  }
+  to {
+    opacity: 0.8;
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
 @media (max-width: 47.999rem) {
   .actions {
     align-items: stretch;
@@ -101,7 +155,17 @@
 }
 
 @media (min-width: 48rem) {
-  .optionGroup {
+  .optionGroup[data-presentation='cards'],
+  .optionGroup[data-presentation='binary'],
+  .optionGroup[data-presentation='multiple'] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .questionCard,
+  .checkpoint,
+  .questionCard[data-confirming]::after {
+    animation: none;
   }
 }

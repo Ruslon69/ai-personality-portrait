@@ -1,0 +1,40 @@
+export type {
+  DraftBirthDateSelection,
+  DraftInterpretationLayers,
+  DraftPortrait,
+  DraftQuestionnaireResponses,
+  DraftQuestionResponse,
+  DraftVoiceSelection,
+} from './draft-portrait';
+export { createEmptyDraftPortrait } from './draft-portrait';
+export type {
+  ConfidenceExplanation,
+  ContextualContrast,
+  Evidence,
+  EvidenceGroup,
+  Insight,
+  InsightConfidence,
+  InsightFormat,
+  InsightRecommendation,
+  PersonalityNarrativeSection,
+  PersonalityFacet,
+  PersonalityFacetId,
+  PersonalityProfile,
+  PersonalityProfileAccess,
+  PersonalityProfileSource,
+  PersonalityRecommendation,
+  PersonalitySourceId,
+  PortraitMarkMotif,
+  PortraitMarkShape,
+  PortraitVisualIdentity,
+  ProfileCompletionItem,
+  ProfileCompletionStatus,
+  ProfileLocale,
+  ProfileSourceStatus,
+  SourceReference,
+} from './personality-profile';
+export {
+  getSourceReference,
+  getSourceReferences,
+  personalitySourceReferences,
+} from './source-references';

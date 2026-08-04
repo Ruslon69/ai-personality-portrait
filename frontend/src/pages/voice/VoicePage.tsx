@@ -1,4 +1,4 @@
-import { VoiceRecording } from '@features/voice-recording';
+import { DraftPortraitVoiceRecording } from '@features/voice-recording';
 import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
 
@@ -6,9 +6,9 @@ export function VoicePage() {
   const { navigate } = useRouter();
 
   return (
-    <VoiceRecording
+    <DraftPortraitVoiceRecording
       onBack={() => navigate(ROUTES.portraitQuestions)}
-      onContinue={() => navigate(ROUTES.portraitBirthDate)}
+      onComplete={() => navigate(ROUTES.portraitBirthDate)}
     />
   );
 }

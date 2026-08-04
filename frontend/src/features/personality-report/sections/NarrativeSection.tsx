@@ -1,13 +1,13 @@
 import { Container, Stack, Surface, Typography } from '@shared/ui';
+import type { PersonalityNarrativeSection } from '@entities/personality-profile';
 
-import { ExpandableReportCard } from '../components/ExpandableReportCard';
-import type { ReportNarrativeSection } from '../types';
+import { ExplainCard } from '../components/ExplainCard';
 import styles from './ReportSections.module.css';
 
 type NarrativeSectionProps = {
   isExpanded: (id: string) => boolean;
   onToggle: (id: string) => void;
-  section: ReportNarrativeSection;
+  section: PersonalityNarrativeSection;
 };
 
 export function NarrativeSection({ isExpanded, onToggle, section }: NarrativeSectionProps) {
@@ -29,12 +29,13 @@ export function NarrativeSection({ isExpanded, onToggle, section }: NarrativeSec
             </Stack>
 
             <div className={styles.twoColumnGrid}>
-              {section.items.map((item) => (
-                <ExpandableReportCard
+              {section.items.map((item, index) => (
+                <ExplainCard
                   expanded={isExpanded(item.id)}
-                  item={item}
+                  insight={item}
                   key={item.id}
                   onToggle={onToggle}
+                  order={index}
                 />
               ))}
             </div>

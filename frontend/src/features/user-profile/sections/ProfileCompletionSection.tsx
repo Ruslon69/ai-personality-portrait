@@ -1,7 +1,7 @@
 import { Badge, Card, Container, Progress, Stack, Typography } from '@shared/ui';
+import type { ProfileCompletionItem } from '@entities/personality-profile';
 
 import { useProfileCompletion } from '../hooks';
-import type { ProfileCompletionItem } from '../types';
 import { getCompletionStatusLabel } from '../utils';
 import styles from './UserProfileSections.module.css';
 

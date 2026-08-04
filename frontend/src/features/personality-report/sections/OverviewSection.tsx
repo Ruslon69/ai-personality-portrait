@@ -1,12 +1,12 @@
 import { Container, Stack, Typography } from '@shared/ui';
+import type { Insight } from '@entities/personality-profile';
 
-import { ExpandableReportCard } from '../components/ExpandableReportCard';
-import type { ReportCardItem } from '../types';
+import { ExplainCard } from '../components/ExplainCard';
 import styles from './ReportSections.module.css';
 
 type OverviewSectionProps = {
   expanded: boolean;
-  item: ReportCardItem;
+  item: Insight;
   onToggle: (id: string) => void;
 };
 
@@ -23,10 +23,10 @@ export function OverviewSection({ expanded, item, onToggle }: OverviewSectionPro
               Главная линия результата
             </Typography>
           </Stack>
-          <ExpandableReportCard
+          <ExplainCard
             badge="Общая картина"
             expanded={expanded}
-            item={item}
+            insight={item}
             onToggle={onToggle}
             variant="featured"
           />

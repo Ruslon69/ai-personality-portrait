@@ -1,3 +1,7 @@
+import { useEffect, useRef, useState } from 'react';
+
+import type { DraftVoiceSelection } from '@entities/personality-profile';
+import { useI18n } from '@shared/i18n';
 import { Badge, Button, Card, Container, Spinner, Stack, Surface, Typography } from '@shared/ui';
 
 import { preparedReadingText } from '../config';
@@ -5,10 +9,11 @@ import { useVoiceRecording } from '../hooks';
 import type { VoiceRecordingStatus } from '../types';
 import { formatRecordingDuration } from '../utils';
 import styles from './VoiceRecording.module.css';
+import { VoiceLayerVisual } from './VoiceLayerVisual';
 
 type VoiceRecordingProps = {
   onBack: () => void;
-  onContinue: () => void;
+  onComplete: (result: DraftVoiceSelection) => void;
 };
 
 const statusLabels: Record<VoiceRecordingStatus, string> = {
@@ -57,7 +62,16 @@ function getSignalDescription(audioLevel: number | null, status: VoiceRecordingS
   return 'Уровень сигнала достаточный';
 }
 
-export function VoiceRecording({ onBack, onContinue }: VoiceRecordingProps) {
+export function VoiceRecording({ onBack, onComplete }: VoiceRecordingProps) {
+  const { locale } = useI18n();
+  const [skipMessage, setSkipMessage] = useState('');
+  const skipTimerRef = useRef<number | null>(null);
+  useEffect(
+    () => () => {
+      if (skipTimerRef.current !== null) window.clearTimeout(skipTimerRef.current);
+    },
+    [],
+  );
   const {
     audioLevel,
     elapsedMs,
@@ -80,9 +94,29 @@ export function VoiceRecording({ onBack, onContinue }: VoiceRecordingProps) {
   };
 
   const useRecording = () => {
-    if (status === 'valid') {
-      leaveStep(onContinue);
+    if (status === 'valid' && recording) {
+      const result: DraftVoiceSelection = {
+        averageSignalLevel: recording.averageSignalLevel,
+        durationMs: recording.durationMs,
+        mimeType: recording.mimeType,
+        status: 'included',
+      };
+      leaveStep(() => onComplete(result));
     }
+  };
+
+  const skipRecording = () => {
+    const message =
+      locale === 'en'
+        ? 'Continuing without the voice layer'
+        : locale === 'uk'
+          ? 'Продовжуємо без голосового шару'
+          : 'Продолжаем без голосового слоя';
+    setSkipMessage(message);
+    skipTimerRef.current = window.setTimeout(
+      () => leaveStep(() => onComplete({ status: 'skipped' })),
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 380,
+    );
   };
 
   const statusDescription =
@@ -144,7 +178,7 @@ export function VoiceRecording({ onBack, onContinue }: VoiceRecordingProps) {
         Проверить микрофон снова
       </Button>
     ) : status === 'unsupported' ? (
-      <Button onClick={() => leaveStep(onContinue)} prominence="primary" size="large">
+      <Button onClick={skipRecording} prominence="primary" size="large">
         Продолжить без голоса
       </Button>
     ) : (
@@ -217,6 +251,7 @@ export function VoiceRecording({ onBack, onContinue }: VoiceRecordingProps) {
 
             <Card aria-labelledby="recording-panel-title" className={styles.recordingCard}>
               <Stack gap="lg">
+                <VoiceLayerVisual level={audioLevel} status={status} />
                 <Stack gap="sm">
                   <Stack align="center" direction="row" justify="between">
                     <Typography as="h2" id="recording-panel-title" variant="heading-lg">
@@ -318,11 +353,14 @@ export function VoiceRecording({ onBack, onContinue }: VoiceRecordingProps) {
                       <Button onClick={recordAgain}>Записать заново</Button>
                     ) : null}
                     {status !== 'unsupported' ? (
-                      <Button onClick={() => leaveStep(onContinue)}>Пропустить голос</Button>
+                      <Button onClick={skipRecording}>Пропустить голос</Button>
                     ) : null}
                     {primaryAction}
                   </div>
                 </div>
+                <span aria-live="polite" className={styles.skipStatus}>
+                  {skipMessage}
+                </span>
               </Stack>
             </Card>
           </div>

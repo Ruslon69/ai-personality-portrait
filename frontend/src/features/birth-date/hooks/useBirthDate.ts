@@ -5,24 +5,18 @@ import { toDateInputValue } from '../utils';
 import { DEFAULT_MINIMUM_AGE_YEARS, validateBirthDate } from '../validation';
 
 type UseBirthDateOptions = {
-  initialValue?: BirthDateFormValue;
   minimumAgeYears?: number;
-  onChange?: (value: BirthDateFormValue) => void;
+  onChange: (value: BirthDateFormValue) => void;
   onSubmit: (value: BirthDateSubmission) => void;
-};
-
-const emptyValue: BirthDateFormValue = {
-  birthDate: '',
-  skipBirthDate: false,
+  value: BirthDateFormValue;
 };
 
 export function useBirthDate({
-  initialValue = emptyValue,
   minimumAgeYears = DEFAULT_MINIMUM_AGE_YEARS,
   onChange,
   onSubmit,
+  value,
 }: UseBirthDateOptions) {
-  const [value, setValue] = useState(initialValue);
   const [isTouched, setTouched] = useState(false);
   const [hasSubmitted, setSubmitted] = useState(false);
   const today = useMemo(() => new Date(), []);
@@ -30,8 +24,7 @@ export function useBirthDate({
   const visibleError = isTouched || hasSubmitted ? validation.error : null;
 
   const updateValue = (nextValue: BirthDateFormValue) => {
-    setValue(nextValue);
-    onChange?.(nextValue);
+    onChange(nextValue);
   };
 
   const setBirthDate = (birthDate: string) => {

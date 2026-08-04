@@ -1,17 +1,19 @@
 import { useEffect, useId } from 'react';
 
 import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
+import { useI18n } from '@shared/i18n';
 import { Badge, Button, Container, Input, Stack, Surface, Typography } from '@shared/ui';
 
 import { useBirthDate } from '../hooks';
 import type { BirthDateFormValue, BirthDateSubmission, BirthDateValidationError } from '../types';
 import styles from './BirthDateStep.module.css';
+import { BirthDateLens } from './BirthDateLens';
 
 type BirthDateStepProps = {
-  initialValue?: BirthDateFormValue;
   onBack: () => void;
-  onChange?: (value: BirthDateFormValue) => void;
+  onChange: (value: BirthDateFormValue) => void;
   onComplete: (value: BirthDateSubmission) => void;
+  value: BirthDateFormValue;
 };
 
 const errorMessages: Record<BirthDateValidationError, string> = {
@@ -21,7 +23,13 @@ const errorMessages: Record<BirthDateValidationError, string> = {
   required: 'Выберите дату рождения или отметьте отказ от её использования.',
 };
 
-export function BirthDateStep({ initialValue, onBack, onChange, onComplete }: BirthDateStepProps) {
+export function BirthDateStep({
+  onBack,
+  onChange,
+  onComplete,
+  value: formValue,
+}: BirthDateStepProps) {
+  const { locale } = useI18n();
   const {
     canSubmit,
     markTouched,
@@ -33,9 +41,9 @@ export function BirthDateStep({ initialValue, onBack, onChange, onComplete }: Bi
     value,
     visibleError,
   } = useBirthDate({
-    initialValue,
     onChange,
     onSubmit: onComplete,
+    value: formValue,
   });
   const instanceId = useId();
   const fieldId = `${instanceId}-birth-date`;
@@ -83,6 +91,11 @@ export function BirthDateStep({ initialValue, onBack, onChange, onComplete }: Bi
           <form className={styles.form} noValidate onSubmit={handleSubmit}>
             <Surface className={styles.formSurface} elevation="low">
               <Stack gap="lg">
+                <BirthDateLens
+                  birthDate={value.birthDate}
+                  locale={locale}
+                  skipped={value.skipBirthDate}
+                />
                 <Stack gap="sm">
                   <Typography as="h2" variant="heading-md">
                     Выберите дату

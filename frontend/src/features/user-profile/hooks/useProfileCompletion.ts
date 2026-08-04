@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import type { ProfileCompletionItem } from '../types';
+import type { ProfileCompletionItem } from '@entities/personality-profile';
 
 export function useProfileCompletion(items: readonly ProfileCompletionItem[]) {
   return useMemo(() => {

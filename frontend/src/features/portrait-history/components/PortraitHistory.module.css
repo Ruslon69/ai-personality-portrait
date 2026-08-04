@@ -50,6 +50,9 @@
   max-inline-size: var(--content-width-reading);
   color: var(--color-text-muted);
 }
+.historyMark {
+  margin-block-end: var(--space-2);
+}
 
 .moduleList,
 .cardActions,

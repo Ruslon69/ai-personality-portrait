@@ -16,7 +16,13 @@ export function Layout({ children }: LayoutProps) {
   const isDesktop = useMediaQuery('(min-width: 64rem)');
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const isMarketing = currentPath === ROUTES.home || currentPath === ROUTES.portrait;
+  const isMarketing =
+    currentPath === ROUTES.home ||
+    currentPath === ROUTES.portrait ||
+    currentPath === ROUTES.tarot ||
+    currentPath === ROUTES.tarotReading ||
+    currentPath === ROUTES.numerology ||
+    currentPath === ROUTES.numerologyProfile;
 
   const closeSidebar = useCallback(() => {
     setSidebarOpen(false);

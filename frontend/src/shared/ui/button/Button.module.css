@@ -1,6 +1,8 @@
 .root {
   position: relative;
   display: inline-flex;
+  min-inline-size: 0;
+  max-inline-size: 100%;
   min-block-size: var(--control-min-height);
   align-items: center;
   justify-content: center;
@@ -15,6 +17,8 @@
   line-height: var(--line-height-tight);
   text-align: center;
   text-decoration: none;
+  overflow-wrap: break-word;
+  white-space: normal;
   transform: scale(1);
   transition:
     background-color var(--transition-duration-fast) var(--transition-easing-standard),

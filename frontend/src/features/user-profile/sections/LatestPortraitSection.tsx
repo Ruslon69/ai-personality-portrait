@@ -1,15 +1,17 @@
 import { Badge, Button, Card, Container, Stack, Typography } from '@shared/ui';
+import { PortraitMark, type PersonalityProfile } from '@entities/personality-profile';
 
-import type { ProfileLatestPortrait } from '../types';
 import { formatProfileDate } from '../utils';
 import styles from './UserProfileSections.module.css';
 
 type LatestPortraitSectionProps = {
   onOpenPortrait: () => void;
-  portrait: ProfileLatestPortrait;
+  profile: PersonalityProfile;
 };
 
-export function LatestPortraitSection({ onOpenPortrait, portrait }: LatestPortraitSectionProps) {
+export function LatestPortraitSection({ onOpenPortrait, profile }: LatestPortraitSectionProps) {
+  const includedSources = profile.sourceDetails.filter((source) => source.status !== 'omitted');
+
   return (
     <section aria-labelledby="latest-portrait-title" className={styles.section}>
       <Container size="wide">
@@ -25,16 +27,21 @@ export function LatestPortraitSection({ onOpenPortrait, portrait }: LatestPortra
 
           <Card className={styles.latestCard}>
             <div className={styles.latestGrid}>
+              <PortraitMark
+                className={styles.latestMark}
+                identity={profile.visualIdentity}
+                size="sm"
+              />
               <Stack gap="md">
                 <Typography className={styles.muted} variant="caption">
                   Создан{' '}
-                  <time dateTime={portrait.createdAt}>{formatProfileDate(portrait.createdAt)}</time>
+                  <time dateTime={profile.createdAt}>{formatProfileDate(profile.createdAt)}</time>
                 </Typography>
                 <Typography as="h3" className={styles.keyPhrase} variant="heading-md">
-                  {portrait.keyPhrase}
+                  {profile.revealHeadline}
                 </Typography>
                 <div aria-label="Использованные источники" className={styles.sourceList}>
-                  {portrait.sources.map((source) => (
+                  {includedSources.map((source) => (
                     <Badge key={source.id} tone="info">
                       {source.label}
                     </Badge>

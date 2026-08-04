@@ -1,14 +1,9 @@
-import { portraitQuestions, Questionnaire } from '@features/questionnaire';
+import { DraftPortraitQuestionnaire } from '@features/questionnaire';
 import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
 
 export function QuestionsPage() {
   const { navigate } = useRouter();
 
-  return (
-    <Questionnaire
-      onComplete={() => navigate(ROUTES.portraitVoice)}
-      questions={portraitQuestions}
-    />
-  );
+  return <DraftPortraitQuestionnaire onComplete={() => navigate(ROUTES.portraitBirthDate)} />;
 }

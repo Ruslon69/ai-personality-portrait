@@ -1,0 +1,105 @@
+.root {
+  position: relative;
+  min-block-size: 13rem;
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--color-interactive) 12%, transparent),
+      transparent 36%
+    ),
+    var(--surface-accent-subtle);
+  overflow: hidden;
+}
+.lines {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-interactive) 46%, var(--color-border));
+  stroke-width: 0.65;
+  pointer-events: none;
+}
+.lines path {
+  stroke-dasharray: 100;
+  animation: interest-line var(--motion-connect-duration) var(--motion-easing-connect) both;
+}
+.core {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  inline-size: 2.6rem;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border: 0.1rem solid var(--color-interactive);
+  border-radius: 50%;
+  background: var(--color-surface);
+  transition: transform var(--motion-assemble-duration) var(--motion-easing-discover);
+}
+.root[data-pattern] .core {
+  transform: rotate(45deg);
+  border-radius: var(--radius-md);
+}
+.root[data-complete] .core {
+  box-shadow: 0 0 0 0.75rem color-mix(in srgb, var(--color-interactive) 10%, transparent);
+}
+.node {
+  position: absolute;
+  display: grid;
+  max-inline-size: 7.5rem;
+  translate: -50% -50%;
+  justify-items: center;
+  gap: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  text-align: center;
+}
+.node i {
+  inline-size: 0.7rem;
+  aspect-ratio: 1;
+  border: 0.1rem solid var(--color-interactive);
+  border-radius: 50%;
+  background: var(--color-surface);
+  animation: interest-node var(--motion-assemble-duration) var(--motion-easing-discover) both;
+}
+@keyframes interest-line {
+  from {
+    opacity: 0;
+    stroke-dashoffset: 100;
+  }
+  to {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes interest-node {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@media (max-width: 30rem) {
+  .root {
+    min-block-size: 10rem;
+  }
+  .node {
+    max-inline-size: 5rem;
+  }
+  .node:nth-of-type(n + 6) {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lines path,
+  .node i {
+    animation: none;
+  }
+  .root[data-pattern] .core {
+    transform: none;
+  }
+}

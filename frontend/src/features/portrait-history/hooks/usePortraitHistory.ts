@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 
-import type { PortraitHistoryItem } from '../types';
+import type { PersonalityProfile } from '@entities/personality-profile';
 import { removePortraitById } from '../utils';
 
-export function usePortraitHistory(initialItems: readonly PortraitHistoryItem[]) {
-  const [items, setItems] = useState<readonly PortraitHistoryItem[]>(() => [...initialItems]);
+export function usePortraitHistory(initialItems: readonly PersonalityProfile[]) {
+  const [items, setItems] = useState<readonly PersonalityProfile[]>(() => [...initialItems]);
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [announcement, setAnnouncement] = useState('');
   const [lastRemovedId, setLastRemovedId] = useState<string | null>(null);

@@ -13,6 +13,9 @@
 .introduction {
   text-align: center;
 }
+.introduction > :first-child {
+  inline-size: 100%;
+}
 
 .title {
   max-inline-size: var(--flow-title-max-width);

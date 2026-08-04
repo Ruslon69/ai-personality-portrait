@@ -1,4 +1,4 @@
-import type { ProfileCompletionStatus } from '../types';
+import type { ProfileCompletionStatus } from '@entities/personality-profile';
 
 const profileDateFormatter = new Intl.DateTimeFormat('ru-RU', {
   day: 'numeric',

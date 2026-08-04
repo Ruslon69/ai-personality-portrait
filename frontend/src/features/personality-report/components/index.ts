@@ -1,2 +1,11 @@
+export { ConfidenceIndicator } from './ConfidenceIndicator';
+export { EvidenceTimeline } from './EvidenceTimeline';
+export { ExplainCard } from './ExplainCard';
 export { ExpandableReportCard } from './ExpandableReportCard';
+export { ExplanationSection } from './ExplanationSection';
 export { PersonalityReport } from './PersonalityReport';
+export { PortraitSummary } from './PortraitSummary';
+export { ReportSectionNav } from './ReportSectionNav';
+export { ResultReveal } from './ResultReveal';
+export { SourceChip } from './SourceChip';
+export { TransparencyPanel } from './TransparencyPanel';

@@ -1,9 +1,10 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 
 import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
 import { useI18n } from '@shared/i18n';
 import { ButtonLink, Container, Stack, Surface, Typography } from '@shared/ui';
+import { draftPortraitActions } from '@store';
 
 import styles from './PortraitPage.module.css';
 
@@ -15,6 +16,7 @@ export function PortraitPage() {
   const { navigate } = useRouter();
   const { messages } = useI18n();
   const content = messages.start;
+  const [activeJourneyStep, setActiveJourneyStep] = useState<number | null>(null);
 
   const startQuestions = (event: React.MouseEvent<HTMLAnchorElement>) => {
     if (isModifiedClick(event)) {
@@ -22,6 +24,7 @@ export function PortraitPage() {
     }
 
     event.preventDefault();
+    draftPortraitActions.resetDraft();
     navigate(ROUTES.portraitQuestions);
   };
 
@@ -79,15 +82,28 @@ export function PortraitPage() {
                   .map((item) => item.title)
                   .join('. ')}`}
                 className={styles.journeyVisual}
+                data-active-step={activeJourneyStep === null ? undefined : activeJourneyStep + 1}
+                id="start-journey-visual"
                 role="img"
               >
                 <div aria-hidden="true" className={styles.journeyOrbit} />
+                <svg
+                  aria-hidden="true"
+                  className={styles.journeyConnections}
+                  focusable="false"
+                  viewBox="0 0 600 600"
+                >
+                  <path d="M112 112Q220 190 270 260" pathLength="1" />
+                  <path d="M490 112Q390 185 330 260" pathLength="1" />
+                  <path d="M118 492Q210 410 270 340" pathLength="1" />
+                  <path d="M330 340Q405 415 488 488" pathLength="1" />
+                </svg>
                 <div aria-hidden="true" className={styles.journeyCore}>
                   <span>AI</span>
                 </div>
                 <ol aria-hidden="true" className={styles.journeyTrack}>
                   {content.journey.items.map((item, index) => (
-                    <li key={item.title}>
+                    <li data-active={activeJourneyStep === index || undefined} key={item.title}>
                       <span>{String(index + 1).padStart(2, '0')}</span>
                       <strong>{item.title}</strong>
                     </li>
@@ -116,10 +132,31 @@ export function PortraitPage() {
 
             <ol className={styles.journeyList}>
               {content.journey.items.map((step, index) => (
-                <li className={styles.journeyStep} key={step.title}>
-                  <div aria-hidden="true" className={styles.stepIndex}>
+                <li
+                  className={styles.journeyStep}
+                  data-step={index + 1}
+                  key={step.title}
+                  onMouseEnter={() => setActiveJourneyStep(index)}
+                  onMouseLeave={() => setActiveJourneyStep(null)}
+                >
+                  <button
+                    aria-controls="start-journey-visual"
+                    aria-label={step.title}
+                    aria-pressed={activeJourneyStep === index}
+                    className={styles.stepIndex}
+                    onClick={() =>
+                      setActiveJourneyStep((current) => (current === index ? null : index))
+                    }
+                    type="button"
+                  >
                     {String(index + 1).padStart(2, '0')}
-                  </div>
+                    <span aria-hidden="true" className={styles.stepMotif}>
+                      <i />
+                      <i />
+                      <i />
+                      <b />
+                    </span>
+                  </button>
                   <Stack gap="sm">
                     <Typography as="h3" variant="heading-sm">
                       {step.title}

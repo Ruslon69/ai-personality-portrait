@@ -1,11 +1,11 @@
 import { Badge, Button, Card, Stack, Typography } from '@shared/ui';
+import { PortraitMark, type PersonalityProfile } from '@entities/personality-profile';
 
-import type { PortraitHistoryItem } from '../types';
 import { formatHistoryDate, getHistoryAccessLabel } from '../utils';
 import styles from './PortraitHistory.module.css';
 
 type HistoryItemCardProps = {
-  item: PortraitHistoryItem;
+  item: PersonalityProfile;
   onDelete: (portraitId: string) => void;
   onOpen: (portraitId: string) => void;
 };
@@ -26,17 +26,20 @@ export function HistoryItemCard({ item, onDelete, onOpen }: HistoryItemCardProps
             </Badge>
           </Stack>
           <Stack gap="xs">
+            <PortraitMark className={styles.historyMark} identity={item.visualIdentity} size="sm" />
             <Typography as="h2" id={titleId} variant="heading-md">
               {item.title}
             </Typography>
-            <Typography className={styles.keyPhrase}>{item.keyPhrase}</Typography>
+            <Typography className={styles.keyPhrase}>{item.revealHeadline}</Typography>
           </Stack>
           <div aria-label="Использованные модули" className={styles.moduleList}>
-            {item.modules.map((module) => (
-              <Badge key={module} tone="info">
-                {module}
-              </Badge>
-            ))}
+            {item.sourceDetails
+              .filter((source) => source.status !== 'omitted')
+              .map((source) => (
+                <Badge key={source.id} tone="info">
+                  {source.label}
+                </Badge>
+              ))}
           </div>
         </Stack>
 

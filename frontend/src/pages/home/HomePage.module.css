@@ -2,2612 +2,356 @@
   overflow: clip;
   background: var(--color-marketing-canvas);
 }
-
 .hero {
   padding-block: clamp(var(--space-3), 3vw, var(--space-6)) var(--space-8);
 }
-
 .heroFrame {
   position: relative;
   overflow: hidden;
-  min-block-size: min(46rem, calc(100svh - 8rem));
+  min-block-size: min(45rem, calc(100svh - 8rem));
   padding: clamp(var(--space-5), 5vw, var(--space-9));
   border: 0.0625rem solid var(--color-marketing-border);
   border-radius: calc(var(--radius-lg) + var(--space-3));
   background:
-    radial-gradient(circle at 10% 12%, var(--color-marketing-glow-primary), transparent 34%),
-    radial-gradient(circle at 88% 70%, var(--color-marketing-glow-secondary), transparent 38%),
+    radial-gradient(circle at 82% 20%, var(--color-marketing-glow-primary), transparent 32%),
+    radial-gradient(circle at 12% 82%, var(--color-marketing-glow-secondary), transparent 35%),
     var(--color-marketing-surface);
-  isolation: isolate;
 }
-
-.heroFrame::before,
-.heroFrame::after {
-  position: absolute;
-  z-index: -1;
-  border: 0.0625rem solid var(--color-marketing-grid);
-  border-radius: var(--radius-full);
-  content: '';
-  pointer-events: none;
-}
-
-.heroFrame::before {
-  inline-size: min(48rem, 70vw);
-  block-size: min(48rem, 70vw);
-  inset-block-start: -58%;
-  inset-inline-end: -16%;
-}
-
-.heroFrame::after {
-  inline-size: 24rem;
-  block-size: 38rem;
-  inset-block-end: -68%;
-  inset-inline-start: 18%;
-  transform: rotate(58deg);
-}
-
 .heroGrid {
   display: grid;
   min-block-size: 100%;
   align-items: center;
-  gap: clamp(var(--space-7), 6vw, var(--space-9));
+  gap: var(--page-hero-gap);
 }
-
-.heroContent {
-  position: relative;
-  z-index: var(--z-index-raised);
-  max-inline-size: 49rem;
-  animation: marketing-reveal var(--transition-duration-reveal) var(--transition-easing-reveal) both;
-}
-
-.heroCopy {
-  max-inline-size: 47rem;
-}
-
-.heroEyebrow {
-  display: inline-flex;
-  align-items: center;
-  padding: var(--space-2) var(--space-3);
-  border: 0.0625rem solid
-    color-mix(in srgb, var(--color-marketing-accent) 34%, var(--color-marketing-border));
-  border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--color-marketing-surface) 74%, transparent);
-  gap: var(--space-2);
-  letter-spacing: 0.07em;
-}
-
-.eyebrowSignal {
-  inline-size: 0.5rem;
-  block-size: 0.5rem;
-  border: 0.125rem solid var(--color-marketing-accent);
-  border-radius: var(--radius-full);
-  box-shadow: 0 0 0 0.1875rem color-mix(in srgb, var(--color-marketing-accent) 12%, transparent);
-}
-
 .heroTitle {
-  --page-title-size: clamp(2.5rem, 5.9vw, 5.75rem);
-  --page-title-letter-spacing: -0.055em;
-  --page-title-line-height: 0.96;
-
-  max-inline-size: 14.5ch;
+  max-inline-size: 13ch;
   text-wrap: balance;
 }
-
-.titleLine {
-  display: inline;
+.lead {
+  max-inline-size: 56ch;
+  color: var(--color-text-muted);
 }
-
-.heroDescription {
-  --page-lead-size: clamp(1.125rem, 1.7vw, 1.375rem);
-  --typography-lead-line-height: 1.58;
-
-  max-inline-size: 42rem;
-  text-wrap: pretty;
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
 }
-
-.heroActions {
-  inline-size: 100%;
+.actions a {
+  white-space: normal;
 }
-
-.primaryCta {
-  min-inline-size: 13.5rem;
-}
-
-.ctaArrow {
-  display: inline-flex;
-  align-items: center;
-  font-size: var(--font-size-lg);
-  line-height: 1;
-  transition: transform var(--transition-duration-fast) var(--transition-easing-standard);
-}
-
-.primaryCta:hover .ctaArrow {
-  transform: translateX(0.1875rem);
-}
-
-.trustList {
+.trust {
   display: flex;
   padding: 0;
-  margin: 0;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-4);
   list-style: none;
 }
-
-.trustList li {
-  display: inline-flex;
+.trust li {
+  display: flex;
   align-items: center;
   color: var(--color-text-muted);
-  gap: var(--space-2);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
+  gap: var(--space-2);
 }
-
-.trustMarker {
-  inline-size: 0.375rem;
-  block-size: 0.375rem;
-  border-radius: var(--radius-full);
+.trust li:before {
+  inline-size: 0.4rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
   background: var(--color-marketing-accent-secondary);
+  content: '';
 }
-
-.livingPortrait {
-  --hero-connection-duration: 700ms;
-  --hero-connection-stagger: 160ms;
-  --hero-core-duration: 400ms;
-  --hero-core-delay: 1360ms;
-
+.heroVisual {
   position: relative;
-  overflow: hidden;
-  min-block-size: clamp(28rem, 43vw, 38rem);
+  min-block-size: 28rem;
   border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: calc(var(--radius-lg) + var(--space-4));
-  margin: 0;
+  border-radius: calc(var(--radius-lg) + var(--space-3));
   background:
     radial-gradient(
-      circle at 50% 48%,
-      color-mix(in srgb, var(--color-marketing-accent) 13%, transparent),
-      transparent 30%
+      circle at center,
+      color-mix(in srgb, var(--color-marketing-accent) 15%, transparent),
+      transparent 35%
     ),
-    color-mix(in srgb, var(--color-marketing-surface-raised) 68%, transparent);
-  box-shadow: var(--shadow-marketing-card);
-  isolation: isolate;
-  transition:
-    border-color var(--transition-duration-normal) var(--transition-easing-standard),
-    box-shadow var(--transition-duration-normal) var(--transition-easing-standard);
-  animation: visual-reveal var(--transition-duration-reveal) var(--transition-easing-reveal) both;
+    var(--color-marketing-surface-raised);
+  overflow: hidden;
 }
-
-.livingPortrait:hover {
-  border-color: var(--color-marketing-border-strong);
-  box-shadow:
-    var(--shadow-marketing-card),
-    0 0 4rem var(--color-marketing-glow-primary);
-}
-
-.portraitNetwork,
-.connectionNetwork {
+.heroVisual svg {
   position: absolute;
   inline-size: 100%;
   block-size: 100%;
   inset: 0;
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-marketing-accent) 45%, transparent);
+  stroke-dasharray: 5 8;
   pointer-events: none;
 }
-
-.portraitNetwork {
-  color: var(--color-marketing-accent);
-}
-
-.connectionNetwork {
-  z-index: 2;
-}
-
-.coordinateGrid {
-  fill: none;
-  opacity: 0.42;
-  stroke: var(--color-marketing-grid);
-  stroke-width: 1;
-}
-
-.orbitLines {
-  fill: none;
-  opacity: 0.74;
-  stroke: color-mix(in srgb, var(--color-marketing-accent) 44%, transparent);
-  stroke-width: 1.25;
-}
-
-.connectionLines {
-  fill: none;
-  stroke: color-mix(in srgb, var(--color-marketing-accent-secondary) 68%, transparent);
-  stroke-linecap: round;
-  stroke-width: 1.65;
-}
-
-.connectionLines path {
-  opacity: 0.32;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
-  filter: drop-shadow(
-    0 0 0.25rem color-mix(in srgb, var(--color-marketing-accent-secondary) 16%, transparent)
-  );
-}
-
-.digitalPrint {
-  fill: none;
-  opacity: 0.72;
-  stroke: color-mix(in srgb, var(--color-marketing-accent-warm) 72%, transparent);
-  stroke-linecap: round;
-  stroke-width: 2;
-  animation: network-draw var(--transition-duration-reveal) var(--transition-easing-reveal) both;
-}
-
-.portraitCore {
+.tarotStack,
+.numberOrbit,
+.portraitNode {
   position: absolute;
-  z-index: 3;
-  inset: 50% auto auto 50%;
-  display: flex;
-  inline-size: min(48%, 14.5rem);
+  display: grid;
+  place-items: center;
+}
+.tarotStack {
+  inset: 22% auto auto 12%;
+  inline-size: 9rem;
   aspect-ratio: 1;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-5);
-  border: 0.0625rem solid
-    color-mix(in srgb, var(--color-marketing-accent) 45%, var(--color-marketing-border));
-  border-radius: var(--radius-full);
-  background:
-    radial-gradient(
-      circle at 50% 40%,
-      color-mix(in srgb, var(--color-marketing-accent) 16%, transparent),
-      transparent 58%
-    ),
-    color-mix(in srgb, var(--color-marketing-surface) 91%, transparent);
-  box-shadow:
-    0 0 0 0.75rem color-mix(in srgb, var(--color-marketing-accent) 6%, transparent),
-    var(--shadow-marketing-card);
-  flex-direction: column;
-  gap: var(--space-2);
-  text-align: center;
-  backdrop-filter: blur(0.75rem);
-  transform: translate(-50%, -50%);
-  transition: box-shadow var(--transition-duration-normal) var(--transition-easing-standard);
 }
-
-.portraitCore::after {
+.tarotStack i {
   position: absolute;
-  z-index: 0;
-  border: 0.0625rem solid
-    color-mix(in srgb, var(--color-marketing-accent-secondary) 52%, transparent);
-  border-radius: var(--radius-full);
-  content: '';
-  inset: 13%;
-  opacity: 0.16;
-  pointer-events: none;
-  transition: opacity var(--transition-duration-normal) var(--transition-easing-standard);
-}
-
-.portraitCore > * {
-  position: relative;
-  z-index: 1;
-}
-
-.corePulse {
-  inline-size: 0.625rem;
-  block-size: 0.625rem;
-  border: 0.125rem solid var(--color-marketing-accent);
-  border-radius: var(--radius-full);
-  margin-block-end: var(--space-1);
-  box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--color-marketing-accent) 12%, transparent);
-  transition: box-shadow var(--transition-duration-normal) var(--transition-easing-standard);
-}
-
-.coreLabel,
-.coreStatus {
-  color: var(--color-text-muted);
-}
-
-.coreLabel {
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-
-.coreValue {
-  max-inline-size: 10ch;
-  text-wrap: balance;
-}
-
-.coreStatus {
-  max-inline-size: 18ch;
-}
-
-.heroNode {
-  position: absolute;
-  z-index: 4;
-  display: inline-flex;
-  max-inline-size: 10.5rem;
-  align-items: center;
-  padding: var(--space-2) var(--space-3);
-  border: 0.0625rem solid var(--color-marketing-border);
+  inline-size: 4.8rem;
+  aspect-ratio: 0.68;
+  border: 0.0625rem solid var(--color-marketing-accent-warm);
   border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--color-marketing-surface) 88%, transparent);
-  box-shadow: var(--shadow-low);
-  gap: var(--space-2);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  line-height: var(--line-height-tight);
-  backdrop-filter: blur(0.625rem);
-  transition:
-    background-color var(--transition-duration-fast) var(--transition-easing-standard),
-    border-color var(--transition-duration-fast) var(--transition-easing-standard),
-    box-shadow var(--transition-duration-fast) var(--transition-easing-standard);
-  animation: node-reveal var(--transition-duration-reveal) var(--transition-easing-reveal) both;
-}
-
-.nodePoint {
-  flex: none;
-  inline-size: 0.5rem;
-  block-size: 0.5rem;
-  border: 0.125rem solid var(--color-marketing-accent-secondary);
-  border-radius: var(--radius-full);
-  transition:
-    border-color var(--transition-duration-fast) var(--transition-easing-standard),
-    box-shadow var(--transition-duration-fast) var(--transition-easing-standard);
-}
-
-.heroNodeAnswers,
-.connectionAnswers {
-  --hero-connect-delay: 0ms;
-}
-
-.heroNodeAnswers {
-  inset-block-start: 4%;
-  inset-inline-start: 3%;
-}
-
-.heroNodeInterests,
-.connectionInterests {
-  --hero-connect-delay: calc(var(--hero-connection-stagger) * 1);
-}
-
-.heroNodeInterests {
-  inset-block-start: 12%;
-  inset-inline-end: 1%;
-  animation-delay: var(--motion-detail-reveal-delay);
-}
-
-.heroNodeZodiac,
-.connectionZodiac {
-  --hero-connect-delay: calc(var(--hero-connection-stagger) * 2);
-}
-
-.heroNodeZodiac {
-  inset-block-end: 14%;
-  inset-inline-end: 4%;
-  animation-delay: calc(var(--motion-detail-reveal-delay) * 2);
-}
-
-.heroNodeNumerology,
-.connectionNumerology {
-  --hero-connect-delay: calc(var(--hero-connection-stagger) * 3);
-}
-
-.heroNodeNumerology {
-  inset-block-end: 4%;
-  inset-inline-start: 11%;
-  animation-delay: calc(var(--motion-detail-reveal-delay) * 3);
-}
-
-.heroNodeVoice,
-.connectionVoice {
-  --hero-connect-delay: calc(var(--hero-connection-stagger) * 4);
-}
-
-.heroNodeVoice {
-  inset-block-start: 48%;
-  inset-inline-start: 5.5%;
-  animation-delay: calc(var(--motion-detail-reveal-delay) * 4);
-}
-
-.section,
-.processSection,
-.emotionSection,
-.privacySection {
-  padding-block: var(--page-section-padding-block);
-}
-
-.sectionHeading {
-  display: grid;
-  align-items: end;
-  gap: var(--space-5);
-}
-
-.sectionHeading h2 {
-  max-inline-size: 20ch;
-  text-wrap: balance;
-}
-
-.sectionLead {
-  max-inline-size: var(--content-width-reading);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-lg);
-  line-height: var(--line-height-relaxed);
-  text-wrap: pretty;
-}
-
-.bentoGrid {
-  display: grid;
-  gap: var(--space-4);
-}
-
-.bentoCard {
-  position: relative;
-  display: flex;
-  overflow: hidden;
-  min-block-size: 17rem;
-  padding: clamp(var(--space-5), 4vw, var(--space-7));
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: calc(var(--radius-lg) + var(--space-1));
   background: var(--color-marketing-surface);
-  isolation: isolate;
-  transition:
-    border-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    box-shadow var(--motion-card-return-duration) var(--motion-interaction-easing),
-    transform var(--motion-card-return-duration) var(--motion-interaction-easing);
+  transform-origin: 50% 120%;
+  transition: transform var(--motion-connect-duration) var(--motion-easing-connect);
 }
-
-.bentoCard:hover {
-  border-color: var(--color-marketing-border-strong);
-  box-shadow: var(--shadow-marketing-card);
-  transform: translateY(var(--motion-surface-lift-distance));
+.tarotStack i:first-child {
+  transform: rotate(-15deg);
 }
-
-.bentoCard1 {
-  min-block-size: 25rem;
-  background:
-    radial-gradient(circle at 82% 18%, var(--color-marketing-glow-primary), transparent 38%),
-    var(--color-marketing-surface);
+.tarotStack i:nth-child(3) {
+  transform: rotate(15deg);
 }
-
-.bentoCard3 {
-  background:
-    radial-gradient(circle at 92% 90%, var(--color-marketing-glow-secondary), transparent 42%),
-    var(--color-marketing-surface);
-}
-
-.bentoCard5 {
-  background: var(--color-marketing-surface-raised);
-}
-
-.bentoCopy {
-  position: relative;
-  z-index: 2;
-  max-inline-size: 32rem;
-  align-self: flex-end;
-}
-
-.bentoEyebrow,
-.layerCategory {
-  color: var(--color-marketing-accent);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.mutedText {
-  color: var(--color-text-muted);
-}
-
-.bentoMotif {
-  position: absolute;
+.tarotStack b {
   z-index: 1;
-  color: var(--color-marketing-accent);
-  inset-block-start: var(--space-5);
-  inset-inline-end: var(--space-5);
-  pointer-events: none;
 }
-
-.linkMotif {
-  inline-size: min(50%, 17rem);
-  block-size: 10rem;
+.heroVisual:hover .tarotStack i:first-child {
+  transform: rotate(-24deg);
 }
-
-.linkNode {
-  --link-node-x: 0rem;
-  --link-node-y: 0rem;
-
-  position: absolute;
-  inline-size: 1.25rem;
-  block-size: 1.25rem;
-  border: 0.125rem solid var(--color-marketing-accent);
-  border-radius: var(--radius-full);
-  background: var(--color-marketing-surface);
-  transition:
-    border-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    box-shadow var(--motion-card-return-duration) var(--motion-interaction-easing),
-    transform var(--motion-card-hover-duration) var(--motion-interaction-easing);
-}
-
-.linkNode:nth-child(1) {
-  --link-node-x: var(--motion-layer-shift-distance);
-  --link-node-y: calc(var(--motion-layer-shift-distance) * 0.5);
-
-  inset: 8% auto auto 4%;
-}
-
-.linkNode:nth-child(2) {
-  --link-node-x: calc(var(--motion-layer-shift-distance) * -1);
-  --link-node-y: var(--motion-layer-shift-distance);
-
-  inset: 42% 4% auto auto;
-}
-
-.linkNode:nth-child(3) {
-  --link-node-x: calc(var(--motion-layer-shift-distance) * 0.4);
-  --link-node-y: calc(var(--motion-layer-shift-distance) * -1);
-
-  inset: auto auto 4% 38%;
-}
-
-.linkCore {
-  position: absolute;
-  inline-size: 2.5rem;
-  aspect-ratio: 1;
-  border: 0.0625rem solid var(--color-marketing-accent-secondary);
-  border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--color-marketing-accent) 10%, transparent);
-  box-shadow: 0 0 0 0.375rem color-mix(in srgb, var(--color-marketing-accent) 6%, transparent);
-  inset: 40% auto auto 46%;
-  transition:
-    background-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    box-shadow var(--motion-card-hover-duration) var(--motion-interaction-easing);
-}
-
-.linkMotif i {
-  position: absolute;
-  block-size: 0.0625rem;
-  background: var(--color-marketing-accent);
-  opacity: 0.24;
-  scale: 0.46 1;
-  transform-origin: left center;
-  transition:
-    opacity var(--motion-card-return-duration) var(--motion-interaction-easing),
-    scale var(--motion-line-draw-duration) var(--motion-interaction-easing);
-}
-
-.linkMotif i:nth-of-type(1) {
-  inline-size: 48%;
-  inset: 25% auto auto 15%;
+.heroVisual:hover .tarotStack i:nth-child(3) {
   transform: rotate(24deg);
 }
-
-.linkMotif i:nth-of-type(2) {
-  inline-size: 39%;
-  inset: 52% 13% auto auto;
-  transform: rotate(-8deg);
-}
-
-.linkMotif i:nth-of-type(3) {
-  inline-size: 40%;
-  inset: 72% auto auto 38%;
-  transform: rotate(-56deg);
-}
-
-.bentoCard1:hover .linkNode {
-  border-color: var(--color-marketing-accent-secondary);
-  box-shadow: 0 0 0 0.3125rem
-    color-mix(in srgb, var(--color-marketing-accent) var(--motion-glow-opacity), transparent);
-  transform: translate(var(--link-node-x), var(--link-node-y));
-}
-
-.bentoCard1:hover .linkCore {
-  background: color-mix(in srgb, var(--color-marketing-accent) 17%, transparent);
-  box-shadow:
-    0 0 0 0.5rem color-mix(in srgb, var(--color-marketing-accent) 9%, transparent),
-    0 0 1.5rem
-      color-mix(
-        in srgb,
-        var(--color-marketing-accent-secondary) var(--motion-glow-opacity),
-        transparent
-      );
-}
-
-.bentoCard1:hover .linkMotif i {
-  opacity: 0.68;
-  scale: 1 1;
-}
-
-.layerMotif {
-  display: grid;
-  inline-size: 8rem;
-  gap: var(--space-2);
-}
-
-.layerMotif span {
-  --layer-compose-x: 0rem;
-  --layer-compose-y: 0rem;
-
-  block-size: 2.25rem;
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--color-marketing-accent) 9%, transparent);
-  transition:
-    border-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    transform var(--motion-card-return-duration) var(--motion-interaction-easing);
-}
-
-.layerMotif span:nth-child(1) {
-  --layer-compose-x: calc(var(--motion-layer-shift-distance) * -0.7);
-  --layer-compose-y: calc(var(--motion-layer-shift-distance) * -0.35);
-}
-
-.layerMotif span:nth-child(2) {
-  --layer-compose-x: calc(var(--motion-layer-shift-distance) * 0.35);
-
-  inline-size: 78%;
-  margin-inline-start: auto;
-}
-
-.layerMotif span:nth-child(3) {
-  --layer-compose-x: calc(var(--motion-layer-shift-distance) * 0.75);
-  --layer-compose-y: calc(var(--motion-layer-shift-distance) * 0.35);
-
-  inline-size: 58%;
-  margin-inline-start: auto;
-}
-
-.bentoCard2:hover .layerMotif span {
-  animation: layer-compose var(--motion-card-hover-duration) var(--motion-interaction-easing) both;
-}
-
-.bentoCard2:hover .layerMotif span:nth-child(2) {
-  animation-delay: var(--motion-detail-reveal-delay);
-}
-
-.bentoCard2:hover .layerMotif span:nth-child(3) {
-  border-color: var(--color-marketing-accent);
-  animation-delay: calc(var(--motion-detail-reveal-delay) * 2);
-}
-
-.orbitMotif {
-  inline-size: 8rem;
-  aspect-ratio: 1;
-}
-
-.orbitMotif span {
-  position: absolute;
-  border: 0.0625rem solid var(--color-marketing-accent-secondary);
-  border-radius: 50%;
-  inset: 8%;
-  transform: rotate(24deg) scaleY(0.62);
-  transition:
-    border-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    opacity var(--motion-card-return-duration) var(--motion-interaction-easing),
-    transform var(--motion-card-hover-duration) var(--motion-interaction-easing);
-}
-
-.orbitMotif span:nth-child(2) {
-  inset: 24%;
-  border-color: var(--color-marketing-accent);
-  transform: rotate(-18deg) scaleY(0.72);
-}
-
-.orbitMotif i {
-  position: absolute;
-  inline-size: 0.75rem;
-  block-size: 0.75rem;
-  border-radius: var(--radius-full);
-  background: var(--color-marketing-accent-warm);
-  inset: 46% auto auto 46%;
-  transition:
-    box-shadow var(--motion-card-return-duration) var(--motion-interaction-easing),
-    transform var(--motion-card-return-duration) var(--motion-interaction-easing);
-}
-
-.bentoCard3:hover .orbitMotif span {
-  border-color: var(--color-marketing-accent);
-  transform: rotate(30deg) scaleY(0.62);
-}
-
-.bentoCard3:hover .orbitMotif span:nth-child(2) {
-  border-color: var(--color-marketing-accent-secondary);
-  transform: rotate(-25deg) scaleY(0.72);
-  transition-delay: var(--motion-detail-reveal-delay);
-}
-
-.bentoCard3:hover .orbitMotif i {
-  box-shadow: 0 0 0 0.375rem color-mix(in srgb, var(--color-marketing-accent-warm) 12%, transparent);
-  transform: translate(
-    calc(var(--motion-layer-shift-distance) * 0.35),
-    calc(var(--motion-layer-shift-distance) * -0.25)
-  );
-}
-
-.actionMotif {
-  display: flex;
-  align-items: center;
-  color: var(--color-text-muted);
-  gap: var(--space-3);
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-}
-
-.actionMotif i {
-  inline-size: 5rem;
-  block-size: 0.125rem;
-  background: linear-gradient(
-    90deg,
-    var(--color-marketing-accent),
-    var(--color-marketing-accent-secondary)
-  );
-  scale: 0.42 1;
-  transform-origin: left center;
-  transition: scale var(--motion-line-draw-duration) var(--motion-interaction-easing);
-}
-
-.actionMotif span:last-of-type {
-  transition: color var(--motion-card-return-duration) var(--motion-interaction-easing);
-}
-
-.actionMotif b {
-  inline-size: 0.625rem;
-  block-size: 0.375rem;
-  border-block-end: 0.125rem solid var(--color-marketing-accent-secondary);
-  border-inline-start: 0.125rem solid var(--color-marketing-accent-secondary);
-  opacity: 0.28;
-  transform: rotate(-45deg) scale(0.72);
-  transition:
-    opacity var(--motion-card-return-duration) var(--motion-interaction-easing),
-    transform var(--motion-card-hover-duration) var(--motion-interaction-easing);
-}
-
-.bentoCard4:hover .actionMotif i {
-  scale: 1 1;
-}
-
-.bentoCard4:hover .actionMotif span:last-of-type {
-  color: var(--color-marketing-accent);
-}
-
-.bentoCard4:hover .actionMotif b {
-  opacity: 1;
-  transform: rotate(-45deg) scale(1);
-}
-
-.depthMotif {
+.numberOrbit {
+  inset: 8% 8% auto auto;
   inline-size: 9rem;
-  block-size: 7rem;
-}
-
-.depthMotif span {
-  position: absolute;
-  inline-size: 6rem;
-  block-size: 4rem;
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--color-marketing-surface) 82%, transparent);
-  transform-origin: bottom left;
-  transition:
-    border-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    box-shadow var(--motion-card-return-duration) var(--motion-interaction-easing),
-    transform var(--motion-card-hover-duration) var(--motion-interaction-easing);
-}
-
-.depthMotif span:nth-child(1) {
-  inset: 0 auto auto 0;
-}
-
-.depthMotif span:nth-child(2) {
-  inset: 1rem auto auto 1rem;
-}
-
-.depthMotif span:nth-child(3) {
-  inset: 2rem auto auto 2rem;
-  border-color: var(--color-marketing-accent);
-}
-
-.bentoCard5:hover .depthMotif span:nth-child(1) {
-  transform: translate(
-      calc(var(--motion-layer-shift-distance) * -0.8),
-      calc(var(--motion-layer-shift-distance) * 0.4)
-    )
-    rotate(-3deg);
-}
-
-.bentoCard5:hover .depthMotif span:nth-child(2) {
-  transform: translate(calc(var(--motion-layer-shift-distance) * -0.2), 0) rotate(-1deg);
-}
-
-.bentoCard5:hover .depthMotif span:nth-child(3) {
-  border-color: var(--color-marketing-accent-secondary);
-  box-shadow: 0 0 1.25rem
-    color-mix(in srgb, var(--color-marketing-accent) var(--motion-glow-opacity), transparent);
-  transform: translate(
-      var(--motion-layer-shift-distance),
-      calc(var(--motion-layer-shift-distance) * -0.5)
-    )
-    rotate(2deg);
-}
-
-.processSurface {
-  overflow: hidden;
-  padding: clamp(var(--space-6), 6vw, var(--space-9));
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: calc(var(--radius-lg) + var(--space-3));
-  background:
-    linear-gradient(var(--color-marketing-grid) 0.0625rem, transparent 0.0625rem) 0 0 / 4rem 4rem,
-    linear-gradient(90deg, var(--color-marketing-grid) 0.0625rem, transparent 0.0625rem) 0 0 / 4rem
-      4rem,
-    var(--color-marketing-surface-raised);
-}
-
-.processPipeline {
-  display: grid;
-  align-items: center;
-  padding: var(--space-4);
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--color-marketing-surface) 84%, transparent);
-  gap: var(--space-3);
-  grid-template-columns: auto 1fr auto 1fr auto 1fr auto;
-}
-
-.processPipeline span,
-.processPipeline strong {
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-md);
-  text-align: center;
-  transition:
-    border-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    background-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    box-shadow var(--motion-card-return-duration) var(--motion-interaction-easing);
-}
-
-.processPipeline span {
-  border: 0.0625rem solid var(--color-marketing-border);
-  background: var(--color-marketing-surface);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-}
-
-.processPipeline strong {
-  border: 0.0625rem solid var(--color-marketing-accent);
-  background: color-mix(in srgb, var(--color-marketing-accent) 12%, transparent);
-  color: var(--color-text);
-}
-
-.processPipeline i {
-  block-size: 0.0625rem;
-  background: linear-gradient(
-    90deg,
-    var(--color-marketing-accent),
-    var(--color-marketing-accent-secondary)
-  );
-  opacity: 0.28;
-  scale: 0.32 1;
-  transform-origin: left center;
-  transition:
-    opacity var(--motion-card-return-duration) var(--motion-interaction-easing),
-    scale var(--motion-line-draw-duration) var(--motion-interaction-easing);
-}
-
-.processSurface:has(.processCard[data-step='1']:hover) .processPipeline [data-stage='1'],
-.processSurface:has(.processCard[data-step='2']:hover) .processPipeline [data-stage='2'],
-.processSurface:has(.processCard[data-step='3']:hover) .processPipeline [data-stage='3'],
-.processSurface:has(.processCard[data-step='4']:hover) .processPipeline [data-stage='4'] {
-  border-color: var(--color-marketing-accent-secondary);
-  background: color-mix(in srgb, var(--color-marketing-accent) 13%, var(--color-marketing-surface));
-  box-shadow: 0 0 1rem
-    color-mix(in srgb, var(--color-marketing-accent) var(--motion-glow-opacity), transparent);
-}
-
-.processSurface:has(.processCard[data-step='2']:hover) .processPipeline [data-connection='1'],
-.processSurface:has(.processCard[data-step='3']:hover) .processPipeline [data-connection='1'],
-.processSurface:has(.processCard[data-step='3']:hover) .processPipeline [data-connection='2'],
-.processSurface:has(.processCard[data-step='4']:hover) .processPipeline i {
-  opacity: 0.82;
-  scale: 1 1;
-}
-
-.processList {
-  display: grid;
-  padding: 0;
-  margin: 0;
-  gap: var(--space-4);
-  list-style: none;
-}
-
-.processCard {
-  position: relative;
-  display: grid;
-  overflow: hidden;
-  min-inline-size: 0;
-  min-block-size: 10.5rem;
-  padding: var(--space-5);
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-block-start: 0.125rem solid var(--color-marketing-accent);
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
-  background: color-mix(in srgb, var(--color-marketing-surface) 72%, transparent);
-  gap: var(--space-4);
-  grid-template-columns: auto minmax(0, 1fr);
-  transition:
-    border-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    background-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    box-shadow var(--motion-card-return-duration) var(--motion-interaction-easing),
-    transform var(--motion-card-return-duration) var(--motion-interaction-easing);
-}
-
-.processCard:hover {
-  border-color: var(--color-marketing-border-strong);
-  background: color-mix(in srgb, var(--color-marketing-surface) 88%, transparent);
-  box-shadow: var(--shadow-low);
-  transform: translateY(var(--motion-surface-lift-distance));
-}
-
-.processCard > :not(.processMotif) {
-  position: relative;
-  z-index: 1;
-}
-
-.processNumber {
-  color: var(--color-marketing-accent);
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-sm);
-}
-
-.processMotif {
-  position: absolute;
-  z-index: 0;
-  inline-size: 5.5rem;
-  block-size: 4.75rem;
-  opacity: 0.32;
-  inset: auto var(--space-3) var(--space-3) auto;
-  pointer-events: none;
-  transition: opacity var(--motion-card-return-duration) var(--motion-interaction-easing);
-}
-
-.processCard:hover .processMotif {
-  opacity: 0.68;
-}
-
-.processMotif i,
-.processMotif b {
-  position: absolute;
-  display: block;
-  transition:
-    border-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    box-shadow var(--motion-card-return-duration) var(--motion-interaction-easing),
-    opacity var(--motion-card-return-duration) var(--motion-interaction-easing),
-    scale var(--motion-card-hover-duration) var(--motion-interaction-easing),
-    transform var(--motion-card-hover-duration) var(--motion-interaction-easing);
-}
-
-.processCard[data-step='1'] .processMotif i {
-  inline-size: 2.75rem;
-  block-size: 0.5rem;
-  border: 0.0625rem solid var(--color-marketing-accent-secondary);
-  border-radius: var(--radius-full);
-  inset-inline-start: 0;
-}
-
-.processCard[data-step='1'] .processMotif i:nth-child(1) {
-  inset-block-start: 0.25rem;
-}
-
-.processCard[data-step='1'] .processMotif i:nth-child(2) {
-  inset-block-start: 1.45rem;
-}
-
-.processCard[data-step='1'] .processMotif i:nth-child(3) {
-  inset-block-start: 2.65rem;
-}
-
-.processCard[data-step='1'] .processMotif b {
-  inline-size: 1.5rem;
-  aspect-ratio: 1;
-  border: 0.0625rem solid var(--color-marketing-accent);
-  border-radius: var(--radius-full);
-  inset: 1.3rem 0 auto auto;
-}
-
-.processCard[data-step='1']:hover .processMotif i {
-  transform: translateX(var(--motion-layer-shift-distance));
-}
-
-.processCard[data-step='1']:hover .processMotif b {
-  box-shadow: 0 0 0 0.3125rem color-mix(in srgb, var(--color-marketing-accent) 10%, transparent);
-}
-
-.processCard[data-step='2'] .processMotif i {
-  inline-size: 3.5rem;
-  block-size: 1.25rem;
-  border: 0.0625rem solid var(--color-marketing-border-strong);
-  border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--color-marketing-accent) 8%, transparent);
-  inset-inline-end: 0;
-}
-
-.processCard[data-step='2'] .processMotif i:nth-child(1) {
-  inset-block-start: 0;
-}
-
-.processCard[data-step='2'] .processMotif i:nth-child(2) {
-  inset-block-start: 1.4rem;
-  inset-inline-end: 0.65rem;
-}
-
-.processCard[data-step='2'] .processMotif i:nth-child(3) {
-  inset-block-start: 2.8rem;
-  inset-inline-end: 1.3rem;
-}
-
-.processCard[data-step='2'] .processMotif b {
-  inline-size: 0.625rem;
-  aspect-ratio: 1;
-  border-radius: var(--radius-full);
-  background: var(--color-marketing-accent-secondary);
-  inset: 1.7rem auto auto 0.25rem;
-}
-
-.processCard[data-step='2']:hover .processMotif i:nth-child(1) {
-  transform: translateX(calc(var(--motion-layer-shift-distance) * -0.5));
-}
-
-.processCard[data-step='2']:hover .processMotif i:nth-child(3) {
-  border-color: var(--color-marketing-accent);
-  transform: translateX(calc(var(--motion-layer-shift-distance) * 0.5));
-}
-
-.processCard[data-step='3'] .processMotif i {
-  inline-size: 0.75rem;
   aspect-ratio: 1;
   border: 0.0625rem solid var(--color-marketing-accent-secondary);
-  border-radius: var(--radius-full);
-  background: var(--color-marketing-surface);
-}
-
-.processCard[data-step='3'] .processMotif i:nth-child(1) {
-  inset: 0.25rem auto auto 0.5rem;
-}
-
-.processCard[data-step='3'] .processMotif i:nth-child(2) {
-  inset: 1.65rem 0.5rem auto auto;
-}
-
-.processCard[data-step='3'] .processMotif i:nth-child(3) {
-  inset: auto auto 0.25rem 2.25rem;
-}
-
-.processCard[data-step='3'] .processMotif b {
-  inline-size: 3.75rem;
-  block-size: 0.0625rem;
-  background: var(--color-marketing-accent);
-  opacity: 0.26;
-  inset: 2rem auto auto 0.8rem;
-  scale: 0.35 1;
-  transform: rotate(18deg);
-  transform-origin: left center;
-}
-
-.processCard[data-step='3']:hover .processMotif i {
-  border-color: var(--color-marketing-accent);
-  box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--color-marketing-accent) 9%, transparent);
-}
-
-.processCard[data-step='3']:hover .processMotif b {
-  opacity: 0.76;
-  scale: 1 1;
-}
-
-.processCard[data-step='4'] .processMotif i {
-  inline-size: 1.75rem;
-  block-size: 1.25rem;
-  border: 0.0625rem solid var(--color-marketing-border-strong);
-  border-radius: var(--radius-sm);
-}
-
-.processCard[data-step='4'] .processMotif i:nth-child(1) {
-  inset: 0.25rem auto auto 0.25rem;
-}
-
-.processCard[data-step='4'] .processMotif i:nth-child(2) {
-  inset: 0.5rem 0.25rem auto auto;
-}
-
-.processCard[data-step='4'] .processMotif i:nth-child(3) {
-  inset: auto auto 0.25rem 1.8rem;
-}
-
-.processCard[data-step='4'] .processMotif b {
-  border: 0.0625rem solid var(--color-marketing-accent);
-  border-radius: var(--radius-md);
-  inset: 0;
-  opacity: 0.42;
-}
-
-.processCard[data-step='4']:hover .processMotif i:nth-child(1) {
-  transform: translate(
-    calc(var(--motion-layer-shift-distance) * 0.5),
-    calc(var(--motion-layer-shift-distance) * 0.4)
-  );
-}
-
-.processCard[data-step='4']:hover .processMotif i:nth-child(2) {
-  transform: translate(
-    calc(var(--motion-layer-shift-distance) * -0.5),
-    calc(var(--motion-layer-shift-distance) * 0.25)
-  );
-}
-
-.processCard[data-step='4']:hover .processMotif i:nth-child(3) {
-  border-color: var(--color-marketing-accent-secondary);
-  transform: translateY(calc(var(--motion-layer-shift-distance) * -0.35));
-}
-
-.processCard[data-step='4']:hover .processMotif b {
-  opacity: 0.76;
-  box-shadow: 0 0 1rem
-    color-mix(in srgb, var(--color-marketing-accent) var(--motion-glow-opacity), transparent);
-}
-
-.originList {
-  display: flex;
-  padding: 0;
-  margin: 0;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  list-style: none;
-}
-
-.originList li {
-  display: inline-flex;
-  align-items: center;
-  padding: var(--space-2) var(--space-3);
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: var(--radius-full);
-  background: var(--color-marketing-surface);
-  gap: var(--space-2);
-  font-size: var(--font-size-sm);
-}
-
-.originList span {
-  color: var(--color-marketing-accent);
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-}
-
-.emotionFrame {
-  position: relative;
-  overflow: hidden;
-  padding: clamp(var(--space-7), 8vw, calc(var(--space-9) * 1.35));
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: calc(var(--radius-lg) + var(--space-3));
-  background:
-    radial-gradient(circle at 82% 18%, var(--color-marketing-glow-secondary), transparent 34%),
-    radial-gradient(circle at 12% 88%, var(--color-marketing-glow-primary), transparent 38%),
-    var(--color-marketing-surface);
-  text-align: center;
-  transition:
-    border-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    box-shadow var(--motion-card-return-duration) var(--motion-interaction-easing);
-}
-
-.emotionFrame::after {
-  position: absolute;
-  inline-size: 26rem;
-  block-size: 13rem;
-  border: 0.0625rem solid
-    color-mix(in srgb, var(--color-marketing-accent-secondary) 34%, transparent);
   border-radius: 50%;
-  content: '';
-  inset: 50% auto auto 50%;
-  opacity: 0.16;
-  pointer-events: none;
-  transform: translate(-50%, -50%) rotate(17deg);
-  transition: opacity var(--motion-card-hover-duration) var(--motion-interaction-easing);
 }
-
-.emotionFrame > *:not(.emotionOrbit) {
-  position: relative;
-  z-index: 1;
-  margin-inline: auto;
-}
-
-.emotionOrbit {
-  position: absolute;
-  inline-size: 22rem;
-  block-size: 11rem;
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: 50%;
-  inset: 50% auto auto 50%;
-  opacity: 0.72;
-  transform: translate(-50%, -50%) rotate(-14deg);
-  transition:
-    border-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    opacity var(--motion-card-hover-duration) var(--motion-interaction-easing);
-}
-
-.emotionTitle {
-  max-inline-size: 24ch;
-  margin-block: var(--space-4);
-  font-family: var(--font-family-heading);
-  font-size: clamp(var(--font-size-2xl), 4vw, 4rem);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: -0.04em;
-  line-height: 1.08;
-  text-wrap: balance;
-  transition: text-shadow var(--motion-card-hover-duration) var(--motion-interaction-easing);
-}
-
-.emotionDescription {
-  max-inline-size: 46rem;
-  color: var(--color-text-muted);
-  font-size: var(--font-size-lg);
-  line-height: var(--line-height-relaxed);
-}
-
-.emotionFrame:hover {
-  border-color: var(--color-marketing-border-strong);
-  box-shadow: var(--shadow-low);
-}
-
-.emotionFrame:hover::after {
-  opacity: 0.52;
-}
-
-.emotionFrame:hover .emotionOrbit {
-  border-color: color-mix(
-    in srgb,
-    var(--color-marketing-accent) 42%,
-    var(--color-marketing-border)
-  );
-  opacity: 0.92;
-}
-
-.emotionFrame:hover .emotionTitle {
-  text-shadow: 0 0 1.75rem color-mix(in srgb, var(--color-marketing-accent) 15%, transparent);
-}
-
-.layerGrid {
-  display: grid;
-  gap: var(--space-4);
-}
-
-.layerCard {
-  position: relative;
-  display: grid;
-  overflow: hidden;
-  min-inline-size: 0;
-  min-block-size: 19rem;
-  padding: var(--space-5);
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-marketing-surface);
-  gap: var(--space-5);
-  grid-template-columns: auto minmax(0, 1fr);
-  isolation: isolate;
-  transition:
-    border-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    box-shadow var(--motion-card-return-duration) var(--motion-interaction-easing),
-    transform var(--motion-card-return-duration) var(--motion-interaction-easing);
-}
-
-.layerCard[data-visual]:hover {
-  border-color: var(--color-marketing-border-strong);
-  box-shadow: var(--shadow-marketing-card);
-  transform: translateY(var(--motion-surface-lift-distance));
-}
-
-.layerCopy,
-.layerMark {
-  position: relative;
-  z-index: 2;
-}
-
-.layerCopy {
-  padding-block-start: 5.5rem;
-}
-
-.layerMark {
-  position: relative;
-  display: inline-flex;
-  inline-size: 3.25rem;
-  block-size: 3.25rem;
-  align-items: center;
-  justify-content: center;
-  border: 0.0625rem solid var(--color-marketing-accent);
-  border-radius: var(--radius-full);
-  color: var(--color-marketing-accent);
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-}
-
-.layerMark::after {
-  position: absolute;
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: 50%;
-  content: '';
-  inset: -0.4rem;
-  transform: rotate(24deg) scaleY(0.72);
-}
-
-.thematicVisual {
-  position: absolute;
-  z-index: 1;
-  inline-size: min(46%, 10.5rem);
-  aspect-ratio: 1;
-  opacity: 0.3;
-  inset-block-start: var(--space-4);
-  inset-inline-end: var(--space-4);
-  -webkit-mask-image: linear-gradient(
-    var(--color-text) 0%,
-    var(--color-text) 82%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(var(--color-text) 0%, var(--color-text) 82%, transparent 100%);
-  pointer-events: none;
-  transition:
-    opacity var(--motion-card-return-duration) var(--motion-interaction-easing),
-    transform var(--motion-card-hover-duration) var(--motion-interaction-easing);
-}
-
-.layerCard[data-visual]:hover .thematicVisual {
-  opacity: 0.68;
-}
-
-.questionsVisual {
-  border: 0.0625rem solid color-mix(in srgb, var(--color-marketing-accent) 32%, transparent);
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--color-marketing-accent) 5%, transparent);
-}
-
-.questionPrompt {
-  position: absolute;
-  display: grid;
-  inline-size: 54%;
-  gap: var(--space-2);
-  inset: 10% auto auto 9%;
-}
-
-.questionPrompt i {
-  block-size: 0.125rem;
-  border-radius: var(--radius-full);
-  background: var(--color-marketing-accent);
-}
-
-.questionPrompt i:last-child {
-  inline-size: 68%;
-  opacity: 0.54;
-}
-
-.answerOptions {
-  position: absolute;
-  display: grid;
-  inline-size: 72%;
-  gap: var(--space-2);
-  inset: 31% 8% auto auto;
-}
-
-.answerOptions span {
-  position: relative;
-  display: flex;
-  block-size: 1.5rem;
-  align-items: center;
-  padding-inline: var(--space-2);
-  border: 0.0625rem solid var(--color-marketing-border-strong);
-  border-radius: var(--radius-sm);
-  background: var(--color-marketing-surface);
-  transition:
-    opacity var(--motion-card-return-duration) var(--motion-interaction-easing),
-    transform var(--motion-card-return-duration) var(--motion-interaction-easing);
-}
-
-.answerOptions span > i {
-  inline-size: 54%;
-  block-size: 0.125rem;
-  border-radius: var(--radius-full);
-  background: var(--color-marketing-accent-secondary);
-  opacity: 0.54;
-}
-
-.answerOptions .selectedOption {
-  border-color: var(--color-marketing-accent);
-  background: color-mix(in srgb, var(--color-marketing-accent) 12%, var(--color-marketing-surface));
-}
-
-.selectedOption::after {
-  position: absolute;
-  inline-size: 0.45rem;
-  aspect-ratio: 1;
-  border-radius: var(--radius-full);
-  background: var(--color-marketing-accent);
-  content: '';
-  inset-inline-end: var(--space-2);
-}
-
-.questionProgress {
-  position: absolute;
-  display: grid;
-  inline-size: 30%;
-  align-items: center;
-  gap: var(--space-2);
-  grid-template-columns: auto minmax(0, 1fr);
-  inset: auto auto 8% 9%;
-}
-
-.questionProgress span {
-  color: var(--color-marketing-accent);
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-}
-
-.questionProgress i {
-  block-size: 0.125rem;
-  border-radius: var(--radius-full);
-  background: var(--color-marketing-border-strong);
-}
-
-.confirmLine {
-  position: absolute;
-  inline-size: 28%;
-  block-size: 0.125rem;
-  border-radius: var(--radius-full);
-  background: var(--color-marketing-accent-secondary);
-  inset: auto 8% 12% auto;
-  transform: scaleX(0.42);
-  transform-origin: left;
-  transition: transform var(--motion-card-hover-duration) var(--motion-interaction-easing);
-}
-
-.layerCard[data-visual='questions']:hover .answerOptions span:not(.selectedOption) {
-  opacity: 0.48;
-  transform: translateX(var(--space-1));
-}
-
-.layerCard[data-visual='questions']:hover .confirmLine {
-  transform: scaleX(1);
-}
-
-.interestsVisual {
-  overflow: visible;
-  fill: none;
-}
-
-.interestLinks {
-  opacity: 0.5;
-  stroke: var(--color-marketing-accent-secondary);
-  stroke-dasharray: 160;
-  stroke-dashoffset: 82;
-  stroke-linecap: round;
-  stroke-width: 1.25;
-}
-
-.interestNodes {
-  fill: var(--color-marketing-surface);
-  stroke: var(--color-marketing-border-strong);
-  stroke-width: 1.25;
-}
-
-.interestActiveNodes {
-  fill: var(--color-marketing-accent-secondary);
-  opacity: 0.72;
-}
-
-.interestCore {
-  fill: color-mix(in srgb, var(--color-marketing-accent) 14%, var(--color-marketing-surface));
-  stroke: var(--color-marketing-accent);
-  stroke-width: 1.25;
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: transform var(--motion-card-hover-duration) var(--motion-interaction-easing);
-}
-
-.interestCoreDot {
-  fill: var(--color-marketing-accent);
-}
-
-.layerCard[data-visual='interests']:hover .interestCore {
-  transform: scale(1.12);
-}
-
-.voiceVisual {
-  border-block: 0.0625rem solid
-    color-mix(in srgb, var(--color-marketing-accent-secondary) 34%, transparent);
-}
-
-.voiceWave {
-  position: absolute;
-  display: flex;
-  block-size: 48%;
-  align-items: center;
-  justify-content: space-between;
-  inset: 15% 5% auto;
-}
-
-.voiceWave i {
-  inline-size: 0.1875rem;
-  block-size: 42%;
-  border-radius: var(--radius-full);
-  background: var(--color-marketing-accent-secondary);
-  transform-origin: center;
-}
-
-.voiceWave i:nth-child(2),
-.voiceWave i:nth-child(10) {
-  block-size: 68%;
-}
-
-.voiceWave i:nth-child(3),
-.voiceWave i:nth-child(7) {
-  block-size: 34%;
-}
-
-.voiceWave i:nth-child(4),
-.voiceWave i:nth-child(8) {
-  block-size: 82%;
-}
-
-.voiceWave i:nth-child(5),
-.voiceWave i:nth-child(9) {
-  block-size: 54%;
-}
-
-.voiceWave i:nth-child(6) {
-  block-size: 92%;
-  background: var(--color-marketing-accent);
-}
-
-.voiceTimeline {
-  position: absolute;
-  display: grid;
-  inline-size: 56%;
-  align-items: center;
-  color: var(--color-marketing-accent);
-  gap: var(--space-2);
-  grid-template-columns: auto minmax(0, 1fr);
-  inset: auto auto 13% 5%;
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-}
-
-.voiceTimeline i {
-  block-size: 0.125rem;
-  border-radius: var(--radius-full);
-  background: var(--color-marketing-border-strong);
-}
-
-.voiceQuality {
-  position: absolute;
-  display: flex;
-  align-items: end;
-  gap: var(--space-1);
-  inset: auto 5% 13% auto;
-}
-
-.voiceQuality i {
-  inline-size: 0.25rem;
-  block-size: 0.5rem;
-  border-radius: var(--radius-full);
-  background: var(--color-marketing-accent-secondary);
-}
-
-.voiceQuality i:nth-child(2) {
-  block-size: 0.75rem;
-}
-
-.voiceQuality i:nth-child(3) {
-  block-size: 1rem;
-}
-
-.numerologyVisual {
-  border-radius: var(--radius-full);
-  color: var(--color-marketing-accent-warm);
-  font-family: var(--font-family-mono);
-}
-
-.numberRing {
-  position: absolute;
-  border: 0.0625rem solid color-mix(in srgb, var(--color-marketing-accent-warm) 50%, transparent);
-  border-radius: var(--radius-full);
-  inset: 18%;
-}
-
-.numberRing::after {
-  position: absolute;
-  border: 0.0625rem solid color-mix(in srgb, var(--color-marketing-accent) 38%, transparent);
-  border-radius: var(--radius-full);
-  content: '';
-  inset: 22%;
-}
-
-.numerologyVisual span {
-  position: absolute;
-  font-weight: var(--font-weight-semibold);
-  opacity: 0.72;
-  transform: translateY(var(--space-2));
-}
-
-.numerologyVisual span:nth-of-type(1) {
-  inset: 8% auto auto 18%;
-}
-
-.numerologyVisual span:nth-of-type(2) {
-  inset: 24% 10% auto auto;
-  font-size: var(--font-size-xl);
-}
-
-.numerologyVisual span:nth-of-type(3) {
-  inset: 44% auto auto 42%;
+.numberOrbit span {
   font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
 }
-
-.numerologyVisual span:nth-of-type(4) {
-  inset: auto auto 12% 12%;
-  font-size: var(--font-size-lg);
-}
-
-.numerologyVisual span:nth-of-type(5) {
-  inset: auto 8% 7% auto;
-}
-
-.numerologyVisual span:nth-of-type(6) {
-  inset: 3% 34% auto auto;
-  font-size: var(--font-size-sm);
-}
-
-.zodiacVisual {
-  overflow: visible;
-  fill: none;
-}
-
-.zodiacRing {
-  stroke: color-mix(in srgb, var(--color-marketing-accent-secondary) 52%, transparent);
-  stroke-width: 1;
-}
-
-.zodiacSector {
-  fill: color-mix(in srgb, var(--color-marketing-accent-secondary) 13%, transparent);
-  stroke: color-mix(in srgb, var(--color-marketing-accent-secondary) 36%, transparent);
-  stroke-width: 0.75;
-}
-
-.zodiacPoints {
-  fill: var(--color-marketing-accent-secondary);
-}
-
-.constellationLine {
-  stroke: var(--color-marketing-accent);
-  stroke-dasharray: 220;
-  stroke-dashoffset: 152;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.25;
-}
-
-.constellationNodes {
-  fill: var(--color-marketing-accent);
-}
-
-.astrologyVisual {
-  color: var(--color-marketing-accent-secondary);
-  transform: scale(0.96);
-}
-
-.astrologyVisual > span {
+.numberOrbit i {
   position: absolute;
-  border: 0.0625rem solid
-    color-mix(in srgb, var(--color-marketing-accent-secondary) 58%, transparent);
+  inline-size: 0.55rem;
+  aspect-ratio: 1;
   border-radius: 50%;
-}
-
-.astrologyVisual > span i {
-  position: absolute;
-  inline-size: 0.75rem;
-  block-size: 0.75rem;
-  border-radius: var(--radius-full);
   background: var(--color-marketing-accent-secondary);
-  box-shadow: 0 0 0 0.1875rem
-    color-mix(in srgb, var(--color-marketing-accent-secondary) 13%, transparent);
 }
-
-.astroOrbit1 {
-  inset: 13% 7%;
-  transform: rotate(-18deg) scaleY(0.64);
+.numberOrbit i:first-of-type {
+  inset: 10% 15%;
 }
-
-.astroOrbit1 i {
-  inline-size: 0.625rem;
-  block-size: 0.625rem;
-  inset: 11% auto auto 10%;
+.numberOrbit i:nth-of-type(2) {
+  inset: auto 8% 30% auto;
 }
-
-.astroOrbit2 {
-  inset: 25% 3%;
-  transform: rotate(27deg) scaleY(0.56);
+.numberOrbit i:nth-of-type(3) {
+  inset: auto auto 6% 28%;
 }
-
-.astroOrbit2 i {
-  inline-size: 0.875rem;
-  block-size: 0.875rem;
-  inset: auto 18% 2% auto;
-  background: var(--color-marketing-accent-warm);
-}
-
-.astroOrbit3 {
-  inset: 6% 31%;
-  transform: rotate(8deg) scaleY(0.76);
-}
-
-.astroOrbit3 i {
-  inline-size: 0.5rem;
-  block-size: 0.5rem;
-  inset: 42% -0.375rem auto auto;
-  background: var(--color-marketing-accent);
-}
-
-.astroCore {
-  position: absolute;
-  inline-size: 2.75rem;
+.portraitNode {
+  inset: auto 12% 14% auto;
+  inline-size: 8rem;
   aspect-ratio: 1;
   border: 0.0625rem solid var(--color-marketing-accent);
-  border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--color-marketing-accent) 16%, transparent);
-  inset: 50% auto auto 50%;
-  transform: translate(-50%, -50%);
+  border-radius: 42% 58% 48% 52%;
+  transform: rotate(12deg);
 }
-
-.layerCard[data-visual='astrology']:hover .astrologyVisual {
-  transform: scale(1);
+.portraitNode i {
+  inline-size: 52%;
+  aspect-ratio: 1;
+  border: 0.0625rem solid var(--color-marketing-accent);
+  border-radius: 50%;
 }
-
-.layerMeta {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.layerBadge {
-  padding: var(--space-1) var(--space-2);
-  border: 0.0625rem solid var(--color-marketing-border-strong);
-  border-radius: var(--radius-full);
-  color: var(--color-text-muted);
-  font-weight: var(--font-weight-semibold);
-}
-
-.layerLegend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3) var(--space-6);
-}
-
-.layerLegend span {
-  display: inline-flex;
-  align-items: center;
-  color: var(--color-text-muted);
-  gap: var(--space-2);
-  font-size: var(--font-size-sm);
-}
-
-.layerLegend i {
-  inline-size: 0.75rem;
-  block-size: 0.75rem;
-  border: 0.125rem solid var(--color-marketing-accent);
-  border-radius: var(--radius-full);
-}
-
-.layerLegend i[data-kind='optional'] {
-  border-color: var(--color-marketing-accent-secondary);
-}
-
-.privacySurface {
-  padding: var(--page-surface-padding);
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: calc(var(--radius-lg) + var(--space-1));
-  background: var(--color-marketing-surface-raised);
-}
-
-.privacyGrid {
-  display: grid;
-  gap: var(--space-6);
-}
-
-.privacyCopy {
-  max-inline-size: var(--content-width-reading);
-}
-
-.privacyStatement {
-  padding-inline-start: var(--space-4);
-  border-inline-start: 0.1875rem solid var(--color-marketing-accent-secondary);
-  font-weight: var(--font-weight-medium);
-}
-
-.finalSection {
-  padding-block: var(--page-ending-padding-block);
-}
-
-.finalFrame {
-  position: relative;
-  display: flex;
-  overflow: hidden;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--page-ending-surface-padding);
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: calc(var(--radius-lg) + var(--space-2));
-  background:
-    radial-gradient(circle at 88% 22%, var(--color-marketing-glow-primary), transparent 36%),
-    var(--color-marketing-surface);
-  gap: var(--space-6);
-  isolation: isolate;
-  transition:
-    border-color var(--motion-card-return-duration) var(--motion-interaction-easing),
-    box-shadow var(--motion-card-return-duration) var(--motion-interaction-easing);
-}
-
-.finalFrame::before,
-.finalFrame::after {
+.portraitNode span {
   position: absolute;
-  z-index: 0;
-  inline-size: 24%;
-  block-size: 0.0625rem;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--color-marketing-accent-secondary),
-    transparent
-  );
-  content: '';
-  opacity: 0.24;
-  pointer-events: none;
-  transform-origin: right center;
+  inline-size: 0.7rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-marketing-accent);
+}
+.directions {
+  padding-block: var(--page-section-padding-block);
+}
+.sectionHeading {
+  display: grid;
+  max-inline-size: 46rem;
+  gap: var(--space-3);
+}
+.directionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: var(--space-4);
+}
+.directionCard {
+  position: relative;
+  display: grid;
+  min-inline-size: 0;
+  min-block-size: 25rem;
+  padding: var(--page-card-padding);
+  overflow: hidden;
   transition:
-    opacity var(--motion-card-return-duration) var(--motion-interaction-easing),
-    transform var(--motion-card-hover-duration) var(--motion-interaction-easing);
+    transform var(--motion-card-hover-duration) var(--motion-interaction-easing),
+    border-color var(--motion-card-return-duration);
 }
-
-.finalFrame::before {
-  inset: 29% 14% auto auto;
-  transform: rotate(9deg) scaleX(0.72);
+.directionCard[data-direction='tarot'] {
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      color-mix(in srgb, var(--color-marketing-accent-warm) 16%, transparent),
+      transparent 34%
+    ),
+    var(--color-marketing-surface);
 }
-
-.finalFrame::after {
-  inset: auto 18% 24% auto;
-  transform: rotate(-8deg) scaleX(0.56);
-}
-
-.finalFrame:has(.finalCta:is(:hover, :focus-visible)) {
+.directionCard:hover,
+.directionCard:focus-within {
   border-color: var(--color-marketing-border-strong);
-  box-shadow:
-    var(--shadow-marketing-card),
-    0 0 2rem var(--color-marketing-glow-primary);
+  transform: translateY(var(--motion-surface-lift-distance));
 }
-
-.finalFrame:has(.finalCta:is(:hover, :focus-visible))::before {
-  opacity: 0.66;
-  transform: translateX(var(--motion-layer-shift-distance)) rotate(9deg) scaleX(1);
-}
-
-.finalFrame:has(.finalCta:is(:hover, :focus-visible))::after {
-  opacity: 0.52;
-  transform: translateX(calc(var(--motion-layer-shift-distance) * 0.6)) rotate(-8deg) scaleX(0.9);
-}
-
-.finalFrame:has(.finalCta:is(:hover, :focus-visible)) .ctaArrow {
-  transform: translateX(calc(var(--motion-layer-shift-distance) * 0.7));
-}
-
-.finalCopy,
-.finalCta {
+.directionContent {
   position: relative;
   z-index: 1;
+  display: grid;
+  min-inline-size: 0;
+  min-block-size: 100%;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-4);
 }
-
-.finalCopy {
-  max-inline-size: var(--content-width-reading);
+.directionHeader {
+  display: grid;
+  min-inline-size: 0;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-3);
 }
-
-@keyframes marketing-reveal {
-  from {
-    opacity: 0;
-    transform: translateY(var(--space-3));
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.directionHeader > :first-child {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
-
-@keyframes visual-reveal {
-  from {
-    opacity: 0;
-    transform: scale(0.985);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.cardIndex {
+  position: relative;
+  align-self: start;
+  color: color-mix(in srgb, var(--color-marketing-accent) 25%, transparent);
+  font-family: var(--font-family-heading);
+  font-size: clamp(2.25rem, 4vw, 3.75rem);
+  line-height: 1;
+  pointer-events: none;
 }
-
-@keyframes node-reveal {
-  from {
-    opacity: 0;
-    scale: 0.96;
-  }
-
-  to {
-    opacity: 1;
-    scale: 1;
-  }
+.directionCard h3 {
+  max-inline-size: 100%;
+  font-size: clamp(var(--font-size-xl), 2.2vw, var(--font-size-2xl));
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
-
-@keyframes network-draw {
-  from {
-    opacity: 0;
-    stroke-dashoffset: 36;
-  }
-
-  to {
-    opacity: 1;
-    stroke-dashoffset: 0;
-  }
+.directionDescription {
+  max-inline-size: 38ch;
+  color: var(--color-text-muted);
+  overflow-wrap: break-word;
 }
-
-@keyframes hero-connection-line {
-  from {
-    opacity: 0.08;
-    stroke-dashoffset: 1;
-  }
-
-  42% {
-    opacity: 0.76;
-  }
-
-  to {
-    opacity: 0.84;
-    stroke-dashoffset: 0;
-  }
+.directionContent > a {
+  align-self: end;
+  justify-self: start;
 }
-
-@keyframes hero-core-unify {
-  from {
-    box-shadow:
-      0 0 0 0.75rem color-mix(in srgb, var(--color-marketing-accent) 6%, transparent),
-      var(--shadow-marketing-card);
-  }
-
-  56% {
-    box-shadow:
-      0 0 0 0.875rem color-mix(in srgb, var(--color-marketing-accent) 11%, transparent),
-      var(--shadow-marketing-card),
-      0 0 2.25rem color-mix(in srgb, var(--color-marketing-accent-secondary) 22%, transparent);
-  }
-
-  to {
-    box-shadow:
-      0 0 0 0.8125rem color-mix(in srgb, var(--color-marketing-accent) 8%, transparent),
-      var(--shadow-marketing-card),
-      0 0 1.5rem color-mix(in srgb, var(--color-marketing-accent-secondary) 12%, transparent);
+.directionMotif {
+  position: absolute;
+  z-index: 0;
+  display: grid;
+  inset: auto -1rem -2rem auto;
+  inline-size: 9rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 0.0625rem solid color-mix(in srgb, var(--color-marketing-accent) 35%, transparent);
+  border-radius: 50%;
+  opacity: 0.28;
+  pointer-events: none;
+}
+.directionMotif i {
+  position: absolute;
+  inline-size: 50%;
+  aspect-ratio: 1;
+  border: 0.0625rem solid currentColor;
+  transform: rotate(45deg);
+}
+.directionMotif i:nth-child(2) {
+  inline-size: 25%;
+  border-radius: 50%;
+}
+.directionMotif i:nth-child(3) {
+  inline-size: 0.55rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-marketing-accent);
+}
+.note {
+  max-inline-size: 72ch;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+@media (min-width: 60rem) {
+  .heroGrid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(24rem, 0.95fr);
   }
 }
-
-@keyframes hero-core-ring {
-  from {
-    opacity: 0;
+@media (max-width: 59.99rem) {
+  .directionGrid {
+    grid-template-columns: 1fr 1fr;
   }
-
-  56% {
-    opacity: 0.72;
-  }
-
-  to {
-    opacity: 0.42;
+  .directionCard:first-child {
+    grid-column: 1/-1;
   }
 }
-
-@keyframes hero-core-node {
-  from {
-    box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--color-marketing-accent) 12%, transparent);
-  }
-
-  56% {
-    box-shadow:
-      0 0 0 0.4375rem color-mix(in srgb, var(--color-marketing-accent) 18%, transparent),
-      0 0 1.125rem color-mix(in srgb, var(--color-marketing-accent-secondary) 24%, transparent);
-  }
-
-  to {
-    box-shadow:
-      0 0 0 0.3125rem color-mix(in srgb, var(--color-marketing-accent) 14%, transparent),
-      0 0 0.75rem color-mix(in srgb, var(--color-marketing-accent-secondary) 14%, transparent);
-  }
-}
-
-@keyframes layer-compose {
-  from {
-    transform: translate(0, 0);
-  }
-
-  56% {
-    transform: translate(var(--layer-compose-x), var(--layer-compose-y));
-  }
-
-  to {
-    transform: translate(calc(var(--layer-compose-x) * 0.28), calc(var(--layer-compose-y) * 0.28));
-  }
-}
-
-@keyframes number-arrange {
-  from {
-    opacity: 0;
-    transform: translateY(var(--space-3)) scale(0.92);
-  }
-
-  to {
-    opacity: 0.72;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes constellation-connect {
-  from {
-    opacity: 0.2;
-    stroke-dashoffset: 220;
-  }
-
-  to {
-    opacity: 1;
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes orbit-reveal {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes planet-drift {
-  from {
-    translate: calc(var(--space-2) * -1) var(--space-1);
-  }
-
-  to {
-    translate: var(--space-2) calc(var(--space-1) * -1);
-  }
-}
-
-@keyframes choice-confirm {
-  from {
-    opacity: 0.72;
-    transform: translateX(var(--space-1));
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes interest-connect {
-  from {
-    opacity: 0.18;
-    stroke-dashoffset: 160;
-  }
-
-  to {
-    opacity: 0.9;
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes voice-trace {
-  0% {
-    opacity: 0.5;
-    transform: scaleY(0.72);
-  }
-
-  54% {
-    opacity: 1;
-    transform: scaleY(1.14);
-  }
-
-  100% {
-    opacity: 0.78;
-    transform: scaleY(1);
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .connectionLines path {
-    opacity: 0.1;
-    stroke-dashoffset: 1;
-    transition: opacity var(--transition-duration-normal) var(--transition-easing-standard);
-  }
-
-  .portraitCore::after {
-    opacity: 0;
-  }
-
-  .livingPortrait:hover .connectionLines path {
-    animation: hero-connection-line var(--hero-connection-duration) var(--transition-easing-reveal)
-      both;
-    animation-delay: var(--hero-connect-delay);
-  }
-
-  .livingPortrait:hover .heroNode {
-    border-color: var(--color-marketing-border-strong);
-    background: var(--color-marketing-surface);
-    box-shadow:
-      var(--shadow-low),
-      0 0 0 0.1875rem color-mix(in srgb, var(--color-marketing-accent-secondary) 8%, transparent);
-    transition-delay: var(--hero-connect-delay);
-  }
-
-  .livingPortrait:hover .nodePoint {
-    border-color: var(--color-marketing-accent);
-    box-shadow: 0 0 0 0.1875rem
-      color-mix(in srgb, var(--color-marketing-accent-secondary) 10%, transparent);
-    transition-delay: var(--hero-connect-delay);
-  }
-
-  .livingPortrait:hover .portraitCore {
-    animation: hero-core-unify var(--hero-core-duration) var(--transition-easing-reveal)
-      var(--hero-core-delay) both;
-  }
-
-  .livingPortrait:hover .portraitCore::after {
-    animation: hero-core-ring var(--hero-core-duration) var(--transition-easing-reveal)
-      var(--hero-core-delay) both;
-  }
-
-  .livingPortrait:hover .corePulse {
-    animation: hero-core-node var(--hero-core-duration) var(--transition-easing-reveal)
-      var(--hero-core-delay) both;
-  }
-
-  .layerCard[data-visual='questions']:hover .selectedOption {
-    animation: choice-confirm var(--motion-choice-confirm-duration) var(--motion-interaction-easing)
-      both;
-  }
-
-  .layerCard[data-visual='interests']:hover .interestLinks {
-    animation: interest-connect var(--motion-interest-connect-duration)
-      var(--motion-interaction-easing) both;
-  }
-
-  .layerCard[data-visual='voice']:hover .voiceWave i {
-    animation: voice-trace var(--motion-voice-trace-duration) var(--motion-interaction-easing) both;
-  }
-
-  .layerCard[data-visual='voice']:hover .voiceWave i:nth-child(3n + 2) {
-    animation-delay: var(--motion-detail-reveal-delay);
-  }
-
-  .layerCard[data-visual='numerology']:hover .numerologyVisual span {
-    animation: number-arrange var(--motion-number-arrange-duration) var(--motion-interaction-easing)
-      both;
-  }
-
-  .layerCard[data-visual='numerology']:hover .numerologyVisual span:nth-of-type(even) {
-    animation-delay: var(--motion-detail-reveal-delay);
-  }
-
-  .layerCard[data-visual='zodiac']:hover .constellationLine {
-    animation: constellation-connect var(--motion-constellation-connect-duration)
-      var(--motion-interaction-easing) both;
-  }
-
-  .layerCard[data-visual='astrology']:hover .astrologyVisual > span {
-    animation: orbit-reveal var(--motion-orbit-reveal-duration) var(--motion-interaction-easing)
-      both;
-  }
-
-  .layerCard[data-visual='astrology']:hover .astroOrbit2 i {
-    animation: planet-drift var(--motion-detail-drift-duration) var(--motion-interaction-easing)
-      both;
-  }
-}
-
-@media (max-width: 29.999rem) {
-  .hero {
-    padding-block-start: var(--space-2);
-  }
-
+@media (max-width: 40rem) {
   .heroFrame {
-    min-block-size: auto;
-    padding: var(--space-5);
-    border-radius: var(--radius-lg);
+    min-block-size: 0;
   }
-
-  .heroActions,
-  .heroActions > *,
-  .primaryCta {
+  .heroVisual {
+    min-block-size: 20rem;
+  }
+  .directionGrid {
+    grid-template-columns: 1fr;
+  }
+  .directionCard:first-child {
+    grid-column: auto;
+  }
+  .directionCard {
+    min-block-size: 20rem;
+  }
+  .directionContent > a {
     inline-size: 100%;
   }
-
-  .trustList {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
+  .actions a {
+    inline-size: 100%;
   }
-
-  .livingPortrait {
-    min-block-size: 24rem;
-    border-radius: var(--radius-lg);
+  .heroTitle {
+    font-size: clamp(2.45rem, 12vw, 4rem);
   }
-
-  .portraitCore {
-    inline-size: 7.25rem;
+}
+@media (max-width: 23.5rem) {
+  .heroFrame {
     padding: var(--space-4);
   }
-
-  .coreStatus {
-    display: none;
-  }
-
-  .heroNode {
-    max-inline-size: 7.75rem;
-    padding: var(--space-2);
-    font-size: var(--font-size-xs);
-  }
-
-  .heroNodeAnswers {
-    inset-block-start: 3%;
-    inset-inline-start: 1%;
-  }
-
-  .heroNodeInterests {
-    inset-block-start: 10%;
-    inset-inline-end: 0;
-  }
-
-  .heroNodeZodiac {
-    inset-block-end: 11%;
-    inset-inline-end: 1%;
-  }
-
-  .heroNodeNumerology {
-    inset-block-end: 3%;
-    inset-inline-start: 2%;
-  }
-
-  .heroNodeVoice {
-    inset-block-start: 48%;
-    inset-inline-start: 0;
-  }
-
-  .sectionLead,
-  .emotionDescription {
-    font-size: var(--font-size-md);
-  }
-
-  .bentoCard {
-    min-block-size: 16rem;
-    padding: var(--space-5);
-  }
-
-  .bentoCard1 {
-    min-block-size: 22rem;
-  }
-
-  .bentoMotif {
-    opacity: 0.78;
-  }
-
-  .processSurface {
-    padding: var(--space-5);
-    border-radius: var(--radius-lg);
-  }
-
-  .processPipeline {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .processPipeline i {
-    display: none;
-  }
-
-  .processPipeline span,
-  .processPipeline strong {
-    min-inline-size: 0;
-    font-size: var(--font-size-xs);
-  }
-
-  .processCard,
-  .layerCard {
-    padding: var(--space-4);
-  }
-
-  .originList {
-    display: grid;
-  }
-
-  .originList li {
-    border-radius: var(--radius-md);
-  }
-
-  .emotionFrame {
-    padding: var(--space-8) var(--space-5);
-    border-radius: var(--radius-lg);
-  }
-
-  .emotionOrbit {
-    inline-size: 15rem;
-  }
-
-  .layerCard {
+  .heroVisual {
     min-block-size: 17rem;
-    grid-template-columns: minmax(0, 1fr);
   }
-
-  .layerCopy {
-    padding-block-start: 4.5rem;
+  .tarotStack {
+    inset-inline-start: 4%;
+    transform: scale(0.8);
   }
-
-  .thematicVisual {
-    inline-size: 8rem;
-    opacity: 0.32;
+  .numberOrbit {
+    inset-inline-end: 3%;
+    transform: scale(0.8);
   }
-
-  .finalFrame {
-    align-items: stretch;
-    padding: var(--space-6) var(--space-5);
-    flex-direction: column;
-    text-align: center;
+  .portraitNode {
+    inset-inline-end: 5%;
+    transform: rotate(12deg) scale(0.8);
   }
 }
-
-@media (min-width: 48rem) {
-  .sectionHeading {
-    grid-template-columns: minmax(0, 0.9fr) minmax(20rem, 1.1fr);
-  }
-
-  .bentoGrid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-
-  .bentoCard1 {
-    grid-column: span 4;
-    grid-row: span 2;
-  }
-
-  .bentoCard2,
-  .bentoCard3 {
-    grid-column: span 2;
-  }
-
-  .bentoCard4 {
-    grid-column: span 3;
-  }
-
-  .bentoCard5 {
-    grid-column: span 3;
-  }
-
-  .processList {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .layerGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .privacyGrid {
-    align-items: center;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  }
-}
-
-@media (min-width: 64rem) {
-  .heroGrid {
-    grid-template-columns: minmax(0, 1.02fr) minmax(25rem, 0.98fr);
-  }
-
-  .bentoGrid {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-  }
-
-  .bentoCard1 {
-    grid-column: span 7;
-  }
-
-  .bentoCard2,
-  .bentoCard3 {
-    grid-column: span 5;
-  }
-
-  .bentoCard4 {
-    grid-column: span 5;
-  }
-
-  .bentoCard5 {
-    grid-column: span 7;
-  }
-
-  .processList {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .layerGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 90rem) {
-  .heroGrid {
-    grid-template-columns: minmax(0, 1.08fr) minmax(30rem, 0.92fr);
-  }
-}
-
-@media (hover: none), (prefers-reduced-motion: reduce) {
-  .bentoCard:hover,
-  .processCard:hover,
-  .layerCard[data-visual]:hover {
-    transform: none;
-  }
-
-  .linkNode,
-  .bentoCard1:hover .linkNode {
-    transform: none;
-  }
-
-  .linkMotif i,
-  .bentoCard1:hover .linkMotif i {
-    opacity: 0.42;
-    scale: 0.72 1;
-  }
-
-  .bentoCard2:hover .layerMotif span {
-    transform: none;
-    animation: none;
-  }
-
-  .bentoCard3:hover .orbitMotif span {
-    transform: rotate(24deg) scaleY(0.62);
-  }
-
-  .bentoCard3:hover .orbitMotif span:nth-child(2) {
-    transform: rotate(-18deg) scaleY(0.72);
-    transition-delay: 0ms;
-  }
-
-  .bentoCard3:hover .orbitMotif i {
-    transform: none;
-  }
-
-  .actionMotif i,
-  .bentoCard4:hover .actionMotif i {
-    scale: 0.72 1;
-  }
-
-  .actionMotif b,
-  .bentoCard4:hover .actionMotif b {
-    opacity: 0.54;
-    transform: rotate(-45deg) scale(0.86);
-  }
-
-  .bentoCard5:hover .depthMotif span,
-  .processCard:hover .processMotif i,
-  .processCard:hover .processMotif b {
-    transform: none;
-  }
-
-  .processPipeline i,
-  .processSurface:has(.processCard:hover) .processPipeline i {
-    opacity: 0.46;
-    scale: 0.56 1;
-  }
-
-  .processMotif {
-    opacity: 0.42;
-  }
-
-  .processCard[data-step='3'] .processMotif b,
-  .processCard[data-step='3']:hover .processMotif b {
-    opacity: 0.46;
-    scale: 0.62 1;
-  }
-
-  .layerCard[data-visual='questions']:hover .answerOptions span:not(.selectedOption),
-  .layerCard[data-visual='interests']:hover .interestCore {
-    transform: none;
-  }
-
-  .layerCard[data-visual='astrology']:hover .astrologyVisual {
-    transform: scale(0.96);
-  }
-
-  .layerCard[data-visual='questions']:hover .selectedOption,
-  .layerCard[data-visual='interests']:hover .interestLinks,
-  .layerCard[data-visual='voice']:hover .voiceWave i,
-  .layerCard[data-visual='numerology']:hover .numerologyVisual span,
-  .layerCard[data-visual='zodiac']:hover .constellationLine,
-  .layerCard[data-visual='astrology']:hover .astrologyVisual > span,
-  .layerCard[data-visual='astrology']:hover .astroOrbit2 i {
-    animation: none;
-  }
-
-  .emotionFrame::after {
-    opacity: 0.28;
-  }
-
-  .finalFrame:has(.finalCta:is(:hover, :focus-visible))::before {
-    opacity: 0.4;
-    transform: rotate(9deg) scaleX(0.78);
-  }
-
-  .finalFrame:has(.finalCta:is(:hover, :focus-visible))::after {
-    opacity: 0.34;
-    transform: rotate(-8deg) scaleX(0.66);
-  }
-
-  .finalFrame:has(.finalCta:is(:hover, :focus-visible)) .ctaArrow {
-    transform: none;
-  }
-}
-
-@media (hover: none) {
-  .root {
-    --motion-card-hover-duration: 0ms;
-    --motion-card-return-duration: 0ms;
-    --motion-detail-reveal-delay: 0ms;
-    --motion-line-draw-duration: 0ms;
-    --motion-layer-shift-distance: 0rem;
-    --motion-surface-lift-distance: 0rem;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .heroContent,
-  .livingPortrait,
-  .heroNode,
-  .connectionLines,
-  .digitalPrint {
-    animation: none;
-  }
-
-  .livingPortrait:hover .heroNode,
-  .bentoCard:hover,
-  .layerCard[data-visual]:hover,
-  .layerCard[data-visual='astrology']:hover .astrologyVisual,
-  .primaryCta:hover .ctaArrow {
-    transform: none;
-  }
-
-  .connectionLines path,
-  .livingPortrait:hover .connectionLines path {
-    opacity: 0.34;
-    stroke-dashoffset: 0;
+  .tarotStack i,
+  .directionCard {
     transition: none;
-    animation: none;
-  }
-
-  .livingPortrait:hover .portraitCore,
-  .livingPortrait:hover .portraitCore::after,
-  .livingPortrait:hover .corePulse {
-    animation: none;
-  }
-
-  .livingPortrait:hover .heroNode,
-  .livingPortrait:hover .nodePoint {
-    transition-delay: 0ms;
-  }
-
-  .portraitCore::after {
-    opacity: 0.2;
-  }
-
-  .bentoCard2:hover .layerMotif span,
-  .layerCard[data-visual='questions']:hover .selectedOption,
-  .layerCard[data-visual='interests']:hover .interestLinks,
-  .layerCard[data-visual='voice']:hover .voiceWave i,
-  .layerCard[data-visual='numerology']:hover .numerologyVisual span,
-  .layerCard[data-visual='zodiac']:hover .constellationLine,
-  .layerCard[data-visual='astrology']:hover .astrologyVisual > span,
-  .layerCard[data-visual='astrology']:hover .astroOrbit2 i {
-    animation: none;
   }
 }

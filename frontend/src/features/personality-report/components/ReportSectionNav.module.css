@@ -1,0 +1,88 @@
+.root {
+  position: sticky;
+  z-index: var(--z-index-dropdown);
+  inset-block-start: 0;
+  padding-block: var(--space-3);
+  background: color-mix(in srgb, var(--color-background) 88%, transparent);
+  backdrop-filter: blur(0.5rem);
+}
+.frame {
+  padding: var(--space-2);
+  border: 0.0625rem solid color-mix(in srgb, var(--color-border) 76%, transparent);
+  border-radius: calc(var(--radius-lg) + var(--space-1));
+  background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  box-shadow: var(--shadow-low);
+}
+.list {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding-inline-end: var(--space-4);
+  scroll-padding-inline: var(--space-2);
+  scroll-snap-type: inline proximity;
+  scrollbar-width: none;
+}
+.list::-webkit-scrollbar {
+  display: none;
+}
+.list a {
+  position: relative;
+  flex: 0 0 auto;
+  min-block-size: 2.75rem;
+  align-content: center;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+  scroll-snap-align: start;
+  transition:
+    color var(--motion-focus-duration) var(--motion-easing-connect),
+    background-color var(--motion-transform-duration) var(--motion-easing-discover);
+}
+.list a::after {
+  position: absolute;
+  inset: auto var(--space-4) 0.3rem;
+  block-size: 0.125rem;
+  border-radius: var(--radius-full);
+  background: var(--color-interactive);
+  content: '';
+  opacity: 0;
+  transform: scaleX(0.3);
+  transition:
+    opacity var(--motion-focus-duration),
+    transform var(--motion-discover-duration) var(--motion-easing-discover);
+}
+.list a[aria-current='location'] {
+  background: color-mix(in srgb, var(--color-interactive) 12%, var(--color-surface));
+  color: var(--color-text);
+}
+.list a[aria-current='location']::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+.list a:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+@media (max-width: 30rem) {
+  .root {
+    inset-block-start: auto;
+    padding-block: var(--space-2);
+  }
+  .frame {
+    margin-inline: calc(-1 * var(--space-2));
+    border-radius: var(--radius-lg);
+  }
+  .list {
+    padding-inline: var(--space-2);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .list a,
+  .list a::after {
+    transition: none;
+  }
+}

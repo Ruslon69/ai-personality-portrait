@@ -1,0 +1,138 @@
+.root {
+  min-block-size: min(47rem, calc(100dvh - 7rem));
+  padding-block: var(--page-hero-padding-block);
+}
+.surface {
+  padding: var(--page-hero-padding);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(
+      circle at 18% 42%,
+      color-mix(in srgb, var(--color-interactive) 12%, transparent),
+      transparent 35%
+    ),
+    var(--page-hero-background);
+  overflow: hidden;
+}
+.grid {
+  display: grid;
+  align-items: center;
+  gap: var(--page-hero-gap);
+}
+.visual {
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  animation: reveal-symbol var(--motion-reveal-duration) var(--motion-easing-discover) 0.08s
+    forwards;
+}
+.content {
+  min-inline-size: 0;
+}
+.title {
+  max-inline-size: 17ch;
+  text-wrap: balance;
+  opacity: 0;
+  transform: translateY(var(--motion-distance-md));
+}
+.lead {
+  max-inline-size: 54ch;
+  opacity: 0;
+}
+.root[data-ready] .title {
+  animation: reveal-copy var(--motion-reveal-duration) var(--motion-easing-discover) forwards;
+}
+.root[data-ready] .lead {
+  animation: reveal-copy var(--motion-reveal-duration) var(--motion-easing-discover) 0.12s forwards;
+}
+.sourceOrbit,
+.traits {
+  display: flex;
+  min-inline-size: 0;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.sourceOrbit span,
+.traits span {
+  padding: var(--space-2) var(--space-3);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  font-size: var(--font-size-sm);
+}
+.sourceOrbit span {
+  opacity: 0;
+  animation: source-arrive var(--motion-connect-duration) var(--motion-easing-discover)
+    var(--source-delay) forwards;
+}
+.traits {
+  opacity: 0;
+}
+.root[data-ready] .traits {
+  animation: reveal-copy var(--motion-reveal-duration) var(--motion-easing-discover) 0.2s forwards;
+}
+.root[data-ready] .content > button {
+  opacity: 0;
+  animation: reveal-copy var(--motion-confirm-duration) var(--motion-easing-discover) 0.5s forwards;
+}
+@keyframes reveal-symbol {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes source-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(var(--motion-distance-sm));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes reveal-copy {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (min-width: 48rem) {
+  .grid {
+    grid-template-columns: minmax(16rem, 0.82fr) minmax(0, 1.18fr);
+  }
+  .visual {
+    order: 0;
+  }
+  .content {
+    order: 1;
+  }
+}
+@media (max-width: 47.99rem) {
+  .root {
+    min-block-size: 0;
+  }
+  .visual :global(svg) {
+    max-inline-size: 10rem;
+  }
+  .title {
+    max-inline-size: 20ch;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .visual,
+  .root[data-ready] .title,
+  .root[data-ready] .lead,
+  .root[data-ready] .traits,
+  .root[data-ready] .content > button,
+  .sourceOrbit span {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}

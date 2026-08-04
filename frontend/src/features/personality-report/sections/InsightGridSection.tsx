@@ -1,7 +1,7 @@
 import { Container, Stack, Typography } from '@shared/ui';
+import type { Insight } from '@entities/personality-profile';
 
-import { ExpandableReportCard } from '../components/ExpandableReportCard';
-import type { ReportCardItem } from '../types';
+import { ExplainCard } from '../components/ExplainCard';
 import styles from './ReportSections.module.css';
 
 type InsightGridSectionProps = {
@@ -9,7 +9,7 @@ type InsightGridSectionProps = {
   eyebrow: string;
   id: string;
   isExpanded: (id: string) => boolean;
-  items: readonly ReportCardItem[];
+  items: readonly Insight[];
   onToggle: (id: string) => void;
   title: string;
 };
@@ -40,12 +40,13 @@ export function InsightGridSection({
           </Stack>
 
           <div className={styles.cardGrid}>
-            {items.map((item) => (
-              <ExpandableReportCard
+            {items.map((item, index) => (
+              <ExplainCard
                 expanded={isExpanded(item.id)}
-                item={item}
+                insight={item}
                 key={item.id}
                 onToggle={onToggle}
+                order={index}
               />
             ))}
           </div>

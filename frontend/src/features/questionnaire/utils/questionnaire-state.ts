@@ -1,18 +1,4 @@
-import type {
-  QuestionnaireAction,
-  QuestionnaireQuestion,
-  QuestionnaireResponses,
-  QuestionnaireState,
-} from '../types';
-
-export function createQuestionnaireState(
-  responses: QuestionnaireResponses = {},
-): QuestionnaireState {
-  return {
-    currentIndex: 0,
-    responses,
-  };
-}
+import type { QuestionnaireQuestion, QuestionnaireResponses } from '../types';
 
 export function updateSelectedOption(
   responses: QuestionnaireResponses,
@@ -20,12 +6,15 @@ export function updateSelectedOption(
   optionId: string,
 ): QuestionnaireResponses {
   const currentOptionIds = responses[question.id]?.optionIds ?? [];
+  const isSelected = currentOptionIds.includes(optionId);
   const optionIds =
     question.type === 'single'
       ? [optionId]
-      : currentOptionIds.includes(optionId)
+      : isSelected
         ? currentOptionIds.filter((currentOptionId) => currentOptionId !== optionId)
-        : [...currentOptionIds, optionId];
+        : question.maxSelections && currentOptionIds.length >= question.maxSelections
+          ? currentOptionIds
+          : [...currentOptionIds, optionId];
 
   return {
     ...responses,
@@ -54,34 +43,6 @@ export function canContinueQuestion(
   responses: QuestionnaireResponses,
 ) {
   return (responses[question.id]?.optionIds.length ?? 0) > 0;
-}
-
-export function questionnaireReducer(
-  state: QuestionnaireState,
-  action: QuestionnaireAction,
-): QuestionnaireState {
-  switch (action.type) {
-    case 'select-option':
-      return {
-        ...state,
-        responses: updateSelectedOption(state.responses, action.question, action.optionId),
-      };
-    case 'skip-question':
-      return {
-        ...state,
-        responses: markQuestionSkipped(state.responses, action.questionId),
-      };
-    case 'next-question':
-      return {
-        ...state,
-        currentIndex: state.currentIndex + 1,
-      };
-    case 'previous-question':
-      return {
-        ...state,
-        currentIndex: Math.max(0, state.currentIndex - 1),
-      };
-  }
 }
 
 export function validateQuestionnaire(questions: readonly QuestionnaireQuestion[]) {

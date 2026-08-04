@@ -2,16 +2,16 @@ import { useEffect } from 'react';
 
 import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
 import { Button, Container, Stack, Typography } from '@shared/ui';
+import type { PersonalityProfile } from '@entities/personality-profile';
 
 import { usePortraitHistory } from '../hooks';
-import type { PortraitHistoryItem } from '../types';
 import { HistoryDeleteDialog } from './HistoryDeleteDialog';
 import { HistoryEmptyState } from './HistoryEmptyState';
 import { HistoryItemCard } from './HistoryItemCard';
 import styles from './PortraitHistory.module.css';
 
 type PortraitHistoryProps = {
-  initialItems: readonly PortraitHistoryItem[];
+  initialItems: readonly PersonalityProfile[];
   onBackToProfile: () => void;
   onCreatePortrait: () => void;
   onOpenPortrait: (portraitId: string) => void;

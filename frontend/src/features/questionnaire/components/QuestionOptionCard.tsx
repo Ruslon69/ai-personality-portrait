@@ -1,4 +1,8 @@
-import type { QuestionOption as QuestionOptionData, QuestionType } from '../types';
+import type {
+  QuestionOption as QuestionOptionData,
+  QuestionPresentation,
+  QuestionType,
+} from '../types';
 import styles from './QuestionOptionCard.module.css';
 
 type QuestionOptionCardProps = {
@@ -6,6 +10,8 @@ type QuestionOptionCardProps = {
   name: string;
   onChange: (optionId: string) => void;
   option: QuestionOptionData;
+  order?: number;
+  presentation: QuestionPresentation;
   type: QuestionType;
 };
 
@@ -14,10 +20,12 @@ export function QuestionOptionCard({
   name,
   onChange,
   option,
+  order,
+  presentation,
   type,
 }: QuestionOptionCardProps) {
   return (
-    <label className={styles.root}>
+    <label className={styles.root} data-presentation={presentation}>
       <input
         checked={checked}
         className={styles.control}
@@ -28,6 +36,11 @@ export function QuestionOptionCard({
       />
       <span aria-hidden="true" className={styles.indicator} />
       <span className={styles.label}>{option.label}</span>
+      {order ? (
+        <span aria-hidden="true" className={styles.order}>
+          {order}
+        </span>
+      ) : null}
     </label>
   );
 }

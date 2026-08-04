@@ -1,4 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
+
+import { useI18n } from '@shared/i18n';
+import { Spinner } from '@shared/ui';
 
 import { resolveRoute } from './routes';
 import styles from './RouterOutlet.module.css';
@@ -6,6 +9,7 @@ import { useRouter } from './useRouter';
 
 export function RouterOutlet() {
   const { currentPath } = useRouter();
+  const { locale } = useI18n();
   const previousPathRef = useRef(currentPath);
   const route = resolveRoute(currentPath);
   const Page = route.component;
@@ -30,7 +34,25 @@ export function RouterOutlet() {
 
   return (
     <div className={styles.route} key={currentPath}>
-      <Page />
+      <Suspense
+        fallback={
+          <div
+            aria-label={
+              locale === 'en'
+                ? 'Loading page'
+                : locale === 'uk'
+                  ? 'Завантаження сторінки'
+                  : 'Загрузка страницы'
+            }
+            className={styles.loading}
+            role="status"
+          >
+            <Spinner />
+          </div>
+        }
+      >
+        <Page />
+      </Suspense>
     </div>
   );
 }

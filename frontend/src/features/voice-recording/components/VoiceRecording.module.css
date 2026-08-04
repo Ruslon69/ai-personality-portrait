@@ -67,6 +67,12 @@
 .signalText {
   color: var(--color-text-muted);
 }
+.skipStatus {
+  min-block-size: 1.5em;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  text-align: end;
+}
 
 .recordingMetrics {
   display: grid;

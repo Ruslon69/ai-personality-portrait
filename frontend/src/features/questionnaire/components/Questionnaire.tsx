@@ -1,25 +1,31 @@
-import { useEffect, useId, useRef } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 
 import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
-import { Button, Card, Container, Progress, Stack, Typography } from '@shared/ui';
+import { useI18n } from '@shared/i18n';
+import { Button, Card, Container, Stack, Typography } from '@shared/ui';
 
 import { useQuestionnaire } from '../hooks';
+import { questionnaireCopy } from '../data';
 import type { QuestionnaireQuestion, QuestionnaireResponses } from '../types';
 import { QuestionOptionCard } from './QuestionOptionCard';
+import { PortraitProgress } from './PortraitProgress';
+import { QuestionScene } from './QuestionScene';
 import styles from './Questionnaire.module.css';
 
 type QuestionnaireProps = {
-  initialResponses?: QuestionnaireResponses;
+  initialIndex?: number;
   onComplete: (responses: QuestionnaireResponses) => void;
-  onResponsesChange?: (responses: QuestionnaireResponses) => void;
+  onResponsesChange: (responses: QuestionnaireResponses) => void;
   questions: readonly QuestionnaireQuestion[];
+  responses: QuestionnaireResponses;
 };
 
 export function Questionnaire({
-  initialResponses,
+  initialIndex,
   onComplete,
   onResponsesChange,
   questions,
+  responses,
 }: QuestionnaireProps) {
   const {
     canContinue,
@@ -29,18 +35,22 @@ export function Questionnaire({
     currentResponse,
     isFirstQuestion,
     previousQuestion,
-    progressValue,
     selectOption,
     skipQuestion,
   } = useQuestionnaire({
-    initialResponses,
     onComplete,
+    initialIndex,
     onResponsesChange,
     questions,
+    responses,
   });
   const previousQuestionIdRef = useRef(currentQuestion?.id);
+  const { locale } = useI18n();
+  const copy = questionnaireCopy[locale];
   const instanceId = useId();
   const questionTitleId = `${instanceId}-question-title`;
+  const confirmationTimerRef = useRef<number | null>(null);
+  const [confirming, setConfirming] = useState(false);
 
   useEffect(() => {
     if (!currentQuestion || previousQuestionIdRef.current === currentQuestion.id) {
@@ -51,6 +61,13 @@ export function Questionnaire({
     return focusElementByIdOnNextFrame(questionTitleId);
   }, [currentQuestion, questionTitleId]);
 
+  useEffect(
+    () => () => {
+      if (confirmationTimerRef.current !== null) window.clearTimeout(confirmationTimerRef.current);
+    },
+    [],
+  );
+
   if (!currentQuestion) {
     return null;
   }
@@ -59,6 +76,23 @@ export function Questionnaire({
   const questionDescriptionId = `${instanceId}-question-description`;
   const selectionHintId = `${instanceId}-selection-hint`;
   const isMultiple = currentQuestion.type === 'multiple';
+  const answeredCount = Object.values(responses).filter(
+    (response) => !response.skipped && response.optionIds.length > 0,
+  ).length;
+  const checkpointIndex = [4, 8, 12, questions.length].indexOf(answeredCount);
+  const checkpoint = checkpointIndex >= 0 ? copy.checkpoints[checkpointIndex] : null;
+  const reaction =
+    selectedOptionIds.length > 0 ? copy.reactions[currentIndex % copy.reactions.length] : null;
+  const categoryLabel = copy.category[currentQuestion.category] ?? currentQuestion.category;
+  const continueAfterConfirmation = () => {
+    if (!canContinue || confirming) return;
+    setConfirming(true);
+    const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 380;
+    confirmationTimerRef.current = window.setTimeout(() => {
+      setConfirming(false);
+      continueQuestionnaire();
+    }, delay);
+  };
 
   return (
     <section aria-labelledby={questionTitleId} className={styles.root}>
@@ -67,21 +101,39 @@ export function Questionnaire({
           <Stack className={styles.progressBlock} gap="sm">
             <Stack align="center" direction="row" justify="between">
               <Typography as="span" className={styles.stepLabel} variant="caption">
-                Шаг {currentIndex + 1} из {questions.length}
+                {copy.progress(currentIndex + 1, questions.length)}
               </Typography>
               <Typography as="span" variant="caption">
-                {currentQuestion.required ? 'Обязательный вопрос' : 'Можно пропустить'}
+                {currentQuestion.required ? copy.required : copy.optional}
               </Typography>
             </Stack>
-            <Progress
-              aria-label={`Текущий вопрос: ${currentIndex + 1} из ${questions.length}`}
-              max={questions.length}
-              value={progressValue}
+            <PortraitProgress
+              currentLabel={copy.building(categoryLabel)}
+              label={copy.progress(currentIndex + 1, questions.length)}
+              remainingLabel={copy.remaining(Math.max(0, questions.length - answeredCount))}
+              total={questions.length}
+              value={answeredCount}
             />
           </Stack>
 
-          <Card className={styles.questionCard} key={currentQuestion.id}>
+          {checkpoint ? (
+            <div aria-label={copy.checkpointAria} className={styles.checkpoint} role="note">
+              <span aria-hidden="true" className={styles.checkpointMark} />
+              <Typography>{checkpoint}</Typography>
+            </div>
+          ) : null}
+
+          <Card
+            className={styles.questionCard}
+            data-confirming={confirming || undefined}
+            key={currentQuestion.id}
+          >
             <Stack gap="lg">
+              <QuestionScene
+                active={selectedOptionIds.length > 0}
+                category={currentQuestion.category}
+                questionId={currentQuestion.id}
+              />
               <Stack gap="sm">
                 <Typography
                   as="h1"
@@ -106,9 +158,10 @@ export function Questionnaire({
                     : selectionHintId
                 }
                 className={styles.optionGroup}
+                data-presentation={currentQuestion.presentation}
               >
                 <legend className={styles.visuallyHidden}>
-                  Варианты ответа на вопрос: {currentQuestion.title}
+                  {copy.optionsLegend(currentQuestion.title)}
                 </legend>
                 {currentQuestion.options.map((option) => (
                   <QuestionOptionCard
@@ -117,6 +170,12 @@ export function Questionnaire({
                     name={currentQuestion.id}
                     onChange={selectOption}
                     option={option}
+                    order={
+                      currentQuestion.presentation === 'ranked'
+                        ? selectedOptionIds.indexOf(option.id) + 1 || undefined
+                        : undefined
+                    }
+                    presentation={currentQuestion.presentation}
                     type={currentQuestion.type}
                   />
                 ))}
@@ -128,31 +187,32 @@ export function Questionnaire({
                 id={selectionHintId}
                 variant="caption"
               >
-                {selectedOptionIds.length > 0
-                  ? isMultiple
-                    ? `Выбрано вариантов: ${selectedOptionIds.length}`
-                    : 'Ответ выбран'
-                  : isMultiple
-                    ? 'Выберите один или несколько вариантов'
-                    : 'Выберите один вариант'}
+                {confirming
+                  ? copy.confirming
+                  : (reaction ??
+                    (selectedOptionIds.length > 0 && isMultiple
+                      ? copy.selected(selectedOptionIds.length)
+                      : isMultiple
+                        ? copy.selectMultiple
+                        : copy.selectOne))}
               </Typography>
 
               <div className={styles.actions}>
                 <Button disabled={isFirstQuestion} onClick={previousQuestion}>
-                  Назад
+                  {copy.back}
                 </Button>
                 <div className={styles.forwardActions}>
                   {currentQuestion.allowSkip && !currentQuestion.required ? (
-                    <Button onClick={skipQuestion}>Пропустить</Button>
+                    <Button onClick={skipQuestion}>{copy.skip}</Button>
                   ) : null}
                   <Button
                     aria-describedby={selectionHintId}
-                    disabled={!canContinue}
-                    onClick={continueQuestionnaire}
+                    disabled={!canContinue || confirming}
+                    onClick={continueAfterConfirmation}
                     prominence="primary"
                     size="large"
                   >
-                    Продолжить
+                    {copy.continue}
                   </Button>
                 </div>
               </div>

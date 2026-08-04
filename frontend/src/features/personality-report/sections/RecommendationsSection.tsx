@@ -1,12 +1,12 @@
 import { Container, Stack, Typography } from '@shared/ui';
+import type { PersonalityRecommendation } from '@entities/personality-profile';
 
-import { ExpandableReportCard } from '../components/ExpandableReportCard';
-import type { ReportRecommendation } from '../types';
+import { ExplainCard } from '../components/ExplainCard';
 import styles from './ReportSections.module.css';
 
 type RecommendationsSectionProps = {
   isExpanded: (id: string) => boolean;
-  items: readonly ReportRecommendation[];
+  items: readonly PersonalityRecommendation[];
   onToggle: (id: string) => void;
 };
 
@@ -32,13 +32,14 @@ export function RecommendationsSection({
           </Stack>
 
           <div className={styles.recommendationGrid}>
-            {items.map((item) => (
-              <ExpandableReportCard
+            {items.map((item, index) => (
+              <ExplainCard
                 badge={item.actionLabel}
                 expanded={isExpanded(item.id)}
-                item={item}
+                insight={item}
                 key={item.id}
                 onToggle={onToggle}
+                order={index}
               />
             ))}
           </div>

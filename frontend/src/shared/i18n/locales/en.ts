@@ -38,9 +38,12 @@ export const en = {
   navigation: {
     compatibility: 'Compatibility',
     home: 'Home',
+    myPath: 'My Path',
+    numerology: 'Numerology',
     portrait: 'Portrait',
-    profile: 'Profile',
+    profile: 'Journey',
     settings: 'Settings',
+    tarot: 'Tarot',
   },
   system: {
     compatibility: {
@@ -231,7 +234,7 @@ export const en = {
         },
         {
           badge: 'In your control',
-          description: 'Voice can be skipped, and the original recording is deleted by default.',
+          description: 'Date and interpretive layers are added only when you choose them.',
           label: 'Privacy',
           title: 'Optional stays optional',
         },
@@ -258,7 +261,7 @@ export const en = {
           title: 'Your answers',
         },
         {
-          description: 'Interests, birth date and voice — only when you choose them.',
+          description: 'Interests, birth date, numerology and zodiac — only when you choose them.',
           title: 'Optional layers',
         },
         {
@@ -274,7 +277,7 @@ export const en = {
     },
     privacy: {
       description:
-        'Voice is optional. The original recording is deleted after analysis by default unless you explicitly choose to keep it.',
+        'Every additional interpretive layer is optional and clearly separated from answer-based observations.',
       eyebrow: 'A clear word on data',
       title: 'You decide which layers to include',
     },

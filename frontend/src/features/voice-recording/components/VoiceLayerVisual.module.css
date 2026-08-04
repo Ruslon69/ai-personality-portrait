@@ -1,0 +1,74 @@
+.root {
+  position: relative;
+  display: grid;
+  min-block-size: 8rem;
+  place-items: center;
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--color-interactive) 10%, transparent),
+      transparent 35%
+    ),
+    var(--surface-accent-subtle);
+  overflow: hidden;
+}
+.wave {
+  z-index: 2;
+  display: flex;
+  block-size: 4rem;
+  align-items: center;
+  gap: 0.25rem;
+}
+.wave i {
+  inline-size: 0.2rem;
+  block-size: 3.4rem;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-interactive) 72%, var(--color-border));
+  transform: scaleY(var(--bar-level));
+  transform-origin: center;
+  transition:
+    transform var(--motion-focus-duration) var(--motion-easing-connect),
+    opacity var(--motion-focus-duration);
+}
+.root[data-status='recording'] .wave i {
+  opacity: 0.92;
+}
+.root[data-status='valid'] .wave {
+  transform: skewX(-7deg);
+  transition: transform var(--motion-complete-duration) var(--motion-easing-discover);
+}
+.core {
+  position: absolute;
+  inline-size: 1rem;
+  aspect-ratio: 1;
+  border: 0.12rem solid var(--color-interactive);
+  border-radius: 50%;
+  background: var(--color-surface);
+}
+.orbit {
+  position: absolute;
+  inline-size: 6.5rem;
+  aspect-ratio: 1;
+  border: 0.0625rem dashed color-mix(in srgb, var(--color-interactive) 38%, transparent);
+  border-radius: 50%;
+  opacity: 0.35;
+  transform: scale(0.72);
+  transition:
+    transform var(--motion-assemble-duration) var(--motion-easing-discover),
+    opacity var(--motion-confirm-duration);
+}
+.root[data-status='recording'] .orbit,
+.root[data-status='valid'] .orbit {
+  opacity: 0.7;
+  transform: scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .wave i,
+  .root[data-status='valid'] .wave,
+  .orbit {
+    transition: none;
+    transform: none;
+  }
+}

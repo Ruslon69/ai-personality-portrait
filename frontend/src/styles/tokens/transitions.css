@@ -18,6 +18,22 @@
   --motion-glow-opacity: 16%;
   --motion-interaction-easing: cubic-bezier(0.16, 1, 0.3, 1);
 
+  /* Product-wide semantic motion patterns. */
+  --motion-reveal-duration: 680ms;
+  --motion-connect-duration: 520ms;
+  --motion-assemble-duration: 620ms;
+  --motion-transform-duration: 440ms;
+  --motion-confirm-duration: 380ms;
+  --motion-discover-duration: 560ms;
+  --motion-focus-duration: 180ms;
+  --motion-complete-duration: 720ms;
+  --motion-return-duration: 240ms;
+  --motion-restore-duration: 460ms;
+  --motion-distance-sm: 0.25rem;
+  --motion-distance-md: 0.75rem;
+  --motion-easing-discover: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-easing-connect: cubic-bezier(0.4, 0, 0.2, 1);
+
   /* Compatibility aliases for existing marketing motifs. */
   --motion-detail-drift-duration: var(--motion-card-hover-duration);
   --motion-orbit-reveal-duration: var(--motion-card-hover-duration);
@@ -48,5 +64,17 @@
     --motion-choice-confirm-duration: 0ms;
     --motion-interest-connect-duration: 0ms;
     --motion-voice-trace-duration: 0ms;
+    --motion-reveal-duration: 0ms;
+    --motion-connect-duration: 0ms;
+    --motion-assemble-duration: 0ms;
+    --motion-transform-duration: 0ms;
+    --motion-confirm-duration: 0ms;
+    --motion-discover-duration: 0ms;
+    --motion-focus-duration: 0ms;
+    --motion-complete-duration: 0ms;
+    --motion-return-duration: 0ms;
+    --motion-restore-duration: 0ms;
+    --motion-distance-sm: 0rem;
+    --motion-distance-md: 0rem;
   }
 }

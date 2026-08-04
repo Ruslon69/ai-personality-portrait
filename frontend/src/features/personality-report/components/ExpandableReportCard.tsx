@@ -1,13 +1,21 @@
 import { Badge, Button, Card, Stack, Typography } from '@shared/ui';
+import type { ProfileLocale } from '@entities/personality-profile';
 
-import type { ReportCardItem } from '../types';
 import styles from './ExpandableReportCard.module.css';
+
+type ExpandableReportContent = {
+  description: string;
+  details: string;
+  id: string;
+  title: string;
+};
 
 type ExpandableReportCardProps = {
   badge?: string;
   className?: string;
   expanded: boolean;
-  item: ReportCardItem;
+  item: ExpandableReportContent;
+  locale?: ProfileLocale;
   onToggle: (id: string) => void;
   variant?: 'default' | 'featured';
 };
@@ -17,9 +25,16 @@ export function ExpandableReportCard({
   className,
   expanded,
   item,
+  locale = 'ru',
   onToggle,
   variant = 'default',
 }: ExpandableReportCardProps) {
+  const labels =
+    locale === 'en'
+      ? { collapse: 'Collapse', more: 'Details' }
+      : locale === 'uk'
+        ? { collapse: 'Згорнути', more: 'Докладніше' }
+        : { collapse: 'Свернуть', more: 'Подробнее' };
   const titleId = `${item.id}-title`;
   const detailsId = `${item.id}-details`;
   const classes = [styles.card, className].filter(Boolean).join(' ');
@@ -40,7 +55,7 @@ export function ExpandableReportCard({
           >
             {item.title}
           </Typography>
-          <Typography className={styles.summary}>{item.summary}</Typography>
+          <Typography className={styles.summary}>{item.description}</Typography>
         </Stack>
 
         <div
@@ -61,7 +76,7 @@ export function ExpandableReportCard({
           onClick={() => onToggle(item.id)}
           prominence="quiet"
         >
-          {expanded ? 'Свернуть' : 'Подробнее'}
+          {expanded ? labels.collapse : labels.more}
         </Button>
       </Stack>
     </Card>

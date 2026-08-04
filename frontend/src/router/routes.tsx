@@ -1,3 +1,5 @@
+import { ROUTES } from '@shared/config';
+
 import {
   BirthDatePage,
   CompatibilityPage,
@@ -6,19 +8,29 @@ import {
   HistoryPage,
   HomePage,
   NotFoundPage,
+  NumerologyPage,
+  NumerologyProfilePage,
+  NumerologyResultPage,
   PortraitPage,
   ProfilePage,
   QuestionsPage,
   ResultPreviewPage,
   SettingsPage,
+  TarotPage,
+  TarotReadingPage,
+  TarotResultPage,
   VoicePage,
-} from '@pages';
-import { ROUTES } from '@shared/config';
-
+} from './lazy-pages';
 import type { AppRoute } from './RouterProvider.types';
 
 export const appRoutes: readonly AppRoute[] = [
   { component: HomePage, path: ROUTES.home },
+  { component: TarotPage, path: ROUTES.tarot },
+  { component: TarotReadingPage, path: ROUTES.tarotReading },
+  { component: TarotResultPage, path: ROUTES.tarotResult },
+  { component: NumerologyPage, path: ROUTES.numerology },
+  { component: NumerologyProfilePage, path: ROUTES.numerologyProfile },
+  { component: NumerologyResultPage, path: ROUTES.numerologyResult },
   { component: PortraitPage, path: ROUTES.portrait },
   { component: QuestionsPage, path: ROUTES.portraitQuestions },
   { component: VoicePage, path: ROUTES.portraitVoice },

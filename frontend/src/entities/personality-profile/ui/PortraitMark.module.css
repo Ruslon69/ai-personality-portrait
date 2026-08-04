@@ -1,0 +1,97 @@
+.root {
+  display: block;
+  inline-size: 100%;
+  max-inline-size: 14rem;
+  aspect-ratio: 1;
+  color: var(--color-interactive);
+  overflow: visible;
+}
+.root[data-size='sm'] {
+  max-inline-size: 4.5rem;
+}
+.root[data-size='lg'] {
+  max-inline-size: 18rem;
+}
+.root[data-accent='calm'] {
+  color: var(--color-feedback-info);
+}
+.root[data-accent='connected'] {
+  color: var(--color-feedback-success);
+}
+.root[data-accent='focused'] {
+  color: var(--color-feedback-warning);
+}
+.orbits {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.65;
+  opacity: 0.28;
+  transform: rotate(var(--mark-rotation));
+  transform-origin: center;
+}
+.connections {
+  fill: none;
+  stroke: currentColor;
+  stroke-dasharray: 3 2;
+  stroke-width: 0.75;
+  opacity: 0.38;
+}
+.nodes {
+  fill: currentColor;
+  opacity: 0.72;
+}
+.core path {
+  fill: color-mix(in srgb, currentColor 14%, var(--color-surface));
+  stroke: currentColor;
+  stroke-width: 1.1;
+}
+.core circle {
+  fill: currentColor;
+}
+.signature {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1;
+  opacity: 0;
+}
+.root[data-motif='route'] .signature,
+.root[data-motif='rhythm'] .signature,
+.root[data-motif='grid'] .signature,
+.root[data-motif='freeform'] .signature {
+  opacity: 0.48;
+}
+.root[data-motif='pulse'] .core circle {
+  transform-origin: center;
+  transform: scale(1.18);
+}
+.root:hover .connections,
+.root:focus-visible .connections {
+  animation: mark-connect var(--motion-connect-duration) var(--motion-easing-discover) both;
+}
+.root:hover .core,
+.root:focus-visible .core {
+  transform: scale(1.04);
+  transform-origin: center;
+}
+@keyframes mark-connect {
+  from {
+    opacity: 0.12;
+    stroke-dashoffset: 10;
+  }
+  to {
+    opacity: 0.58;
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .root:hover .connections,
+  .root:focus-visible .connections {
+    animation: none;
+  }
+  .root:hover .core,
+  .root:focus-visible .core {
+    transform: none;
+  }
+}

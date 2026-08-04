@@ -51,8 +51,21 @@
   gap: var(--space-4);
 }
 
+.cardGrid > *,
+.twoColumnGrid > *,
+.recommendationGrid > *,
+.sourceGrid > * {
+  min-inline-size: 0;
+}
+
+.cardGrid > [data-expanded='true'],
+.twoColumnGrid > [data-expanded='true'],
+.recommendationGrid > [data-expanded='true'] {
+  grid-column: 1 / -1;
+}
+
 .cardGrid {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 23rem), 1fr));
 }
 
 .narrativeSurface,
@@ -66,7 +79,7 @@
 }
 
 .recommendationGrid {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 23rem), 1fr));
 }
 
 .sourcesSection {
@@ -96,9 +109,12 @@
 }
 
 @media (min-width: 48rem) {
-  .twoColumnGrid,
-  .sourceGrid {
+  .twoColumnGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sourceGrid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
   }
 }
 

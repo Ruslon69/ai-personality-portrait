@@ -1,9 +1,8 @@
 export type {
   QuestionOption,
-  QuestionnaireAction,
   QuestionnaireQuestion,
+  QuestionPresentation,
   QuestionnaireResponses,
-  QuestionnaireState,
   QuestionResponse,
   QuestionType,
 } from './questionnaire';

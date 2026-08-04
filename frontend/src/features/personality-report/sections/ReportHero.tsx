@@ -17,7 +17,7 @@ export function ReportHero({ createdAt, greeting, introduction, onShare }: Repor
         <Surface className={styles.heroSurface} elevation="low">
           <div className={styles.heroGrid}>
             <Stack align="start" gap="lg">
-              <Badge tone="info">Демонстрационный портрет</Badge>
+              <Badge tone="info">Персональный портрет</Badge>
               <Stack gap="sm">
                 <Typography
                   as="h1"
@@ -46,7 +46,7 @@ export function ReportHero({ createdAt, greeting, introduction, onShare }: Repor
                   <time dateTime={createdAt}>{formatReportDate(createdAt)}</time>
                 </Typography>
                 <Typography className={styles.muted} variant="caption">
-                  Локальные демонстрационные данные
+                  Создан на основе выбранных источников
                 </Typography>
               </Stack>
             </Surface>

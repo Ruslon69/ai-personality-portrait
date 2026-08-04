@@ -1,0 +1,129 @@
+.root {
+  position: relative;
+  min-block-size: 6rem;
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-interactive) 4%, var(--color-surface));
+  overflow: hidden;
+  pointer-events: none;
+}
+.core,
+.element,
+.path {
+  position: absolute;
+  display: block;
+  transition:
+    transform var(--motion-transform-duration) var(--motion-easing-discover),
+    opacity var(--motion-confirm-duration) var(--motion-easing-connect),
+    border-color var(--motion-focus-duration);
+}
+.core {
+  inset: 50% auto auto 50%;
+  inline-size: 1.15rem;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border: 0.15rem solid var(--color-interactive);
+  border-radius: 50%;
+  background: var(--color-surface);
+}
+.element {
+  inline-size: 2.6rem;
+  block-size: 1.4rem;
+  border: 0.0625rem solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+.element[data-element='1'] {
+  inset: 18% auto auto 14%;
+}
+.element[data-element='2'] {
+  inset: 58% 12% auto auto;
+}
+.element[data-element='3'] {
+  inset: 16% 18% auto auto;
+}
+.path {
+  block-size: 0.1rem;
+  inline-size: 28%;
+  background: color-mix(in srgb, var(--color-interactive) 48%, transparent);
+  transform-origin: left;
+}
+.path[data-path='1'] {
+  inset: 37% auto auto 29%;
+  rotate: 10deg;
+}
+.path[data-path='2'] {
+  inset: 62% auto auto 43%;
+  rotate: -12deg;
+}
+.root[data-scene='communication'] .element {
+  border-radius: var(--radius-lg);
+}
+.root[data-scene='communication'] .element::after {
+  position: absolute;
+  inset: auto auto -0.35rem 0.55rem;
+  inline-size: 0.55rem;
+  aspect-ratio: 1;
+  background: inherit;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  content: '';
+}
+.root[data-scene='uncertainty'] .path:first-of-type {
+  rotate: 28deg;
+}
+.root[data-scene='uncertainty'] .path:last-of-type {
+  rotate: -28deg;
+}
+.root[data-scene='energy'] .element {
+  inline-size: 0.65rem;
+  block-size: 2.6rem;
+  border-radius: var(--radius-full);
+}
+.root[data-scene='pressure'] .element {
+  inline-size: 0.7rem;
+  block-size: 0.7rem;
+  border-radius: 50%;
+}
+.root[data-scene='completion'] .element {
+  border-radius: 50%;
+  background: transparent;
+}
+.root[data-scene='feedback'] .core {
+  border-radius: var(--radius-sm);
+  rotate: 45deg;
+}
+.root[data-active] .core {
+  transform: scale(1.18);
+  box-shadow: 0 0 0 0.65rem color-mix(in srgb, var(--color-interactive) 10%, transparent);
+}
+.root[data-active] .element[data-element='1'] {
+  transform: translate(0.45rem, 0.3rem);
+}
+.root[data-active] .element[data-element='2'] {
+  transform: translate(-0.45rem, -0.25rem);
+}
+.root[data-active] .element[data-element='3'] {
+  border-color: var(--color-interactive);
+  transform: translate(-0.25rem, 0.4rem);
+}
+.root[data-active] .path {
+  opacity: 0.9;
+  transform: scaleX(1.12);
+}
+@media (max-width: 30rem) {
+  .root {
+    min-block-size: 4.75rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .core,
+  .element,
+  .path {
+    transition: none;
+  }
+  .root[data-active] .core,
+  .root[data-active] .element,
+  .root[data-active] .path {
+    transform: none;
+  }
+}

@@ -1,5 +1,6 @@
 export * from './birth-date';
 export * from './language-switcher';
+export * from './journey';
 export * from './personality-report';
 export * from './portrait-history';
 export * from './portrait-generation';
@@ -9,3 +10,6 @@ export * from './theme-switcher';
 export * from './user-profile';
 export * from './user-settings';
 export * from './voice-recording';
+export * from './personality-analysis';
+export * from './numerology';
+export * from './tarot';

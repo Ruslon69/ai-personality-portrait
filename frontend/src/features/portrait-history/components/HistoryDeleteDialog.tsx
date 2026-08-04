@@ -1,10 +1,10 @@
 import { Button, Modal, Stack, Typography } from '@shared/ui';
+import type { PersonalityProfile } from '@entities/personality-profile';
 
-import type { PortraitHistoryItem } from '../types';
 import styles from './PortraitHistory.module.css';
 
 type HistoryDeleteDialogProps = {
-  item: PortraitHistoryItem | null;
+  item: PersonalityProfile | null;
   onCancel: () => void;
   onConfirm: () => void;
 };

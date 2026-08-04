@@ -1,38 +1,27 @@
-import { useCallback, useEffect, useReducer } from 'react';
+import { useCallback, useState } from 'react';
 
 import type { QuestionnaireQuestion, QuestionnaireResponses } from '../types';
-import {
-  canContinueQuestion,
-  createQuestionnaireState,
-  markQuestionSkipped,
-  questionnaireReducer,
-} from '../utils';
+import { canContinueQuestion, markQuestionSkipped, updateSelectedOption } from '../utils';
 
 type UseQuestionnaireOptions = {
-  initialResponses?: QuestionnaireResponses;
+  initialIndex?: number;
   onComplete: (responses: QuestionnaireResponses) => void;
-  onResponsesChange?: (responses: QuestionnaireResponses) => void;
+  onResponsesChange: (responses: QuestionnaireResponses) => void;
   questions: readonly QuestionnaireQuestion[];
+  responses: QuestionnaireResponses;
 };
 
-const emptyResponses: QuestionnaireResponses = {};
-
 export function useQuestionnaire({
-  initialResponses = emptyResponses,
   onComplete,
   onResponsesChange,
   questions,
+  responses,
+  initialIndex = 0,
 }: UseQuestionnaireOptions) {
-  const [state, dispatch] = useReducer(
-    questionnaireReducer,
-    initialResponses,
-    createQuestionnaireState,
+  const [currentIndex, setCurrentIndex] = useState(() =>
+    Math.min(Math.max(0, initialIndex), Math.max(0, questions.length - 1)),
   );
-  const currentQuestion = questions[state.currentIndex];
-
-  useEffect(() => {
-    onResponsesChange?.(state.responses);
-  }, [onResponsesChange, state.responses]);
+  const currentQuestion = questions[currentIndex];
 
   const selectOption = useCallback(
     (optionId: string) => {
@@ -40,57 +29,53 @@ export function useQuestionnaire({
         return;
       }
 
-      dispatch({
-        optionId,
-        question: currentQuestion,
-        type: 'select-option',
-      });
+      onResponsesChange(updateSelectedOption(responses, currentQuestion, optionId));
     },
-    [currentQuestion],
+    [currentQuestion, onResponsesChange, responses],
   );
 
   const continueQuestionnaire = useCallback(() => {
-    if (!currentQuestion || !canContinueQuestion(currentQuestion, state.responses)) {
+    if (!currentQuestion || !canContinueQuestion(currentQuestion, responses)) {
       return;
     }
 
-    if (state.currentIndex === questions.length - 1) {
-      onComplete(state.responses);
+    if (currentIndex === questions.length - 1) {
+      onComplete(responses);
       return;
     }
 
-    dispatch({ type: 'next-question' });
-  }, [currentQuestion, onComplete, questions.length, state.currentIndex, state.responses]);
+    setCurrentIndex((index) => index + 1);
+  }, [currentIndex, currentQuestion, onComplete, questions.length, responses]);
 
   const skipQuestion = useCallback(() => {
     if (!currentQuestion || currentQuestion.required || !currentQuestion.allowSkip) {
       return;
     }
 
-    const nextResponses = markQuestionSkipped(state.responses, currentQuestion.id);
-    dispatch({ questionId: currentQuestion.id, type: 'skip-question' });
+    const nextResponses = markQuestionSkipped(responses, currentQuestion.id);
+    onResponsesChange(nextResponses);
 
-    if (state.currentIndex === questions.length - 1) {
+    if (currentIndex === questions.length - 1) {
       onComplete(nextResponses);
       return;
     }
 
-    dispatch({ type: 'next-question' });
-  }, [currentQuestion, onComplete, questions.length, state.currentIndex, state.responses]);
+    setCurrentIndex((index) => index + 1);
+  }, [currentIndex, currentQuestion, onComplete, onResponsesChange, questions.length, responses]);
 
   const previousQuestion = useCallback(() => {
-    dispatch({ type: 'previous-question' });
+    setCurrentIndex((index) => Math.max(0, index - 1));
   }, []);
 
   return {
-    canContinue: currentQuestion ? canContinueQuestion(currentQuestion, state.responses) : false,
-    currentIndex: state.currentIndex,
+    canContinue: currentQuestion ? canContinueQuestion(currentQuestion, responses) : false,
+    currentIndex,
     currentQuestion,
-    currentResponse: currentQuestion ? state.responses[currentQuestion.id] : undefined,
-    isFirstQuestion: state.currentIndex === 0,
-    isLastQuestion: state.currentIndex === questions.length - 1,
-    progressValue: state.currentIndex + 1,
-    responses: state.responses,
+    currentResponse: currentQuestion ? responses[currentQuestion.id] : undefined,
+    isFirstQuestion: currentIndex === 0,
+    isLastQuestion: currentIndex === questions.length - 1,
+    progressValue: currentIndex + 1,
+    responses,
     continueQuestionnaire,
     previousQuestion,
     selectOption,

@@ -1,17 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 
-import {
-  GENERATION_COMPLETION_DELAY_MS,
-  GENERATION_STAGE_DURATION_MS,
-  generationStages,
-} from '../config';
+import { GENERATION_COMPLETION_DELAY_MS, GENERATION_STAGE_DURATION_MS } from '../config';
 import { getNextGenerationStageIndex } from '../utils';
 
 type UsePortraitGenerationOptions = {
   onComplete: () => void;
+  stages: readonly import('../types').GenerationStage[];
 };
 
-export function usePortraitGeneration({ onComplete }: UsePortraitGenerationOptions) {
+export function usePortraitGeneration({ onComplete, stages }: UsePortraitGenerationOptions) {
   const [currentStageIndex, setCurrentStageIndex] = useState(0);
   const onCompleteRef = useRef(onComplete);
 
@@ -20,7 +17,7 @@ export function usePortraitGeneration({ onComplete }: UsePortraitGenerationOptio
   }, [onComplete]);
 
   useEffect(() => {
-    const isLastStage = currentStageIndex === generationStages.length - 1;
+    const isLastStage = currentStageIndex === stages.length - 1;
     const timeout = window.setTimeout(
       () => {
         if (isLastStage) {
@@ -28,20 +25,18 @@ export function usePortraitGeneration({ onComplete }: UsePortraitGenerationOptio
           return;
         }
 
-        setCurrentStageIndex((current) =>
-          getNextGenerationStageIndex(current, generationStages.length),
-        );
+        setCurrentStageIndex((current) => getNextGenerationStageIndex(current, stages.length));
       },
       isLastStage ? GENERATION_COMPLETION_DELAY_MS : GENERATION_STAGE_DURATION_MS,
     );
 
     return () => window.clearTimeout(timeout);
-  }, [currentStageIndex]);
+  }, [currentStageIndex, stages.length]);
 
   return {
-    currentStage: generationStages[currentStageIndex],
+    currentStage: stages[currentStageIndex],
     currentStageIndex,
     progressValue: currentStageIndex + 1,
-    stages: generationStages,
+    stages,
   };
 }

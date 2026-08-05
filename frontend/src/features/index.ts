@@ -13,3 +13,5 @@ export * from './voice-recording';
 export * from './personality-analysis';
 export * from './numerology';
 export * from './tarot';
+export * from './expert-interpretation';
+export * from './product-storage';

@@ -1,0 +1,42 @@
+import type { AuthorialVoiceContract } from '../../types';
+
+export const AUTHORIAL_VOICE: AuthorialVoiceContract = {
+  address: 'second-person-singular',
+  allowedProductTerms: [
+    'твоя трактовка',
+    'твой расклад',
+    'персональная трактовка',
+    'твой путь',
+    'текущая тема',
+    'эта карта',
+    'этот период',
+    'можно обратить внимание',
+    'одна из возможных тем',
+  ],
+  forbiddenTerms: [
+    'AI',
+    'алгоритм',
+    'гарантированно',
+    'диагноз',
+    'искусственный интеллект',
+    'клиент',
+    'обязательно произойдёт',
+    'отчёт',
+    'пользователь',
+    'профессиональный таролог',
+    'результат анализа',
+    'специалист провёл',
+    'судьба решена',
+    'точное предсказание',
+  ],
+  principles: [
+    'calm',
+    'confident',
+    'respectful',
+    'modern',
+    'atmospheric',
+    'uncertainty-aware',
+    'gender-neutral',
+  ],
+  version: 'authorial-voice-v1',
+};

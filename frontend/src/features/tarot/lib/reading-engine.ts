@@ -8,6 +8,7 @@ import type {
   TarotReading,
   TarotReadingContext,
 } from '../types';
+import { createExpertInterpretationForTarot } from './expert-interpretation-adapter';
 import { stableHash } from './seeded-shuffle';
 
 function focusAnswer(context: TarotReadingContext) {
@@ -195,5 +196,6 @@ export function createTarotReading(
           : `${spread.title.ru} связывает ${cards.map((card) => card.name.ru).join(', ')} в один контекстный рисунок.`,
     practicalFocus: interpretations[0]?.practicalTheme ?? leading.advice[locale],
     interpretations,
+    expertInterpretation: createExpertInterpretationForTarot(context, selections, createdAt),
   };
 }

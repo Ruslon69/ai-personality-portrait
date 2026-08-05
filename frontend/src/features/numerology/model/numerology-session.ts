@@ -1,11 +1,12 @@
-const STORAGE_KEY = 'app:numerology-birth-date';
+import {
+  persistNumerologyBirthDateToProductStorage,
+  readNumerologyBirthDateFromProductStorage,
+} from '@features/product-storage/runtime/browser-runtime';
 
 export function loadNumerologyBirthDate() {
-  if (typeof window === 'undefined') return '';
-  return window.sessionStorage.getItem(STORAGE_KEY) ?? '';
+  return readNumerologyBirthDateFromProductStorage();
 }
 
 export function saveNumerologyBirthDate(value: string) {
-  if (typeof window === 'undefined') return;
-  window.sessionStorage.setItem(STORAGE_KEY, value);
+  persistNumerologyBirthDateToProductStorage(value);
 }

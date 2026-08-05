@@ -1,5 +1,10 @@
 export type LogMetadata = Readonly<{
   code?: string;
+  migrationId?: string;
+  recoveryStrategy?: string;
+  revision?: number;
+  schemaVersion?: string;
+  section?: string;
   status?: number;
 }>;
 

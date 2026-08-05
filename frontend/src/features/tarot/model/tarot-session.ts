@@ -1,4 +1,5 @@
 import { createStore } from '@store';
+import { LEGACY_STORAGE_KEYS } from '@features/product-storage/constants';
 
 import type {
   TarotCardSelection,
@@ -8,9 +9,9 @@ import type {
   TarotSelectionMode,
 } from '../types';
 
-const THEME_KEY = 'app:tarot-deck-theme';
-const SESSION_KEY = 'app:tarot-session-seed';
-const STATE_KEY = 'app:tarot-reading-state';
+const THEME_KEY = LEGACY_STORAGE_KEYS.tarotDeckTheme[0];
+const SESSION_KEY = LEGACY_STORAGE_KEYS.tarotSessionSeed[0];
+const STATE_KEY = LEGACY_STORAGE_KEYS.tarotState[0];
 
 type TarotSessionState = {
   answers: readonly TarotPsychologyAnswer[];

@@ -1,9 +1,11 @@
 import { createStore } from '@store';
+import {
+  persistJourneyStateToProductStorage,
+  readJourneyStateFromProductStorage,
+} from '@features/product-storage/runtime/browser-runtime';
 import type { TarotReading } from '@features/tarot';
 
 import type { JourneyDailyCard, JourneyState } from '../types';
-
-const STORAGE_KEY = 'app:personal-journey-v1';
 
 function createIdentity() {
   if (typeof window === 'undefined') return 'journey-preview';
@@ -17,28 +19,15 @@ const defaultState: JourneyState = {
 };
 
 function readState(): JourneyState {
-  if (typeof window === 'undefined') return defaultState;
-  try {
-    const saved = JSON.parse(
-      window.localStorage.getItem(STORAGE_KEY) ?? '',
-    ) as Partial<JourneyState>;
-    return {
-      dailyCards: saved.dailyCards ?? {},
-      identity: saved.identity ?? createIdentity(),
-      readings: saved.readings ?? [],
-    };
-  } catch {
-    return { ...defaultState, identity: createIdentity() };
-  }
+  const saved = readJourneyStateFromProductStorage();
+  return saved ?? { ...defaultState, identity: createIdentity() };
 }
 
 export const journeyStore = createStore(readState());
 
-if (typeof window !== 'undefined') {
-  journeyStore.subscribe(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(journeyStore.getState()));
-  });
-}
+journeyStore.subscribe(() => {
+  persistJourneyStateToProductStorage(journeyStore.getState());
+});
 
 export const journeyActions = {
   ensureDailyCard(card: JourneyDailyCard) {

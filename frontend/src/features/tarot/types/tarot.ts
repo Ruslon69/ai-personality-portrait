@@ -1,5 +1,6 @@
 import type { Locale } from '@shared/i18n';
 import type { NumerologyProfile } from '@features/numerology';
+import type { InterpretationResult } from '@features/expert-interpretation';
 
 export type LocalizedText = Record<Locale, string>;
 export type TarotSuit = 'cups' | 'pentacles' | 'swords' | 'wands';
@@ -104,6 +105,7 @@ export type TarotInterpretation = {
 export type TarotReading = {
   context: TarotReadingContext;
   createdAt: string;
+  expertInterpretation: InterpretationResult;
   headline: string;
   id: string;
   interpretations: readonly TarotInterpretation[];

@@ -6,6 +6,10 @@ export const QUALITY_BASELINE = {
     productStorage: 176,
     storageActivation: 143,
   },
+  bundle: {
+    maximumInitialJavaScriptBytes: 614400,
+    maximumJavaScriptAssetBytes: 614400,
+  },
   fixtures: {
     authorContent: 33,
     expertInterpretation: 33,

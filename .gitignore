@@ -15,6 +15,7 @@ frontend/dist/
 frontend/.vite/
 frontend/coverage/
 frontend/reports/
+.release/*.summary.json
 *.tsbuildinfo
 
 # Backend

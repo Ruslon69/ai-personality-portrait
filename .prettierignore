@@ -2,6 +2,7 @@
 **/dist/
 **/build/
 **/coverage/
+**/reports/
 **/.venv/
 **/__pycache__/
 **/.ruff_cache/

@@ -1,0 +1,99 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Format check
+        run: npm run format:check
+      - name: Production build
+        run: npm run build
+      - name: Quality gates
+        run: npm run quality -- --report=reports/quality-gates.json
+      - name: Production dependency audit
+        run: npm audit --omit=dev
+      - name: Upload quality report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-quality-report
+          path: frontend/reports/quality-gates.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  backend:
+    name: Backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: backend/pyproject.toml
+      - name: Install dependencies
+        working-directory: backend
+        run: python -m pip install -e '.[dev]'
+      - name: Ruff lint
+        working-directory: backend
+        run: ruff check .
+      - name: Ruff format check
+        working-directory: backend
+        run: ruff format --check .
+      - name: Import application
+        working-directory: backend
+        run: python -c 'from app.main import app; assert app is not None'
+      - name: Health smoke test
+        working-directory: backend
+        run: python ../scripts/backend-health-smoke.py
+
+  repository-hygiene:
+    name: Repository hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Repository scan
+        run: node scripts/repo-hygiene.mjs
+      - name: Workflow security validation
+        run: node scripts/validate-workflows.mjs
+      - name: Release metadata validation
+        run: node scripts/release-metadata.mjs validate
+      - name: Generated commands leave repository clean
+        run: git diff --exit-code

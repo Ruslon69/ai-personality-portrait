@@ -1,0 +1,51 @@
+name: Visual review
+description: Record a focused visual defect for a future visual QA pass.
+title: 'style: '
+labels: [visual-review]
+body:
+  - type: input
+    id: route
+    attributes:
+      label: Route
+    validations:
+      required: true
+  - type: input
+    id: viewport
+    attributes:
+      label: Viewport
+      placeholder: 375 × 812
+    validations:
+      required: true
+  - type: dropdown
+    id: locale
+    attributes:
+      label: Locale
+      options: [RU, EN, UK]
+    validations:
+      required: true
+  - type: dropdown
+    id: theme
+    attributes:
+      label: Theme
+      options: [Light, Dark]
+    validations:
+      required: true
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot
+      description: Attach a screenshot without personal data.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual
+    validations:
+      required: true

@@ -1,0 +1,24 @@
+name: Technical task
+description: Define bounded engineering or infrastructure work.
+title: 'chore: '
+labels: [technical]
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Required outcome
+    validations:
+      required: true
+  - type: textarea
+    id: boundaries
+    attributes:
+      label: Scope and boundaries
+      description: State what may and may not change.
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Objective validation
+    validations:
+      required: true

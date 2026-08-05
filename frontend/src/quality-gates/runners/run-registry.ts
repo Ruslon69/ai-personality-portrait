@@ -165,7 +165,11 @@ export async function runQualityGateRegistry(input: {
     });
   }
   const moduleVersions = Object.assign({}, ...results.map((item) => item.metadata.moduleVersions));
-  const requiredPassed = results.every((result) => !result.required || result.status === 'passed');
+  const requiredPassed = results.every(
+    (result) =>
+      result.status === 'passed' ||
+      (!result.required && (result.status === 'skipped' || result.status === 'warning')),
+  );
   return {
     assertions: results.reduce((sum, result) => sum + result.assertions, 0),
     duration: Math.round((performance.now() - runStarted) * 100) / 100,

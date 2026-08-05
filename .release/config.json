@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "release-config-v1",
+  "projectId": "ai-personality-portrait",
+  "maturity": "alpha",
+  "protectedBranch": "main",
+  "nodeVersionFile": ".nvmrc",
+  "pythonVersionFile": ".python-version",
+  "requiredFrontendQualityCommand": "npm run quality",
+  "requiredBackendChecks": [
+    "ruff check .",
+    "ruff format --check .",
+    "python ../scripts/backend-health-smoke.py"
+  ],
+  "supportedLocales": ["ru", "en", "uk"],
+  "requiredEngineVersions": {
+    "authorContent": "author-content-v1",
+    "expertInterpretation": "expert-interpretation-v1",
+    "journeyMemory": "journey-memory-v1",
+    "numerologyCalculation": "pythagorean-date-v1",
+    "productStorage": "product-storage-v2",
+    "tarotRules": "tarot-rules-v1"
+  },
+  "tagPatterns": [
+    "^sprint-[0-9]+$",
+    "^sprint-[0-9]+\\.[0-9]+$",
+    "^v[0-9]+\\.[0-9]+\\.[0-9]+-alpha\\.[0-9]+$",
+    "^v[0-9]+\\.[0-9]+\\.[0-9]+-beta\\.[0-9]+$",
+    "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+  ],
+  "expectedBuildDirectories": ["frontend/dist"],
+  "bundleThresholds": {
+    "maximumInitialJavaScriptBytes": 614400,
+    "maximumJavaScriptAssetBytes": 614400
+  },
+  "artifactPolicy": {
+    "allowed": ["frontend production build", "quality report", "release metadata summary"],
+    "retentionDays": 14,
+    "personalDataAllowed": false,
+    "sourceMapsAllowed": false
+  }
+}

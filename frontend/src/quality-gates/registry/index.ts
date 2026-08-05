@@ -3,6 +3,7 @@ import { JOURNEY_MEMORY_VERSIONS } from '../../features/journey-memory/model/ver
 import { PRODUCT_STORAGE_VERSIONS } from '../../features/product-storage/constants';
 import { NUMEROLOGY_SYSTEM } from '../../features/numerology/lib/numerology-engine';
 import { QualityAssertions } from '../assertions';
+import { runBundleBoundaryGate } from '../architecture/bundle';
 import { runArchitectureBoundaryGate, runForbiddenPatternsGate } from '../architecture/checks';
 import { analyzeImportGraph } from '../architecture/import-graph';
 import { runNumerologyRegressionGate } from '../determinism/numerology';
@@ -219,6 +220,18 @@ export const qualityGateRegistry: readonly QualityGateDefinition[] = [
     tags: ['architecture', 'fast', 'full'],
     timeout: 15_000,
     title: 'Forbidden Patterns',
+  },
+  {
+    affectedModules: ['frontend/dist'],
+    description: 'Production bundle size, route splitting, secrets, and test-module boundaries.',
+    group: 'architecture',
+    id: 'bundle-boundaries',
+    required: true,
+    runner: ({ rootDir }) => runBundleBoundaryGate(rootDir),
+    severity: 'fatal',
+    tags: ['architecture', 'fast', 'full'],
+    timeout: 10_000,
+    title: 'Bundle Boundaries',
   },
   {
     affectedModules: ['product-storage', 'voice-recording'],

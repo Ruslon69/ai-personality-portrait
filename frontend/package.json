@@ -8,7 +8,13 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "format": "prettier --config ../.prettierrc --ignore-path ../.prettierignore --write .",
-    "format:check": "prettier --config ../.prettierrc --ignore-path ../.prettierignore --check ."
+    "format:check": "prettier --config ../.prettierrc --ignore-path ../.prettierignore --check .",
+    "quality:bundle": "vite build --ssr src/quality-gates/index.ts --outDir node_modules/.tmp/quality-gates --emptyOutDir",
+    "quality": "npm run quality:bundle && node node_modules/.tmp/quality-gates/index.js",
+    "quality:domain": "npm run quality:bundle && node node_modules/.tmp/quality-gates/index.js --tag=domain",
+    "quality:storage": "npm run quality:bundle && node node_modules/.tmp/quality-gates/index.js --tag=storage",
+    "quality:architecture": "npm run quality:bundle && node node_modules/.tmp/quality-gates/index.js --tag=architecture",
+    "quality:fast": "npm run quality:bundle && node node_modules/.tmp/quality-gates/index.js --tag=fast"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.4",

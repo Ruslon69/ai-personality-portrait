@@ -3,7 +3,6 @@ export * from './activation';
 export * from './constants';
 export * from './compatibility';
 export * from './export-import';
-export * from './fixtures';
 export * from './migrations';
 export * from './model';
 export * from './recovery';

@@ -1,0 +1,31 @@
+export const QUALITY_BASELINE = {
+  assertions: {
+    authorContent: 583,
+    expertInterpretation: 462,
+    journeyMemory: 220,
+    productStorage: 176,
+    storageActivation: 143,
+  },
+  fixtures: {
+    authorContent: 33,
+    expertInterpretation: 33,
+    journeyMemory: 24,
+    productStorage: 36,
+    storageActivation: 32,
+  },
+  locales: ['ru', 'en', 'uk'],
+  moduleVersions: {
+    authorContent: 'author-content-v1',
+    chapterEngine: 'chapter-engine-v1',
+    expertInterpretation: 'expert-interpretation-v1',
+    journeyMemory: 'journey-memory-v1',
+    numerologyCalculation: 'pythagorean-date-v1',
+    productStorage: 'product-storage-v2',
+    tarotRules: 'tarot-rules-v1',
+    themeTracking: 'theme-tracking-v1',
+    wording: 'wording-v1',
+    yearSummary: 'year-summary-v1',
+  },
+  spreadCount: 8,
+  tarotCardCount: 78,
+} as const;

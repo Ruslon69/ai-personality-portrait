@@ -105,6 +105,11 @@ export function createExpertInterpretationForTarot(
       `Expert interpretation validation failed: ${response.validation.errors[0]?.message ?? 'unknown error'}`,
     );
   }
+  if (!response.narrativeValidation.valid) {
+    throw new Error(
+      `Narrative composition validation failed: ${response.narrativeValidation.errors[0]?.message ?? 'unknown error'}`,
+    );
+  }
   return response.result;
 }
 

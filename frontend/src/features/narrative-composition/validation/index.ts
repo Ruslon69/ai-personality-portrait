@@ -1,0 +1,1 @@
+export { validateNarrativeComposition } from './validator';

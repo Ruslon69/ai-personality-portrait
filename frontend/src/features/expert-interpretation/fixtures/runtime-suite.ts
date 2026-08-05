@@ -2,6 +2,9 @@ import { deserializeInterpretationResult, serializeInterpretationResult } from '
 import { LocalExpertInterpretationProvider } from '../providers';
 import type { InterpretationProvider, InterpretationResult } from '../types';
 import { stableStringify } from '../utils';
+import { runTarotKnowledgeFixtureSuite } from '../../tarot-knowledge/fixtures';
+import { runNarrativeCompositionFixtureSuite } from '../../narrative-composition/fixtures';
+import { LocalNarrativeComposer } from '../../narrative-composition/providers';
 import { interpretationFixtures } from './fixtures';
 
 export type RuntimeSuiteReport = {
@@ -20,6 +23,9 @@ export function runExpertInterpretationFixtureSuite(): RuntimeSuiteReport {
   };
   const provider: InterpretationProvider = new LocalExpertInterpretationProvider();
   const interchangeableProvider: InterpretationProvider = new LocalExpertInterpretationProvider();
+  const injectedNarrativeProvider: InterpretationProvider = new LocalExpertInterpretationProvider(
+    new LocalNarrativeComposer(),
+  );
   const results = new Map<string, InterpretationResult>();
 
   interpretationFixtures.forEach((fixture) => {
@@ -27,6 +33,16 @@ export function runExpertInterpretationFixtureSuite(): RuntimeSuiteReport {
     const second = provider.interpret(fixture.request);
     results.set(fixture.id, first.result);
     assert(first.validation.valid, `${fixture.id}: validator rejected result.`);
+    assert(first.narrativeValidation.valid, `${fixture.id}: validator rejected narrative.`);
+    assert(
+      stableStringify(first.narrative) === stableStringify(second.narrative),
+      `${fixture.id}: narrative was not deterministic.`,
+    );
+    assert(
+      stableStringify(first.narrative) ===
+        stableStringify(injectedNarrativeProvider.interpret(fixture.request).narrative),
+      `${fixture.id}: injected narrative composer changed the provider contract.`,
+    );
     assert(
       stableStringify(first.result) === stableStringify(second.result),
       `${fixture.id}: identical input was not deterministic.`,
@@ -210,10 +226,20 @@ export function runExpertInterpretationFixtureSuite(): RuntimeSuiteReport {
     );
   }
 
+  const tarotKnowledge = runTarotKnowledgeFixtureSuite();
+  assertionCount += tarotKnowledge.assertionCount;
+  errors.push(...tarotKnowledge.errors.map((error) => `tarot-knowledge: ${error}`));
+  const narrativeComposition = runNarrativeCompositionFixtureSuite();
+  assertionCount += narrativeComposition.assertionCount;
+  errors.push(...narrativeComposition.errors.map((error) => `narrative: ${error}`));
+
   return {
     assertionCount,
     errors,
-    fixtureCount: interpretationFixtures.length,
+    fixtureCount:
+      interpretationFixtures.length +
+      tarotKnowledge.fixtureCount +
+      narrativeComposition.fixtureCount,
     valid: errors.length === 0,
   };
 }

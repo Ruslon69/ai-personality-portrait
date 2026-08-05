@@ -1,4 +1,10 @@
 import { composeInterpretationResult, composeInterpretationThemes } from '../composition';
+import {
+  createNarrativeCompositionRequest,
+  localNarrativeComposer,
+  type NarrativeComposer,
+  type NarrativeComposition,
+} from '@features/narrative-composition';
 import { buildInterpretationContext } from '../context';
 import { normalizeInterpretationEvidence } from '../evidence';
 import { resolveInterpretationConnections } from '../rules';
@@ -15,6 +21,8 @@ import type {
 import { validateInterpretationResult } from '../validation';
 
 export class LocalExpertInterpretationProvider implements InterpretationProvider {
+  constructor(private readonly narrativeComposer: NarrativeComposer = localNarrativeComposer) {}
+
   buildContext(request: InterpretationRequest): InterpretationContext {
     return buildInterpretationContext(request);
   }
@@ -38,6 +46,24 @@ export class LocalExpertInterpretationProvider implements InterpretationProvider
     return composeInterpretationThemes(context, evidence, connections);
   }
 
+  composeNarrative(
+    context: InterpretationContext,
+    evidence: readonly InterpretationSignal[],
+    connections: readonly InterpretationConnection[],
+    composition: ThemeComposition,
+    fingerprint: string,
+  ): NarrativeComposition {
+    return this.narrativeComposer.compose(
+      createNarrativeCompositionRequest({
+        composition,
+        connections,
+        context,
+        evidence,
+        fingerprint,
+      }),
+    );
+  }
+
   generateInterpretation(
     context: InterpretationContext,
     evidence: readonly InterpretationSignal[],
@@ -57,7 +83,19 @@ export class LocalExpertInterpretationProvider implements InterpretationProvider
     const connections = this.resolveConnections(context, evidence);
     const composition = this.composeThemes(context, evidence, connections);
     const result = this.generateInterpretation(context, evidence, connections, composition);
-    return { result, validation: this.validateResult(result) };
+    const narrative = this.composeNarrative(
+      context,
+      evidence,
+      connections,
+      composition,
+      result.metadata.requestFingerprint,
+    );
+    return {
+      narrative,
+      narrativeValidation: this.narrativeComposer.validate(narrative),
+      result,
+      validation: this.validateResult(result),
+    };
   }
 }
 

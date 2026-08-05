@@ -1,4 +1,8 @@
 import type { Locale } from '@shared/i18n';
+import type {
+  NarrativeComposition,
+  NarrativeValidationReport,
+} from '@features/narrative-composition';
 
 export type InterpretationSource =
   | 'tarot-card'
@@ -394,6 +398,8 @@ export type InterpretationValidationReport = {
 };
 
 export type InterpretationResponse = {
+  narrative: NarrativeComposition;
+  narrativeValidation: NarrativeValidationReport;
   result: InterpretationResult;
   validation: InterpretationValidationReport;
 };
@@ -417,6 +423,13 @@ export interface InterpretationProvider {
     evidence: readonly InterpretationSignal[],
     connections: readonly InterpretationConnection[],
   ): ThemeComposition;
+  composeNarrative(
+    context: InterpretationContext,
+    evidence: readonly InterpretationSignal[],
+    connections: readonly InterpretationConnection[],
+    composition: ThemeComposition,
+    fingerprint: string,
+  ): NarrativeComposition;
   generateInterpretation(
     context: InterpretationContext,
     evidence: readonly InterpretationSignal[],

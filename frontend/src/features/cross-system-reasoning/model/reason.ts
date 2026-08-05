@@ -1,0 +1,1 @@
+export { composeCrossSystemResult } from '../composition';

@@ -3,6 +3,11 @@ import type {
   NarrativeComposition,
   NarrativeValidationReport,
 } from '@features/narrative-composition';
+import type {
+  CrossSystemReasoningProvider,
+  CrossSystemResult,
+  CrossSystemValidationReport,
+} from '@features/cross-system-reasoning';
 
 export type InterpretationSource =
   | 'tarot-card'
@@ -400,6 +405,8 @@ export type InterpretationValidationReport = {
 export type InterpretationResponse = {
   narrative: NarrativeComposition;
   narrativeValidation: NarrativeValidationReport;
+  reasoning: CrossSystemResult;
+  reasoningValidation: CrossSystemValidationReport;
   result: InterpretationResult;
   validation: InterpretationValidationReport;
 };
@@ -429,7 +436,15 @@ export interface InterpretationProvider {
     connections: readonly InterpretationConnection[],
     composition: ThemeComposition,
     fingerprint: string,
+    reasoning: CrossSystemResult,
   ): NarrativeComposition;
+  reason(
+    context: InterpretationContext,
+    evidence: readonly InterpretationSignal[],
+    connections: readonly InterpretationConnection[],
+    composition: ThemeComposition,
+  ): CrossSystemResult;
+  readonly reasoningProvider: CrossSystemReasoningProvider;
   generateInterpretation(
     context: InterpretationContext,
     evidence: readonly InterpretationSignal[],

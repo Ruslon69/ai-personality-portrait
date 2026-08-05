@@ -50,6 +50,7 @@ export function composeNarrative(
     candidates: repetition.candidates,
     leadingSemanticId: request.leadingSemanticId,
     memory: request.memory ?? null,
+    reasoning: request.reasoning ?? null,
     relations: request.relations,
   });
   const chapters = composeNarrativeChapters(

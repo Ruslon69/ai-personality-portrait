@@ -5,6 +5,7 @@ import type {
   InterpretationTheme,
   ThemeComposition,
 } from '../../expert-interpretation/types';
+import type { CrossSystemLink, CrossSystemResult } from '../../cross-system-reasoning';
 import {
   authorTarotKnowledgeBase,
   resolveTarotKnowledge,
@@ -456,6 +457,84 @@ function memoryCandidates(memory: NarrativeMemoryContext | undefined) {
   ];
 }
 
+function crossSystemRoles(link: CrossSystemLink): readonly NarrativeBlockRole[] {
+  if (['modality-contrast', 'symbolic-tension', 'thematic-contrast'].includes(link.semanticType))
+    return ['conflict', 'turning-point'];
+  if (link.semanticType === 'journey-continuity') return ['current', 'support', 'closure'];
+  return ['turning-point', 'support', 'practical'];
+}
+
+function crossSystemCandidates(reasoning: CrossSystemResult | undefined) {
+  if (!reasoning) return [];
+  const selectedIds = new Set(
+    [
+      reasoning.priority.leadingLinkId,
+      reasoning.priority.mainContrastId,
+      reasoning.priority.journeyContinuityId,
+      ...reasoning.priority.supportingLinkIds,
+    ].filter((id): id is string => id !== null),
+  );
+  return reasoning.links
+    .filter((link) => selectedIds.has(link.id) && link.displayEligible)
+    .map((link) =>
+      candidate({
+        basePriority:
+          link.id === reasoning.priority.leadingLinkId
+            ? 155
+            : link.id === reasoning.priority.mainContrastId
+              ? 140
+              : link.semanticType === 'journey-continuity'
+                ? 125
+                : 110,
+        cardIds: link.entityReferences
+          .filter((reference) => reference.kind === 'card')
+          .map((reference) => reference.id),
+        evidenceIds: link.evidenceReferences,
+        numberValues: link.entityReferences
+          .filter((reference) => reference.kind === 'number')
+          .map((reference) => Number(reference.id.split(':').at(-1)))
+          .filter(Number.isFinite),
+        polarity: ['contrasts', 'redirects'].includes(link.direction) ? 'tensional' : 'integrative',
+        priorityFactors: [
+          'strong-connection',
+          ...(link.semanticType === 'period-resonance' ? (['current-period'] as const) : []),
+          ...(link.semanticType === 'journey-continuity' ? (['repeated-symbol'] as const) : []),
+        ],
+        roles: crossSystemRoles(link),
+        semanticId: `cross-system.${link.semanticType}.${link.themeId}`,
+        sourceId: link.id,
+        sourceKind: 'cross-system',
+        tags: semanticTags(
+          link.themeId,
+          link.explanation.relationConcept,
+          link.explanation.practicalConcept,
+        ),
+      }),
+    );
+}
+
+function crossSystemRelations(reasoning: CrossSystemResult | undefined) {
+  if (!reasoning) return [];
+  return reasoning.links
+    .filter((link) => link.displayEligible)
+    .map((link) => ({
+      cardIds: link.entityReferences
+        .filter((reference) => reference.kind === 'card')
+        .map((reference) => reference.id),
+      id: link.id,
+      kind:
+        link.direction === 'contrasts'
+          ? ('contrast' as const)
+          : link.direction === 'balances' || link.direction === 'softens'
+            ? ('balance' as const)
+            : link.direction === 'redirects'
+              ? ('progression' as const)
+              : ('reinforcement' as const),
+      semanticId: `cross-system.${link.semanticType}.${link.themeId}`,
+      strength: link.strength === 'primary' ? ('primary' as const) : ('secondary' as const),
+    }));
+}
+
 export function createNarrativeCompositionRequest(input: {
   composition: ThemeComposition;
   connections: readonly InterpretationConnection[];
@@ -464,8 +543,9 @@ export function createNarrativeCompositionRequest(input: {
   fingerprint: string;
   memory?: NarrativeMemoryContext;
   mode?: NarrativeMode;
+  reasoning?: CrossSystemResult;
 }): NarrativeCompositionRequest {
-  const { composition, connections, context, evidence, fingerprint, memory } = input;
+  const { composition, connections, context, evidence, fingerprint, memory, reasoning } = input;
   const expertRelations = connections.map((connection) => ({
     cardIds: connection.cardIds,
     id: connection.id,
@@ -514,6 +594,7 @@ export function createNarrativeCompositionRequest(input: {
       ...knowledgeCandidates(context),
       ...repeatedMotifCandidates(context),
       ...memoryCandidates(memory),
+      ...crossSystemCandidates(reasoning),
     ],
     fingerprint,
     leadingSemanticId:
@@ -521,10 +602,12 @@ export function createNarrativeCompositionRequest(input: {
       composition.leadingThemeId,
     ...(memory ? { memory } : {}),
     mode: input.mode ?? 'standard',
+    ...(reasoning ? { reasoning: reasoning.priority } : {}),
     relations: [
       ...expertRelations,
       ...knowledgeRelations(context),
       ...numerologyTarotRelations(context),
+      ...crossSystemRelations(reasoning),
     ],
   };
 }

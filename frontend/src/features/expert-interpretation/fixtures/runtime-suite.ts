@@ -6,6 +6,8 @@ import { runTarotKnowledgeFixtureSuite } from '../../tarot-knowledge/fixtures';
 import { runNarrativeCompositionFixtureSuite } from '../../narrative-composition/fixtures';
 import { LocalNarrativeComposer } from '../../narrative-composition/providers';
 import { runNumerologyKnowledgeFixtureSuite } from '../../numerology-knowledge/fixtures';
+import { runCrossSystemReasoningFixtureSuite } from '../../cross-system-reasoning/fixtures';
+import { LocalCrossSystemReasoningProvider } from '../../cross-system-reasoning/providers';
 import { interpretationFixtures } from './fixtures';
 
 export type RuntimeSuiteReport = {
@@ -27,6 +29,10 @@ export function runExpertInterpretationFixtureSuite(): RuntimeSuiteReport {
   const injectedNarrativeProvider: InterpretationProvider = new LocalExpertInterpretationProvider(
     new LocalNarrativeComposer(),
   );
+  const injectedReasoningProvider: InterpretationProvider = new LocalExpertInterpretationProvider(
+    new LocalNarrativeComposer(),
+    new LocalCrossSystemReasoningProvider(),
+  );
   const results = new Map<string, InterpretationResult>();
 
   interpretationFixtures.forEach((fixture) => {
@@ -35,6 +41,16 @@ export function runExpertInterpretationFixtureSuite(): RuntimeSuiteReport {
     results.set(fixture.id, first.result);
     assert(first.validation.valid, `${fixture.id}: validator rejected result.`);
     assert(first.narrativeValidation.valid, `${fixture.id}: validator rejected narrative.`);
+    assert(first.reasoningValidation.valid, `${fixture.id}: validator rejected reasoning.`);
+    assert(
+      stableStringify(first.reasoning) === stableStringify(second.reasoning),
+      `${fixture.id}: reasoning was not deterministic.`,
+    );
+    assert(
+      stableStringify(first.reasoning) ===
+        stableStringify(injectedReasoningProvider.interpret(fixture.request).reasoning),
+      `${fixture.id}: reasoning provider interchange changed the contract.`,
+    );
     assert(
       stableStringify(first.narrative) === stableStringify(second.narrative),
       `${fixture.id}: narrative was not deterministic.`,
@@ -241,6 +257,9 @@ export function runExpertInterpretationFixtureSuite(): RuntimeSuiteReport {
   const numerologyKnowledge = runNumerologyKnowledgeFixtureSuite();
   assertionCount += numerologyKnowledge.assertionCount;
   errors.push(...numerologyKnowledge.errors.map((error) => `numerology-knowledge: ${error}`));
+  const crossSystemReasoning = runCrossSystemReasoningFixtureSuite();
+  assertionCount += crossSystemReasoning.assertionCount;
+  errors.push(...crossSystemReasoning.errors.map((error) => `cross-system: ${error}`));
 
   return {
     assertionCount,
@@ -249,7 +268,8 @@ export function runExpertInterpretationFixtureSuite(): RuntimeSuiteReport {
       interpretationFixtures.length +
       tarotKnowledge.fixtureCount +
       narrativeComposition.fixtureCount +
-      numerologyKnowledge.fixtureCount,
+      numerologyKnowledge.fixtureCount +
+      crossSystemReasoning.fixtureCount,
     valid: errors.length === 0,
   };
 }

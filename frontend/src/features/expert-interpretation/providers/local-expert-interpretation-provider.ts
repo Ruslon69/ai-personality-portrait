@@ -5,6 +5,12 @@ import {
   type NarrativeComposer,
   type NarrativeComposition,
 } from '@features/narrative-composition';
+import {
+  localCrossSystemReasoningProvider,
+  type CrossSystemReasoningProvider,
+  type CrossSystemResult,
+} from '@features/cross-system-reasoning';
+import { EXPERT_INTERPRETATION_VERSIONS } from '../constants/versions';
 import { buildInterpretationContext } from '../context';
 import { normalizeInterpretationEvidence } from '../evidence';
 import { resolveInterpretationConnections } from '../rules';
@@ -21,7 +27,10 @@ import type {
 import { validateInterpretationResult } from '../validation';
 
 export class LocalExpertInterpretationProvider implements InterpretationProvider {
-  constructor(private readonly narrativeComposer: NarrativeComposer = localNarrativeComposer) {}
+  constructor(
+    private readonly narrativeComposer: NarrativeComposer = localNarrativeComposer,
+    readonly reasoningProvider: CrossSystemReasoningProvider = localCrossSystemReasoningProvider,
+  ) {}
 
   buildContext(request: InterpretationRequest): InterpretationContext {
     return buildInterpretationContext(request);
@@ -52,6 +61,7 @@ export class LocalExpertInterpretationProvider implements InterpretationProvider
     connections: readonly InterpretationConnection[],
     composition: ThemeComposition,
     fingerprint: string,
+    reasoning: CrossSystemResult,
   ): NarrativeComposition {
     return this.narrativeComposer.compose(
       createNarrativeCompositionRequest({
@@ -60,8 +70,25 @@ export class LocalExpertInterpretationProvider implements InterpretationProvider
         context,
         evidence,
         fingerprint,
+        reasoning,
       }),
     );
+  }
+
+  reason(
+    context: InterpretationContext,
+    evidence: readonly InterpretationSignal[],
+    connections: readonly InterpretationConnection[],
+    composition: ThemeComposition,
+  ): CrossSystemResult {
+    return this.reasoningProvider.reason({
+      composition,
+      connections,
+      context,
+      evidence,
+      journeyMemory: null,
+      sourceEngineVersions: EXPERT_INTERPRETATION_VERSIONS,
+    });
   }
 
   generateInterpretation(
@@ -83,16 +110,20 @@ export class LocalExpertInterpretationProvider implements InterpretationProvider
     const connections = this.resolveConnections(context, evidence);
     const composition = this.composeThemes(context, evidence, connections);
     const result = this.generateInterpretation(context, evidence, connections, composition);
+    const reasoning = this.reason(context, evidence, connections, composition);
     const narrative = this.composeNarrative(
       context,
       evidence,
       connections,
       composition,
       result.metadata.requestFingerprint,
+      reasoning,
     );
     return {
       narrative,
       narrativeValidation: this.narrativeComposer.validate(narrative),
+      reasoning,
+      reasoningValidation: this.reasoningProvider.validate(reasoning),
       result,
       validation: this.validateResult(result),
     };

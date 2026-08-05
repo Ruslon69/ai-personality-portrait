@@ -17,6 +17,7 @@ export type NarrativeEmotionalPhase =
 
 export type NarrativeSourceKind =
   | 'connection'
+  | 'cross-system'
   | 'evidence'
   | 'journey-memory'
   | 'numerology-knowledge'
@@ -96,6 +97,13 @@ export type NarrativeCompositionRequest = {
   leadingSemanticId: string;
   memory?: NarrativeMemoryContext;
   mode: NarrativeMode;
+  reasoning?: {
+    journeyContinuityId: string | null;
+    leadingLinkId: string | null;
+    mainContrastId: string | null;
+    rejectedLinkIds: readonly string[];
+    supportingLinkIds: readonly string[];
+  };
   relations: readonly NarrativeRelationInput[];
 };
 

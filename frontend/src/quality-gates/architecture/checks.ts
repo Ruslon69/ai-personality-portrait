@@ -66,6 +66,7 @@ const explicitlyBrowserBound = new Set([
 
 function domainFiles(rootDir: string) {
   const roots = [
+    'src/features/cross-system-reasoning',
     'src/features/expert-interpretation',
     'src/features/journey-memory',
     'src/features/product-storage',
@@ -140,6 +141,7 @@ export function runArchitectureBoundaryGate(rootDir: string) {
     ),
   );
   [
+    'src/features/cross-system-reasoning/index.ts',
     'src/features/expert-interpretation/index.ts',
     'src/features/journey-memory/index.ts',
     'src/features/product-storage/index.ts',

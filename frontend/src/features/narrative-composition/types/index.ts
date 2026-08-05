@@ -19,6 +19,7 @@ export type NarrativeSourceKind =
   | 'connection'
   | 'evidence'
   | 'journey-memory'
+  | 'numerology-knowledge'
   | 'recommendation'
   | 'tarot-knowledge'
   | 'tension'

@@ -5,6 +5,7 @@ import { stableStringify } from '../utils';
 import { runTarotKnowledgeFixtureSuite } from '../../tarot-knowledge/fixtures';
 import { runNarrativeCompositionFixtureSuite } from '../../narrative-composition/fixtures';
 import { LocalNarrativeComposer } from '../../narrative-composition/providers';
+import { runNumerologyKnowledgeFixtureSuite } from '../../numerology-knowledge/fixtures';
 import { interpretationFixtures } from './fixtures';
 
 export type RuntimeSuiteReport = {
@@ -37,6 +38,11 @@ export function runExpertInterpretationFixtureSuite(): RuntimeSuiteReport {
     assert(
       stableStringify(first.narrative) === stableStringify(second.narrative),
       `${fixture.id}: narrative was not deterministic.`,
+    );
+    assert(
+      first.narrative.blocks.some((block) => block.sourceKind === 'numerology-knowledge') ===
+        fixture.expected.hasNumerology,
+      `${fixture.id}: numerology knowledge availability is incorrect.`,
     );
     assert(
       stableStringify(first.narrative) ===
@@ -232,6 +238,9 @@ export function runExpertInterpretationFixtureSuite(): RuntimeSuiteReport {
   const narrativeComposition = runNarrativeCompositionFixtureSuite();
   assertionCount += narrativeComposition.assertionCount;
   errors.push(...narrativeComposition.errors.map((error) => `narrative: ${error}`));
+  const numerologyKnowledge = runNumerologyKnowledgeFixtureSuite();
+  assertionCount += numerologyKnowledge.assertionCount;
+  errors.push(...numerologyKnowledge.errors.map((error) => `numerology-knowledge: ${error}`));
 
   return {
     assertionCount,
@@ -239,7 +248,8 @@ export function runExpertInterpretationFixtureSuite(): RuntimeSuiteReport {
     fixtureCount:
       interpretationFixtures.length +
       tarotKnowledge.fixtureCount +
-      narrativeComposition.fixtureCount,
+      narrativeComposition.fixtureCount +
+      numerologyKnowledge.fixtureCount,
     valid: errors.length === 0,
   };
 }

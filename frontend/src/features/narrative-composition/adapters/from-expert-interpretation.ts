@@ -11,6 +11,11 @@ import {
   type TarotKnowledgeRelationKind,
   type TarotKnowledgeSpreadContext,
 } from '../../tarot-knowledge';
+import {
+  authorNumerologyKnowledgeBase,
+  resolveNumerologyKnowledge,
+  type NumerologyKnowledgeRole,
+} from '../../numerology-knowledge';
 import type {
   NarrativeBlockRole,
   NarrativeCandidate,
@@ -159,6 +164,85 @@ function evidenceCandidate(evidence: InterpretationEvidence) {
     sourceKind: 'evidence',
     tags: semanticTags(evidence.semanticType, evidence.scope, evidence.source),
   });
+}
+
+function numerologyKnowledgeCandidates(
+  context: InterpretationContext,
+): readonly NarrativeCandidate[] {
+  if (!context.numerology) return [];
+  const roleMap = {
+    'life-path': 'life-path',
+    birthday: 'birthday',
+    'first-impression': 'attitude',
+    'personal-year': 'personal-year',
+    'personal-month': 'personal-month',
+    'personal-day': 'personal-day',
+  } as const satisfies Readonly<Record<string, NumerologyKnowledgeRole>>;
+  return context.numerology.numbers.flatMap((number) => {
+    const role = roleMap[number.id];
+    const knowledge = authorNumerologyKnowledgeBase.entries.find(
+      (entry) => entry.identity.value === number.value,
+    );
+    if (!knowledge) return [];
+    const resolved = resolveNumerologyKnowledge(number.value, role);
+    const isPeriod = role.startsWith('personal-');
+    const primary = candidate({
+      basePriority: role === 'personal-year' ? 105 : isPeriod ? 80 : 90,
+      cardIds: [],
+      evidenceIds: [],
+      numberValues: [number.value],
+      polarity: 'integrative',
+      priorityFactors: ['numerology-resonance', ...(isPeriod ? (['current-period'] as const) : [])],
+      roles: isPeriod ? ['current', 'turning-point'] : ['current', 'support'],
+      semanticId: resolved.role.coreMeaning.id,
+      sourceId: `${number.id}:${number.value}`,
+      sourceKind: 'numerology-knowledge',
+      tags: uniqueValues([
+        ...knowledge.tagIds,
+        resolved.role.coreMeaning.subject,
+        resolved.role.coreMeaning.object,
+      ]),
+    });
+    const reflection = candidate({
+      basePriority: 50,
+      cardIds: [],
+      evidenceIds: [],
+      numberValues: [number.value],
+      polarity: 'neutral',
+      priorityFactors: ['reflection'],
+      roles: ['reflection'],
+      semanticId: resolved.role.reflection.id,
+      sourceId: `${number.id}:${number.value}:reflection`,
+      sourceKind: 'numerology-knowledge',
+      tags: [resolved.role.reflection.subject, resolved.role.reflection.object],
+    });
+    return [primary, reflection];
+  });
+}
+
+function numerologyTarotRelations(
+  context: InterpretationContext,
+): readonly NarrativeRelationInput[] {
+  if (!context.numerology) return [];
+  const values = new Set(context.numerology.numbers.map((number) => number.value));
+  const cards = new Set(context.tarot.cards.map((card) => card.id));
+  return authorNumerologyKnowledgeBase.tarotResonances
+    .filter(
+      (relation) =>
+        values.has(relation.value) && relation.cardIds.some((cardId) => cards.has(cardId)),
+    )
+    .map((relation) => ({
+      cardIds: relation.cardIds.filter((cardId) => cards.has(cardId)),
+      id: relation.id,
+      kind:
+        relation.kind === 'balances' || relation.kind === 'grounds'
+          ? ('balance' as const)
+          : relation.kind === 'opens'
+            ? ('opportunity' as const)
+            : ('reinforcement' as const),
+      semanticId: `numerology-tarot.${relation.value}.${relation.reasonTags.join('.')}`,
+      strength: 'contextual' as const,
+    }));
 }
 
 function spreadContext(context: InterpretationContext): TarotKnowledgeSpreadContext {
@@ -426,6 +510,7 @@ export function createNarrativeCompositionRequest(input: {
         }),
       ),
       ...evidence.map(evidenceCandidate),
+      ...numerologyKnowledgeCandidates(context),
       ...knowledgeCandidates(context),
       ...repeatedMotifCandidates(context),
       ...memoryCandidates(memory),
@@ -436,6 +521,10 @@ export function createNarrativeCompositionRequest(input: {
       composition.leadingThemeId,
     ...(memory ? { memory } : {}),
     mode: input.mode ?? 'standard',
-    relations: [...expertRelations, ...knowledgeRelations(context)],
+    relations: [
+      ...expertRelations,
+      ...knowledgeRelations(context),
+      ...numerologyTarotRelations(context),
+    ],
   };
 }

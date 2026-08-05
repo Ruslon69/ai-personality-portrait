@@ -1,0 +1,88 @@
+import type { NumerologyTarotResonance } from '../types';
+
+export const numerologyTarotResonances: readonly NumerologyTarotResonance[] = [
+  {
+    id: 'resonance.1.magician',
+    value: 1,
+    cardIds: ['major-magician'],
+    kind: 'mirrors',
+    reasonTags: ['initiative', 'manifestation'],
+  },
+  {
+    id: 'resonance.2.high-priestess',
+    value: 2,
+    cardIds: ['major-high-priestess'],
+    kind: 'supports',
+    reasonTags: ['intuition', 'observation'],
+  },
+  {
+    id: 'resonance.3.empress',
+    value: 3,
+    cardIds: ['major-empress'],
+    kind: 'opens',
+    reasonTags: ['creativity', 'expression'],
+  },
+  {
+    id: 'resonance.4.emperor',
+    value: 4,
+    cardIds: ['major-emperor'],
+    kind: 'grounds',
+    reasonTags: ['structure', 'stability'],
+  },
+  {
+    id: 'resonance.5.hierophant',
+    value: 5,
+    cardIds: ['major-hierophant', 'major-wheel'],
+    kind: 'balances',
+    reasonTags: ['freedom', 'learning'],
+  },
+  {
+    id: 'resonance.6.lovers',
+    value: 6,
+    cardIds: ['major-lovers', 'major-temperance'],
+    kind: 'supports',
+    reasonTags: ['care', 'reciprocity'],
+  },
+  {
+    id: 'resonance.7.hermit',
+    value: 7,
+    cardIds: ['major-hermit', 'major-high-priestess'],
+    kind: 'mirrors',
+    reasonTags: ['analysis', 'reflection'],
+  },
+  {
+    id: 'resonance.8.strength',
+    value: 8,
+    cardIds: ['major-strength', 'major-justice'],
+    kind: 'grounds',
+    reasonTags: ['authority', 'responsibility'],
+  },
+  {
+    id: 'resonance.9.world',
+    value: 9,
+    cardIds: ['major-hermit', 'major-world'],
+    kind: 'supports',
+    reasonTags: ['completion', 'vision'],
+  },
+  {
+    id: 'resonance.11.priestess',
+    value: 11,
+    cardIds: ['major-high-priestess', 'major-justice'],
+    kind: 'opens',
+    reasonTags: ['intuition', 'clarity'],
+  },
+  {
+    id: 'resonance.22.world',
+    value: 22,
+    cardIds: ['major-fool', 'major-world'],
+    kind: 'grounds',
+    reasonTags: ['manifestation', 'structure'],
+  },
+  {
+    id: 'resonance.33.temperance',
+    value: 33,
+    cardIds: ['major-empress', 'major-temperance', 'major-world'],
+    kind: 'supports',
+    reasonTags: ['mentoring', 'service'],
+  },
+];

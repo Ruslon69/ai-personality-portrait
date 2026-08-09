@@ -43,6 +43,20 @@ export function buildInterpretationContext(request: InterpretationRequest): Inte
     },
     numerology: request.numerology
       ? {
+          ...(request.numerology.advanced
+            ? {
+                advanced: {
+                  ...request.numerology.advanced,
+                  currentChallenge: { ...request.numerology.advanced.currentChallenge },
+                  currentLifeCycle: { ...request.numerology.advanced.currentLifeCycle },
+                  currentPinnacle: { ...request.numerology.advanced.currentPinnacle },
+                  karmicDebts: request.numerology.advanced.karmicDebts.map((item) => ({ ...item })),
+                  upcomingTransition: request.numerology.advanced.upcomingTransition
+                    ? { ...request.numerology.advanced.upcomingTransition }
+                    : null,
+                },
+              }
+            : {}),
           masterNumbers: uniqueSorted(request.numerology.masterNumbers),
           numbers: [...request.numerology.numbers].sort((left, right) =>
             left.id.localeCompare(right.id),

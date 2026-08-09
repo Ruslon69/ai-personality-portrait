@@ -56,6 +56,26 @@ function tarotSource(record: JourneyReadingRecord): JourneyMemorySource {
     reading.context.numerology.personalMonth,
     reading.context.numerology.personalDay,
   ];
+  const advancedNumbers = reading.context.advancedNumerology
+    ? [
+        {
+          id: 'current-pinnacle',
+          value: reading.context.advancedNumerology.currentPinnacle.result,
+        },
+        {
+          id: 'current-challenge',
+          value: reading.context.advancedNumerology.currentChallenge.result,
+        },
+        {
+          id: 'current-life-cycle',
+          value: reading.context.advancedNumerology.currentLifeCycle.value,
+        },
+        ...reading.context.advancedNumerology.karmicDebts.map((debt) => ({
+          id: `karmic-debt-${debt.debtNumber}`,
+          value: debt.debtNumber,
+        })),
+      ]
+    : [];
   return {
     bookmarked: record.favorite,
     cards: reading.selections.map((selection) => {
@@ -83,11 +103,18 @@ function tarotSource(record: JourneyReadingRecord): JourneyMemorySource {
       expert?.metadata.requestFingerprint ?? `legacy-reading:${reading.id}`,
     kind: 'tarot-reading',
     locale: reading.context.locale,
-    numbers: numbers.map((number) => ({
-      calculationId: number.id,
-      systemVersion: reading.context.numerology.system,
-      value: number.value,
-    })),
+    numbers: [
+      ...numbers.map((number) => ({
+        calculationId: number.id,
+        systemVersion: reading.context.numerology.system,
+        value: number.value,
+      })),
+      ...advancedNumbers.map((number) => ({
+        calculationId: number.id,
+        systemVersion: 'pythagorean-date-cycles-v1',
+        value: number.value,
+      })),
+    ],
     period: reading.context.period ?? null,
     practicalFocuses,
     quoteSources: [

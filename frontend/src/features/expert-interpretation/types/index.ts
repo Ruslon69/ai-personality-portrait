@@ -320,7 +320,26 @@ export type InterpretationNumerologyNumberInput = {
   value: number;
 };
 
+export type InterpretationAdvancedNumerologyInput = {
+  calculationSystem: 'pythagorean-date-cycles-v1';
+  currentChallenge: { ordinal: 1 | 2 | 3 | 4; value: number };
+  currentLifeCycle: { ordinal: 1 | 2 | 3; value: number };
+  currentPinnacle: { ordinal: 1 | 2 | 3 | 4; value: number };
+  karmicDebts: readonly {
+    debtNumber: 13 | 14 | 16 | 19;
+    provenance: string;
+    reducedValue: number;
+  }[];
+  upcomingTransition: {
+    kind: 'life-cycle' | 'pinnacle';
+    monthsUntilTransition: number;
+    nextValue: number;
+    withinTransitionWindow: boolean;
+  } | null;
+};
+
 export type InterpretationNumerologyInput = {
+  advanced?: InterpretationAdvancedNumerologyInput;
   masterNumbers: readonly number[];
   numbers: readonly InterpretationNumerologyNumberInput[];
   system: 'pythagorean-date-v1';

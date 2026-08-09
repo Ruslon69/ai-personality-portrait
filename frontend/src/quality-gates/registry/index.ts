@@ -2,6 +2,7 @@ import { EXPERT_INTERPRETATION_VERSIONS } from '../../features/expert-interpreta
 import { JOURNEY_MEMORY_VERSIONS } from '../../features/journey-memory/model/versions';
 import { PRODUCT_STORAGE_VERSIONS } from '../../features/product-storage/constants';
 import { NUMEROLOGY_SYSTEM } from '../../features/numerology/lib/numerology-engine';
+import { ADVANCED_NUMEROLOGY_SYSTEM } from '../../features/numerology/advanced';
 import { QualityAssertions } from '../assertions';
 import { runBundleBoundaryGate } from '../architecture/bundle';
 import { runArchitectureBoundaryGate, runForbiddenPatternsGate } from '../architecture/checks';
@@ -42,6 +43,7 @@ function runBaselineGate() {
     expertInterpretation: EXPERT_INTERPRETATION_VERSIONS.engine,
     journeyMemory: JOURNEY_MEMORY_VERSIONS.engine,
     numerologyCalculation: NUMEROLOGY_SYSTEM,
+    numerologyCycles: ADVANCED_NUMEROLOGY_SYSTEM,
     readingContinuity: 'reading-continuity-v1',
     productStorage: PRODUCT_STORAGE_VERSIONS.product,
     tarotRules: EXPERT_INTERPRETATION_VERSIONS.tarot,
@@ -175,6 +177,26 @@ export const qualityGateRegistry: readonly QualityGateDefinition[] = [
     tags: ['domain', 'fast', 'full'],
     timeout: 10_000,
     title: 'Numerology',
+  },
+  {
+    affectedModules: [
+      'numerology/advanced',
+      'numerology-knowledge',
+      'cross-system-reasoning',
+      'journey-memory',
+      'product-storage',
+    ],
+    description:
+      'Pinnacles, Challenges, Life Cycles, transitions, master policies, karmic provenance, and reference vectors.',
+    expectedAssertionCount: QUALITY_BASELINE.assertions.numerologyAdvanced,
+    group: 'numerology',
+    id: 'numerology-advanced-runtime',
+    required: true,
+    runner: existingSuiteRunners.numerologyAdvanced,
+    severity: 'error',
+    tags: ['domain', 'storage', 'serialization', 'full'],
+    timeout: 15_000,
+    title: 'Numerology Advanced',
   },
   {
     affectedModules: ['expert-interpretation', 'journey-memory', 'product-storage'],

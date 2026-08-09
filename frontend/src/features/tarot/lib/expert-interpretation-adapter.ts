@@ -1,5 +1,6 @@
 import {
   localExpertInterpretationProvider,
+  createAdvancedInterpretationNumerologyInput,
   type AuthorInterpretationBlock,
   type InterpretationResult,
   type InterpretationExecutionOptions,
@@ -56,6 +57,9 @@ export function createExpertInterpretationRequest(
     interests: selectedInterests,
     locale: context.locale,
     numerology: {
+      ...(context.advancedNumerology
+        ? { advanced: createAdvancedInterpretationNumerologyInput(context.advancedNumerology) }
+        : {}),
       masterNumbers: numbers
         .map((number) => number.value)
         .filter((value) => MASTER_NUMBERS.includes(value as 11 | 22 | 33)),
@@ -138,6 +142,12 @@ export function createReadingEngineLineage(
   response: ReturnType<typeof createExpertInterpretationBundleForTarot>,
 ): ReadingEngineLineage {
   return {
+    ...(context.advancedNumerology
+      ? {
+          advancedCalculationSystem:
+            context.advancedNumerology.calculationMetadata.calculationSystem,
+        }
+      : {}),
     authorContent: response.result.content.version,
     calculationSystem: context.numerology.system,
     crossSystemReasoning: response.reasoning.metadata.versions.engine,

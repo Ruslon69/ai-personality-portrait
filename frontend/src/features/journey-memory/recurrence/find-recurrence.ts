@@ -121,9 +121,13 @@ export function findJourneyNumberPatterns(
       id: stableId('journey-number-pattern', { key, systems }),
       kind: group.values.some((value) => [11, 22, 33].includes(value))
         ? 'master-number'
-        : calculationId.includes('personal-')
-          ? 'period-repetition'
-          : 'repeated-number',
+        : calculationId.startsWith('karmic-debt-')
+          ? 'karmic-debt'
+          : calculationId === 'current-challenge'
+            ? 'repeating-challenge'
+            : calculationId.includes('personal-')
+              ? 'period-repetition'
+              : 'repeated-number',
       systemVersions: systems,
       values: uniqueSorted(group.values),
     });
@@ -146,6 +150,30 @@ export function findJourneyNumberPatterns(
       kind: 'personal-year-transition',
       systemVersions: systems,
       values: [from.value, to.value],
+    });
+  });
+  entries.slice(1).forEach((entry, index) => {
+    const previous = entries[index];
+    if (!previous) return;
+    ['current-pinnacle', 'current-life-cycle'].forEach((calculationId) => {
+      const from = previous.numbers.find((item) => item.calculationId === calculationId);
+      const to = entry.numbers.find((item) => item.calculationId === calculationId);
+      if (!from || !to || from.value === to.value) return;
+      const systems = uniqueSorted([from.systemVersion, to.systemVersion]);
+      patterns.push({
+        calculationIds: [calculationId],
+        compatibility: systems.length === 1 ? 'compatible' : 'incompatible',
+        entryIds: [previous.id, entry.id],
+        id: stableId('journey-long-term-transition', {
+          calculationId,
+          entry: entry.id,
+          from: from.value,
+          to: to.value,
+        }),
+        kind: 'long-term-period-transition',
+        systemVersions: systems,
+        values: [from.value, to.value],
+      });
     });
   });
   entries.forEach((entry) => {

@@ -244,11 +244,17 @@ export type NumerologyKarmicKnowledge = {
 export type NumerologyLifeCycleKind = 'challenge' | 'life-cycle' | 'peak-period' | 'pinnacle';
 
 export type NumerologyLifeCycleKnowledgeContract = {
-  calculationImplemented: false;
+  calculationImplemented: boolean;
+  calculationSystem: 'pythagorean-date-cycles-v1' | null;
   contextRoles: readonly ('foundation' | 'lesson' | 'peak' | 'transition')[];
   kind: NumerologyLifeCycleKind;
   requiredInputs: readonly ('birth-date' | 'calculation-system-version')[];
   semanticFields: readonly ('theme' | 'challenge' | 'growth' | 'rhythm' | 'integration')[];
+};
+
+export type ResolvedAdvancedNumerologyKnowledge = {
+  contract: NumerologyLifeCycleKnowledgeContract;
+  number: NumerologyNumberKnowledge;
 };
 
 export type FutureNumerologyModuleContract = {

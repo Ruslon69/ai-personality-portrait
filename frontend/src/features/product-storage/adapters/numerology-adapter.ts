@@ -1,10 +1,11 @@
-import type { NumerologyProfile } from '@features/numerology/types';
+import type { AdvancedNumerologyProfile, NumerologyProfile } from '@features/numerology';
 
 import type { NumerologyStorageSection, ProductStorageAdapter } from '../types';
 import { cloneJson } from '../utils';
 import { validateProductStorageSection } from '../validation';
 
 export type NumerologyPersistenceState = {
+  advancedProfile?: AdvancedNumerologyProfile | null;
   birthDate: string;
   profile: NumerologyProfile | null;
 };
@@ -21,7 +22,11 @@ export const numerologyStorageAdapter: ProductStorageAdapter<
   },
   mergeStrategy(current, incoming) {
     return incoming.birthDate === current.birthDate
-      ? { birthDate: current.birthDate, profile: incoming.profile ?? current.profile }
+      ? {
+          advancedProfile: incoming.advancedProfile ?? current.advancedProfile ?? null,
+          birthDate: current.birthDate,
+          profile: incoming.profile ?? current.profile,
+        }
       : cloneJson(incoming);
   },
   ownership: 'envelope-primary',

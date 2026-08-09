@@ -14,6 +14,7 @@ import {
 } from '../../tarot-knowledge';
 import {
   authorNumerologyKnowledgeBase,
+  resolveAdvancedNumerologyKnowledge,
   resolveNumerologyKnowledge,
   type NumerologyKnowledgeRole,
 } from '../../numerology-knowledge';
@@ -391,6 +392,68 @@ function repeatedMotifCandidates(context: InterpretationContext): readonly Narra
     );
 }
 
+function advancedNumerologyCandidates(context: InterpretationContext, mode: NarrativeMode) {
+  const advanced = context.numerology?.advanced;
+  if (!advanced || (mode !== 'deep' && mode !== 'journey')) return [];
+  const periods = [
+    {
+      kind: 'pinnacle' as const,
+      role: ['current', 'turning-point'] as const,
+      semanticId: 'long-term-cycle',
+      value: advanced.currentPinnacle.value,
+    },
+    {
+      kind: 'challenge' as const,
+      role: ['conflict', 'reflection'] as const,
+      semanticId: 'structural-challenge',
+      value: advanced.currentChallenge.value,
+    },
+    {
+      kind: 'life-cycle' as const,
+      role: ['current', 'support'] as const,
+      semanticId: 'development-phase',
+      value: advanced.currentLifeCycle.value,
+    },
+  ];
+  const candidates = periods.map((period) => {
+    const knowledge = resolveAdvancedNumerologyKnowledge(period.kind, period.value);
+    return candidate({
+      basePriority: period.kind === 'challenge' ? 82 : 92,
+      cardIds: [],
+      evidenceIds: [`calculation:${advanced.calculationSystem}:${period.kind}`],
+      numberValues: [period.value],
+      polarity: period.kind === 'challenge' ? 'tensional' : 'neutral',
+      priorityFactors: ['current-period', 'numerology-resonance'],
+      roles: period.role,
+      semanticId: `numerology.advanced.${period.semanticId}.${period.value}`,
+      sourceId: `advanced-numerology:${period.kind}:${period.value}`,
+      sourceKind: 'numerology-knowledge',
+      tags: uniqueValues([
+        period.semanticId,
+        ...knowledge.number.tagIds,
+        ...knowledge.contract.contextRoles,
+      ]),
+    });
+  });
+  if (advanced.upcomingTransition)
+    candidates.push(
+      candidate({
+        basePriority: advanced.upcomingTransition.withinTransitionWindow ? 98 : 68,
+        cardIds: [],
+        evidenceIds: [`calculation:${advanced.calculationSystem}:transition`],
+        numberValues: [advanced.upcomingTransition.nextValue],
+        polarity: 'integrative',
+        priorityFactors: ['current-period'],
+        roles: ['turning-point', 'support'],
+        semanticId: `numerology.advanced.transition.${advanced.upcomingTransition.kind}`,
+        sourceId: `advanced-numerology:transition:${advanced.upcomingTransition.kind}`,
+        sourceKind: 'numerology-knowledge',
+        tags: ['transition', 'development-phase'],
+      }),
+    );
+  return candidates;
+}
+
 function memoryCandidates(memory: NarrativeMemoryContext | undefined) {
   if (!memory) return [];
   return [
@@ -526,7 +589,7 @@ function crossSystemRoles(link: CrossSystemLink): readonly NarrativeBlockRole[] 
   return ['turning-point', 'support', 'practical'];
 }
 
-function crossSystemCandidates(reasoning: CrossSystemResult | undefined) {
+function crossSystemCandidates(reasoning: CrossSystemResult | undefined, mode: NarrativeMode) {
   if (!reasoning) return [];
   const selectedIds = new Set(
     [
@@ -537,7 +600,15 @@ function crossSystemCandidates(reasoning: CrossSystemResult | undefined) {
     ].filter((id): id is string => id !== null),
   );
   return reasoning.links
-    .filter((link) => selectedIds.has(link.id) && link.displayEligible)
+    .filter(
+      (link) =>
+        selectedIds.has(link.id) &&
+        link.displayEligible &&
+        !(
+          mode === 'short' &&
+          link.sourceIds.some((sourceId) => sourceId.includes(':numerology-advanced:'))
+        ),
+    )
     .map((link) =>
       candidate({
         basePriority:
@@ -608,6 +679,7 @@ export function createNarrativeCompositionRequest(input: {
   reasoning?: CrossSystemResult;
 }): NarrativeCompositionRequest {
   const { composition, connections, context, evidence, fingerprint, memory, reasoning } = input;
+  const mode = input.mode ?? 'standard';
   const expertRelations = connections.map((connection) => ({
     cardIds: connection.cardIds,
     id: connection.id,
@@ -653,17 +725,18 @@ export function createNarrativeCompositionRequest(input: {
       ),
       ...evidence.map(evidenceCandidate),
       ...numerologyKnowledgeCandidates(context),
+      ...advancedNumerologyCandidates(context, mode),
       ...knowledgeCandidates(context),
       ...repeatedMotifCandidates(context),
       ...memoryCandidates(memory),
-      ...crossSystemCandidates(reasoning),
+      ...crossSystemCandidates(reasoning, mode),
     ],
     fingerprint,
     leadingSemanticId:
       composition.themes.find((theme) => theme.id === composition.leadingThemeId)?.semanticId ??
       composition.leadingThemeId,
     ...(memory ? { memory } : {}),
-    mode: input.mode ?? 'standard',
+    mode,
     ...(reasoning ? { reasoning: reasoning.priority } : {}),
     relations: [
       ...expertRelations,

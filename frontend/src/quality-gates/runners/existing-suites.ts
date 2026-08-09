@@ -1,6 +1,7 @@
 import { runAuthorContentRuntimeSuite } from '../../features/expert-interpretation/fixtures/content-runtime-suite';
 import { runExpertInterpretationFixtureSuite } from '../../features/expert-interpretation/fixtures/runtime-suite';
 import { runJourneyMemoryRuntimeSuite } from '../../features/journey-memory/fixtures/runtime-suite';
+import { runAdvancedNumerologyRuntimeSuite } from '../../features/numerology/advanced/fixtures/runtime-suite';
 import { runReadingContinuityRuntimeSuite } from '../../features/journey-memory/fixtures/continuity-runtime-suite';
 import { runProductStorageActivationRuntimeSuite } from '../../features/product-storage/fixtures/activation-runtime-suite';
 import { runProductStorageRuntimeSuite } from '../../features/product-storage/fixtures/runtime-suite';
@@ -66,6 +67,11 @@ export const existingSuiteRunners = {
     adapt('journeyMemory', runJourneyMemoryRuntimeSuite(), {
       chapterEngine: QUALITY_BASELINE.moduleVersions.chapterEngine,
       journeyMemory: QUALITY_BASELINE.moduleVersions.journeyMemory,
+    }),
+  numerologyAdvanced: () =>
+    adapt('numerologyAdvanced', runAdvancedNumerologyRuntimeSuite(), {
+      numerologyCalculation: 'pythagorean-date-v1',
+      numerologyCycles: 'pythagorean-date-cycles-v1',
     }),
   readingContinuity: () =>
     adapt('readingContinuity', runReadingContinuityRuntimeSuite(), {

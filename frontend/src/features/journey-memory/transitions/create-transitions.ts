@@ -127,6 +127,28 @@ export function createJourneyTransitions(
         fromYear.systemVersion === toYear.systemVersion ? 'direct' : 'contextual',
       );
     }
+    (
+      [
+        ['current-pinnacle', 'pinnacle-transition'],
+        ['current-life-cycle', 'life-cycle-transition'],
+      ] as const
+    ).forEach(([calculationId, type]) => {
+      const fromPeriod = from.numbers.find((number) => number.calculationId === calculationId);
+      const toPeriod = to.numbers.find((number) => number.calculationId === calculationId);
+      if (!fromPeriod || !toPeriod || fromPeriod.value === toPeriod.value) return;
+      addTransition(
+        transitions,
+        from,
+        to,
+        type,
+        [
+          reference(from.id, `${calculationId}:${fromPeriod.value}`, 'number'),
+          reference(to.id, `${calculationId}:${toPeriod.value}`, 'number'),
+        ],
+        { from: fromPeriod.value, to: toPeriod.value },
+        fromPeriod.systemVersion === toPeriod.systemVersion ? 'direct' : 'contextual',
+      );
+    });
     if (from.topic !== to.topic) {
       addTransition(
         transitions,

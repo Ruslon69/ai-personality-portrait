@@ -10,6 +10,7 @@ import type { ReadingContinuityContext } from '@features/journey-memory';
 export type CrossSystemSourceKind =
   | 'interest'
   | 'journey-memory'
+  | 'numerology-advanced'
   | 'numerology-core'
   | 'numerology-period'
   | 'psychological-context'

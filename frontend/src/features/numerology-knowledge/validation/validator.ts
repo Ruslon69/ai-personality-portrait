@@ -310,13 +310,20 @@ export function validateAuthorNumerologyKnowledgeBase(
           path: 'karmicLessons',
         });
     });
+  const activeLifeCycleKinds = new Set(['pinnacle', 'challenge', 'life-cycle']);
   if (
     base.lifeCycleContracts.length !== 4 ||
-    base.lifeCycleContracts.some((item) => item.calculationImplemented !== false)
+    base.lifeCycleContracts.some(
+      (item) =>
+        item.calculationImplemented !== activeLifeCycleKinds.has(item.kind) ||
+        (item.calculationImplemented
+          ? item.calculationSystem !== 'pythagorean-date-cycles-v1'
+          : item.calculationSystem !== null),
+    )
   )
     errors.push({
       code: 'invalid-count',
-      message: 'Future life-cycle contracts are incomplete.',
+      message: 'Life-cycle knowledge activation does not match implemented calculations.',
       path: 'lifeCycleContracts',
     });
   if (

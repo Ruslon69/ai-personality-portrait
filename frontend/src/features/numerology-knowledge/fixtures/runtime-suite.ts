@@ -164,10 +164,12 @@ export function runNumerologyKnowledgeFixtureSuite(): NumerologyKnowledgeRuntime
     ),
   );
   assert(
-    authorNumerologyKnowledgeBase.lifeCycleContracts.every(
-      (item) => item.calculationImplemented === false,
+    authorNumerologyKnowledgeBase.lifeCycleContracts.every((item) =>
+      item.kind === 'peak-period'
+        ? !item.calculationImplemented && item.calculationSystem === null
+        : item.calculationImplemented && item.calculationSystem === 'pythagorean-date-cycles-v1',
     ),
-    'A future life-cycle calculation was activated.',
+    'Life-cycle knowledge activation is inconsistent.',
   );
   assert(
     validateNumerologyKnowledgeRepetition(authorNumerologyKnowledgeBase).length === 0,

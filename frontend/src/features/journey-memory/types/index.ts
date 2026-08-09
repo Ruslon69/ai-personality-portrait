@@ -26,7 +26,9 @@ export type JourneyRecommendationCategory =
   | 'support-seeking';
 export type JourneyTransitionType =
   | 'card-pattern-shifted'
+  | 'life-cycle-transition'
   | 'numerology-period-changed'
+  | 'pinnacle-transition'
   | 'practical-focus-changed'
   | 'same-theme-new-expression'
   | 'theme-intensified'
@@ -52,6 +54,8 @@ export type JourneyMilestoneType =
   | 'first-bookmarked-chapter'
   | 'first-master-number'
   | 'first-month-completed'
+  | 'first-life-cycle-transition'
+  | 'first-pinnacle-transition'
   | 'first-reading'
   | 'first-recurring-theme'
   | 'first-repeated-card'
@@ -188,10 +192,13 @@ export type JourneyNumberPattern = {
   id: string;
   kind:
     | 'card-number-resonance'
+    | 'karmic-debt'
+    | 'long-term-period-transition'
     | 'master-number'
     | 'number-theme-link'
     | 'period-repetition'
     | 'personal-year-transition'
+    | 'repeating-challenge'
     | 'repeated-number';
   systemVersions: readonly string[];
   values: readonly number[];

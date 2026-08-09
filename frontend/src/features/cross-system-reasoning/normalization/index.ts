@@ -1,4 +1,7 @@
-import { authorNumerologyKnowledgeBase } from '@features/numerology-knowledge';
+import {
+  authorNumerologyKnowledgeBase,
+  resolveAdvancedNumerologyKnowledge,
+} from '@features/numerology-knowledge';
 import { authorTarotKnowledgeBase } from '@features/tarot-knowledge';
 import {
   POSITION_THEME_MAPPINGS,
@@ -256,6 +259,92 @@ function numerologySignals(input: CrossSystemInput, sources: readonly CrossSyste
     });
     return [direct, symbolic];
   });
+}
+
+function advancedNumerologySignals(input: CrossSystemInput, sources: readonly CrossSystemSource[]) {
+  const advanced = input.context.numerology?.advanced;
+  const targetSource = sources.find(
+    (item) => item.kind === 'numerology-advanced' && item.lineage === advanced?.calculationSystem,
+  );
+  if (!advanced || !targetSource) return [];
+  const periods = [
+    {
+      id: 'current-pinnacle',
+      kind: 'pinnacle' as const,
+      ordinal: advanced.currentPinnacle.ordinal,
+      value: advanced.currentPinnacle.value,
+    },
+    {
+      id: 'current-challenge',
+      kind: 'challenge' as const,
+      ordinal: advanced.currentChallenge.ordinal,
+      value: advanced.currentChallenge.value,
+    },
+    {
+      id: 'current-life-cycle',
+      kind: 'life-cycle' as const,
+      ordinal: advanced.currentLifeCycle.ordinal,
+      value: advanced.currentLifeCycle.value,
+    },
+  ];
+  const periodSignals = periods.map((period) => {
+    const knowledge = resolveAdvancedNumerologyKnowledge(period.kind, period.value);
+    return signal({
+      direction: period.kind === 'challenge' ? 'redirects' : 'frames',
+      entityReferences: [{ id: `${period.id}:${period.value}`, kind: 'number' }],
+      evidenceReferences: [`calculation:${advanced.calculationSystem}:${period.id}`],
+      independentGroup: `advanced-numerology:${period.id}`,
+      provenance: `${advanced.calculationSystem}.${period.id}.${period.ordinal}`,
+      reliability: 'deterministic',
+      semanticType: `numerology.advanced.${period.kind}`,
+      sourceId: targetSource.id,
+      strength: period.kind === 'challenge' ? 'contextual' : 'secondary',
+      themeIds: [
+        `number:${period.value}`,
+        ...knowledge.number.tagIds,
+        ...knowledge.contract.contextRoles.map((role) => `cycle:${role}`),
+      ],
+      uncertainty: 'deterministic-structure',
+    });
+  });
+  const transitionSignals = advanced.upcomingTransition
+    ? [
+        signal({
+          direction: 'redirects',
+          entityReferences: [
+            {
+              id: `${advanced.upcomingTransition.kind}:${advanced.upcomingTransition.nextValue}`,
+              kind: 'number',
+            },
+          ],
+          evidenceReferences: [`calculation:${advanced.calculationSystem}:transition`],
+          independentGroup: 'advanced-numerology:transition',
+          provenance: `${advanced.calculationSystem}.transition.${advanced.upcomingTransition.kind}`,
+          reliability: 'deterministic',
+          semanticType: 'numerology.advanced.upcoming-transition',
+          sourceId: targetSource.id,
+          strength: advanced.upcomingTransition.withinTransitionWindow ? 'secondary' : 'weak',
+          themeIds: ['transition', `number:${advanced.upcomingTransition.nextValue}`],
+          uncertainty: 'deterministic-structure',
+        }),
+      ]
+    : [];
+  const karmicSignals = advanced.karmicDebts.map((debt) =>
+    signal({
+      direction: 'frames',
+      entityReferences: [{ id: `karmic-debt:${debt.debtNumber}`, kind: 'number' }],
+      evidenceReferences: [`calculation:${advanced.calculationSystem}:${debt.provenance}`],
+      independentGroup: `advanced-numerology:karmic:${debt.provenance}`,
+      provenance: `${advanced.calculationSystem}.karmic-debt.${debt.provenance}`,
+      reliability: 'deterministic',
+      semanticType: 'numerology.advanced.karmic-debt-marker',
+      sourceId: targetSource.id,
+      strength: 'weak',
+      themeIds: [`number:${debt.debtNumber}`, 'challenge', 'growth'],
+      uncertainty: 'deterministic-structure',
+    }),
+  );
+  return [...periodSignals, ...transitionSignals, ...karmicSignals];
 }
 
 function psychologySignals(input: CrossSystemInput, sources: readonly CrossSystemSource[]) {
@@ -560,6 +649,16 @@ export function normalizeCrossSystemInput(input: CrossSystemInput): {
         tier: 4,
       }),
     );
+    if (input.context.numerology.advanced)
+      sources.push(
+        source({
+          engineVersions: versions,
+          kind: 'numerology-advanced',
+          lineage: input.context.numerology.advanced.calculationSystem,
+          reliability: 'deterministic',
+          tier: 2,
+        }),
+      );
   }
   if (input.context.psychology.answers.length) {
     sources.push(
@@ -622,6 +721,7 @@ export function normalizeCrossSystemInput(input: CrossSystemInput): {
     ...readingContextSignals(input, sources),
     ...connectionSignals(input, sources),
     ...numerologySignals(input, sources),
+    ...advancedNumerologySignals(input, sources),
     ...psychologySignals(input, sources),
     ...zodiacSignals(input, sources),
     ...interestSignals(input, sources),

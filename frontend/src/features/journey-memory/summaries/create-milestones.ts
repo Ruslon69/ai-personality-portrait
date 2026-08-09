@@ -91,6 +91,26 @@ export function createJourneyMilestones(input: {
         ),
       );
   }
+  (
+    [
+      ['current-pinnacle', 'first-pinnacle-transition'],
+      ['current-life-cycle', 'first-life-cycle-transition'],
+    ] as const
+  ).forEach(([calculationId, milestoneType]) => {
+    const transitionEntry = entries.slice(1).find((entry, index) => {
+      const previous = entries[index];
+      const from = previous?.numbers.find((number) => number.calculationId === calculationId);
+      const to = entry.numbers.find((number) => number.calculationId === calculationId);
+      return from && to && from.value !== to.value;
+    });
+    if (!transitionEntry) return;
+    const index = entries.findIndex((entry) => entry.id === transitionEntry.id);
+    const previous = entries[index - 1];
+    if (previous)
+      result.push(
+        milestone(milestoneType, [previous.id, transitionEntry.id], transitionEntry.createdAt),
+      );
+  });
   if (entries[9])
     result.push(
       milestone(

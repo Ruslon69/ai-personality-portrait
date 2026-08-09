@@ -3,6 +3,7 @@ import { validateJourneyMemorySnapshot } from '@features/journey-memory/validati
 import { validateReadingContinuityContext } from '@features/journey-memory/continuity';
 import { validateCrossSystemResult } from '@features/cross-system-reasoning/validation';
 import { validateNarrativeComposition } from '@features/narrative-composition/validation';
+import { validateAdvancedNumerologyProfile } from '@features/numerology/advanced/validation';
 
 import { PRODUCT_STORAGE_VERSIONS } from '../constants';
 import type {
@@ -418,6 +419,39 @@ function validateNumerology(value: unknown, errors: ProductStorageValidationErro
       );
     }
   }
+  if (isRecord(value) && value.advancedProfile !== undefined && value.advancedProfile !== null)
+    try {
+      const validation = validateAdvancedNumerologyProfile(value.advancedProfile as never);
+      validation.errors.forEach((item) =>
+        error(
+          errors,
+          'numerology',
+          item.code,
+          `$.data.numerology.data.advancedProfile.${item.path}`,
+          item.message,
+        ),
+      );
+      if (
+        isRecord(value.advancedProfile) &&
+        isRecord(value.advancedProfile.calculationMetadata) &&
+        value.advancedProfile.calculationMetadata.birthDate !== value.birthDate
+      )
+        error(
+          errors,
+          'numerology',
+          'advanced-profile-birth-date-mismatch',
+          '$.data.numerology.data.advancedProfile.calculationMetadata.birthDate',
+          'Advanced profile birth date must match its storage section.',
+        );
+    } catch {
+      error(
+        errors,
+        'numerology',
+        'invalid-advanced-numerology',
+        '$.data.numerology.data.advancedProfile',
+        'Advanced numerology profile could not be validated.',
+      );
+    }
 }
 
 function validatePreferences(value: unknown, errors: ProductStorageValidationError[]) {

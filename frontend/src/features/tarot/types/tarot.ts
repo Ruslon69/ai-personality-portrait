@@ -1,5 +1,5 @@
 import type { Locale } from '@shared/i18n';
-import type { NumerologyProfile } from '@features/numerology';
+import type { AdvancedNumerologyProfile, NumerologyProfile } from '@features/numerology';
 import type { InterpretationResult } from '@features/expert-interpretation';
 import type { CrossSystemResult } from '@features/cross-system-reasoning';
 import type { ReadingContinuityContext } from '@features/journey-memory';
@@ -77,6 +77,7 @@ export type TarotPsychologyAnswer = {
 };
 
 export type TarotReadingContext = {
+  advancedNumerology?: AdvancedNumerologyProfile;
   birthDate: string;
   deckTheme: TarotDeckTheme;
   interests: readonly string[];
@@ -124,6 +125,7 @@ export type TarotReading = {
 };
 
 export type ReadingEngineLineage = {
+  advancedCalculationSystem?: string;
   authorContent: string;
   calculationSystem: string;
   crossSystemReasoning: string;

@@ -15,6 +15,7 @@ export const CROSS_SYSTEM_SOURCE_PRIORITY = {
   'tarot-connection': 92,
   'psychological-context': 84,
   'numerology-period': 76,
+  'numerology-advanced': 72,
   'journey-memory': 68,
   'numerology-core': 60,
   interest: 28,

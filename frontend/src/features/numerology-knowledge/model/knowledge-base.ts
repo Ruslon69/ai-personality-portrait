@@ -450,7 +450,8 @@ export function buildAuthorNumerologyKnowledgeBase(): AuthorNumerologyKnowledgeB
     karmicLessons: NUMEROLOGY_KARMIC_VALUES.map(karmicLesson),
     lifeCycleContracts: (['pinnacle', 'challenge', 'life-cycle', 'peak-period'] as const).map(
       (kind) => ({
-        calculationImplemented: false as const,
+        calculationImplemented: kind !== 'peak-period',
+        calculationSystem: kind === 'peak-period' ? null : ('pythagorean-date-cycles-v1' as const),
         contextRoles: ['foundation', 'lesson', 'peak', 'transition'] as const,
         kind,
         requiredInputs: ['birth-date', 'calculation-system-version'] as const,
@@ -510,4 +511,20 @@ export function resolvePersonalMonthContext(
     relation,
     year: year.personalYear,
   };
+}
+
+export function resolveAdvancedNumerologyKnowledge(
+  kind: 'challenge' | 'life-cycle' | 'pinnacle',
+  value: number,
+) {
+  const contract = authorNumerologyKnowledgeBase.lifeCycleContracts.find(
+    (item) => item.kind === kind,
+  );
+  const number = authorNumerologyKnowledgeBase.entries.find(
+    (entry) => entry.identity.value === value,
+  );
+  if (!contract?.calculationImplemented || !contract.calculationSystem)
+    throw new Error(`Advanced numerology knowledge is inactive: ${kind}.`);
+  if (!number) throw new Error(`Advanced numerology value has no knowledge entry: ${value}.`);
+  return { contract, number };
 }

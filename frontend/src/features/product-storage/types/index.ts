@@ -1,7 +1,7 @@
 import type { DraftPortrait, PersonalityProfile } from '@entities/personality-profile';
 import type { JourneyMemorySnapshot } from '@features/journey-memory';
 import type { JourneyState } from '@features/journey';
-import type { NumerologyProfile } from '@features/numerology';
+import type { AdvancedNumerologyProfile, NumerologyProfile } from '@features/numerology';
 import type {
   TarotCardSelection,
   TarotDeckTheme,
@@ -64,7 +64,11 @@ export type TarotReadingsStorageSection = {
 };
 
 export type NumerologyStorageSection = {
-  data: { birthDate: string; profile: NumerologyProfile | null };
+  data: {
+    advancedProfile?: AdvancedNumerologyProfile | null;
+    birthDate: string;
+    profile: NumerologyProfile | null;
+  };
   schemaVersion: 'numerology-storage-v1';
 };
 

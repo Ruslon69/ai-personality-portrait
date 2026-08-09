@@ -99,6 +99,12 @@ export class LocalExpertInterpretationProvider implements InterpretationProvider
     composition: ThemeComposition,
     continuityContext: ReadingContinuityContext | null = null,
   ): CrossSystemResult {
+    const sourceEngineVersions = {
+      ...EXPERT_INTERPRETATION_VERSIONS,
+      ...(context.numerology?.advanced
+        ? { numerologyCycles: context.numerology.advanced.calculationSystem }
+        : {}),
+    };
     return this.reasoningProvider.reason({
       composition,
       connections,
@@ -106,7 +112,7 @@ export class LocalExpertInterpretationProvider implements InterpretationProvider
       context,
       evidence,
       journeyMemory: null,
-      sourceEngineVersions: EXPERT_INTERPRETATION_VERSIONS,
+      sourceEngineVersions,
     });
   }
 
@@ -125,7 +131,12 @@ export class LocalExpertInterpretationProvider implements InterpretationProvider
       cardIds: context.tarot.cards.map((card) => card.id),
       ...(options.currentReadingId ? { currentReadingId: options.currentReadingId } : {}),
       numberValues: context.numerology?.numbers.map((number) => number.value) ?? [],
-      sourceEngineVersions: EXPERT_INTERPRETATION_VERSIONS,
+      sourceEngineVersions: {
+        ...EXPERT_INTERPRETATION_VERSIONS,
+        ...(context.numerology?.advanced
+          ? { numerologyCycles: context.numerology.advanced.calculationSystem }
+          : {}),
+      },
       spreadId: context.tarot.spreadId,
       themeIds: composition.themes.map((theme) => theme.semanticId),
       topic: context.tarot.topic ?? null,

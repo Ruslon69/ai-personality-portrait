@@ -1,2 +1,5 @@
 export { createNarrativeCompositionRequest } from './from-expert-interpretation';
-export { narrativeMemoryContextFromSnapshot } from './from-journey-memory';
+export {
+  narrativeMemoryContextFromContinuity,
+  narrativeMemoryContextFromSnapshot,
+} from './from-journey-memory';

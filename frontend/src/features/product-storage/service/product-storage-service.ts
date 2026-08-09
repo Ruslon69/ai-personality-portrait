@@ -1,6 +1,10 @@
 import { bootstrapProductStorage, type ProductStorageBootstrapInput } from '../activation';
-import { journeySectionsFromState } from '../compatibility';
-import { createProductStorageDeletionPlan, applyProductStorageDeletionPlan } from '../model';
+import { journeySectionsFromState, reconcileJourneyStateAfterConflict } from '../compatibility';
+import {
+  createProductStorageDeletionPlan,
+  applyProductStorageDeletionPlan,
+  removeTarotReadingFromJourney,
+} from '../model';
 import { recoverProductStorage } from '../recovery';
 import { writeEnvelopeTransactionally, writeRecoveredEnvelope } from '../repositories';
 import { parseExternalStorageChange } from '../runtime/external-change';
@@ -209,6 +213,17 @@ export class ProductStorageService {
     });
   }
 
+  deleteTarotReading(readingId: string) {
+    const journey = this.latest?.data.journey;
+    if (!journey) return result('failed', { errors: ['journey-unavailable'] });
+    if (!journey.data.readings.some((record) => record.reading.id === readingId))
+      return result('success', { revision: this.latest?.revision ?? null });
+    return this.updateSection('journey', {
+      ...journey,
+      data: removeTarotReadingFromJourney(journey.data, readingId),
+    });
+  }
+
   createExport(scope: ProductStorageExportScope) {
     return this.latest
       ? buildProductStorageExport(this.latest, { exportedAt: this.now(), scope })
@@ -334,7 +349,21 @@ export class ProductStorageService {
     });
     if (first.status !== 'conflict') return first;
     this.latest = first.latestEnvelope;
-    const retryPatches = this.preparePatches(patches, first.latestEnvelope);
+    const reconciledPatches =
+      patches.journey && first.latestEnvelope.data.journey
+        ? {
+            ...patches,
+            journey: {
+              ...patches.journey,
+              data: reconcileJourneyStateAfterConflict(
+                first.latestEnvelope.data.journey.data,
+                patches.journey.data,
+                this.now(),
+              ),
+            },
+          }
+        : patches;
+    const retryPatches = this.preparePatches(reconciledPatches, first.latestEnvelope);
     const retryAttempt = {
       ...first.latestEnvelope,
       data: { ...first.latestEnvelope.data, ...retryPatches },

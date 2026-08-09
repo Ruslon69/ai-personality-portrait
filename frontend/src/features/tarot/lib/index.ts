@@ -1,8 +1,11 @@
 export { createTarotReading } from './reading-engine';
 export {
   adaptExpertInterpretationToTarotPresentation,
+  createExpertInterpretationBundleForTarot,
   createExpertInterpretationForTarot,
   createExpertInterpretationRequest,
+  createReadingEngineLineage,
+  enrichTarotReadingWithContinuity,
 } from './expert-interpretation-adapter';
 export type { TarotAuthorPresentation } from './expert-interpretation-adapter';
 export {

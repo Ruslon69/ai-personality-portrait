@@ -16,6 +16,8 @@ import type {
   ProductStorageSection,
 } from '../types';
 import { isRecord } from '../utils';
+import { migrateProductStorageReadingLineage } from '../migrations';
+import type { TarotReading } from '@features/tarot';
 import { salvageProductStorageData } from '../validation';
 
 function selectData(
@@ -76,13 +78,25 @@ function parseExport(
   const exportPackage = parsed.value as ProductStorageExportPackage;
   if (calculateChecksum(exportPackage) !== exportPackage.checksum)
     return { message: 'Export checksum mismatch.', status: 'error' };
-  const salvaged = salvageProductStorageData(exportPackage.data);
+  const migrated = migrateProductStorageReadingLineage(exportPackage.data);
+  const salvaged = salvageProductStorageData(migrated.data);
   if (
     salvaged.errors.length > 0 ||
     Object.keys(salvaged.validData).length !== Object.keys(exportPackage.data).length
   )
     return { message: 'Export contains invalid sections.', status: 'error' };
-  return { package: exportPackage, status: 'success' };
+  return { package: { ...exportPackage, data: migrated.data }, status: 'success' };
+}
+
+function mergeCompatibleReading(current: TarotReading, incoming: TarotReading): TarotReading {
+  return {
+    ...incoming,
+    ...current,
+    crossSystemReasoning: current.crossSystemReasoning ?? incoming.crossSystemReasoning,
+    narrative: current.narrative ?? incoming.narrative,
+    continuity: current.continuity ?? incoming.continuity,
+    reasoningVersions: current.reasoningVersions ?? incoming.reasoningVersions,
+  };
 }
 
 function mergeReadings(
@@ -100,6 +114,7 @@ function mergeReadings(
       records.set(record.reading.id, {
         ...existing,
         bookmarked: existing.bookmarked || record.bookmarked,
+        reading: mergeCompatibleReading(existing.reading, record.reading),
       });
       conflicts.push({
         id: record.reading.id,
@@ -125,7 +140,13 @@ function mergeJourney(
     const existing = records.get(record.reading.id);
     records.set(
       record.reading.id,
-      existing ? { ...existing, favorite: existing.favorite || record.favorite } : record,
+      existing
+        ? {
+            ...existing,
+            favorite: existing.favorite || record.favorite,
+            reading: mergeCompatibleReading(existing.reading, record.reading),
+          }
+        : record,
     );
   });
   return {

@@ -10,10 +10,10 @@ import { createJourneyMilestones } from '../summaries';
 import { trackJourneyThemes } from '../theme-tracking';
 import { createJourneyTransitions } from '../transitions';
 import type { JourneyMemorySnapshot, JourneyMemorySource } from '../types';
-import { stableHash, stableStringify } from '../utils';
 import { validateJourneyMemorySnapshot } from '../validation';
 import { createJourneyYearSummaries } from '../yearbook';
 import { JOURNEY_MEMORY_VERSIONS } from './versions';
+import { createJourneyMemoryEntryFingerprint } from './entry-fingerprint';
 
 export function buildJourneyMemorySnapshot(input: {
   generatedAt: string;
@@ -54,7 +54,7 @@ export function buildJourneyMemorySnapshot(input: {
     chapters,
     entries,
     metadata: {
-      entryFingerprint: stableHash(stableStringify(entries)),
+      entryFingerprint: createJourneyMemoryEntryFingerprint(entries),
       generatedAt: input.generatedAt,
       locale: input.locale,
       versions: JOURNEY_MEMORY_VERSIONS,

@@ -16,6 +16,7 @@ import type {
 } from '../types';
 import { isRecord } from '../utils';
 import { salvageProductStorageData, validateProductStorageEnvelope } from '../validation';
+import { migrateTarotReadingContinuity } from './tarot-reading-migration';
 
 function issue(
   section: ProductStorageSection,
@@ -56,23 +57,68 @@ function safeParse(
 }
 
 export function migrateLegacyJourney(value: unknown) {
-  if (isRecord(value) && value.schemaVersion === 'journey-storage-v1' && isRecord(value.data))
-    return value as unknown as NonNullable<ProductStorageData['journey']>;
+  if (isRecord(value) && value.schemaVersion === 'journey-storage-v1' && isRecord(value.data)) {
+    const data = value.data;
+    if (!Array.isArray(data.readings))
+      return value as unknown as NonNullable<ProductStorageData['journey']>;
+    if (
+      data.readings.every(
+        (record) =>
+          isRecord(record) &&
+          isRecord(record.reading) &&
+          isRecord(record.reading.reasoningVersions),
+      )
+    )
+      return value as unknown as NonNullable<ProductStorageData['journey']>;
+    return {
+      ...value,
+      data: {
+        ...data,
+        readings: data.readings.map((record) =>
+          isRecord(record) && isRecord(record.reading)
+            ? { ...record, reading: migrateTarotReadingContinuity(record.reading) }
+            : record,
+        ),
+      },
+    } as unknown as NonNullable<ProductStorageData['journey']>;
+  }
   if (!isRecord(value) || !Array.isArray(value.readings) || !isRecord(value.dailyCards))
     return null;
+  const readings = value.readings.map((record) =>
+    isRecord(record) && isRecord(record.reading)
+      ? { ...record, reading: migrateTarotReadingContinuity(record.reading) }
+      : record,
+  );
   return {
     data: {
       dailyCards: value.dailyCards,
       identity: typeof value.identity === 'string' ? value.identity : 'journey-preview',
-      readings: value.readings,
+      readings,
     } as JourneyState,
     schemaVersion: 'journey-storage-v1' as const,
   };
 }
 
 export function migrateLegacyTarotReadings(value: unknown): TarotReadingsStorageSection | null {
-  if (isRecord(value) && value.schemaVersion === 'tarot-storage-v1' && Array.isArray(value.data))
-    return value as unknown as TarotReadingsStorageSection;
+  if (isRecord(value) && value.schemaVersion === 'tarot-storage-v1' && Array.isArray(value.data)) {
+    if (
+      value.data.every(
+        (record) =>
+          isRecord(record) &&
+          isRecord(record.reading) &&
+          isRecord(record.reading.reasoningVersions),
+      )
+    )
+      return value as unknown as TarotReadingsStorageSection;
+    return {
+      ...value,
+      data: value.data.map((record) =>
+        isRecord(record) && isRecord(record.reading)
+          ? { ...record, reading: migrateTarotReadingContinuity(record.reading) }
+          : record,
+      ),
+    } as unknown as TarotReadingsStorageSection;
+  }
   if (!isRecord(value) || !Array.isArray(value.readings)) return null;
   const records = value.readings.flatMap((item) => {
     if (!isRecord(item) || !isRecord(item.reading) || typeof item.reading.id !== 'string')
@@ -80,7 +126,7 @@ export function migrateLegacyTarotReadings(value: unknown): TarotReadingsStorage
     return [
       {
         bookmarked: item.favorite === true,
-        reading: item.reading,
+        reading: migrateTarotReadingContinuity(item.reading),
         savedAt: typeof item.savedAt === 'string' ? item.savedAt : item.reading.createdAt,
       },
     ];

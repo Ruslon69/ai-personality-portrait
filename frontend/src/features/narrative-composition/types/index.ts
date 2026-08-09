@@ -86,6 +86,10 @@ export type NarrativeRelationInput = {
 
 export type NarrativeMemoryContext = {
   emergingThemeIds: readonly string[];
+  fadingThemeIds?: readonly string[];
+  lastRelatedEntryId?: string | null;
+  repeatedCardIds?: readonly string[];
+  repeatedPracticalFocusIds?: readonly string[];
   recurringThemeIds: readonly string[];
   resolvedThemeIds: readonly string[];
   transitionIds: readonly string[];

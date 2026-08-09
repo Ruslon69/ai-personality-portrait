@@ -117,6 +117,7 @@ export type JourneyMemorySource = {
   engineVersions: Readonly<Record<string, string>>;
   headline: string;
   id: string;
+  interpretationFingerprint?: string;
   kind: JourneyMemoryEntryKind;
   locale: Locale;
   numbers: readonly JourneyMemoryNumber[];
@@ -136,7 +137,8 @@ export type JourneyMemorySource = {
   } | null;
 };
 
-export type JourneyMemoryEntry = JourneyMemorySource & {
+export type JourneyMemoryEntry = Omit<JourneyMemorySource, 'interpretationFingerprint'> & {
+  interpretationFingerprint: string;
   leadingTheme: string | null;
   supportingThemes: readonly string[];
 };
@@ -314,3 +316,77 @@ export type JourneyMemorySnapshot = {
   };
   yearSummaries: readonly JourneyYearSummary[];
 };
+
+export type ReadingContinuityEntry = {
+  cardIds: readonly string[];
+  createdAt: string;
+  id: string;
+  leadingTheme: string | null;
+  numberValues: readonly number[];
+  practicalFocusIds: readonly string[];
+  relevance: number;
+  spreadId: string | null;
+  supportingThemes: readonly string[];
+  topic: TarotTopic | null;
+};
+
+export type ReadingContinuityTheme = {
+  occurrenceCount: number;
+  relatedCardIds: readonly string[];
+  relatedEntryIds: readonly string[];
+  relatedNumberValues: readonly number[];
+  themeId: string;
+  trend: JourneyThemeTrend;
+};
+
+export type ReadingContinuityCardPattern = {
+  cardIds: readonly string[];
+  entryIds: readonly string[];
+  id: string;
+  relation: JourneyPatternRelation;
+  semanticId: string;
+};
+
+export type ReadingContinuityNumberPattern = {
+  compatibility: JourneyNumberPattern['compatibility'];
+  entryIds: readonly string[];
+  id: string;
+  values: readonly number[];
+};
+
+export type ReadingContinuityPracticalFocus = {
+  category: JourneyRecommendationCategory;
+  entryIds: readonly string[];
+  id: string;
+  semanticIds: readonly string[];
+};
+
+export type ReadingContinuityContext = {
+  continuityVersion: 'reading-continuity-v1';
+  emergingThemes: readonly ReadingContinuityTheme[];
+  fadingThemes: readonly ReadingContinuityTheme[];
+  journeySnapshotVersion: string;
+  lastRelatedReading: ReadingContinuityEntry | null;
+  memoryFingerprint: string;
+  previousRelevantEntries: readonly ReadingContinuityEntry[];
+  recentTransitions: readonly JourneyTransition[];
+  recurringThemes: readonly ReadingContinuityTheme[];
+  repeatedCards: readonly ReadingContinuityCardPattern[];
+  repeatedNumbers: readonly ReadingContinuityNumberPattern[];
+  repeatedPracticalFocuses: readonly ReadingContinuityPracticalFocus[];
+  resolvedThemes: readonly ReadingContinuityTheme[];
+};
+
+export type ReadingContinuityQuery = {
+  cardIds: readonly string[];
+  currentReadingId?: string;
+  numberValues: readonly number[];
+  sourceEngineVersions: Readonly<Record<string, string>>;
+  spreadId: string;
+  themeIds: readonly string[];
+  topic: TarotTopic | null;
+};
+
+export interface JourneyMemoryProvider {
+  getSnapshot(): JourneyMemorySnapshot | null;
+}

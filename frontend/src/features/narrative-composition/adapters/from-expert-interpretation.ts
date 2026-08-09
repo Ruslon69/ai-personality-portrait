@@ -394,6 +394,23 @@ function repeatedMotifCandidates(context: InterpretationContext): readonly Narra
 function memoryCandidates(memory: NarrativeMemoryContext | undefined) {
   if (!memory) return [];
   return [
+    ...(memory.lastRelatedEntryId
+      ? [
+          candidate({
+            basePriority: 85,
+            cardIds: [],
+            evidenceIds: [],
+            numberValues: [],
+            polarity: 'neutral',
+            priorityFactors: [],
+            roles: ['current', 'support'],
+            semanticId: `continuity.previous-chapter.${memory.lastRelatedEntryId}`,
+            sourceId: `memory:previous:${memory.lastRelatedEntryId}`,
+            sourceKind: 'journey-memory',
+            tags: ['previous-chapter', 'continuation'],
+          }),
+        ]
+      : []),
     ...memory.emergingThemeIds.map((semanticId) =>
       candidate({
         basePriority: 105,
@@ -437,6 +454,51 @@ function memoryCandidates(memory: NarrativeMemoryContext | undefined) {
         sourceId: `memory:resolved:${semanticId}`,
         sourceKind: 'journey-memory',
         tags: semanticTags(semanticId, 'resolved'),
+      }),
+    ),
+    ...(memory.fadingThemeIds ?? []).map((semanticId) =>
+      candidate({
+        basePriority: 65,
+        cardIds: [],
+        evidenceIds: [],
+        numberValues: [],
+        polarity: 'neutral',
+        priorityFactors: [],
+        roles: ['softener', 'closure'],
+        semanticId: `continuity.softened.${semanticId}`,
+        sourceId: `memory:fading:${semanticId}`,
+        sourceKind: 'journey-memory',
+        tags: semanticTags(semanticId, 'fading', 'changed'),
+      }),
+    ),
+    ...(memory.repeatedPracticalFocusIds ?? []).map((semanticId) =>
+      candidate({
+        basePriority: 72,
+        cardIds: [],
+        evidenceIds: [],
+        numberValues: [],
+        polarity: 'supportive',
+        priorityFactors: ['practical-action'],
+        roles: ['practical', 'support'],
+        semanticId: `continuity.practical.${semanticId}`,
+        sourceId: `memory:practical:${semanticId}`,
+        sourceKind: 'journey-memory',
+        tags: semanticTags(semanticId, 'continued'),
+      }),
+    ),
+    ...(memory.repeatedCardIds ?? []).map((cardId) =>
+      candidate({
+        basePriority: 78,
+        cardIds: [cardId],
+        evidenceIds: [],
+        numberValues: [],
+        polarity: 'neutral',
+        priorityFactors: ['repeated-symbol'],
+        roles: ['current', 'support'],
+        semanticId: `continuity.card-returned.${cardId}`,
+        sourceId: `memory:card:${cardId}`,
+        sourceKind: 'journey-memory',
+        tags: semanticTags(cardId, 'returned', 'changed-form'),
       }),
     ),
     ...memory.transitionIds.map((semanticId) =>

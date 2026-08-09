@@ -1,6 +1,7 @@
 import { runAuthorContentRuntimeSuite } from '../../features/expert-interpretation/fixtures/content-runtime-suite';
 import { runExpertInterpretationFixtureSuite } from '../../features/expert-interpretation/fixtures/runtime-suite';
 import { runJourneyMemoryRuntimeSuite } from '../../features/journey-memory/fixtures/runtime-suite';
+import { runReadingContinuityRuntimeSuite } from '../../features/journey-memory/fixtures/continuity-runtime-suite';
 import { runProductStorageActivationRuntimeSuite } from '../../features/product-storage/fixtures/activation-runtime-suite';
 import { runProductStorageRuntimeSuite } from '../../features/product-storage/fixtures/runtime-suite';
 import { runExpertInterpretationAdapterRuntimeSuite } from '../../features/tarot/lib/expert-interpretation-adapter-runtime';
@@ -65,6 +66,11 @@ export const existingSuiteRunners = {
     adapt('journeyMemory', runJourneyMemoryRuntimeSuite(), {
       chapterEngine: QUALITY_BASELINE.moduleVersions.chapterEngine,
       journeyMemory: QUALITY_BASELINE.moduleVersions.journeyMemory,
+    }),
+  readingContinuity: () =>
+    adapt('readingContinuity', runReadingContinuityRuntimeSuite(), {
+      journeyMemory: 'journey-memory-v1',
+      readingContinuity: 'reading-continuity-v1',
     }),
   productStorage: () =>
     adapt('productStorage', runProductStorageRuntimeSuite(), {

@@ -44,7 +44,7 @@ export function prioritizeCrossSystemLinks(input: {
       !['modality-contrast', 'symbolic-tension', 'thematic-contrast'].includes(link.semanticType) &&
       !involvesZodiac(link, input.sources),
   );
-  const leading = nonContrast[0] ?? null;
+  const leading = nonContrast.find((link) => link.semanticType !== 'journey-continuity') ?? null;
   const usedThemes = new Set(leading ? [leading.themeId] : []);
   const supporting: string[] = [];
   nonContrast.slice(1).forEach((link) => {

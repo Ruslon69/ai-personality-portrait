@@ -1,5 +1,6 @@
 export type {
   LocalizedText,
+  ReadingEngineLineage,
   TarotArcana,
   TarotCard,
   TarotCardSelection,

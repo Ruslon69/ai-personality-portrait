@@ -2,9 +2,13 @@ import {
   localExpertInterpretationProvider,
   type AuthorInterpretationBlock,
   type InterpretationResult,
+  type InterpretationExecutionOptions,
   type InterpretationNumerologyNumberInput,
   type InterpretationRequest,
 } from '@features/expert-interpretation';
+import { authorNumerologyKnowledgeBase } from '@features/numerology-knowledge';
+import { authorTarotKnowledgeBase } from '@features/tarot-knowledge';
+import { JOURNEY_MEMORY_VERSIONS, type JourneyMemorySnapshot } from '@features/journey-memory';
 import { MASTER_NUMBERS } from '@features/numerology';
 
 import { tarotCardById } from '../data';
@@ -13,6 +17,7 @@ import type {
   TarotInterpretation,
   TarotReading,
   TarotReadingContext,
+  ReadingEngineLineage,
 } from '../types';
 
 const numberIdMap = {
@@ -97,8 +102,18 @@ export function createExpertInterpretationForTarot(
   selections: readonly TarotCardSelection[],
   generatedAt: string,
 ) {
+  return createExpertInterpretationBundleForTarot(context, selections, generatedAt).result;
+}
+
+export function createExpertInterpretationBundleForTarot(
+  context: TarotReadingContext,
+  selections: readonly TarotCardSelection[],
+  generatedAt: string,
+  options: InterpretationExecutionOptions = {},
+) {
   const response = localExpertInterpretationProvider.interpret(
     createExpertInterpretationRequest(context, selections, generatedAt),
+    options,
   );
   if (!response.validation.valid) {
     throw new Error(
@@ -110,7 +125,55 @@ export function createExpertInterpretationForTarot(
       `Narrative composition validation failed: ${response.narrativeValidation.errors[0]?.message ?? 'unknown error'}`,
     );
   }
-  return response.result;
+  if (!response.reasoningValidation.valid) {
+    throw new Error(
+      `Cross-system reasoning validation failed: ${response.reasoningValidation.errors[0]?.message ?? 'unknown error'}`,
+    );
+  }
+  return response;
+}
+
+export function createReadingEngineLineage(
+  context: TarotReadingContext,
+  response: ReturnType<typeof createExpertInterpretationBundleForTarot>,
+): ReadingEngineLineage {
+  return {
+    authorContent: response.result.content.version,
+    calculationSystem: context.numerology.system,
+    crossSystemReasoning: response.reasoning.metadata.versions.engine,
+    expertInterpretation: response.result.metadata.versions.engine,
+    journeyMemory: response.continuity?.journeySnapshotVersion ?? JOURNEY_MEMORY_VERSIONS.engine,
+    narrative: response.narrative.metadata.composerVersion,
+    numerologyKnowledge: authorNumerologyKnowledgeBase.metadata.version,
+    readingContinuity: response.continuity?.continuityVersion ?? 'reading-continuity-v1',
+    status: 'current',
+    tarotKnowledge: authorTarotKnowledgeBase.metadata.version,
+  };
+}
+
+export function enrichTarotReadingWithContinuity(
+  reading: TarotReading,
+  snapshot: JourneyMemorySnapshot,
+): TarotReading {
+  const response = createExpertInterpretationBundleForTarot(
+    reading.context,
+    reading.selections,
+    reading.createdAt,
+    {
+      currentReadingId: reading.id,
+      journeyMemoryProvider: { getSnapshot: () => snapshot },
+    },
+  );
+  return {
+    ...reading,
+    ...(response.continuity && response.continuity.previousRelevantEntries.length
+      ? { continuity: response.continuity }
+      : {}),
+    crossSystemReasoning: response.reasoning,
+    expertInterpretation: response.result,
+    narrative: response.narrative,
+    reasoningVersions: createReadingEngineLineage(reading.context, response),
+  };
 }
 
 function blockText(

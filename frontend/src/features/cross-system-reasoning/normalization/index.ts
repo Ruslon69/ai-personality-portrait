@@ -370,8 +370,23 @@ function interestSignals(input: CrossSystemInput, sources: readonly CrossSystemS
 
 function journeySignals(input: CrossSystemInput, sources: readonly CrossSystemSource[]) {
   const targetSource = sources.find((item) => item.kind === 'journey-memory');
-  if (!targetSource || !input.journeyMemory) return [];
-  const themes = input.journeyMemory.recurringThemes.map((theme) =>
+  const continuity = input.continuityContext;
+  const memory = input.journeyMemory;
+  if (!targetSource || (!continuity && !memory)) return [];
+  const continuityThemes = continuity
+    ? [
+        ...continuity.recurringThemes,
+        ...continuity.emergingThemes,
+        ...continuity.fadingThemes,
+        ...continuity.resolvedThemes,
+      ].map((theme) => ({
+        currentTrend: theme.trend,
+        occurrenceCount: theme.occurrenceCount,
+        occurrences: theme.relatedEntryIds.map((entryId) => ({ entryId, themeId: theme.themeId })),
+        themeId: theme.themeId,
+      }))
+    : (memory?.recurringThemes ?? []);
+  const themes = continuityThemes.map((theme) =>
     signal({
       direction:
         theme.currentTrend === 'intensifying'
@@ -388,12 +403,15 @@ function journeySignals(input: CrossSystemInput, sources: readonly CrossSystemSo
       reliability: 'deterministic',
       semanticType: `journey.${theme.currentTrend}`,
       sourceId: targetSource.id,
-      strength: theme.currentTrend === 'isolated' ? 'weak' : 'secondary',
+      strength:
+        theme.currentTrend === 'isolated' || theme.currentTrend === 'fading' ? 'weak' : 'secondary',
       themeIds: [theme.themeId],
       uncertainty: 'deterministic-structure',
     }),
   );
-  const recommendations = input.journeyMemory.recommendationPatterns.map((pattern) =>
+  const recommendationPatterns =
+    continuity?.repeatedPracticalFocuses ?? memory?.recommendationPatterns ?? [];
+  const recommendations = recommendationPatterns.map((pattern) =>
     signal({
       direction: 'reinforces',
       entityReferences: [{ id: pattern.category, kind: 'theme' }],
@@ -403,12 +421,13 @@ function journeySignals(input: CrossSystemInput, sources: readonly CrossSystemSo
       reliability: 'deterministic',
       semanticType: 'journey.repeated-practical-focus',
       sourceId: targetSource.id,
-      strength: pattern.occurrenceCount > 1 ? 'secondary' : 'weak',
+      strength: pattern.entryIds.length > 1 ? 'secondary' : 'weak',
       themeIds: [pattern.category],
       uncertainty: 'deterministic-structure',
     }),
   );
-  const cardPatterns = input.journeyMemory.cardPatterns.map((pattern) =>
+  const availableCardPatterns = continuity?.repeatedCards ?? memory?.cardPatterns ?? [];
+  const cardPatterns = availableCardPatterns.map((pattern) =>
     signal({
       direction:
         pattern.relation === 'contrast' || pattern.relation === 'unresolved-sequence'
@@ -421,37 +440,38 @@ function journeySignals(input: CrossSystemInput, sources: readonly CrossSystemSo
       independentGroup: `journey-card-pattern:${pattern.id}`,
       provenance: `journey-memory.card-pattern.${pattern.id}`,
       reliability: 'deterministic',
-      semanticType: `journey.card-pattern.${pattern.patternType}.${pattern.relation}`,
+      semanticType: `journey.card-pattern.${'patternType' in pattern ? pattern.patternType : 'repeated-card'}.${pattern.relation}`,
       sourceId: targetSource.id,
-      strength: pattern.occurrenceCount > 1 ? 'secondary' : 'weak',
+      strength: pattern.entryIds.length > 1 ? 'secondary' : 'weak',
       themeIds: [pattern.semanticId, pattern.relation],
       uncertainty: 'deterministic-structure',
     }),
   );
-  const transitions = input.journeyMemory.transitions.map((transition) =>
-    signal({
-      direction:
-        transition.type === 'theme-intensified'
-          ? 'intensifies'
-          : transition.type === 'theme-weakened'
-            ? 'softens'
-            : 'redirects',
-      entityReferences: [
-        { id: transition.fromEntryId, kind: 'theme' },
-        { id: transition.toEntryId, kind: 'theme' },
-      ],
-      evidenceReferences: transition.evidence.map((item) => item.id),
-      independentGroup: `journey-transition:${transition.id}`,
-      provenance: `journey-memory.transition.${transition.id}`,
-      reliability: 'deterministic',
-      semanticType: `journey.transition.${transition.type}`,
-      sourceId: targetSource.id,
-      strength: 'secondary',
-      themeIds: [transition.type, transition.semanticSummary.key],
-      uncertainty: 'deterministic-structure',
-    }),
+  const transitions = (continuity?.recentTransitions ?? memory?.transitions ?? []).map(
+    (transition) =>
+      signal({
+        direction:
+          transition.type === 'theme-intensified'
+            ? 'intensifies'
+            : transition.type === 'theme-weakened'
+              ? 'softens'
+              : 'redirects',
+        entityReferences: [
+          { id: transition.fromEntryId, kind: 'theme' },
+          { id: transition.toEntryId, kind: 'theme' },
+        ],
+        evidenceReferences: transition.evidence.map((item) => item.id),
+        independentGroup: `journey-transition:${transition.id}`,
+        provenance: `journey-memory.transition.${transition.id}`,
+        reliability: 'deterministic',
+        semanticType: `journey.transition.${transition.type}`,
+        sourceId: targetSource.id,
+        strength: 'secondary',
+        themeIds: [transition.type, transition.semanticSummary.key],
+        uncertainty: 'deterministic-structure',
+      }),
   );
-  const incompatibleNumbers = input.journeyMemory.numberPatterns
+  const incompatibleNumbers = (continuity?.repeatedNumbers ?? memory?.numberPatterns ?? [])
     .filter((pattern) => pattern.compatibility !== 'compatible')
     .map((pattern) =>
       signal({
@@ -581,12 +601,17 @@ export function normalizeCrossSystemInput(input: CrossSystemInput): {
       }),
     );
   }
-  if (input.journeyMemory) {
+  if (input.continuityContext || input.journeyMemory) {
+    const versions = input.continuityContext
+      ? { journeyMemory: input.continuityContext.journeySnapshotVersion }
+      : input.journeyMemory!.metadata.versions;
     sources.push(
       source({
-        engineVersions: input.journeyMemory.metadata.versions,
+        engineVersions: versions,
         kind: 'journey-memory',
-        lineage: input.journeyMemory.metadata.versions.engine,
+        lineage:
+          input.continuityContext?.journeySnapshotVersion ??
+          input.journeyMemory!.metadata.versions.engine,
         reliability: 'deterministic',
         tier: 2,
       }),

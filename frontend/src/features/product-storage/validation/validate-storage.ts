@@ -1,5 +1,8 @@
 import { validateInterpretationResult } from '@features/expert-interpretation/validation';
 import { validateJourneyMemorySnapshot } from '@features/journey-memory/validation';
+import { validateReadingContinuityContext } from '@features/journey-memory/continuity';
+import { validateCrossSystemResult } from '@features/cross-system-reasoning/validation';
+import { validateNarrativeComposition } from '@features/narrative-composition/validation';
 
 import { PRODUCT_STORAGE_VERSIONS } from '../constants';
 import type {
@@ -123,36 +126,144 @@ function validateTarotReadingValue(
       );
     else positions.add(selection.positionId);
   });
-  if (!isRecord(reading.expertInterpretation)) {
-    error(
-      errors,
-      'tarotReadings',
-      'missing-interpretation',
-      `${path}.expertInterpretation`,
-      'Expert interpretation is required.',
-    );
-    return;
-  }
-  try {
-    const report = validateInterpretationResult(reading.expertInterpretation as never);
-    report.errors.forEach((item) =>
+  if (isRecord(reading.expertInterpretation)) {
+    try {
+      const report = validateInterpretationResult(reading.expertInterpretation as never);
+      report.errors.forEach((item) =>
+        error(
+          errors,
+          'tarotReadings',
+          `interpretation-${item.code}`,
+          `${path}.expertInterpretation.${item.path}`,
+          item.message,
+        ),
+      );
+    } catch {
       error(
         errors,
         'tarotReadings',
-        `interpretation-${item.code}`,
-        `${path}.expertInterpretation.${item.path}`,
-        item.message,
-      ),
-    );
-  } catch {
+        'invalid-interpretation',
+        `${path}.expertInterpretation`,
+        'Expert interpretation could not be validated.',
+      );
+    }
+  }
+  if (reading.crossSystemReasoning !== undefined) {
+    try {
+      const report = validateCrossSystemResult(reading.crossSystemReasoning as never);
+      report.errors.forEach((item) =>
+        error(
+          errors,
+          'tarotReadings',
+          `reasoning-${item.code}`,
+          `${path}.crossSystemReasoning.${item.path}`,
+          item.message,
+        ),
+      );
+    } catch {
+      error(
+        errors,
+        'tarotReadings',
+        'invalid-reasoning',
+        `${path}.crossSystemReasoning`,
+        'Cross-system result could not be validated.',
+      );
+    }
+  }
+  if (reading.narrative !== undefined) {
+    try {
+      const report = validateNarrativeComposition(reading.narrative as never);
+      report.errors.forEach((item) =>
+        error(
+          errors,
+          'tarotReadings',
+          `narrative-${item.code}`,
+          `${path}.narrative.${item.path}`,
+          item.message,
+        ),
+      );
+    } catch {
+      error(
+        errors,
+        'tarotReadings',
+        'invalid-narrative',
+        `${path}.narrative`,
+        'Narrative result could not be validated.',
+      );
+    }
+  }
+  if (reading.continuity !== undefined) {
+    try {
+      const report = validateReadingContinuityContext(reading.continuity as never);
+      report.errors.forEach((item) =>
+        error(
+          errors,
+          'tarotReadings',
+          `continuity-${item.code}`,
+          `${path}.continuity.${item.path}`,
+          item.message,
+        ),
+      );
+    } catch {
+      error(
+        errors,
+        'tarotReadings',
+        'invalid-continuity',
+        `${path}.continuity`,
+        'Continuity context could not be validated.',
+      );
+    }
+  }
+  if (
+    reading.reasoningVersions !== undefined &&
+    (!isRecord(reading.reasoningVersions) ||
+      [
+        'authorContent',
+        'calculationSystem',
+        'crossSystemReasoning',
+        'expertInterpretation',
+        'journeyMemory',
+        'narrative',
+        'numerologyKnowledge',
+        'readingContinuity',
+        'status',
+        'tarotKnowledge',
+      ].some(
+        (key) => typeof (reading.reasoningVersions as Record<string, unknown>)[key] !== 'string',
+      ))
+  )
     error(
       errors,
       'tarotReadings',
-      'invalid-interpretation',
-      `${path}.expertInterpretation`,
-      'Expert interpretation could not be validated.',
+      'invalid-engine-lineage',
+      `${path}.reasoningVersions`,
+      'Reading engine lineage is incomplete.',
     );
-  }
+  if (
+    isRecord(reading.reasoningVersions) &&
+    !['current', 'legacy', 'mixed'].includes(String(reading.reasoningVersions.status))
+  )
+    error(
+      errors,
+      'tarotReadings',
+      'invalid-lineage-status',
+      `${path}.reasoningVersions.status`,
+      'Reading lineage status is invalid.',
+    );
+  if (
+    isRecord(reading.reasoningVersions) &&
+    reading.reasoningVersions.status === 'current' &&
+    (!isRecord(reading.expertInterpretation) ||
+      !isRecord(reading.crossSystemReasoning) ||
+      !isRecord(reading.narrative))
+  )
+    error(
+      errors,
+      'tarotReadings',
+      'incomplete-current-reading',
+      path,
+      'Current-lineage reading requires interpretation, reasoning, and narrative results.',
+    );
 }
 
 function validateJourney(value: unknown, errors: ProductStorageValidationError[]) {

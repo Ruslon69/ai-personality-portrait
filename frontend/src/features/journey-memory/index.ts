@@ -1,4 +1,5 @@
 export * from './chaptering';
+export * from './continuity';
 export * from './model';
 export * from './normalization';
 export * from './recurrence';

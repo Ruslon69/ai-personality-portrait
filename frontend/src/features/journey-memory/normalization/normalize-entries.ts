@@ -47,6 +47,14 @@ export function normalizeJourneyMemoryEntry(source: JourneyMemorySource): Journe
         left.positionId.localeCompare(right.positionId) || left.id.localeCompare(right.id),
     ),
     id: stableId('journey-entry', source.id),
+    interpretationFingerprint:
+      source.interpretationFingerprint ??
+      stableId('journey-interpretation', {
+        cards: source.cards,
+        engineVersions: source.engineVersions,
+        practicalFocuses: source.practicalFocuses.map((focus) => focus.semanticId),
+        themes,
+      }),
     leadingTheme: leading?.semanticId ?? null,
     numbers: [...source.numbers].sort(
       (left, right) =>

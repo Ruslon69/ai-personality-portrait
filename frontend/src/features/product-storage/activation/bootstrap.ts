@@ -1,6 +1,6 @@
 import { journeySectionsFromState } from '../compatibility';
 import { LEGACY_STORAGE_KEYS, PRODUCT_STORAGE_KEYS } from '../constants';
-import { migrateLegacyStorage } from '../migrations';
+import { migrateLegacyStorage, migrateProductStorageReadingLineage } from '../migrations';
 import { recoverProductStorage } from '../recovery';
 import { writeEnvelopeTransactionally, writeRecoveredEnvelope } from '../repositories';
 import { parseProductStorageEnvelope } from '../serialization';
@@ -110,16 +110,37 @@ function activation(
 }
 
 function synchronizeDerivedSections(envelope: ProductStorageEnvelope, now: string) {
-  const data = { ...envelope.data };
+  const lineage = migrateProductStorageReadingLineage(envelope.data);
+  const data = { ...lineage.data };
   const privacyScopeChanged = Boolean(data.draftPortrait || data.tarotSession);
   delete data.draftPortrait;
   delete data.tarotSession;
-  const scopedEnvelope = privacyScopeChanged ? { ...envelope, data } : envelope;
+  const scopedEnvelope =
+    privacyScopeChanged || lineage.changed
+      ? {
+          ...envelope,
+          data,
+          migrationHistory: lineage.changed
+            ? [
+                ...envelope.migrationHistory,
+                {
+                  completedAt: now,
+                  fromVersion: 'tarot-storage-v1',
+                  id: `migration:reading-lineage-v1:${now}`,
+                  sections: ['journey', 'tarotReadings'] as const,
+                  toVersion: 'tarot-storage-v1+reading-lineage-v1',
+                  warnings: [],
+                },
+              ]
+            : envelope.migrationHistory,
+        }
+      : envelope;
   if (!scopedEnvelope.data.journey)
-    return { changed: privacyScopeChanged, envelope: scopedEnvelope };
+    return { changed: privacyScopeChanged || lineage.changed, envelope: scopedEnvelope };
   const sections = journeySectionsFromState(scopedEnvelope.data.journey.data, scopedEnvelope, now);
   const changed =
     privacyScopeChanged ||
+    lineage.changed ||
     sections.journeyMemory !== scopedEnvelope.data.journeyMemory ||
     !scopedEnvelope.data.tarotReadings;
   return {

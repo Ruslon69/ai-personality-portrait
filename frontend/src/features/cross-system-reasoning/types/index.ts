@@ -5,6 +5,7 @@ import type {
   ThemeComposition,
 } from '@features/expert-interpretation';
 import type { JourneyMemorySnapshot } from '@features/journey-memory';
+import type { ReadingContinuityContext } from '@features/journey-memory';
 
 export type CrossSystemSourceKind =
   | 'interest'
@@ -195,6 +196,7 @@ export type CrossSystemResult = {
 export type CrossSystemInput = {
   composition: ThemeComposition;
   connections: readonly InterpretationConnection[];
+  continuityContext?: ReadingContinuityContext | null;
   context: InterpretationContext;
   evidence: readonly InterpretationSignal[];
   journeyMemory: JourneyMemorySnapshot | null;

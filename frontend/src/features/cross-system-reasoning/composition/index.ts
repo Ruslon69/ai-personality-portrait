@@ -58,6 +58,7 @@ export function composeCrossSystemResult(input: CrossSystemInput): CrossSystemRe
   const inputFingerprint = crossSystemStableId('cross-input', {
     composition: input.composition,
     connections: input.connections,
+    continuityContext: input.continuityContext ?? null,
     context: input.context,
     journeyMemory: input.journeyMemory,
     sourceEngineVersions: input.sourceEngineVersions,

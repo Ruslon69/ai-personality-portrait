@@ -8,6 +8,7 @@ import type {
   CrossSystemResult,
   CrossSystemValidationReport,
 } from '@features/cross-system-reasoning';
+import type { JourneyMemoryProvider, ReadingContinuityContext } from '@features/journey-memory';
 
 export type InterpretationSource =
   | 'tarot-card'
@@ -403,12 +404,20 @@ export type InterpretationValidationReport = {
 };
 
 export type InterpretationResponse = {
+  continuity: ReadingContinuityContext | null;
   narrative: NarrativeComposition;
   narrativeValidation: NarrativeValidationReport;
   reasoning: CrossSystemResult;
   reasoningValidation: CrossSystemValidationReport;
   result: InterpretationResult;
   validation: InterpretationValidationReport;
+};
+
+export type InterpretationExecutionOptions = {
+  continuityContext?: ReadingContinuityContext | null;
+  currentReadingId?: string;
+  journeyMemoryProvider?: JourneyMemoryProvider | null;
+  narrativeMode?: import('@features/narrative-composition').NarrativeMode;
 };
 
 export type ThemeComposition = {
@@ -437,12 +446,14 @@ export interface InterpretationProvider {
     composition: ThemeComposition,
     fingerprint: string,
     reasoning: CrossSystemResult,
+    options?: InterpretationExecutionOptions,
   ): NarrativeComposition;
   reason(
     context: InterpretationContext,
     evidence: readonly InterpretationSignal[],
     connections: readonly InterpretationConnection[],
     composition: ThemeComposition,
+    continuityContext?: ReadingContinuityContext | null,
   ): CrossSystemResult;
   readonly reasoningProvider: CrossSystemReasoningProvider;
   generateInterpretation(
@@ -452,5 +463,8 @@ export interface InterpretationProvider {
     composition: ThemeComposition,
   ): InterpretationResult;
   validateResult(result: InterpretationResult): InterpretationValidationReport;
-  interpret(request: InterpretationRequest): InterpretationResponse;
+  interpret(
+    request: InterpretationRequest,
+    options?: InterpretationExecutionOptions,
+  ): InterpretationResponse;
 }

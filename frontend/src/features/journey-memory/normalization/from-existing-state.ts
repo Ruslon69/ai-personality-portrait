@@ -25,12 +25,12 @@ function recommendationCategory(semanticId: string): JourneyRecommendationCatego
 function tarotSource(record: JourneyReadingRecord): JourneyMemorySource {
   const { reading } = record;
   const expert = reading.expertInterpretation;
-  const practicalFocuses: JourneyMemoryPracticalFocus[] = expert.recommendations.map(
+  const practicalFocuses: JourneyMemoryPracticalFocus[] = (expert?.recommendations ?? []).map(
     (recommendation) => {
       const semanticTheme =
-        expert.themes.find((theme) => theme.id === recommendation.relatedThemeId)?.semanticId ??
+        expert?.themes.find((theme) => theme.id === recommendation.relatedThemeId)?.semanticId ??
         recommendation.relatedThemeId;
-      const authored = expert.content.sections
+      const authored = expert?.content.sections
         .flatMap((section) => section.blocks)
         .find((block) => block.kind === 'practical-focus');
       return {
@@ -41,6 +41,13 @@ function tarotSource(record: JourneyReadingRecord): JourneyMemorySource {
       };
     },
   );
+  if (practicalFocuses.length === 0 && reading.practicalFocus)
+    practicalFocuses.push({
+      category: recommendationCategory(reading.practicalFocus),
+      semanticId: `practical.legacy.${reading.spreadId}`,
+      sourceIds: ['tarot-card'],
+      text: reading.practicalFocus,
+    });
   const numbers = [
     reading.context.numerology.lifePath,
     reading.context.numerology.birthday,
@@ -65,9 +72,15 @@ function tarotSource(record: JourneyReadingRecord): JourneyMemorySource {
       };
     }),
     createdAt: record.savedAt,
-    engineVersions: expert.metadata.versions,
+    engineVersions: {
+      ...(expert?.metadata.versions ?? {}),
+      ...(reading.reasoningVersions ?? {}),
+      ...(!expert && !reading.reasoningVersions ? { legacy: 'legacy-unavailable' } : {}),
+    },
     headline: reading.headline,
     id: reading.id,
+    interpretationFingerprint:
+      expert?.metadata.requestFingerprint ?? `legacy-reading:${reading.id}`,
     kind: 'tarot-reading',
     locale: reading.context.locale,
     numbers: numbers.map((number) => ({
@@ -78,12 +91,22 @@ function tarotSource(record: JourneyReadingRecord): JourneyMemorySource {
     period: reading.context.period ?? null,
     practicalFocuses,
     quoteSources: [
-      ...expert.content.sections.slice(0, 2).map((section, index) => ({
+      ...(expert?.content.sections.slice(0, 2).map((section, index) => ({
         id: section.id,
         kind: 'authored-section' as const,
         strength: index === 0 ? ('primary' as const) : ('secondary' as const),
         text: section.headline,
-      })),
+      })) ?? []),
+      ...(!expert
+        ? [
+            {
+              id: `legacy-headline:${reading.id}`,
+              kind: 'authored-section' as const,
+              strength: 'primary' as const,
+              text: reading.headline,
+            },
+          ]
+        : []),
       ...practicalFocuses.slice(0, 1).map((focus) => ({
         id: focus.semanticId,
         kind: 'practical-focus' as const,
@@ -92,7 +115,7 @@ function tarotSource(record: JourneyReadingRecord): JourneyMemorySource {
       })),
     ],
     readingType: reading.spreadId,
-    reflections: expert.content.sections.flatMap((section) =>
+    reflections: (expert?.content.sections ?? []).flatMap((section) =>
       section.blocks
         .filter((block) => block.kind === 'reflection-question')
         .map((block) => ({
@@ -103,7 +126,7 @@ function tarotSource(record: JourneyReadingRecord): JourneyMemorySource {
     ),
     sourceReferences: uniqueSorted([
       `reading:${reading.id}`,
-      ...expert.themes.map((theme) => `theme:${theme.id}`),
+      ...(expert?.themes.map((theme) => `theme:${theme.id}`) ?? []),
       ...reading.selections.map((selection) => `card:${selection.cardId}`),
     ]).map((id) => ({
       id,
@@ -115,13 +138,21 @@ function tarotSource(record: JourneyReadingRecord): JourneyMemorySource {
       source: id.startsWith('card:') ? ('tarot-card' as const) : ('journey' as const),
     })),
     spreadId: reading.spreadId,
-    themes: expert.themes.map((theme) => ({
-      cardIds: theme.relatedCards,
-      numberValues: theme.relatedNumbers,
-      role: theme.role,
-      semanticId: theme.semanticId,
-      sourceIds: theme.sources,
-    })),
+    themes: expert
+      ? expert.themes.map((theme) => ({
+          cardIds: theme.relatedCards,
+          numberValues: theme.relatedNumbers,
+          role: theme.role,
+          semanticId: theme.semanticId,
+          sourceIds: theme.sources,
+        }))
+      : reading.selections.map((selection, index) => ({
+          cardIds: [selection.cardId],
+          numberValues: [],
+          role: index === 0 ? ('leading' as const) : ('supporting' as const),
+          semanticId: `theme.card.${selection.cardId}`,
+          sourceIds: ['tarot-card' as const],
+        })),
     topic: reading.context.topic ?? null,
     zodiac: {
       element: reading.context.numerology.zodiac.element,
@@ -148,6 +179,7 @@ export function personalityProfileToMemorySource(
     engineVersions: { personalityProfile: 'personality-profile-v1' },
     headline: profile.revealHeadline,
     id: profile.id,
+    interpretationFingerprint: `personality-profile:${profile.id}`,
     kind: 'personality-profile',
     locale: profile.locale,
     numbers: [],

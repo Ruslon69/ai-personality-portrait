@@ -1,13 +1,14 @@
 import {
   buildJourneyMemorySnapshot,
+  createJourneyMemoryEntryFingerprint,
   JOURNEY_MEMORY_VERSIONS,
 } from '@features/journey-memory/model';
 import {
   journeyStateToMemorySources,
   normalizeJourneyMemoryEntries,
 } from '@features/journey-memory/normalization';
-import { stableHash, stableStringify } from '@features/journey-memory/utils';
 import type { JourneyState } from '@features/journey/types';
+import { enrichTarotReadingWithContinuity } from '@features/tarot';
 
 import type { JourneyMemoryStorageSection } from '../types';
 
@@ -18,7 +19,7 @@ export type JourneyMemorySyncResult = {
 
 export function journeyMemoryFingerprint(state: JourneyState) {
   const sources = journeyStateToMemorySources(state);
-  return stableHash(stableStringify(normalizeJourneyMemoryEntries(sources)));
+  return createJourneyMemoryEntryFingerprint(normalizeJourneyMemoryEntries(sources));
 }
 
 function versionsCompatible(section: JourneyMemoryStorageSection) {
@@ -40,13 +41,61 @@ export function synchronizeJourneyMemory(
     versionsCompatible(existing)
   )
     return { action: 'reused', section: existing };
-  const data = buildJourneyMemorySnapshot({
+  const built = buildJourneyMemorySnapshot({
     generatedAt,
     locale: state.readings[0]?.reading.context.locale ?? 'ru',
     sources: journeyStateToMemorySources(state),
   });
+  const data = { ...built, metadata: { ...built.metadata, entryFingerprint: fingerprint } };
   return {
     action: existing ? 'rebuilt' : 'created',
     section: { data, schemaVersion: 'journey-memory-v1' },
+  };
+}
+
+export function reconcileJourneyStateAfterConflict(
+  latest: JourneyState,
+  incoming: JourneyState,
+  generatedAt: string,
+): JourneyState {
+  let accumulated: JourneyState = {
+    dailyCards: { ...latest.dailyCards, ...incoming.dailyCards },
+    identity: latest.identity,
+    readings: [...latest.readings],
+  };
+  const latestIds = new Set(latest.readings.map((record) => record.reading.id));
+  const additions = incoming.readings
+    .filter((record) => !latestIds.has(record.reading.id))
+    .sort(
+      (left, right) =>
+        left.savedAt.localeCompare(right.savedAt) ||
+        left.reading.id.localeCompare(right.reading.id),
+    );
+  additions.forEach((record) => {
+    const snapshot = synchronizeJourneyMemory(accumulated, undefined, generatedAt).section.data;
+    const reading =
+      record.reading.reasoningVersions?.status === 'current'
+        ? enrichTarotReadingWithContinuity(record.reading, snapshot)
+        : record.reading;
+    accumulated = {
+      ...accumulated,
+      readings: [{ ...record, reading }, ...accumulated.readings],
+    };
+  });
+  const incomingById = new Map(incoming.readings.map((record) => [record.reading.id, record]));
+  return {
+    ...accumulated,
+    readings: accumulated.readings
+      .map((record) => {
+        const incomingRecord = incomingById.get(record.reading.id);
+        return incomingRecord
+          ? { ...record, favorite: record.favorite || incomingRecord.favorite }
+          : record;
+      })
+      .sort(
+        (left, right) =>
+          right.savedAt.localeCompare(left.savedAt) ||
+          left.reading.id.localeCompare(right.reading.id),
+      ),
   };
 }

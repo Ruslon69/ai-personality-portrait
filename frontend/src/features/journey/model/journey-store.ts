@@ -4,6 +4,8 @@ import {
   readJourneyStateFromProductStorage,
 } from '@features/product-storage/runtime/browser-runtime';
 import type { TarotReading } from '@features/tarot';
+import { enrichTarotReadingWithContinuity } from '@features/tarot';
+import { buildJourneyMemorySnapshot, journeyStateToMemorySources } from '@features/journey-memory';
 
 import type { JourneyDailyCard, JourneyState } from '../types';
 
@@ -48,10 +50,16 @@ export const journeyActions = {
   },
   recordReading(reading: TarotReading) {
     const state = journeyStore.getState();
+    const previousSnapshot = buildJourneyMemorySnapshot({
+      generatedAt: reading.createdAt,
+      locale: reading.context.locale,
+      sources: journeyStateToMemorySources(state),
+    });
+    const completedReading = enrichTarotReadingWithContinuity(reading, previousSnapshot);
     const existing = state.readings.find((item) => item.reading.id === reading.id);
     const record = {
       favorite: existing?.favorite ?? false,
-      reading,
+      reading: completedReading,
       savedAt: existing?.savedAt ?? new Date().toISOString(),
     };
     journeyStore.setState({

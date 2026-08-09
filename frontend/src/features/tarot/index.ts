@@ -4,9 +4,11 @@ export { TarotReadingFlow } from './flows';
 export { useTarotSession } from './hooks';
 export {
   createAutomaticSelections,
+  createExpertInterpretationBundleForTarot,
   createManualCandidates,
   createManualSelections,
   createTarotReading,
+  enrichTarotReadingWithContinuity,
   seededShuffle,
   stableHash,
 } from './lib';

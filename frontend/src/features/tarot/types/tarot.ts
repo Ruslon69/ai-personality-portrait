@@ -1,6 +1,9 @@
 import type { Locale } from '@shared/i18n';
 import type { NumerologyProfile } from '@features/numerology';
 import type { InterpretationResult } from '@features/expert-interpretation';
+import type { CrossSystemResult } from '@features/cross-system-reasoning';
+import type { ReadingContinuityContext } from '@features/journey-memory';
+import type { NarrativeComposition } from '@features/narrative-composition';
 
 export type LocalizedText = Record<Locale, string>;
 export type TarotSuit = 'cups' | 'pentacles' | 'swords' | 'wands';
@@ -103,15 +106,32 @@ export type TarotInterpretation = {
 };
 
 export type TarotReading = {
+  continuity?: ReadingContinuityContext;
   context: TarotReadingContext;
   createdAt: string;
+  crossSystemReasoning?: CrossSystemResult;
   expertInterpretation: InterpretationResult;
   headline: string;
   id: string;
   interpretations: readonly TarotInterpretation[];
   leadingCardId: string;
+  narrative?: NarrativeComposition;
   practicalFocus: string;
+  reasoningVersions?: ReadingEngineLineage;
   selections: readonly TarotCardSelection[];
   spreadId: string;
   summary: string;
+};
+
+export type ReadingEngineLineage = {
+  authorContent: string;
+  calculationSystem: string;
+  crossSystemReasoning: string;
+  expertInterpretation: string;
+  journeyMemory: string;
+  narrative: string;
+  numerologyKnowledge: string;
+  readingContinuity: string;
+  status: 'current' | 'legacy' | 'mixed';
+  tarotKnowledge: string;
 };

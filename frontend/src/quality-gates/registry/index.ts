@@ -42,6 +42,7 @@ function runBaselineGate() {
     expertInterpretation: EXPERT_INTERPRETATION_VERSIONS.engine,
     journeyMemory: JOURNEY_MEMORY_VERSIONS.engine,
     numerologyCalculation: NUMEROLOGY_SYSTEM,
+    readingContinuity: 'reading-continuity-v1',
     productStorage: PRODUCT_STORAGE_VERSIONS.product,
     tarotRules: EXPERT_INTERPRETATION_VERSIONS.tarot,
     themeTracking: JOURNEY_MEMORY_VERSIONS.themeTracking,
@@ -110,6 +111,20 @@ export const qualityGateRegistry: readonly QualityGateDefinition[] = [
     tags: ['domain', 'full'],
     timeout: 15_000,
     title: 'Journey Memory',
+  },
+  {
+    affectedModules: ['journey-memory/continuity', 'expert-interpretation', 'product-storage'],
+    description:
+      'Relevant-history selection, cycle prevention, lineage, and Journey narrative activation.',
+    expectedAssertionCount: QUALITY_BASELINE.assertions.readingContinuity,
+    group: 'journey-memory',
+    id: 'reading-continuity-runtime',
+    required: true,
+    runner: existingSuiteRunners.readingContinuity,
+    severity: 'error',
+    tags: ['domain', 'storage', 'serialization', 'full'],
+    timeout: 15_000,
+    title: 'Reading Continuity',
   },
   {
     affectedModules: ['product-storage'],

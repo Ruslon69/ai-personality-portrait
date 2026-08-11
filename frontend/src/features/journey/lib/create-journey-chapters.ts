@@ -1,8 +1,9 @@
 import { tarotCardById, tarotSpreads } from '@features/tarot';
 import type { Locale } from '@shared/i18n';
 
-import { chapterTitles, type ChapterTitleKey } from '../data';
+import type { ChapterTitleKey } from '../data';
 import type { JourneyChapter, JourneyReadingRecord } from '../types';
+import { selectUniqueChapterTitle } from './select-chapter-title';
 
 function toRoman(value: number) {
   const numerals: readonly [number, string][] = [
@@ -57,22 +58,46 @@ export function createJourneyChapters(
   readings: readonly JourneyReadingRecord[],
   locale: Locale,
 ): readonly JourneyChapter[] {
-  return [...readings]
-    .sort((a, b) => a.savedAt.localeCompare(b.savedAt))
-    .map((record, index) => {
-      const reading = record.reading;
-      const card = tarotCardById.get(reading.leadingCardId);
-      const spread = tarotSpreads.find((item) => item.id === reading.spreadId);
-      const leadingInterpretation = reading.interpretations.find(
-        (item) => item.cardId === reading.leadingCardId,
-      );
-      return {
-        dominantTheme: card?.baseThemes[locale][0] ?? reading.practicalFocus,
-        number: toRoman(index + 1),
-        quote: leadingInterpretation?.headline ?? reading.practicalFocus,
-        readingType: spread?.title[locale] ?? reading.headline,
-        record,
-        title: chapterTitles[locale][titleKey(record, index)],
-      };
+  const sortedReadings = [...readings].sort((a, b) => a.savedAt.localeCompare(b.savedAt));
+  const journeyFingerprint = JSON.stringify(
+    sortedReadings.map((record) => ({
+      id: record.reading.id,
+      leadingCardId: record.reading.leadingCardId,
+      personalYear: record.reading.context.numerology.personalYear.value,
+      spreadId: record.reading.spreadId,
+    })),
+  );
+  const selectedTitles: string[] = [];
+  return sortedReadings.map((record, index) => {
+    const reading = record.reading;
+    const card = tarotCardById.get(reading.leadingCardId);
+    const spread = tarotSpreads.find((item) => item.id === reading.spreadId);
+    const leadingInterpretation = reading.interpretations.find(
+      (item) => item.cardId === reading.leadingCardId,
+    );
+    const title = selectUniqueChapterTitle({
+      journeyFingerprint,
+      key: titleKey(record, index),
+      leadingCardId: reading.leadingCardId,
+      leadingCardTitle: card?.name[locale] ?? reading.headline,
+      locale,
+      ordinal: index + 1,
+      periodConcept: `${spread?.period ?? 'open'}:${reading.context.numerology.personalYear.value}`,
+      previousTitle: selectedTitles.at(-1) ?? null,
+      secondaryConcept: card?.baseThemes[locale][0] ?? reading.practicalFocus,
+      spreadId: reading.spreadId,
+      spreadTitle: spread?.title[locale] ?? reading.headline,
+      topic: spread?.topic ?? 'open',
+      usedTitles: selectedTitles,
     });
+    selectedTitles.push(title);
+    return {
+      dominantTheme: card?.baseThemes[locale][0] ?? reading.practicalFocus,
+      number: toRoman(index + 1),
+      quote: leadingInterpretation?.headline ?? reading.practicalFocus,
+      readingType: spread?.title[locale] ?? reading.headline,
+      record,
+      title,
+    };
+  });
 }

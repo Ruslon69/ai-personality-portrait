@@ -107,7 +107,7 @@ export function TarotLanding({
                       <span>{spread.description[locale]}</span>
                       <span className={styles.positionCount}>
                         {durationBySize[spread.positions.length] ?? 6} {copy.minutes} ·{' '}
-                        {spread.positions.length} {copy.positions}
+                        {spread.positions.length} {copy.cards}
                       </span>
                     </span>
                     <span className={styles.selectionMark} aria-hidden="true" />

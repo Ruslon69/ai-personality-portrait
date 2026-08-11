@@ -1,5 +1,10 @@
 import { createNumerologyProfile } from '../../features/numerology/lib/numerology-engine';
-import { standardTarotDeck, tarotSpreads } from '../../features/tarot/data';
+import { tarotArtworkManifest } from '../../assets/tarot';
+import {
+  isManualCardSelectionComplete,
+  toggleManualCardSelection,
+} from '../../features/tarot/components/manual-selection-state';
+import { deckThemes, standardTarotDeck, tarotSpreads } from '../../features/tarot/data';
 import {
   createAutomaticSelections,
   createManualSelections,
@@ -57,6 +62,21 @@ export function runTarotRegressionGate() {
     code: 'duplicate-tarot-card-id',
     message: 'Tarot card IDs must be unique.',
   });
+  assertions.assert(
+    cards.every((card) => tarotArtworkManifest.get(card.id)?.rightsStatus === 'placeholder'),
+    {
+      code: 'tarot-artwork-fallback-coverage',
+      message: 'Every Tarot card must have a rights-aware fallback artwork entry.',
+    },
+  );
+  assertions.assert(
+    JSON.stringify(deckThemes.map((theme) => theme.id)) ===
+      JSON.stringify(['cosmic-minimal', 'solar-lines', 'midnight-geometry', 'deep-water']),
+    {
+      code: 'tarot-card-back-coverage',
+      message: 'Classic, Royal, Midnight and Obsidian backs must remain available.',
+    },
+  );
   cards.forEach((card) => {
     locales.forEach((locale) => {
       const strings = [
@@ -139,6 +159,36 @@ export function runTarotRegressionGate() {
       message: 'Manual selection did not preserve the chosen card order.',
     },
   );
+  ([1, 3, 5, 6] as const).forEach((requiredCount) => {
+    const candidateIds = cards.slice(0, requiredCount + 1).map((card) => card.id);
+    const selected = candidateIds
+      .slice(0, requiredCount)
+      .reduce<readonly string[]>(
+        (current, cardId) => toggleManualCardSelection(current, cardId, requiredCount),
+        [],
+      );
+    assertions.assert(
+      selected.length === requiredCount && isManualCardSelectionComplete(selected, requiredCount),
+      {
+        code: `manual-ui-selection-complete-${requiredCount}`,
+        message: `Manual UI selection must complete at ${requiredCount} cards.`,
+      },
+    );
+    const capped = toggleManualCardSelection(selected, candidateIds[requiredCount]!, requiredCount);
+    assertions.assert(capped === selected, {
+      code: `manual-ui-selection-cap-${requiredCount}`,
+      message: `Manual UI selection must reject card ${requiredCount + 1}.`,
+    });
+    const deselected = toggleManualCardSelection(selected, selected[0]!, requiredCount);
+    assertions.assert(
+      deselected.length === requiredCount - 1 &&
+        !isManualCardSelectionComplete(deselected, requiredCount),
+      {
+        code: `manual-ui-selection-deselect-${requiredCount}`,
+        message: `Manual UI selection must allow deselection before confirmation.`,
+      },
+    );
+  });
   const numerology = createNumerologyProfile('1990-01-01', 'ru', new Date(timestamp));
   const context: TarotReadingContext = {
     birthDate: numerology.birthDate,

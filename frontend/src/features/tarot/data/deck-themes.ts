@@ -6,39 +6,39 @@ export const deckThemes: readonly {
   description: Record<Locale, string>;
 }[] = [
   {
-    id: 'midnight-geometry',
-    name: { ru: 'Midnight', en: 'Midnight', uk: 'Midnight' },
-    description: {
-      ru: 'Глубокий тон и точная геометрия.',
-      en: 'Deep tones and precise geometry.',
-      uk: 'Глибокий тон і точна геометрія.',
-    },
-  },
-  {
     id: 'cosmic-minimal',
-    name: { ru: 'Cosmic', en: 'Cosmic', uk: 'Cosmic' },
+    name: { ru: 'Classic', en: 'Classic', uk: 'Classic' },
     description: {
-      ru: 'Тонкие орбиты и спокойное ядро.',
-      en: 'Fine orbits and a calm centre.',
-      uk: 'Тонкі орбіти й спокійне ядро.',
+      ru: 'Кремовая бумага, винтажный орнамент и сдержанные цвета.',
+      en: 'Cream paper, vintage ornament and restrained colour.',
+      uk: 'Кремовий папір, вінтажний орнамент і стримані кольори.',
     },
   },
   {
     id: 'solar-lines',
     name: { ru: 'Royal', en: 'Royal', uk: 'Royal' },
     description: {
-      ru: 'Строгая симметрия и тёплый акцент.',
-      en: 'Composed symmetry with a warm accent.',
-      uk: 'Стримана симетрія й теплий акцент.',
+      ru: 'Глубокий синий, строгая симметрия и золотой акцент.',
+      en: 'Deep blue, composed symmetry and a gold accent.',
+      uk: 'Глибокий синій, стримана симетрія й золотий акцент.',
+    },
+  },
+  {
+    id: 'midnight-geometry',
+    name: { ru: 'Midnight', en: 'Midnight', uk: 'Midnight' },
+    description: {
+      ru: 'Графитовый тон и спокойная геометрия.',
+      en: 'A charcoal tone with quiet geometry.',
+      uk: 'Графітовий тон і спокійна геометрія.',
     },
   },
   {
     id: 'deep-water',
-    name: { ru: 'Vintage', en: 'Vintage', uk: 'Vintage' },
+    name: { ru: 'Obsidian', en: 'Obsidian', uk: 'Obsidian' },
     description: {
-      ru: 'Тонкая гравюра и мягкая глубина.',
-      en: 'Fine engraving and softened depth.',
-      uk: 'Тонка гравюра й м’яка глибина.',
+      ru: 'Чёрный фон, тонкая гравюра и матовый блеск.',
+      en: 'Black ground, fine engraving and a matte sheen.',
+      uk: 'Чорне тло, тонке гравіювання й матовий блиск.',
     },
   },
 ];

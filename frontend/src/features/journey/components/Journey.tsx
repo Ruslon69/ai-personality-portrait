@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import type { PersonalityProfile } from '@entities/personality-profile';
 import { createNumerologyProfile } from '@features/numerology';
-import { tarotCardById } from '@features/tarot';
+import { TarotCardView, tarotCardById } from '@features/tarot';
 import type { Locale } from '@shared/i18n';
 import { Button, Container, Stack, Typography } from '@shared/ui';
 
@@ -37,6 +37,9 @@ export function Journey({
     [locale, state.readings],
   );
   const currentChapter = chapters.at(-1);
+  const currentChapterCard = currentChapter?.record.reading.selections.find(
+    (selection) => selection.cardId === currentChapter.record.reading.leadingCardId,
+  );
   const firstChapter = chapters[0];
   const candidate = useMemo(
     () => createDailyCard(state.identity, dateKey),
@@ -153,6 +156,7 @@ export function Journey({
                         : undefined
                     }
                     onClick={() => onOpenReading(chapter.record)}
+                    title={chapter.title}
                     type="button"
                   >
                     <span>{chapter.number}</span>
@@ -169,22 +173,15 @@ export function Journey({
         <Container size="wide">
           <div className={styles.openBook}>
             <article className={styles.bookPage}>
-              <div
-                aria-label={dailyCard.openedAt ? card.name[locale] : copy.card.title}
-                className={styles.dailyCardVisual}
-                data-open={dailyCard.openedAt || undefined}
-                role="img"
-              >
-                <span className={styles.dailyCardInner}>
-                  <span aria-hidden="true" className={styles.dailyCardBack}>
-                    <i />
-                    <b />
-                  </span>
-                  <span className={styles.dailyCardFront}>
-                    <b aria-hidden="true">{card.visual.glyph}</b>
-                    <strong>{card.name[locale]}</strong>
-                  </span>
-                </span>
+              <div className={styles.dailyCardVisual}>
+                <TarotCardView
+                  isRevealed={Boolean(dailyCard.openedAt)}
+                  locale={locale}
+                  onClick={dailyCard.openedAt ? undefined : openDailyCard}
+                  selection={dailyCard.selection}
+                  theme="cosmic-minimal"
+                  variant="history"
+                />
               </div>
               <div className={styles.pageCopy}>
                 <Typography as="p" variant="eyebrow">
@@ -293,6 +290,17 @@ export function Journey({
                   </Button>
                 </div>
               </div>
+              {currentChapterCard ? (
+                <div className={styles.chapterCardVisual}>
+                  <TarotCardView
+                    isRevealed
+                    locale={locale}
+                    selection={currentChapterCard}
+                    theme={currentChapter.record.reading.context.deckTheme}
+                    variant="history"
+                  />
+                </div>
+              ) : null}
             </article>
           </Container>
         </section>

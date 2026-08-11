@@ -1,4 +1,4 @@
-export { TarotLanding, TarotResult } from './components';
+export { TarotCardView, TarotLanding, TarotResult } from './components';
 export { standardTarotDeck, tarotCardById, tarotSpreads } from './data';
 export { TarotReadingFlow } from './flows';
 export { useTarotSession } from './hooks';

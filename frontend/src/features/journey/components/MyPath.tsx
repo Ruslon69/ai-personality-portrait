@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import type { PersonalityProfile } from '@entities/personality-profile';
+import { TarotCardView } from '@features/tarot';
 import type { Locale } from '@shared/i18n';
 import { Badge, Button, Container, Stack, Typography } from '@shared/ui';
 
@@ -99,6 +100,17 @@ export function MyPath({
                       <span>{chapter.readingType}</span>
                       <span>{chapter.dominantTheme}</span>
                     </div>
+                    {chapter.record.reading.selections[0] ? (
+                      <div className={styles.timelineCardVisual}>
+                        <TarotCardView
+                          isRevealed
+                          locale={locale}
+                          selection={chapter.record.reading.selections[0]}
+                          theme={chapter.record.reading.context.deckTheme}
+                          variant="history"
+                        />
+                      </div>
+                    ) : null}
                     <blockquote>“{chapter.quote}”</blockquote>
                     <Typography className={styles.chapterSummary}>
                       {chapter.record.reading.summary}

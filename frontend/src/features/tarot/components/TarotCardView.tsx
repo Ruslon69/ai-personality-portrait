@@ -1,9 +1,10 @@
 import type { CSSProperties, ReactNode } from 'react';
 
+import { getTarotCardArtwork } from '@assets/tarot';
 import type { Locale } from '@shared/i18n';
 import { Button, Typography } from '@shared/ui';
 
-import { tarotCardById, tarotCopy } from '../data';
+import { tarotCardById, tarotCopy, tarotSuitNames } from '../data';
 import type { TarotCardSelection, TarotDeckTheme } from '../types';
 import styles from './Tarot.module.css';
 
@@ -20,8 +21,38 @@ type Props = {
   showPosition?: boolean;
   total?: number;
   theme: TarotDeckTheme;
-  variant?: 'assigned' | 'compact' | 'leading' | 'revealing' | 'selectable';
+  variant?:
+    'assigned' | 'compact' | 'history' | 'leading' | 'revealing' | 'selectable' | 'supporting';
 };
+
+function toRoman(value: number) {
+  if (value === 0) return '0';
+  const symbols: readonly [number, string][] = [
+    [10, 'X'],
+    [9, 'IX'],
+    [5, 'V'],
+    [4, 'IV'],
+    [1, 'I'],
+  ];
+  let remainder = value;
+  return symbols.reduce((result, [number, symbol]) => {
+    while (remainder >= number) {
+      result += symbol;
+      remainder -= number;
+    }
+    return result;
+  }, '');
+}
+
+function getRank(number: number, isMajor: boolean) {
+  if (isMajor) return toRoman(number);
+  if (number === 1) return 'A';
+  if (number === 11) return 'P';
+  if (number === 12) return 'Kn';
+  if (number === 13) return 'Q';
+  if (number === 14) return 'K';
+  return toRoman(number);
+}
 
 export function TarotCardView({
   ariaDisabled,
@@ -40,12 +71,24 @@ export function TarotCardView({
 }: Props) {
   const copy = tarotCopy[locale];
   const card = selection ? tarotCardById.get(selection.cardId) : undefined;
+  const artwork = card ? getTarotCardArtwork(card.id) : undefined;
+  const canRenderFaceAsset =
+    Boolean(artwork?.faceAsset) &&
+    (artwork?.rightsStatus === 'licensed' ||
+      artwork?.rightsStatus === 'original' ||
+      artwork?.rightsStatus === 'verified-public-domain');
   const state = isRevealed ? copy.revealed : isSelected ? copy.selected : copy.cardBack;
   const accessiblePosition =
     position ?? (selectionOrder ? `${copy.position} ${selectionOrder}` : '');
+  const accessibleOrientation =
+    isRevealed && selection
+      ? selection.orientation === 'reversed'
+        ? copy.reversed
+        : copy.upright
+      : '';
   const accessibleName = `${state}${isRevealed && card ? ` · ${card.name[locale]}` : ''}${
-    accessiblePosition ? ` · ${accessiblePosition}` : ''
-  }`;
+    accessibleOrientation ? ` · ${accessibleOrientation}` : ''
+  }${accessiblePosition ? ` · ${accessiblePosition}` : ''}`;
   const style = {
     '--card-distance': index - (total - 1) / 2,
     '--card-index': index,
@@ -54,18 +97,44 @@ export function TarotCardView({
     <>
       <span className={styles.tarotCardInner}>
         <span aria-hidden="true" className={styles.cardBackFace}>
-          <i />
-          <b />
-          <i />
-        </span>
-        <span className={styles.cardFrontFace}>
-          <span aria-hidden="true" className={styles.cardGlyph}>
-            {card?.visual.glyph}
+          <span className={styles.cardBackFrame}>
+            <i />
+            <b />
+            <i />
           </span>
-          <Typography as="span" variant="heading-sm">
-            {card?.name[locale]}
-          </Typography>
-          <span>{selection?.orientation === 'reversed' ? copy.reversed : copy.upright}</span>
+        </span>
+        <span
+          aria-hidden="true"
+          className={styles.cardFrontFace}
+          data-orientation={selection?.orientation}
+        >
+          <span className={styles.cardFaceArtwork} data-orientation={selection?.orientation}>
+            {canRenderFaceAsset ? (
+              <img alt="" decoding="async" loading="lazy" src={artwork?.faceAsset ?? ''} />
+            ) : (
+              <span className={styles.symbolicArtwork} data-pattern={card?.visual.pattern}>
+                <i />
+                <b>{card?.visual.glyph}</b>
+                <i />
+              </span>
+            )}
+          </span>
+          <span className={styles.cardCorner}>
+            <b>{card ? getRank(card.number, card.arcana === 'major') : ''}</b>
+            <i>{card?.suit ? card.visual.glyph : '◆'}</i>
+          </span>
+          {selection?.orientation === 'reversed' ? (
+            <span className={styles.orientationLabel}>{copy.reversed}</span>
+          ) : null}
+          <span className={styles.cardFaceCaption}>
+            <span className={styles.cardRank}>
+              {card ? getRank(card.number, card.arcana === 'major') : ''}
+            </span>
+            <Typography as="span" variant="heading-sm">
+              {card?.name[locale]}
+            </Typography>
+            {card?.suit ? <small>{tarotSuitNames[locale][card.suit]}</small> : null}
+          </span>
         </span>
       </span>
       {selectionOrder ? (
@@ -87,6 +156,8 @@ export function TarotCardView({
         data-state={isRevealed ? 'face-up' : isSelected ? 'selected' : 'face-down'}
         data-theme={theme}
         data-variant={variant}
+        data-artwork-rights={artwork?.rightsStatus}
+        data-orientation={selection?.orientation}
         role="img"
         style={style}
       >
@@ -106,7 +177,10 @@ export function TarotCardView({
       data-state={isRevealed ? 'face-up' : isSelected ? 'selected' : 'selectable'}
       data-theme={theme}
       data-variant={variant}
-      onClick={ariaDisabled ? undefined : onClick}
+      data-artwork-rights={artwork?.rightsStatus}
+      data-orientation={selection?.orientation}
+      disabled={ariaDisabled}
+      onClick={onClick}
       prominence="quiet"
       style={style}
     >

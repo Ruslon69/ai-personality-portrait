@@ -5,6 +5,7 @@ import type { Locale } from '@shared/i18n';
 import { Badge, Button, Container, Stack, Surface, Typography } from '@shared/ui';
 
 import { tarotCardById, tarotCopy, tarotPackages, tarotSpreadById } from '../data';
+import { createTarotResultHeroPresentation } from '../lib';
 import type { TarotReading } from '../types';
 import { TarotCardView } from './TarotCardView';
 import styles from './Tarot.module.css';
@@ -23,6 +24,16 @@ export function TarotResult({
   const copy = tarotCopy[locale];
   const spread = tarotSpreadById.get(reading.spreadId)!;
   const leading = tarotCardById.get(reading.leadingCardId)!;
+  const leadingSelection =
+    reading.selections.find((selection) => selection.cardId === reading.leadingCardId) ??
+    reading.selections[0];
+  const leadingPosition = spread.positions.find(
+    (position) => position.id === leadingSelection?.positionId,
+  );
+  const heroPresentation = createTarotResultHeroPresentation(reading);
+  const supportingSelections = reading.selections.filter(
+    (selection) => selection !== leadingSelection,
+  );
   const [readingStarted, setReadingStarted] = useState(false);
   const [visibleCount, setVisibleCount] = useState(Math.min(2, reading.interpretations.length));
   const [expanded, setExpanded] = useState<readonly string[]>([]);
@@ -51,8 +62,12 @@ export function TarotResult({
                 <TarotCardView
                   isRevealed
                   locale={locale}
-                  position={copy.leadingCard}
-                  selection={reading.selections[0]}
+                  position={
+                    leadingPosition
+                      ? `${copy.leadingCard} · ${leadingPosition.label[locale]}`
+                      : copy.leadingCard
+                  }
+                  selection={leadingSelection}
                   theme={reading.context.deckTheme}
                   variant="leading"
                 />
@@ -60,16 +75,15 @@ export function TarotResult({
               <Stack align="start" className={styles.resultCopy} gap="lg">
                 <Badge tone="warning">{copy.resultEyebrow}</Badge>
                 <Typography as="h1" id="reading-title" variant="display">
-                  {reading.headline}
+                  {heroPresentation.headline}
                 </Typography>
-                <Typography variant="lead">{reading.summary}</Typography>
+                <Typography className={styles.resultSupportingLine} variant="lead">
+                  {heroPresentation.supportingLine}
+                </Typography>
                 <div className={styles.resultSignals}>
-                  <span>{spread.title[locale]}</span>
-                  <span>
-                    {reading.context.numerology.lifePath.label}:{' '}
-                    {reading.context.numerology.lifePath.value}
-                  </span>
-                  <span>{reading.context.numerology.zodiac.sign}</span>
+                  {heroPresentation.metadata.map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
                 </div>
                 <Button onClick={beginReading} prominence="primary" size="large">
                   {copy.beginReading} <span aria-hidden="true">→</span>
@@ -77,7 +91,7 @@ export function TarotResult({
               </Stack>
             </div>
             <div aria-hidden="true" className={styles.supportingSpread}>
-              {reading.selections.slice(1, 5).map((selection, index) => (
+              {supportingSelections.slice(0, 4).map((selection, index) => (
                 <TarotCardView
                   index={index}
                   isRevealed
@@ -85,7 +99,7 @@ export function TarotResult({
                   locale={locale}
                   selection={selection}
                   theme={reading.context.deckTheme}
-                  total={Math.min(4, reading.selections.length - 1)}
+                  total={Math.min(4, supportingSelections.length)}
                   variant="compact"
                 />
               ))}
@@ -101,7 +115,7 @@ export function TarotResult({
         tabIndex={-1}
       >
         <Container size="wide">
-          <Stack gap="lg">
+          <Stack className={styles.readingContent} gap="lg">
             <div className={styles.sectionHeading}>
               <Typography as="p" variant="eyebrow">
                 {copy.readingChapter}
@@ -130,9 +144,74 @@ export function TarotResult({
                 {leading.visual.glyph}
               </span>
             </article>
+            {reading.interpretations[0] ? (
+              <div className={styles.mainInterpretationDetails}>
+                <section>
+                  <Typography as="h3" variant="heading-md">
+                    {copy.connections}
+                  </Typography>
+                  <Typography>{reading.interpretations[0].connections}</Typography>
+                </section>
+                <section>
+                  <Typography as="h3" variant="heading-md">
+                    {copy.numerologyLink}
+                  </Typography>
+                  <Typography>{reading.interpretations[0].numerologyLink}</Typography>
+                </section>
+                <section>
+                  <Typography as="h3" variant="heading-md">
+                    {copy.practical}
+                  </Typography>
+                  <Typography>{reading.interpretations[0].practicalTheme}</Typography>
+                </section>
+                <section>
+                  <Typography as="h3" variant="heading-md">
+                    {copy.reflectionQuestion}
+                  </Typography>
+                  <Typography>{reading.interpretations[0].reflectionQuestion}</Typography>
+                </section>
+                <Typography className={styles.disclaimer}>
+                  {reading.interpretations[0].uncertainty}
+                </Typography>
+              </div>
+            ) : null}
+            {supportingSelections.length ? (
+              <section aria-labelledby="supporting-cards-title" className={styles.supportingCards}>
+                <div className={styles.supportingCardsHeading}>
+                  <Typography as="p" variant="eyebrow">
+                    {copy.readingChapter}
+                  </Typography>
+                  <Typography as="h3" id="supporting-cards-title" variant="heading-md">
+                    {copy.supportingCards}
+                  </Typography>
+                </div>
+                <div className={styles.resultCardSpread} data-count={supportingSelections.length}>
+                  {supportingSelections.map((selection, index) => (
+                    <TarotCardView
+                      index={index}
+                      isRevealed
+                      key={`${selection.cardId}-${selection.positionId}`}
+                      locale={locale}
+                      position={
+                        spread.positions.find((position) => position.id === selection.positionId)
+                          ?.label[locale]
+                      }
+                      selection={selection}
+                      theme={reading.context.deckTheme}
+                      total={supportingSelections.length}
+                      variant="supporting"
+                    />
+                  ))}
+                </div>
+              </section>
+            ) : null}
             <div className={styles.interpretationList}>
               {reading.interpretations.slice(1, visibleCount).map((interpretation, index) => {
                 const isOpen = expanded.includes(interpretation.id);
+                const card = tarotCardById.get(interpretation.cardId);
+                const selection = reading.selections.find(
+                  (item) => item.cardId === interpretation.cardId,
+                );
                 return (
                   <article
                     className={styles.interpretationCard}
@@ -145,9 +224,19 @@ export function TarotResult({
                       </span>
                       <div className={styles.interpretationTitle}>
                         <span aria-hidden="true" className={styles.miniGlyph}>
-                          {tarotCardById.get(interpretation.cardId)?.visual.glyph}
+                          {card?.visual.glyph}
                         </span>
                         <div>
+                          <span className={styles.interpretationCardMeta}>
+                            {card?.name[locale]}
+                            {selection
+                              ? ` · ${
+                                  selection.orientation === 'reversed'
+                                    ? copy.reversed
+                                    : copy.upright
+                                }`
+                              : ''}
+                          </span>
                           <Typography as="h3" variant="heading-md">
                             {interpretation.headline}
                           </Typography>

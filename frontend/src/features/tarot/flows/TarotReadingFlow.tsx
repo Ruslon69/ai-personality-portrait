@@ -24,6 +24,10 @@ import {
 } from '../lib';
 import type { TarotCardSelection } from '../types';
 import { TarotCardView } from '../components/TarotCardView';
+import {
+  isManualCardSelectionComplete,
+  toggleManualCardSelection,
+} from '../components/manual-selection-state';
 import styles from '../components/Tarot.module.css';
 
 type Step = 'cards' | 'context' | 'date' | 'mode' | 'numerology' | 'reveal' | 'theme';
@@ -60,6 +64,22 @@ export function TarotReadingFlow({
   const [error, setError] = useState('');
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
   const step = steps[stepIndex]!;
+  const stepTitle =
+    step === 'context'
+      ? copy.contextTitle
+      : step === 'date'
+        ? copy.dateTitle
+        : step === 'numerology'
+          ? copy.numerologyTitle
+          : step === 'theme'
+            ? copy.chooseTheme
+            : step === 'mode'
+              ? copy.chooseMode
+              : step === 'cards'
+                ? state.selectionMode === 'manual'
+                  ? copy.chooseCards
+                  : copy.deal
+                : copy.revealTitle;
   const numerology = useMemo(
     () => (isValidNumerologyDate(date) ? createNumerologyProfile(date, locale) : null),
     [date, locale],
@@ -104,7 +124,11 @@ export function TarotReadingFlow({
       setError('');
     }
     if (step === 'cards') {
-      if (state.selectionMode === 'manual' && manualIds.length !== spread.positions.length) return;
+      if (
+        state.selectionMode === 'manual' &&
+        !isManualCardSelectionComplete(manualIds, spread.positions.length)
+      )
+        return;
       actions.saveSelections(selections);
     }
     if (step === 'reveal') {
@@ -149,7 +173,8 @@ export function TarotReadingFlow({
       : step === 'date'
         ? isValidNumerologyDate(date)
         : step === 'cards'
-          ? state.selectionMode === 'automatic' || manualIds.length === spread.positions.length
+          ? state.selectionMode === 'automatic' ||
+            isManualCardSelectionComplete(manualIds, spread.positions.length)
           : step === 'reveal'
             ? revealedCount === selections.length
             : true;
@@ -159,9 +184,12 @@ export function TarotReadingFlow({
         <div className={styles.flowHeader}>
           <div>
             <Badge tone="warning">{spread.title[locale]}</Badge>
-            <Typography as="p" variant="caption">
-              {copy.step} {stepIndex + 1} / {steps.length}
-            </Typography>
+            <p className={styles.flowLocation}>
+              <span aria-current="step">{stepTitle}</span>
+              <small>
+                {copy.step} {stepIndex + 1} / {steps.length}
+              </small>
+            </p>
           </div>
           <div aria-hidden="true" className={styles.flowNodes}>
             {steps.map((item, index) => (
@@ -301,12 +329,18 @@ export function TarotReadingFlow({
                         type="radio"
                       />
                       <span aria-hidden="true" className={styles.themePattern}>
-                        <i />
-                        <b />
+                        <span className={styles.cardBackFrame}>
+                          <i />
+                          <b />
+                          <i />
+                        </span>
                       </span>
-                      <span>
+                      <span className={styles.themeChoiceCopy}>
                         <strong>{theme.name[locale]}</strong>
                         <small>{theme.description[locale]}</small>
+                      </span>
+                      <span aria-hidden="true" className={styles.themeSelectionMark}>
+                        ✓
                       </span>
                     </label>
                   ))}
@@ -356,6 +390,7 @@ export function TarotReadingFlow({
                 data-count={
                   state.selectionMode === 'manual' ? candidates.length : selections.length
                 }
+                data-selection-mode={state.selectionMode}
               >
                 {state.selectionMode === 'manual'
                   ? candidates.map((card, index) => (
@@ -370,11 +405,7 @@ export function TarotReadingFlow({
                         locale={locale}
                         onClick={() =>
                           setManualIds((current) =>
-                            current.includes(card.id)
-                              ? current.filter((id) => id !== card.id)
-                              : current.length < spread.positions.length
-                                ? [...current, card.id]
-                                : current,
+                            toggleManualCardSelection(current, card.id, spread.positions.length),
                           )
                         }
                         selectionOrder={manualIds.indexOf(card.id) + 1 || undefined}
@@ -414,7 +445,12 @@ export function TarotReadingFlow({
               </Typography>
               <Typography>{copy.revealLead}</Typography>
               <div className={styles.revealExperience} data-phase={revealPhase}>
-                <div aria-label={copy.revealTitle} className={styles.revealSequence} role="group">
+                <div
+                  aria-label={copy.revealTitle}
+                  className={styles.revealSequence}
+                  data-count={selections.length}
+                  role="group"
+                >
                   {selections.map((selection, index) => (
                     <TarotCardView
                       index={index}
@@ -454,6 +490,15 @@ export function TarotReadingFlow({
                     theme={state.deckTheme}
                     variant="revealing"
                   />
+                  {revealPhase === 'pause' || revealPhase === 'flip' || revealPhase === 'light' ? (
+                    <Button
+                      className={styles.skipReveal}
+                      onClick={() => setRevealPhase('settled')}
+                      prominence="quiet"
+                    >
+                      {copy.skipAnimation}
+                    </Button>
+                  ) : null}
                   <div aria-live="polite" className={styles.revealInterpretation}>
                     {revealPhase === 'settled' ? (
                       <>

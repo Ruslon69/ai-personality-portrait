@@ -1,4 +1,7 @@
 .root {
+  --color-marketing-accent: light-dark(oklch(0.48 0.12 25), oklch(0.72 0.1 30));
+  --color-marketing-accent-secondary: light-dark(oklch(0.42 0.08 250), oklch(0.7 0.07 245));
+  --color-marketing-accent-warm: light-dark(oklch(0.64 0.1 72), oklch(0.78 0.09 75));
   --book-rule: 0.0625rem solid var(--color-marketing-border);
   --book-radius: calc(var(--radius-lg) + var(--space-2));
   min-inline-size: 0;
@@ -232,7 +235,7 @@
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   padding: var(--space-2) var(--space-3);
-  border: 0;
+  border: 0.0625rem solid transparent;
   border-radius: var(--radius-md);
   background: transparent;
   color: var(--color-text);
@@ -248,6 +251,7 @@
 .chapterNav button:hover,
 .chapterNav button:focus-visible,
 .chapterNav button[aria-current='true'] {
+  border-color: var(--color-marketing-border-strong);
   background: var(--surface-accent-subtle);
   color: var(--color-marketing-accent);
   transform: translateY(var(--motion-surface-lift-distance));
@@ -259,8 +263,17 @@
 }
 
 .chapterNav button span {
+  padding-inline-end: var(--space-2);
+  border-inline-end: var(--book-rule);
   color: var(--color-marketing-accent-warm);
   font-family: var(--font-family-heading);
+}
+
+.chapterNav button strong {
+  overflow: hidden;
+  max-inline-size: 20ch;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bookSection,
@@ -314,93 +327,10 @@
 }
 
 .dailyCardVisual {
-  inline-size: clamp(8.5rem, 18vw, 11rem);
-  aspect-ratio: 0.66;
-  justify-self: center;
-  perspective: 60rem;
-}
-
-.dailyCardInner {
-  position: relative;
-  display: block;
-  inline-size: 100%;
-  block-size: 100%;
-  transform-style: preserve-3d;
-  transition: transform var(--motion-reveal-duration) var(--motion-easing-discover);
-}
-
-.dailyCardVisual[data-open] .dailyCardInner {
-  transform: rotateY(180deg);
-}
-
-.dailyCardBack,
-.dailyCardFront {
-  position: absolute;
   display: grid;
-  inset: 0;
-  align-content: center;
-  justify-items: center;
-  padding: var(--space-4);
-  border: 0.0625rem solid var(--color-marketing-border-strong);
-  border-radius: var(--radius-lg);
-  background: var(--color-marketing-surface-raised);
-  box-shadow: 0 1.25rem 2.5rem color-mix(in srgb, var(--color-text) 14%, transparent);
-  gap: var(--space-3);
-  text-align: center;
-  backface-visibility: hidden;
-}
-
-.dailyCardBack::before,
-.dailyCardFront::before {
-  position: absolute;
-  inset: 0.5rem;
-  border: var(--book-rule);
-  border-radius: var(--radius-md);
-  content: '';
-}
-
-.dailyCardBack {
-  background:
-    linear-gradient(
-      45deg,
-      var(--surface-accent-subtle) 24%,
-      transparent 24% 76%,
-      var(--surface-accent-subtle) 76%
-    ),
-    var(--color-marketing-surface-raised);
-  background-size: 1.3rem 1.3rem;
-}
-
-.dailyCardBack i {
-  inline-size: 46%;
-  aspect-ratio: 1;
-  border: 0.0625rem solid currentColor;
-  transform: rotate(45deg);
-}
-
-.dailyCardBack b {
-  position: absolute;
-  inline-size: 0.65rem;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--color-marketing-accent-warm);
-}
-
-.dailyCardFront {
-  transform: rotateY(180deg);
-  background:
-    radial-gradient(circle at 50% 36%, var(--surface-accent-subtle), transparent 42%),
-    var(--color-marketing-surface-raised);
-}
-
-.dailyCardFront > * {
-  position: relative;
-  z-index: 1;
-}
-
-.dailyCardFront b {
-  color: var(--color-marketing-accent-warm);
-  font-size: var(--font-size-3xl);
+  justify-self: center;
+  min-block-size: 13rem;
+  place-items: center;
 }
 
 .pageCopy,
@@ -473,6 +403,17 @@
   gap: clamp(var(--space-6), 8vw, var(--space-9));
 }
 
+.chapterCardVisual,
+.timelineCardVisual {
+  display: grid;
+  place-items: center;
+}
+
+.timelineCardVisual {
+  grid-area: 1 / 2 / span 5 / 2;
+  align-self: start;
+}
+
 .chapterKicker {
   display: grid;
   align-content: start;
@@ -495,6 +436,14 @@
 .interludeEntry article,
 .futureChapter article {
   min-inline-size: 0;
+}
+
+.chapterEntry article {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.chapterEntry article > *:not(.timelineCardVisual) {
+  grid-column: 1;
 }
 
 .chapterEditorial {
@@ -820,6 +769,14 @@
     grid-template-columns: minmax(8rem, 0.28fr) minmax(0, 1fr);
   }
 
+  .chapterEditorial {
+    grid-area: 1 / 2 / span 2;
+  }
+
+  .chapterCardVisual {
+    grid-column: 1;
+  }
+
   .yearBookPlaceholder {
     grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1fr);
   }
@@ -842,6 +799,16 @@
   .interludeEntry article,
   .futureChapter article {
     padding-inline-end: 0;
+  }
+
+  .chapterEntry article {
+    grid-template-columns: 1fr;
+  }
+
+  .timelineCardVisual {
+    grid-area: auto;
+    grid-column: 1;
+    justify-items: start;
   }
 
   .interludeEntry article {
@@ -931,7 +898,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .bookCover,
-  .dailyCardInner,
   .dailyDetails,
   .chapterNav button,
   .bookmarkShape,
@@ -939,17 +905,5 @@
   .interludeEntry article {
     transition: none;
     animation: none;
-  }
-
-  .dailyCardVisual[data-open] .dailyCardInner {
-    transform: none;
-  }
-
-  .dailyCardVisual[data-open] .dailyCardBack {
-    display: none;
-  }
-
-  .dailyCardVisual[data-open] .dailyCardFront {
-    transform: none;
   }
 }

@@ -1,6 +1,7 @@
 import { runAuthorContentRuntimeSuite } from '../../features/expert-interpretation/fixtures/content-runtime-suite';
 import { runExpertInterpretationFixtureSuite } from '../../features/expert-interpretation/fixtures/runtime-suite';
 import { runJourneyMemoryRuntimeSuite } from '../../features/journey-memory/fixtures/runtime-suite';
+import { runJourneyChapterTitleRuntimeSuite } from '../../features/journey/lib/chapter-title-runtime';
 import { runAdvancedNumerologyRuntimeSuite } from '../../features/numerology/advanced/fixtures/runtime-suite';
 import { runReadingContinuityRuntimeSuite } from '../../features/journey-memory/fixtures/continuity-runtime-suite';
 import { runProductStorageActivationRuntimeSuite } from '../../features/product-storage/fixtures/activation-runtime-suite';
@@ -89,13 +90,18 @@ export const existingSuiteRunners = {
 };
 
 export function runPresentationAdapterGate(): QualityGateExecution {
-  const report = runExpertInterpretationAdapterRuntimeSuite();
+  const reports = [
+    runExpertInterpretationAdapterRuntimeSuite(),
+    runJourneyChapterTitleRuntimeSuite(),
+  ];
   return {
-    assertions: report.assertionCount,
-    failures: report.errors.map((message) => ({
-      code: 'presentation-adapter-failure',
-      message,
-    })),
+    assertions: reports.reduce((total, report) => total + report.assertionCount, 0),
+    failures: reports.flatMap((report) =>
+      report.errors.map((message) => ({
+        code: 'presentation-adapter-failure',
+        message,
+      })),
+    ),
     moduleVersions: {
       authorContent: QUALITY_BASELINE.moduleVersions.authorContent,
       expertInterpretation: QUALITY_BASELINE.moduleVersions.expertInterpretation,

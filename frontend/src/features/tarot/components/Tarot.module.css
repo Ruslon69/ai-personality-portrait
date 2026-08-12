@@ -900,15 +900,17 @@
   align-content: center;
   justify-items: center;
   padding: 0;
-  border: 0.1rem solid var(--color-marketing-border-strong);
+  border: 0.12rem solid color-mix(in srgb, #c9a85e 72%, var(--color-marketing-border-strong));
   border-radius: var(--tarot-card-radius);
   background: var(--color-marketing-surface-raised);
   box-shadow:
     var(--tarot-card-shadow),
+    0 0 0 0.08rem rgb(38 27 18 / 82%),
+    0 0 0 0.16rem rgb(189 145 69 / 38%),
     0 0.12rem 0.1rem color-mix(in srgb, var(--color-text) 22%, transparent),
-    inset 0 0.08rem 0 color-mix(in srgb, white 42%, transparent),
-    inset 0 -0.2rem 0.32rem color-mix(in srgb, var(--color-text) 16%, transparent),
-    inset 0 0 0 0.28rem color-mix(in srgb, var(--color-marketing-border) 30%, transparent);
+    inset 0 0.1rem 0 color-mix(in srgb, white 48%, transparent),
+    inset 0 -0.24rem 0.38rem color-mix(in srgb, var(--color-text) 20%, transparent),
+    inset 0 0 0 0.3rem color-mix(in srgb, var(--color-marketing-border) 38%, transparent);
   overflow: hidden;
   backface-visibility: hidden;
 }
@@ -962,6 +964,11 @@
   inset: 0;
   inline-size: 100%;
   block-size: 100%;
+}
+.cardBackDesign .backEngraving {
+  z-index: 2;
+  opacity: 0.58;
+  filter: drop-shadow(0 0.04rem 0 color-mix(in srgb, var(--back-highlight) 32%, transparent));
 }
 .cardBackDesign[data-back-theme='cosmic-minimal'] {
   --back-accent: #7e322e;
@@ -1091,7 +1098,10 @@
   border-radius: calc(var(--tarot-card-radius) - 0.22rem);
   box-shadow:
     inset 0 0 0 0.08rem color-mix(in srgb, var(--artwork-frame-tone) 42%, transparent),
-    0 0.08rem 0 color-mix(in srgb, var(--artwork-light-tone) 72%, transparent);
+    inset 0.12rem 0.12rem 0 color-mix(in srgb, var(--artwork-light-tone) 38%, transparent),
+    inset -0.12rem -0.14rem 0 color-mix(in srgb, #21170f 28%, transparent),
+    0 0.08rem 0 color-mix(in srgb, var(--artwork-light-tone) 72%, transparent),
+    0 0 0.45rem color-mix(in srgb, var(--artwork-accent-tone) 20%, transparent);
 }
 .cardFrontFace[data-has-artwork]::after {
   position: absolute;
@@ -1126,8 +1136,10 @@
   border-radius: calc(var(--tarot-card-radius) - 0.32rem);
   background: var(--artwork-dominant-tone);
   box-shadow:
-    0 0.2rem 0.45rem color-mix(in srgb, var(--artwork-frame-tone) 32%, transparent),
-    inset 0 0 0 0.08rem color-mix(in srgb, var(--artwork-light-tone) 48%, transparent);
+    0 0.24rem 0.55rem color-mix(in srgb, var(--artwork-frame-tone) 40%, transparent),
+    inset 0 0 0 0.08rem color-mix(in srgb, var(--artwork-light-tone) 52%, transparent),
+    inset 0 0.7rem 1.2rem rgb(18 12 8 / 12%),
+    inset 0 -0.65rem 1.2rem rgb(18 12 8 / 16%);
   overflow: hidden;
 }
 .cardFaceArtwork::before,
@@ -1168,12 +1180,63 @@
       color-mix(in srgb, var(--artwork-accent-tone) 5%, transparent)
     );
 }
-.cardFaceArtwork > img {
+.cardArtworkLayers {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  inset: 0;
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+.cardArtworkLayer {
+  position: absolute;
+  z-index: calc(var(--artwork-layer-order) + 1);
+  inset: 0;
   display: block;
   inline-size: 100%;
   block-size: 100%;
+  opacity: var(--artwork-layer-opacity);
   object-fit: contain;
-  transform: scale(1.012);
+  transform: translate3d(0, 0, 0) scale(1.012);
+  transition: transform var(--motion-card-hover-duration) var(--motion-interaction-easing);
+}
+.cardArtworkEffects {
+  position: absolute;
+  z-index: 8;
+  display: block;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.cardArtworkEffects::before,
+.cardArtworkEffects::after {
+  position: absolute;
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+}
+.cardArtworkEffects[data-fog]::before {
+  inset: 58% -18% -12%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgb(230 226 215 / 20%), transparent 66%);
+  filter: blur(0.45rem);
+  opacity: 0.38;
+}
+.cardArtworkEffects[data-light-rays]::after {
+  inset: -20% 18% 38%;
+  background: linear-gradient(112deg, transparent 34%, rgb(255 228 164 / 18%), transparent 66%);
+  filter: blur(0.2rem);
+  opacity: 0.42;
+  transform: skewX(-8deg);
+}
+.cardArtworkEffects[data-glow] {
+  box-shadow: inset 0 0 1.5rem color-mix(in srgb, var(--artwork-accent-tone) 22%, transparent);
+}
+.cardArtworkEffects[data-particles] {
+  background-image: radial-gradient(circle, rgb(255 226 154 / 44%) 0 0.055rem, transparent 0.07rem);
+  background-position: 18% 26%;
+  background-size: 2.2rem 2.7rem;
+  opacity: 0.34;
 }
 .tarotCardButton[data-revealed]:hover .cardFrontFace[data-has-artwork]::after,
 .tarotCardButton:not([role='img']):focus-visible .cardFrontFace[data-has-artwork]::after {
@@ -1188,7 +1251,8 @@
 }
 .tarotCardButton:is([data-variant='compact'], [data-variant='history'])
   .cardFrontFace[data-has-artwork]::after,
-.tarotCardButton:is([data-variant='compact'], [data-variant='history']) .cardFaceArtwork::after {
+.tarotCardButton:is([data-variant='compact'], [data-variant='history']) .cardFaceArtwork::after,
+.tarotCardButton:is([data-variant='compact'], [data-variant='history']) .cardArtworkEffects {
   display: none;
 }
 .symbolicArtwork {
@@ -1448,6 +1512,25 @@
 }
 .revealExperience[data-phase='flipping'] .revealStage > .tarotCardButton {
   transform: perspective(var(--tarot-card-perspective)) translateY(-0.16rem) rotateX(0.7deg);
+}
+.revealExperience[data-phase='settled'] .revealStage > .tarotCardButton::after {
+  position: absolute;
+  z-index: 9;
+  inset: 42% auto auto 50%;
+  inline-size: 0.11rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #f1d592;
+  box-shadow:
+    -4.6rem -2.2rem 0 rgb(225 190 111 / 58%),
+    4.2rem -1.4rem 0 rgb(225 190 111 / 46%),
+    -3.2rem 3rem 0 rgb(225 190 111 / 38%),
+    3.8rem 2.6rem 0 rgb(225 190 111 / 42%),
+    -1.2rem -4rem 0 rgb(225 190 111 / 34%),
+    1.7rem 4.4rem 0 rgb(225 190 111 / 32%);
+  content: '';
+  pointer-events: none;
+  animation: tarot-reveal-motes var(--motion-tarot-reveal-particles-duration) ease-out both;
 }
 .revealExperience[data-phase='flipping'] .revealLight,
 .revealExperience[data-phase='settling'] .revealLight {
@@ -1871,6 +1954,14 @@
     filter: drop-shadow(var(--tarot-shadow-hover));
     transform: rotateY(180deg) rotateZ(-0.25deg);
   }
+  .tarotCardButton[data-revealed]:not([data-reveal-status='revealing']):hover .cardArtworkLayer {
+    transform: translate3d(
+        calc(var(--artwork-layer-depth) * 0.16rem),
+        calc(var(--artwork-layer-depth) * -0.11rem),
+        0
+      )
+      scale(1.022);
+  }
   .tarotCardButton:is([data-variant='compact'], [data-variant='history'])[data-revealed]:hover {
     transform: perspective(var(--tarot-card-perspective)) translateY(-0.125rem) rotateX(1deg)
       rotateY(-1deg) scale(1.008);
@@ -1878,11 +1969,14 @@
 }
 
 @keyframes tarot-card-lift {
-  from {
+  0% {
     transform: translateY(0);
   }
-  to {
-    transform: translateY(-0.25rem) scale(1.006);
+  42% {
+    transform: translateY(0.06rem) scale(0.992);
+  }
+  100% {
+    transform: translateY(-0.25rem) scale(1.004);
   }
 }
 @keyframes tarot-card-edge {
@@ -1903,6 +1997,16 @@
   }
   to {
     transform: translateY(-0.08rem);
+  }
+}
+@keyframes tarot-reveal-motes {
+  from {
+    opacity: 0.72;
+    transform: translate(-50%, 0) scale(0.72);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -0.5rem) scale(1.08);
   }
 }
 @keyframes tarot-deal {

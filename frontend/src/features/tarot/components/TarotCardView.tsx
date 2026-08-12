@@ -1,6 +1,6 @@
 import { useState, type CSSProperties, type ReactNode } from 'react';
 
-import { getTarotCardArtwork } from '@assets/tarot';
+import { getTarotCardArtwork, hasRequiredTarotArtworkLayers } from '@assets/tarot';
 import type { Locale } from '@shared/i18n';
 import { Button, Typography } from '@shared/ui';
 
@@ -87,13 +87,16 @@ export function TarotCardView({
   const copy = tarotCopy[locale];
   const card = selection ? tarotCardById.get(selection.cardId) : undefined;
   const artwork = card ? getTarotCardArtwork(card.id) : undefined;
-  const [failedAsset, setFailedAsset] = useState<string | null>(null);
+  const [failedAssets, setFailedAssets] = useState<readonly string[]>([]);
   const shouldRequestFaceArtwork =
     Boolean(card) && shouldLoadTarotFaceArtwork(isRevealed, variant, preloadFace);
+  const visibleArtworkLayers = artwork?.layers.filter(
+    (layer) => !failedAssets.includes(layer.asset),
+  );
   const canRenderFaceAsset =
     shouldRequestFaceArtwork &&
-    Boolean(artwork?.faceAsset) &&
-    failedAsset !== artwork?.faceAsset &&
+    Boolean(visibleArtworkLayers?.length) &&
+    hasRequiredTarotArtworkLayers(artwork?.layers ?? [], failedAssets) &&
     (artwork?.rightsStatus === 'licensed' ||
       artwork?.rightsStatus === 'original' ||
       artwork?.rightsStatus === 'verified-public-domain');
@@ -132,18 +135,52 @@ export function TarotCardView({
           data-has-artwork={canRenderFaceAsset || undefined}
           data-orientation={selection?.orientation}
         >
-          <span className={styles.cardFaceArtwork} data-orientation={selection?.orientation}>
+          <span
+            className={styles.cardFaceArtwork}
+            data-orientation={selection?.orientation}
+            data-render-mode={artwork?.renderMode}
+          >
             {canRenderFaceAsset ? (
-              <img
-                alt=""
-                decoding="async"
-                fetchPriority={variant === 'leading' || variant === 'revealing' ? 'high' : 'auto'}
-                height={artwork?.height}
-                loading={variant === 'leading' || variant === 'revealing' ? 'eager' : 'lazy'}
-                onError={() => setFailedAsset(artwork?.faceAsset ?? null)}
-                src={artwork?.faceAsset ?? ''}
-                width={artwork?.width}
-              />
+              <>
+                <span className={styles.cardArtworkLayers}>
+                  {visibleArtworkLayers?.map((layer, layerIndex) => (
+                    <img
+                      alt=""
+                      className={styles.cardArtworkLayer}
+                      data-layer-role={layer.role}
+                      decoding="async"
+                      fetchPriority={
+                        variant === 'leading' || variant === 'revealing' ? 'high' : 'auto'
+                      }
+                      height={artwork?.height}
+                      key={layer.id}
+                      loading={variant === 'leading' || variant === 'revealing' ? 'eager' : 'lazy'}
+                      onError={() =>
+                        setFailedAssets((current) =>
+                          current.includes(layer.asset) ? current : [...current, layer.asset],
+                        )
+                      }
+                      src={layer.asset}
+                      style={
+                        {
+                          '--artwork-layer-depth': Math.max(-1, Math.min(1, layer.depth)),
+                          '--artwork-layer-opacity': layer.opacity ?? 1,
+                          '--artwork-layer-order': layerIndex,
+                          mixBlendMode: layer.blendMode ?? 'normal',
+                        } as CSSProperties
+                      }
+                      width={artwork?.width}
+                    />
+                  ))}
+                </span>
+                <span
+                  className={styles.cardArtworkEffects}
+                  data-fog={artwork?.effects.fog || undefined}
+                  data-glow={artwork?.effects.glow || undefined}
+                  data-light-rays={artwork?.effects.lightRays || undefined}
+                  data-particles={artwork?.effects.particles || undefined}
+                />
+              </>
             ) : (
               <span className={styles.symbolicArtwork} data-pattern={card?.visual.pattern}>
                 <i />
@@ -198,6 +235,11 @@ export function TarotCardView({
         data-variant={variant}
         data-artwork-rights={artwork?.rightsStatus}
         data-artwork-family={artwork?.paletteFamily}
+        data-artwork-edition={artwork?.editionId}
+        data-artwork-provider={artwork?.providerId}
+        data-artwork-quality={artwork?.quality}
+        data-artwork-render-mode={artwork?.renderMode}
+        data-artwork-source={artwork?.sourceKind}
         data-orientation={selection?.orientation}
         role="img"
         style={style}
@@ -223,6 +265,11 @@ export function TarotCardView({
       data-variant={variant}
       data-artwork-rights={artwork?.rightsStatus}
       data-artwork-family={artwork?.paletteFamily}
+      data-artwork-edition={artwork?.editionId}
+      data-artwork-provider={artwork?.providerId}
+      data-artwork-quality={artwork?.quality}
+      data-artwork-render-mode={artwork?.renderMode}
+      data-artwork-source={artwork?.sourceKind}
       data-orientation={selection?.orientation}
       disabled={ariaDisabled}
       onClick={onClick}

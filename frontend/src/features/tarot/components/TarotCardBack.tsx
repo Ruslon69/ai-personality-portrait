@@ -126,6 +126,29 @@ function NocturneBack() {
   );
 }
 
+function EngravedMysticalOverlay() {
+  return (
+    <svg aria-hidden="true" className={styles.backEngraving} viewBox="0 0 140 240">
+      <g className={styles.backLineFine}>
+        <path d="M20 31h15l8 8M120 209h-15l-8-8M120 31h-15l-8 8M20 209h15l8-8" />
+        <path d="M27 55v14M113 171v14M113 55v14M27 171v14" />
+        <path d="m27 78 5 8-5 8-5-8 5-8Zm86 68 5 8-5 8-5-8 5-8Z" />
+        <path d="m113 78-5 8 5 8 5-8-5-8Zm-86 68-5 8 5 8 5-8-5-8Z" />
+        <circle cx="27" cy="62" r="3.5" />
+        <circle cx="113" cy="178" r="3.5" />
+        <circle cx="113" cy="62" r="3.5" />
+        <circle cx="27" cy="178" r="3.5" />
+      </g>
+      <g className={styles.backLineStrong}>
+        <path d="M55 27h30M55 213h30" />
+        <path d="m62 27 8-8 8 8-8 8-8-8Zm16 186-8-8-8 8 8 8 8-8Z" />
+        <circle cx="70" cy="27" r="3" />
+        <circle cx="70" cy="213" r="3" />
+      </g>
+    </svg>
+  );
+}
+
 export function TarotCardBack({ theme }: { theme: TarotDeckTheme }) {
   return (
     <span className={styles.cardBackDesign} data-back-theme={theme}>
@@ -133,6 +156,7 @@ export function TarotCardBack({ theme }: { theme: TarotDeckTheme }) {
       {theme === 'solar-lines' ? <LunarBack /> : null}
       {theme === 'midnight-geometry' ? <CelestialBack /> : null}
       {theme === 'deep-water' ? <NocturneBack /> : null}
+      <EngravedMysticalOverlay />
     </span>
   );
 }

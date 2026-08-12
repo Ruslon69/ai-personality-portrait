@@ -2,7 +2,16 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { extname, join, relative, resolve } from 'node:path';
 
-import { RWS_CLASSIC_DECK_ID, getTarotArtwork, tarotArtworkManifest } from '../../assets/tarot';
+import {
+  RWS_CLASSIC_DECK_ID,
+  TAROT_ARTWORK_CONTRACT_VERSION,
+  getTarotArtwork,
+  hasRequiredTarotArtworkLayers,
+  selectTarotArtworkVariant,
+  tarotArtworkManifest,
+  tarotArtworkProviders,
+  type TarotArtworkVariant,
+} from '../../assets/tarot';
 import rwsOrientationManifest from '../../assets/tarot/metadata/rws-orientation-manifest.json';
 import { rwsPublicDomainManifest } from '../../assets/tarot/metadata/rws-public-domain-manifest';
 import { getTarotArtworkRotation } from '../../features/tarot/components/tarot-artwork-orientation';
@@ -296,6 +305,32 @@ export function runTarotArtworkGate(rootDir: string) {
         message: `${record.cardId} lacks deterministic presentation palette metadata.`,
       },
     );
+    assertions.assert(
+      artwork.providerId === 'rws-classic-local' &&
+        artwork.editionId === 'rws-archival-classic' &&
+        artwork.sourceKind === 'scan' &&
+        artwork.quality === 'standard' &&
+        artwork.renderMode === 'static',
+      {
+        code: 'rws-provider-version-contract',
+        file: relative(rootDir, path),
+        message: `${record.cardId} lacks versioned provider and quality metadata.`,
+      },
+    );
+    assertions.assert(
+      artwork.layers.length === 1 &&
+        artwork.layers[0]?.role === 'midground' &&
+        artwork.layers[0]?.required === true &&
+        artwork.layers[0]?.asset === artwork.faceAsset &&
+        artwork.layers.every(
+          (layer) => Number.isFinite(layer.depth) && layer.depth >= -1 && layer.depth <= 1,
+        ),
+      {
+        code: 'rws-static-layer-contract',
+        file: relative(rootDir, path),
+        message: `${record.cardId} must expose its static source through the layered renderer contract.`,
+      },
+    );
   });
 
   assertions.assert(totalBytes <= QUALITY_BASELINE.bundle.maximumTarotArtworkBytes, {
@@ -315,6 +350,84 @@ export function runTarotArtworkGate(rootDir: string) {
     code: 'rws-missing-asset-fallback',
     message: 'Unknown artwork must resolve to the internal symbolic fallback.',
   });
+  assertions.assert(
+    tarotArtworkProviders.length > 0 &&
+      tarotArtworkProviders.every(
+        (provider) => provider.contractVersion === TAROT_ARTWORK_CONTRACT_VERSION,
+      ),
+    {
+      code: 'tarot-provider-contract-version',
+      message: 'Every registered deck provider must implement the current artwork contract.',
+    },
+  );
+  const futureVariants: readonly TarotArtworkVariant[] = [
+    {
+      artworkVersion: 'future-standard-v1',
+      editionId: 'future-edition',
+      effects: { fog: false, glow: false, lightRays: false, particles: false },
+      faceAsset: '/future-standard.webp',
+      layers: [
+        {
+          asset: '/future-standard.webp',
+          depth: 0,
+          id: 'midground',
+          required: true,
+          role: 'midground',
+        },
+      ],
+      quality: 'standard',
+      renderMode: 'static',
+      sourceKind: 'manual',
+    },
+    {
+      artworkVersion: 'future-premium-v2',
+      editionId: 'future-edition',
+      effects: { fog: true, glow: true, lightRays: true, particles: true },
+      faceAsset: '/future-premium.webp',
+      layers: [
+        { asset: '/future-bg.webp', depth: -1, id: 'background', role: 'background' },
+        {
+          asset: '/future-mid.webp',
+          depth: 0,
+          id: 'midground',
+          required: true,
+          role: 'midground',
+        },
+        { asset: '/future-fg.webp', depth: 1, id: 'foreground', role: 'foreground' },
+      ],
+      quality: 'premium',
+      renderMode: 'layered',
+      sourceKind: 'ai-painting',
+    },
+  ];
+  assertions.assert(
+    selectTarotArtworkVariant(futureVariants, { quality: 'premium' })?.artworkVersion ===
+      'future-premium-v2',
+    {
+      code: 'tarot-provider-quality-switch',
+      message: 'A future deck must be able to switch quality without changing card UI code.',
+    },
+  );
+  assertions.assert(
+    selectTarotArtworkVariant(futureVariants, { version: 'future-standard-v1' })?.quality ===
+      'standard',
+    {
+      code: 'tarot-provider-version-switch',
+      message: 'A deck provider must deterministically select an explicit artwork version.',
+    },
+  );
+  assertions.assert(getTarotArtwork('major-fool', 'future-unregistered-deck').isFallback, {
+    code: 'tarot-provider-unknown-deck-fallback',
+    message: 'An unregistered future deck must fail safely to symbolic fallback artwork.',
+  });
+  assertions.assert(
+    hasRequiredTarotArtworkLayers(futureVariants[1]?.layers ?? [], ['/future-fg.webp']) &&
+      !hasRequiredTarotArtworkLayers(futureVariants[1]?.layers ?? [], ['/future-mid.webp']),
+    {
+      code: 'tarot-layered-artwork-failure-fallback',
+      message: 'Decorative layers may fail independently, but a required semantic plane may not.',
+    },
+  );
   (['assigned', 'compact', 'history', 'selectable', 'supporting'] as const).forEach((variant) =>
     assertions.assert(!shouldLoadTarotFaceArtwork(false, variant), {
       code: `rws-face-down-loading-${variant}`,
@@ -359,6 +472,19 @@ export function runTarotArtworkGate(rootDir: string) {
     resolve(rootDir, 'src/features/tarot/components/TarotCardView.tsx'),
     'utf8',
   );
+  assertions.assert(
+    cardViewSource.includes('visibleArtworkLayers?.map') &&
+      cardViewSource.includes('data-artwork-provider') &&
+      cardViewSource.includes('data-render-mode={artwork?.renderMode}'),
+    {
+      code: 'tarot-source-agnostic-layer-renderer',
+      message: 'TarotCardView must render provider layers without branching on their source kind.',
+    },
+  );
+  assertions.assert(existsSync(resolve(tarotAssetRoot, 'PREMIUM_ARTWORK_STYLE_GUIDE.md')), {
+    code: 'tarot-premium-artwork-style-guide',
+    message: 'The premium deck must ship with a preservation-focused production specification.',
+  });
   assertions.assert(
     cardViewSource.indexOf('className={styles.orientationLabel}') >
       cardViewSource.indexOf('className={styles.tarotCardInner}'),

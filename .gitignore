@@ -15,6 +15,10 @@ frontend/dist/
 frontend/.vite/
 frontend/coverage/
 frontend/reports/
+frontend/premium-production/candidates/
+frontend/premium-production/generated/
+frontend/premium-production/previews/
+frontend/premium-production/source/
 .release/*.summary.json
 *.tsbuildinfo
 

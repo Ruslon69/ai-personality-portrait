@@ -17,7 +17,14 @@
     "quality:domain": "npm run quality:bundle && node node_modules/.tmp/quality-gates/index.js --tag=domain",
     "quality:storage": "npm run quality:bundle && node node_modules/.tmp/quality-gates/index.js --tag=storage",
     "quality:architecture": "npm run quality:bundle && node node_modules/.tmp/quality-gates/index.js --tag=architecture",
-    "quality:fast": "npm run quality:bundle && node node_modules/.tmp/quality-gates/index.js --tag=fast"
+    "quality:fast": "npm run quality:bundle && node node_modules/.tmp/quality-gates/index.js --tag=fast",
+    "tarot:premium:contact-sheet": "node scripts/premium-tarot/contact-sheet.mjs",
+    "tarot:premium:import": "node scripts/premium-tarot/import.mjs",
+    "tarot:premium:prompts": "node scripts/premium-tarot/build-prompts.mjs",
+    "tarot:premium:release": "node scripts/premium-tarot/release.mjs",
+    "tarot:premium:review": "node scripts/premium-tarot/review.mjs",
+    "tarot:premium:status": "node scripts/premium-tarot/status.mjs",
+    "tarot:premium:validate": "node scripts/premium-tarot/validate.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.4",

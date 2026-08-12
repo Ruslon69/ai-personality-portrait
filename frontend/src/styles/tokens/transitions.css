@@ -23,6 +23,7 @@
   --motion-tarot-card-flip-duration: 620ms;
   --motion-tarot-card-settle-duration: 140ms;
   --motion-tarot-interpretation-reveal-duration: 280ms;
+  --motion-tarot-reveal-particles-duration: 420ms;
   --motion-tarot-spread-progress-duration: 240ms;
 
   /* Product-wide semantic motion patterns. */
@@ -68,6 +69,7 @@
     --motion-tarot-card-flip-duration: 0ms;
     --motion-tarot-card-settle-duration: 0ms;
     --motion-tarot-interpretation-reveal-duration: 0ms;
+    --motion-tarot-reveal-particles-duration: 0ms;
     --motion-tarot-spread-progress-duration: 0ms;
     --motion-detail-drift-duration: 0ms;
     --motion-orbit-reveal-duration: 0ms;

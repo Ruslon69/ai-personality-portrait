@@ -12,6 +12,7 @@ import { runTarotRegressionGate } from '../determinism/tarot';
 import { QUALITY_BASELINE } from '../fixtures/baseline';
 import { runPrivacyGate } from '../privacy';
 import { runTarotArtworkGate } from '../regression/tarot-artwork';
+import { runTarotPremiumProductionGate } from '../regression/tarot-premium-production';
 import { runTarotRevealGate } from '../regression/tarot-reveal';
 import { existingSuiteRunners, runPresentationAdapterGate } from '../runners/existing-suites';
 import { runLocalizationGate } from '../runners/localization';
@@ -182,6 +183,19 @@ export const qualityGateRegistry: readonly QualityGateDefinition[] = [
     tags: ['domain', 'full'],
     timeout: 15_000,
     title: 'Tarot Artwork',
+  },
+  {
+    affectedModules: ['premium-production', 'scripts/premium-tarot'],
+    description:
+      'Production manifest, style lock, deterministic pilot prompts, approvals, release threshold, runtime isolation, and classic fallback.',
+    group: 'tarot',
+    id: 'tarot-premium-production',
+    required: true,
+    runner: ({ rootDir }) => runTarotPremiumProductionGate(rootDir),
+    severity: 'error',
+    tags: ['full'],
+    timeout: 10_000,
+    title: 'Tarot Production',
   },
   {
     affectedModules: ['tarot/flows/TarotReadingFlow', 'tarot/flows/reveal-state-machine'],

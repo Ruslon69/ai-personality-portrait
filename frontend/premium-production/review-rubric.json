@@ -1,0 +1,45 @@
+{
+  "version": "premium-tarot-review-v1",
+  "scale": {
+    "minimum": 1,
+    "maximum": 5,
+    "approvalMinimumPerCategory": 4
+  },
+  "scoreCategories": [
+    "recognizability",
+    "symbolismCoverage",
+    "composition",
+    "visualDepth",
+    "lighting",
+    "materialQuality",
+    "anatomy",
+    "styleConsistency",
+    "colorConsistency",
+    "premiumFeel",
+    "cardShellCompatibility"
+  ],
+  "requiredPasses": [
+    "allRequiredSymbolsPresent",
+    "noForbiddenContent",
+    "canonicalIdentityObvious",
+    "styleMatchesPilotSet",
+    "cropSafeAtSevenByTwelve",
+    "noBakedText",
+    "noBakedFrame",
+    "canonicalOrientationUpright",
+    "reviewerExplicitApproval"
+  ],
+  "rejectionCategories": [
+    "missing-symbol",
+    "weak-recognizability",
+    "wrong-composition",
+    "wrong-anatomy",
+    "style-drift",
+    "excessive-fantasy",
+    "poor-lighting",
+    "crop-failure",
+    "forbidden-content",
+    "technical-output"
+  ],
+  "policy": "Scores guide human review but never constitute automated artistic approval. Every required pass must be explicitly true and a named reviewer must approve."
+}

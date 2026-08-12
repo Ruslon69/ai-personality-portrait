@@ -1,0 +1,66 @@
+{
+  "version": "premium-tarot-style-v1",
+  "status": "locked",
+  "sourceGuide": "src/assets/tarot/PREMIUM_ARTWORK_STYLE_GUIDE.md",
+  "medium": "Premium hand-painted digital oil and gouache realism with controlled visible brush texture and subtly stylized dimensional depth.",
+  "matureTone": "Elegant, mystical, solemn, luxurious, tactile and timeless; dark fantasy atmosphere without horror spectacle.",
+  "realismLevel": "Anatomically credible painted realism with natural faces, hands, fabric weight and material response; not photographic and not plastic 3D rendering.",
+  "materialRendering": [
+    "woven fabric with credible folds and weight",
+    "distinct polished, aged and weathered metals",
+    "porous stone and carved masonry",
+    "natural water with controlled reflections",
+    "grain-bearing wood and living vegetation",
+    "natural skin with painterly variation rather than plastic smoothing"
+  ],
+  "lighting": "Cinematic but restrained volumetric key light, grounded bounce light, readable shadows, subtle rim light and localized gold highlights attached to canonical light sources.",
+  "contrast": "Rich controlled contrast with protected shadow detail and fully readable faces, hands, symbolic objects and suit counts.",
+  "depth": "Clear foreground, midground and background separation through overlap, value, atmosphere, edge control and occlusion; never blur or hide mandatory symbols.",
+  "collectibleQuality": "Slight premium collectible-card finish inside the painting through material richness, focal hierarchy and restrained luminous accents; the application supplies the physical frame.",
+  "framing": "Portrait 7:12 illustration-only artwork. Preserve safe space around all canonical subjects and symbols. No title, numeral, border, card frame or UI inside the generated painting.",
+  "paletteFamilies": {
+    "major": "Neutral parchment, deep ink, muted antique gold, controlled jewel accents and ceremonial symbolic light.",
+    "wands": "Warm earth, ochre, amber, restrained ember and muted firelight with natural desert and foliage colors.",
+    "cups": "Mineral blue, muted teal, pearl, silver and gentle warm skin tones with natural water reflections.",
+    "swords": "Cool neutral, steel, blue-grey and storm light with small warm counterpoints and readable blade surfaces.",
+    "pentacles": "Olive, umber, moss, parchment and restrained old gold with tangible soil, stone, textile and vegetation."
+  },
+  "lightingFamilies": {
+    "major-symbolic": "Ceremonial directional light motivated by the canonical sun, star, halo, flame or open sky; restrained gold rim accents.",
+    "wands-cinematic": "Warm late-day or fire-adjacent key light with grounded earthen bounce and crisp readable silhouettes.",
+    "cups-cinematic": "Cool ambient water light with pearl highlights, gentle atmospheric depth and natural warm focal skin light.",
+    "swords-cinematic": "Cool directional sky or storm light, metallic specular control and strong value separation without neon blades.",
+    "pentacles-cinematic": "Natural golden-hour or soft overcast light that reveals earth, stone, vegetation, textile and old metal."
+  },
+  "depthFamilies": {
+    "ceremonial-depth": "Iconic central hierarchy with deliberate foreground symbols, fully readable subject plane and atmospheric but specific background.",
+    "court-depth": "Portrait-led staging with throne or mount separation, tangible nearby emblems and a restrained environmental background.",
+    "narrative-depth": "Clear near-field action, readable figure and object midground, and canonical architecture or landscape establishing depth."
+  },
+  "globalNegativeConstraints": [
+    "no text inside artwork",
+    "no card title or Roman numeral",
+    "no baked card frame, border, UI, logo or watermark",
+    "no anime, manga, cartoon proportions or childish fantasy",
+    "no cyberpunk, science-fiction technology or hyper-neon palette",
+    "no generic fantasy scene replacing the canonical Tarot composition",
+    "no modern clothing or technology unless explicitly canonical",
+    "no excessive magical particles, rarity effects, explosions or bloom",
+    "no plastic-looking faces, wax skin or mannequin anatomy",
+    "no extra limbs, malformed hands, duplicated characters or fused objects",
+    "no missing, added, duplicated, mirrored or unreadable divinatory symbols",
+    "no random zodiac, alchemical or occult symbols not required by the card",
+    "no generic fantasy armor unless the canonical card requires armor",
+    "no cropped mandatory subject, suit object, gesture or symbolic background element"
+  ],
+  "outputContract": {
+    "canonicalOrientation": "upright",
+    "colorSpace": "sRGB",
+    "masterMinimumHeight": 2400,
+    "masterMinimumWidth": 1400,
+    "masterRatio": "7:12",
+    "metadataPolicy": "Strip unnecessary metadata from processed review and runtime files.",
+    "runtimeFormat": "jpeg",
+    "runtimePolicy": "Keep the proven JPEG workflow until alternative-format processing, quality and browser support are explicitly validated."
+  }
+}

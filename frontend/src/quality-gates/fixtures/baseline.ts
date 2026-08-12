@@ -7,10 +7,13 @@ export const QUALITY_BASELINE = {
     readingContinuity: 300,
     productStorage: 176,
     storageActivation: 143,
+    tarotArtwork: 900,
   },
   bundle: {
     maximumInitialJavaScriptBytes: 614400,
     maximumJavaScriptAssetBytes: 614400,
+    maximumTarotArtworkBytes: 25165824,
+    maximumTarotArtworkFileBytes: 460800,
   },
   fixtures: {
     authorContent: 33,
@@ -20,6 +23,7 @@ export const QUALITY_BASELINE = {
     readingContinuity: 38,
     productStorage: 36,
     storageActivation: 32,
+    tarotArtwork: 78,
   },
   locales: ['ru', 'en', 'uk'],
   moduleVersions: {
@@ -32,6 +36,7 @@ export const QUALITY_BASELINE = {
     readingContinuity: 'reading-continuity-v1',
     productStorage: 'product-storage-v2',
     tarotRules: 'tarot-rules-v1',
+    tarotArtwork: 'rws-classic-public-domain-v1',
     themeTracking: 'theme-tracking-v1',
     wording: 'wording-v1',
     yearSummary: 'year-summary-v1',

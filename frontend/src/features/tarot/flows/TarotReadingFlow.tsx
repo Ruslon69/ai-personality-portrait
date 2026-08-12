@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 
 import { useMediaQuery } from '@hooks';
 import type { Locale } from '@shared/i18n';
@@ -24,14 +24,24 @@ import {
 } from '../lib';
 import type { TarotCardSelection } from '../types';
 import { TarotCardView } from '../components/TarotCardView';
+import { TarotCardBack } from '../components/TarotCardBack';
 import {
   isManualCardSelectionComplete,
   toggleManualCardSelection,
 } from '../components/manual-selection-state';
 import styles from '../components/Tarot.module.css';
+import {
+  createRevealState,
+  getRevealCta,
+  getRevealTimerPlan,
+  isCurrentCardVisible,
+  isPositionFaceUp,
+  isRevealActive,
+  revealReducer,
+  scheduleRevealTransition,
+} from './reveal-state-machine';
 
 type Step = 'cards' | 'context' | 'date' | 'mode' | 'numerology' | 'reveal' | 'theme';
-type RevealPhase = 'flip' | 'light' | 'pause' | 'rest' | 'settled';
 const steps: readonly Step[] = [
   'context',
   'date',
@@ -59,9 +69,14 @@ export function TarotReadingFlow({
   const [answers, setAnswers] = useState(state.answers);
   const [date, setDate] = useState(state.birthDate);
   const [manualIds, setManualIds] = useState<readonly string[]>([]);
-  const [revealedCount, setRevealedCount] = useState(0);
-  const [revealPhase, setRevealPhase] = useState<RevealPhase>('rest');
+  const [revealState, dispatchReveal] = useReducer(
+    revealReducer,
+    state.selections.length || spread.positions.length,
+    createRevealState,
+  );
   const [error, setError] = useState('');
+  const revealHeadingRef = useRef<HTMLDivElement>(null);
+  const previousRevealIndexRef = useRef(0);
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
   const step = steps[stepIndex]!;
   const stepTitle =
@@ -96,15 +111,26 @@ export function TarotReadingFlow({
   }, [manualIds, spread, state.seed, state.selectionMode, state.selections, step]);
 
   useEffect(() => {
-    if (revealPhase !== 'pause') return undefined;
-    if (prefersReducedMotion) return undefined;
-    const timers = [
-      window.setTimeout(() => setRevealPhase('flip'), 180),
-      window.setTimeout(() => setRevealPhase('light'), 760),
-      window.setTimeout(() => setRevealPhase('settled'), 1040),
-    ];
-    return () => timers.forEach((timer) => window.clearTimeout(timer));
-  }, [prefersReducedMotion, revealPhase]);
+    const plan = getRevealTimerPlan(revealState);
+    if (!plan) return undefined;
+    return scheduleRevealTransition<number>(plan, dispatchReveal, {
+      clear: (timer) => window.clearTimeout(timer),
+      set: (callback, delay) => window.setTimeout(callback, delay),
+    });
+  }, [revealState]);
+
+  useEffect(() => {
+    if (prefersReducedMotion && isRevealActive(revealState)) {
+      dispatchReveal({ type: 'reduced-motion' });
+    }
+  }, [prefersReducedMotion, revealState]);
+
+  useEffect(() => {
+    if (step !== 'reveal' || revealState.currentIndex === previousRevealIndexRef.current) return;
+    previousRevealIndexRef.current = revealState.currentIndex;
+    const frame = window.requestAnimationFrame(() => revealHeadingRef.current?.focus());
+    return () => window.cancelAnimationFrame(frame);
+  }, [revealState.currentIndex, step]);
 
   function previous() {
     if (stepIndex === 0) onBack();
@@ -155,17 +181,17 @@ export function TarotReadingFlow({
   }
 
   function handleRevealAction() {
-    if (revealPhase === 'rest') {
-      setRevealPhase(prefersReducedMotion ? 'settled' : 'pause');
+    if (revealState.sequence === 'waiting') {
+      dispatchReveal({ reducedMotion: prefersReducedMotion, type: 'start' });
       return;
     }
-    if (revealPhase !== 'settled') return;
-    if (revealedCount === selections.length - 1) {
+    if (revealState.sequence === 'all-complete') {
       next();
       return;
     }
-    setRevealedCount((count) => count + 1);
-    setRevealPhase(prefersReducedMotion ? 'settled' : 'pause');
+    if (revealState.sequence === 'waiting-for-next') {
+      dispatchReveal({ reducedMotion: prefersReducedMotion, type: 'next-card' });
+    }
   }
   const canContinue =
     step === 'context'
@@ -176,8 +202,20 @@ export function TarotReadingFlow({
           ? state.selectionMode === 'automatic' ||
             isManualCardSelectionComplete(manualIds, spread.positions.length)
           : step === 'reveal'
-            ? revealedCount === selections.length
+            ? revealState.sequence === 'all-complete'
             : true;
+  const currentSelection = selections[revealState.currentIndex];
+  const currentCard = tarotCardById.get(currentSelection?.cardId ?? '');
+  const currentPosition = spread.positions[revealState.currentIndex]?.label[locale];
+  const currentCardVisible = isCurrentCardVisible(revealState);
+  const revealCta = getRevealCta(revealState);
+  const activeCardAnnouncement = currentCardVisible
+    ? `${copy.position} ${revealState.currentIndex + 1} / ${selections.length}. ${
+        currentCard?.name[locale] ?? ''
+      }. ${currentSelection?.orientation === 'reversed' ? copy.reversed : copy.upright}.`
+    : `${copy.position} ${revealState.currentIndex + 1} / ${selections.length}. ${
+        currentPosition ?? ''
+      }. ${copy.cardBack}.`;
   return (
     <div className={styles.flowPage}>
       <Container size="wide">
@@ -305,16 +343,13 @@ export function TarotReadingFlow({
               </Stack>
               <div aria-hidden="true" className={styles.themePreview} data-theme={state.deckTheme}>
                 <span className={styles.previewCard}>
-                  <i />
-                  <b />
+                  <TarotCardBack theme={state.deckTheme} />
                 </span>
                 <span className={styles.previewCard}>
-                  <i />
-                  <b />
+                  <TarotCardBack theme={state.deckTheme} />
                 </span>
                 <span className={styles.previewCard}>
-                  <i />
-                  <b />
+                  <TarotCardBack theme={state.deckTheme} />
                 </span>
               </div>
               <fieldset className={styles.themeFieldset}>
@@ -329,11 +364,7 @@ export function TarotReadingFlow({
                         type="radio"
                       />
                       <span aria-hidden="true" className={styles.themePattern}>
-                        <span className={styles.cardBackFrame}>
-                          <i />
-                          <b />
-                          <i />
-                        </span>
+                        <TarotCardBack theme={theme.id} />
                       </span>
                       <span className={styles.themeChoiceCopy}>
                         <strong>{theme.name[locale]}</strong>
@@ -400,6 +431,7 @@ export function TarotReadingFlow({
                           !manualIds.includes(card.id)
                         }
                         index={index}
+                        instantReveal={revealState.instant && index === revealState.currentIndex}
                         isSelected={manualIds.includes(card.id)}
                         key={card.id}
                         locale={locale}
@@ -444,105 +476,118 @@ export function TarotReadingFlow({
                 {copy.revealTitle}
               </Typography>
               <Typography>{copy.revealLead}</Typography>
-              <div className={styles.revealExperience} data-phase={revealPhase}>
+              <div
+                className={styles.revealExperience}
+                data-phase={revealState.card}
+                data-sequence={revealState.sequence}
+              >
                 <div
                   aria-label={copy.revealTitle}
                   className={styles.revealSequence}
                   data-count={selections.length}
                   role="group"
                 >
-                  {selections.map((selection, index) => (
-                    <TarotCardView
-                      index={index}
-                      isRevealed={index < revealedCount}
-                      isSelected={index === revealedCount}
-                      key={selection.cardId}
-                      locale={locale}
-                      position={spread.positions[index]?.label[locale]}
-                      selection={selection}
-                      theme={state.deckTheme}
-                      total={selections.length}
-                      variant="compact"
-                    />
-                  ))}
+                  {selections.map((selection, index) => {
+                    const positionState = revealState.positions[index] ?? 'locked';
+                    return (
+                      <TarotCardView
+                        index={index}
+                        isRevealed={isPositionFaceUp(revealState, index)}
+                        isSelected={index === revealState.currentIndex}
+                        key={selection.cardId}
+                        locale={locale}
+                        position={spread.positions[index]?.label[locale]}
+                        preloadFace={positionState === 'ready'}
+                        revealPhase={
+                          index === revealState.currentIndex ? revealState.card : undefined
+                        }
+                        revealStatus={positionState}
+                        selection={selection}
+                        theme={state.deckTheme}
+                        total={selections.length}
+                        variant="compact"
+                      />
+                    );
+                  })}
                 </div>
                 <div className={styles.revealStage}>
-                  <div className={styles.revealProgress}>
+                  <div className={styles.revealProgress} ref={revealHeadingRef} tabIndex={-1}>
                     <span>
-                      {copy.position} {Math.min(revealedCount + 1, selections.length)} /{' '}
+                      {copy.position} {Math.min(revealState.currentIndex + 1, selections.length)} /{' '}
                       {selections.length}
                     </span>
-                    <strong>{spread.positions[revealedCount]?.label[locale]}</strong>
+                    <strong>{currentPosition}</strong>
                   </div>
                   <span aria-hidden="true" className={styles.revealLight} />
                   <TarotCardView
-                    ariaDisabled={
-                      revealPhase === 'pause' || revealPhase === 'flip' || revealPhase === 'light'
-                    }
-                    isRevealed={
-                      revealPhase === 'flip' || revealPhase === 'light' || revealPhase === 'settled'
-                    }
+                    ariaLabel={activeCardAnnouncement}
+                    instantReveal={revealState.instant}
+                    isRevealed={currentCardVisible}
                     locale={locale}
-                    onClick={handleRevealAction}
-                    position={spread.positions[revealedCount]?.label[locale]}
-                    selection={selections[revealedCount]}
+                    position={currentPosition}
+                    revealPhase={revealState.card}
+                    revealStatus={revealState.positions[revealState.currentIndex]}
+                    selection={currentSelection}
                     showPosition={false}
                     theme={state.deckTheme}
                     variant="revealing"
                   />
-                  {revealPhase === 'pause' || revealPhase === 'flip' || revealPhase === 'light' ? (
+                  {isRevealActive(revealState) && !prefersReducedMotion ? (
                     <Button
                       className={styles.skipReveal}
-                      onClick={() => setRevealPhase('settled')}
+                      onClick={() => dispatchReveal({ type: 'skip' })}
                       prominence="quiet"
                     >
                       {copy.skipAnimation}
                     </Button>
                   ) : null}
                   <div aria-live="polite" className={styles.revealInterpretation}>
-                    {revealPhase === 'settled' ? (
+                    {currentCardVisible && !isRevealActive(revealState) ? (
                       <>
                         <Typography as="h2" variant="heading-md">
-                          {tarotCardById.get(selections[revealedCount]?.cardId ?? '')?.name[locale]}
+                          {currentCard?.name[locale]}
                         </Typography>
+                        <span className={styles.revealOrientation}>
+                          {currentSelection?.orientation === 'reversed'
+                            ? copy.reversed
+                            : copy.upright}
+                        </span>
                         <Typography>
-                          {selections[revealedCount]?.orientation === 'reversed'
-                            ? tarotCardById.get(selections[revealedCount]?.cardId ?? '')?.reversed[
-                                locale
-                              ]
-                            : tarotCardById.get(selections[revealedCount]?.cardId ?? '')?.upright[
-                                locale
-                              ]}
+                          {currentSelection?.orientation === 'reversed'
+                            ? currentCard?.reversed[locale]
+                            : currentCard?.upright[locale]}
                         </Typography>
                       </>
                     ) : null}
                   </div>
+                  {revealCta ? (
+                    <Button
+                      className={styles.revealCta}
+                      onClick={handleRevealAction}
+                      prominence="primary"
+                      size="large"
+                    >
+                      {revealCta === 'open'
+                        ? copy.openCard
+                        : revealCta === 'finish'
+                          ? copy.seeReading
+                          : copy.openNext}{' '}
+                      <span aria-hidden="true">→</span>
+                    </Button>
+                  ) : null}
                 </div>
               </div>
             </Stack>
           ) : null}
-          <div className={styles.flowActions}>
+          <div className={styles.flowActions} data-reveal={step === 'reveal' || undefined}>
             <Button onClick={previous} prominence="quiet">
               {copy.back}
             </Button>
-            <Button
-              disabled={
-                step === 'reveal'
-                  ? revealPhase === 'pause' || revealPhase === 'flip' || revealPhase === 'light'
-                  : !canContinue
-              }
-              onClick={step === 'reveal' ? handleRevealAction : next}
-              prominence="primary"
-              size="large"
-            >
-              {step === 'reveal'
-                ? revealPhase === 'rest'
-                  ? copy.openCard
-                  : revealPhase === 'settled' && revealedCount === selections.length - 1
-                    ? copy.seeReading
-                    : copy.openNext
-                : copy.continue}
-            </Button>
+            {step !== 'reveal' ? (
+              <Button disabled={!canContinue} onClick={next} prominence="primary" size="large">
+                {copy.continue}
+              </Button>
+            ) : null}
           </div>
         </Surface>
       </Container>

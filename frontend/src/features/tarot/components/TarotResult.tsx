@@ -175,36 +175,43 @@ export function TarotResult({
                 </Typography>
               </div>
             ) : null}
-            {supportingSelections.length ? (
-              <section aria-labelledby="supporting-cards-title" className={styles.supportingCards}>
-                <div className={styles.supportingCardsHeading}>
-                  <Typography as="p" variant="eyebrow">
-                    {copy.readingChapter}
-                  </Typography>
-                  <Typography as="h3" id="supporting-cards-title" variant="heading-md">
-                    {copy.supportingCards}
-                  </Typography>
-                </div>
-                <div className={styles.resultCardSpread} data-count={supportingSelections.length}>
-                  {supportingSelections.map((selection, index) => (
-                    <TarotCardView
-                      index={index}
-                      isRevealed
+            <section aria-labelledby="supporting-cards-title" className={styles.supportingCards}>
+              <div className={styles.supportingCardsHeading}>
+                <Typography as="p" variant="eyebrow">
+                  {copy.readingChapter}
+                </Typography>
+                <Typography as="h3" id="supporting-cards-title" variant="heading-md">
+                  {copy.revealedCards}
+                </Typography>
+              </div>
+              <div className={styles.resultCardSpread} data-count={reading.selections.length}>
+                {reading.selections.map((selection, index) => {
+                  const card = tarotCardById.get(selection.cardId);
+                  const position = spread.positions.find(
+                    (item) => item.id === selection.positionId,
+                  );
+                  return (
+                    <article
+                      className={styles.resultSpreadItem}
                       key={`${selection.cardId}-${selection.positionId}`}
-                      locale={locale}
-                      position={
-                        spread.positions.find((position) => position.id === selection.positionId)
-                          ?.label[locale]
-                      }
-                      selection={selection}
-                      theme={reading.context.deckTheme}
-                      total={supportingSelections.length}
-                      variant="supporting"
-                    />
-                  ))}
-                </div>
-              </section>
-            ) : null}
+                    >
+                      <TarotCardView
+                        index={index}
+                        isRevealed
+                        locale={locale}
+                        selection={selection}
+                        showPosition={false}
+                        theme={reading.context.deckTheme}
+                        total={reading.selections.length}
+                        variant="supporting"
+                      />
+                      <span>{position?.label[locale]}</span>
+                      <strong>{card?.name[locale]}</strong>
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
             <div className={styles.interpretationList}>
               {reading.interpretations.slice(1, visibleCount).map((interpretation, index) => {
                 const isOpen = expanded.includes(interpretation.id);

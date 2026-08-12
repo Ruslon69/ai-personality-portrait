@@ -11,6 +11,8 @@ import { runNumerologyRegressionGate } from '../determinism/numerology';
 import { runTarotRegressionGate } from '../determinism/tarot';
 import { QUALITY_BASELINE } from '../fixtures/baseline';
 import { runPrivacyGate } from '../privacy';
+import { runTarotArtworkGate } from '../regression/tarot-artwork';
+import { runTarotRevealGate } from '../regression/tarot-reveal';
 import { existingSuiteRunners, runPresentationAdapterGate } from '../runners/existing-suites';
 import { runLocalizationGate } from '../runners/localization';
 import { runSerializationGate } from '../serialization';
@@ -47,6 +49,7 @@ function runBaselineGate() {
     readingContinuity: 'reading-continuity-v1',
     productStorage: PRODUCT_STORAGE_VERSIONS.product,
     tarotRules: EXPERT_INTERPRETATION_VERSIONS.tarot,
+    tarotArtwork: 'rws-classic-public-domain-v1',
     themeTracking: JOURNEY_MEMORY_VERSIONS.themeTracking,
     wording: EXPERT_INTERPRETATION_VERSIONS.wording,
     yearSummary: JOURNEY_MEMORY_VERSIONS.yearSummary,
@@ -165,6 +168,33 @@ export const qualityGateRegistry: readonly QualityGateDefinition[] = [
     tags: ['domain', 'fast', 'full'],
     timeout: 15_000,
     title: 'Tarot',
+  },
+  {
+    affectedModules: ['assets/tarot', 'tarot/components/TarotCardView'],
+    description:
+      'Classic RWS coverage, individual rights provenance, checksums, dimensions, budgets, loading, and fallback.',
+    expectedAssertionCount: QUALITY_BASELINE.assertions.tarotArtwork,
+    group: 'tarot',
+    id: 'tarot-artwork-rights',
+    required: true,
+    runner: ({ rootDir }) => runTarotArtworkGate(rootDir),
+    severity: 'error',
+    tags: ['domain', 'full'],
+    timeout: 15_000,
+    title: 'Tarot Artwork',
+  },
+  {
+    affectedModules: ['tarot/flows/TarotReadingFlow', 'tarot/flows/reveal-state-machine'],
+    description:
+      'Bounded reveal timing, cleanup, skip, reduced motion, completion-once, and multi-card sequencing.',
+    group: 'tarot',
+    id: 'tarot-reveal-state-machine',
+    required: true,
+    runner: runTarotRevealGate,
+    severity: 'error',
+    tags: ['domain', 'fast', 'full'],
+    timeout: 5_000,
+    title: 'Tarot Reveal',
   },
   {
     affectedModules: ['numerology'],

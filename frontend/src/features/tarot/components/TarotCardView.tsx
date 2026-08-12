@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from 'react';
+import { useState, type CSSProperties, type ReactNode } from 'react';
 
 import { getTarotCardArtwork } from '@assets/tarot';
 import type { Locale } from '@shared/i18n';
@@ -7,22 +7,32 @@ import { Button, Typography } from '@shared/ui';
 import { tarotCardById, tarotCopy, tarotSuitNames } from '../data';
 import type { TarotCardSelection, TarotDeckTheme } from '../types';
 import styles from './Tarot.module.css';
+import {
+  shouldLoadTarotFaceArtwork,
+  type TarotArtworkLoadingVariant,
+} from './tarot-artwork-loading';
+import { getTarotArtworkRotation } from './tarot-artwork-orientation';
+import { TarotCardBack } from './TarotCardBack';
 
 type Props = {
+  ariaLabel?: string;
   ariaDisabled?: boolean;
+  instantReveal?: boolean;
   isRevealed?: boolean;
   isSelected?: boolean;
   index?: number;
   locale: Locale;
   onClick?: () => void;
   position?: string;
+  preloadFace?: boolean;
+  revealPhase?: 'idle' | 'preparing' | 'flipping' | 'settling' | 'settled';
+  revealStatus?: 'locked' | 'ready' | 'revealing' | 'revealed';
   selection?: TarotCardSelection;
   selectionOrder?: number;
   showPosition?: boolean;
   total?: number;
   theme: TarotDeckTheme;
-  variant?:
-    'assigned' | 'compact' | 'history' | 'leading' | 'revealing' | 'selectable' | 'supporting';
+  variant?: TarotArtworkLoadingVariant;
 };
 
 function toRoman(value: number) {
@@ -55,13 +65,18 @@ function getRank(number: number, isMajor: boolean) {
 }
 
 export function TarotCardView({
+  ariaLabel,
   ariaDisabled,
+  instantReveal = false,
   isRevealed = false,
   isSelected,
   index = 0,
   locale,
   onClick,
   position,
+  preloadFace = false,
+  revealPhase,
+  revealStatus,
   selection,
   selectionOrder,
   showPosition = true,
@@ -72,8 +87,13 @@ export function TarotCardView({
   const copy = tarotCopy[locale];
   const card = selection ? tarotCardById.get(selection.cardId) : undefined;
   const artwork = card ? getTarotCardArtwork(card.id) : undefined;
+  const [failedAsset, setFailedAsset] = useState<string | null>(null);
+  const shouldRequestFaceArtwork =
+    Boolean(card) && shouldLoadTarotFaceArtwork(isRevealed, variant, preloadFace);
   const canRenderFaceAsset =
+    shouldRequestFaceArtwork &&
     Boolean(artwork?.faceAsset) &&
+    failedAsset !== artwork?.faceAsset &&
     (artwork?.rightsStatus === 'licensed' ||
       artwork?.rightsStatus === 'original' ||
       artwork?.rightsStatus === 'verified-public-domain');
@@ -86,10 +106,17 @@ export function TarotCardView({
         ? copy.reversed
         : copy.upright
       : '';
-  const accessibleName = `${state}${isRevealed && card ? ` · ${card.name[locale]}` : ''}${
-    accessibleOrientation ? ` · ${accessibleOrientation}` : ''
-  }${accessiblePosition ? ` · ${accessiblePosition}` : ''}`;
+  const accessibleName =
+    ariaLabel ??
+    `${state}${isRevealed && card ? ` · ${card.name[locale]}` : ''}${
+      accessibleOrientation ? ` · ${accessibleOrientation}` : ''
+    }${accessiblePosition ? ` · ${accessiblePosition}` : ''}`;
   const style = {
+    '--artwork-accent-tone': artwork?.palette.accentTone,
+    '--artwork-dominant-tone': artwork?.palette.dominantTone,
+    '--artwork-frame-tone': artwork?.palette.frameTone,
+    '--artwork-light-tone': artwork?.palette.lightTone,
+    '--artwork-reading-rotation': getTarotArtworkRotation(selection?.orientation),
     '--card-distance': index - (total - 1) / 2,
     '--card-index': index,
   } as CSSProperties;
@@ -97,20 +124,26 @@ export function TarotCardView({
     <>
       <span className={styles.tarotCardInner}>
         <span aria-hidden="true" className={styles.cardBackFace}>
-          <span className={styles.cardBackFrame}>
-            <i />
-            <b />
-            <i />
-          </span>
+          <TarotCardBack theme={theme} />
         </span>
         <span
           aria-hidden="true"
           className={styles.cardFrontFace}
+          data-has-artwork={canRenderFaceAsset || undefined}
           data-orientation={selection?.orientation}
         >
           <span className={styles.cardFaceArtwork} data-orientation={selection?.orientation}>
             {canRenderFaceAsset ? (
-              <img alt="" decoding="async" loading="lazy" src={artwork?.faceAsset ?? ''} />
+              <img
+                alt=""
+                decoding="async"
+                fetchPriority={variant === 'leading' || variant === 'revealing' ? 'high' : 'auto'}
+                height={artwork?.height}
+                loading={variant === 'leading' || variant === 'revealing' ? 'eager' : 'lazy'}
+                onError={() => setFailedAsset(artwork?.faceAsset ?? null)}
+                src={artwork?.faceAsset ?? ''}
+                width={artwork?.width}
+              />
             ) : (
               <span className={styles.symbolicArtwork} data-pattern={card?.visual.pattern}>
                 <i />
@@ -119,24 +152,28 @@ export function TarotCardView({
               </span>
             )}
           </span>
-          <span className={styles.cardCorner}>
-            <b>{card ? getRank(card.number, card.arcana === 'major') : ''}</b>
-            <i>{card?.suit ? card.visual.glyph : '◆'}</i>
-          </span>
-          {selection?.orientation === 'reversed' ? (
-            <span className={styles.orientationLabel}>{copy.reversed}</span>
-          ) : null}
-          <span className={styles.cardFaceCaption}>
-            <span className={styles.cardRank}>
-              {card ? getRank(card.number, card.arcana === 'major') : ''}
+          {!canRenderFaceAsset ? (
+            <span className={styles.cardCorner}>
+              <b>{card ? getRank(card.number, card.arcana === 'major') : ''}</b>
+              <i>{card?.suit ? card.visual.glyph : '◆'}</i>
             </span>
-            <Typography as="span" variant="heading-sm">
-              {card?.name[locale]}
-            </Typography>
-            {card?.suit ? <small>{tarotSuitNames[locale][card.suit]}</small> : null}
-          </span>
+          ) : null}
+          {!canRenderFaceAsset ? (
+            <span className={styles.cardFaceCaption}>
+              <span className={styles.cardRank}>
+                {card ? getRank(card.number, card.arcana === 'major') : ''}
+              </span>
+              <Typography as="span" variant="heading-sm">
+                {card?.name[locale]}
+              </Typography>
+              {card?.suit ? <small>{tarotSuitNames[locale][card.suit]}</small> : null}
+            </span>
+          ) : null}
         </span>
       </span>
+      {isRevealed && selection?.orientation === 'reversed' ? (
+        <span className={styles.orientationLabel}>{copy.reversed}</span>
+      ) : null}
       {selectionOrder ? (
         <span aria-hidden="true" className={styles.selectionOrder}>
           {selectionOrder}
@@ -154,9 +191,13 @@ export function TarotCardView({
         data-revealed={isRevealed || undefined}
         data-selected={isSelected || undefined}
         data-state={isRevealed ? 'face-up' : isSelected ? 'selected' : 'face-down'}
+        data-instant-reveal={instantReveal || undefined}
+        data-reveal-phase={revealPhase}
+        data-reveal-status={revealStatus}
         data-theme={theme}
         data-variant={variant}
         data-artwork-rights={artwork?.rightsStatus}
+        data-artwork-family={artwork?.paletteFamily}
         data-orientation={selection?.orientation}
         role="img"
         style={style}
@@ -175,9 +216,13 @@ export function TarotCardView({
       data-revealed={isRevealed || undefined}
       data-selected={isSelected || undefined}
       data-state={isRevealed ? 'face-up' : isSelected ? 'selected' : 'selectable'}
+      data-instant-reveal={instantReveal || undefined}
+      data-reveal-phase={revealPhase}
+      data-reveal-status={revealStatus}
       data-theme={theme}
       data-variant={variant}
       data-artwork-rights={artwork?.rightsStatus}
+      data-artwork-family={artwork?.paletteFamily}
       data-orientation={selection?.orientation}
       disabled={ariaDisabled}
       onClick={onClick}

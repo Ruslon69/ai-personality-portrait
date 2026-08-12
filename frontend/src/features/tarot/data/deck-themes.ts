@@ -7,38 +7,38 @@ export const deckThemes: readonly {
 }[] = [
   {
     id: 'cosmic-minimal',
-    name: { ru: 'Classic', en: 'Classic', uk: 'Classic' },
+    name: { ru: 'Classic Arcana', en: 'Classic Arcana', uk: 'Classic Arcana' },
     description: {
-      ru: 'Кремовая бумага, винтажный орнамент и сдержанные цвета.',
-      en: 'Cream paper, vintage ornament and restrained colour.',
-      uk: 'Кремовий папір, вінтажний орнамент і стримані кольори.',
+      ru: 'Старое золото, состаренный пергамент и символы солнца, луны и взгляда.',
+      en: 'Old gold, aged parchment and the symbols of sun, moon and sight.',
+      uk: 'Старе золото, зістарений пергамент і символи сонця, місяця та погляду.',
     },
   },
   {
     id: 'solar-lines',
-    name: { ru: 'Royal', en: 'Royal', uk: 'Royal' },
+    name: { ru: 'Lunar', en: 'Lunar', uk: 'Lunar' },
     description: {
-      ru: 'Глубокий синий, строгая симметрия и золотой акцент.',
-      en: 'Deep blue, composed symmetry and a gold accent.',
-      uk: 'Глибокий синій, стримана симетрія й золотий акцент.',
+      ru: 'Глубокий синий, серебряные фазы луны и тихое поле звёзд.',
+      en: 'Deep navy, silver moon phases and a quiet field of stars.',
+      uk: 'Глибокий синій, срібні фази місяця й тихе поле зірок.',
     },
   },
   {
     id: 'midnight-geometry',
-    name: { ru: 'Midnight', en: 'Midnight', uk: 'Midnight' },
+    name: { ru: 'Celestial', en: 'Celestial', uk: 'Celestial' },
     description: {
-      ru: 'Графитовый тон и спокойная геометрия.',
-      en: 'A charcoal tone with quiet geometry.',
-      uk: 'Графітовий тон і спокійна геометрія.',
+      ru: 'Тёмно-синий фон, приглушённое золото и печать в духе астролябии.',
+      en: 'Dark blue, muted gold geometry and an astrolabe-like seal.',
+      uk: 'Темно-синє тло, приглушене золото й печатка в дусі астролябії.',
     },
   },
   {
     id: 'deep-water',
-    name: { ru: 'Obsidian', en: 'Obsidian', uk: 'Obsidian' },
+    name: { ru: 'Nocturne', en: 'Nocturne', uk: 'Nocturne' },
     description: {
-      ru: 'Чёрный фон, тонкая гравюра и матовый блеск.',
-      en: 'Black ground, fine engraving and a matte sheen.',
-      uk: 'Чорне тло, тонке гравіювання й матовий блиск.',
+      ru: 'Почти чёрная бумага, бронзовая гравюра и орнаментальная мистическая печать.',
+      en: 'Near-black paper, bronze engraving and an ornamental mystic seal.',
+      uk: 'Майже чорний папір, бронзове гравіювання й орнаментальна містична печатка.',
     },
   },
 ];

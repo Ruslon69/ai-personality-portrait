@@ -1,0 +1,788 @@
+{
+  "allowedSourceTransforms": ["none", "rotate-180", "rotate-90-cw", "rotate-90-ccw"],
+  "canonicalOrientation": "upright",
+  "processingDate": "2026-08-12",
+  "reviewRecords": [
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-fool",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/00-fool.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 00 Fool.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-magician",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/01-magician.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 01 Magician.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-high-priestess",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/02-high-priestess.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 02 High Priestess.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-empress",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/03-empress.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 03 Empress.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-emperor",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/04-emperor.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 04 Emperor.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-hierophant",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/05-hierophant.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 05 Hierophant.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-lovers",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/06-lovers.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 06 Lovers.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-chariot",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/07-chariot.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 07 Chariot.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-strength",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/08-strength.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 08 Strength.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-hermit",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/09-hermit.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 09 Hermit.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-wheel",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/10-wheel.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 10 Wheel of Fortune.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-justice",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/11-justice.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 11 Justice.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-hanged-man",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/12-hanged-man.jpg",
+      "needsManualReview": false,
+      "reason": "Upright XII numeral, title, and complete frame verified; the inverted figure is intentional composition.",
+      "sourceFile": "RWS Tarot 12 Hanged Man.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-death",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/13-death.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 13 Death.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-temperance",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/14-temperance.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 14 Temperance.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-devil",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/15-devil.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 15 Devil.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-tower",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/16-tower.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 16 Tower.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-star",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/17-star.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 17 Star.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-moon",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/18-moon.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 18 Moon.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-sun",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/19-sun.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 19 Sun.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-judgement",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/20-judgement.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 20 Judgement.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "major-world",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/major/21-world.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "RWS Tarot 21 World.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "wands-ace",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/wands/ace-wands.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Wands01.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "wands-two",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/wands/two-wands.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Wands02.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "wands-three",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/wands/three-wands.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Wands03.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "wands-four",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/wands/four-wands.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Wands04.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "wands-five",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/wands/five-wands.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Wands05.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "wands-six",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/wands/six-wands.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Wands06.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "wands-seven",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/wands/seven-wands.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Wands07.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "wands-eight",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/wands/eight-wands.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Wands08.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "wands-nine",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/wands/nine-wands.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Wands09.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "wands-ten",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/wands/ten-wands.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Wands10.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "wands-page",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/wands/page-wands.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Wands11.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "wands-knight",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/wands/knight-wands.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Wands12.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "wands-queen",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/wands/queen-wands.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Wands13.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "wands-king",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/wands/king-wands.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Wands14.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "cups-ace",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/cups/ace-cups.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Cups01.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "cups-two",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/cups/two-cups.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Cups02.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "cups-three",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/cups/three-cups.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Cups03.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "cups-four",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/cups/four-cups.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Cups04.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "cups-five",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/cups/five-cups.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Cups05.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "cups-six",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/cups/six-cups.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Cups06.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "cups-seven",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/cups/seven-cups.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Cups07.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "cups-eight",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/cups/eight-cups.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Cups08.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "cups-nine",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/cups/nine-cups.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Cups09.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "cups-ten",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/cups/ten-cups.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Cups10.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "cups-page",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/cups/page-cups.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Cups11.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "cups-knight",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/cups/knight-cups.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Cups12.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "cups-queen",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/cups/queen-cups.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Cups13.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "cups-king",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/cups/king-cups.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Cups14.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "swords-ace",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/swords/ace-swords.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Swords01.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "swords-two",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/swords/two-swords.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Swords02.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "swords-three",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/swords/three-swords.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Swords03.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "swords-four",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/swords/four-swords.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Swords04.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "swords-five",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/swords/five-swords.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Swords05.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "swords-six",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/swords/six-swords.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Swords06.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "swords-seven",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/swords/seven-swords.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Swords07.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "swords-eight",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/swords/eight-swords.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Swords08.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "swords-nine",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/swords/nine-swords.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Swords09.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "swords-ten",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/swords/ten-swords.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Swords10.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "swords-page",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/swords/page-swords.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Swords11.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "swords-knight",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/swords/knight-swords.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Swords12.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "swords-queen",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/swords/queen-swords.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Swords13.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "swords-king",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/swords/king-swords.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Swords14.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "pentacles-ace",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/pentacles/ace-pentacles.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Pents01.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "pentacles-two",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/pentacles/two-pentacles.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Pents02.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "pentacles-three",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/pentacles/three-pentacles.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Pents03.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "pentacles-four",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/pentacles/four-pentacles.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Pents04.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "pentacles-five",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/pentacles/five-pentacles.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Pents05.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "pentacles-six",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/pentacles/six-pentacles.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Pents06.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "pentacles-seven",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/pentacles/seven-pentacles.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Pents07.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "pentacles-eight",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/pentacles/eight-pentacles.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Pents08.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "pentacles-nine",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/pentacles/nine-pentacles.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Pents09.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "pentacles-ten",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/pentacles/ten-pentacles.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Pents10.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "pentacles-page",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/pentacles/page-pentacles.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Pents11.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "pentacles-knight",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/pentacles/knight-pentacles.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Pents12.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "pentacles-queen",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/pentacles/queen-pentacles.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Pents13.jpg",
+      "sourceTransform": "none"
+    },
+    {
+      "canonicalOrientation": "upright",
+      "cardId": "pentacles-king",
+      "currentTransform": "none",
+      "localRuntimeFile": "cards/rws/pentacles/king-pentacles.jpg",
+      "needsManualReview": false,
+      "reason": "Upright numeral/title region and complete card frame verified in the 78-card raster contact-sheet audit.",
+      "sourceFile": "Pents14.jpg",
+      "sourceTransform": "none"
+    }
+  ],
+  "version": "rws-orientation-v1"
+}

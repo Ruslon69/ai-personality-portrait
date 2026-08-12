@@ -1,5 +1,5 @@
 import { createNumerologyProfile } from '../../features/numerology/lib/numerology-engine';
-import { tarotArtworkManifest } from '../../assets/tarot';
+import { RWS_CLASSIC_DECK_ID, getTarotArtwork, tarotArtworkManifest } from '../../assets/tarot';
 import {
   isManualCardSelectionComplete,
   toggleManualCardSelection,
@@ -63,10 +63,14 @@ export function runTarotRegressionGate() {
     message: 'Tarot card IDs must be unique.',
   });
   assertions.assert(
-    cards.every((card) => tarotArtworkManifest.get(card.id)?.rightsStatus === 'placeholder'),
+    cards.every(
+      (card) =>
+        tarotArtworkManifest.get(card.id)?.rightsStatus === 'verified-public-domain' &&
+        tarotArtworkManifest.get(card.id)?.deckId === RWS_CLASSIC_DECK_ID,
+    ),
     {
-      code: 'tarot-artwork-fallback-coverage',
-      message: 'Every Tarot card must have a rights-aware fallback artwork entry.',
+      code: 'tarot-artwork-rws-coverage',
+      message: 'Every Tarot card must have a verified classic RWS artwork entry.',
     },
   );
   assertions.assert(
@@ -220,6 +224,12 @@ export function runTarotRegressionGate() {
       message: 'Deck theme changed semantic reading content.',
     },
   );
+  getTarotArtwork(first.selections[0]?.cardId ?? 'major-fool');
+  getTarotArtwork('missing-card');
+  assertions.assert(JSON.stringify(first) === JSON.stringify(rerenderNeutral), {
+    code: 'artwork-provider-affected-meaning',
+    message: 'Artwork lookup changed canonical reading data.',
+  });
   assertions.assert(
     first.selections.every(
       (selection, index) =>

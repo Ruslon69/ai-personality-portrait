@@ -1,0 +1,10 @@
+{
+  "author": "Pamela Colman Smith",
+  "collection": "Rider-Waite-Smith tarot deck (TaionWC)",
+  "commonsCategory": "https://commons.wikimedia.org/wiki/Category:Rider-Waite-Smith_tarot_deck_(TaionWC)",
+  "originalPublicationYear": 1910,
+  "processingDate": "2026-08-12",
+  "publicDomainStatus": "All 78 individual Commons file records verified Public domain with attribution not required.",
+  "sourceCount": 78,
+  "transformationNotes": "Canonical upright raster content retained at maximum 1200px height, JPEG normalized at ffmpeg q:v 5, EXIF stripped, ICC color profile retained, no crop or recoloring. Source transforms are recorded separately and applied exactly once before runtime output."
+}

@@ -18,6 +18,13 @@
   --motion-glow-opacity: 16%;
   --motion-interaction-easing: cubic-bezier(0.16, 1, 0.3, 1);
 
+  /* Tarot reveal choreography. Mirrors the deterministic state-machine clock. */
+  --motion-tarot-card-lift-duration: 100ms;
+  --motion-tarot-card-flip-duration: 620ms;
+  --motion-tarot-card-settle-duration: 140ms;
+  --motion-tarot-interpretation-reveal-duration: 280ms;
+  --motion-tarot-spread-progress-duration: 240ms;
+
   /* Product-wide semantic motion patterns. */
   --motion-reveal-duration: 680ms;
   --motion-connect-duration: 520ms;
@@ -57,6 +64,11 @@
     --motion-layer-shift-distance: 0rem;
     --motion-surface-lift-distance: 0rem;
     --motion-glow-opacity: 8%;
+    --motion-tarot-card-lift-duration: 0ms;
+    --motion-tarot-card-flip-duration: 0ms;
+    --motion-tarot-card-settle-duration: 0ms;
+    --motion-tarot-interpretation-reveal-duration: 0ms;
+    --motion-tarot-spread-progress-duration: 0ms;
     --motion-detail-drift-duration: 0ms;
     --motion-orbit-reveal-duration: 0ms;
     --motion-number-arrange-duration: 0ms;

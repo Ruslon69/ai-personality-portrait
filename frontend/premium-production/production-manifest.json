@@ -7,11 +7,7 @@
   "goldenMasterCardId": "major-fool",
   "goldenMasterVersion": "premium-tarot-golden-master-v1",
   "releaseMode": "classic",
-  "allowedReleaseModes": [
-    "classic",
-    "premium-preview",
-    "premium-complete"
-  ],
+  "allowedReleaseModes": ["classic", "premium-preview", "premium-complete"],
   "releaseThreshold": {
     "approved": 78,
     "canonicalIds": 78,
@@ -141,11 +137,17 @@
       "arcana": "major",
       "canonicalName": "The Magician",
       "cardId": "major-magician",
-      "productionStatus": "prompt-ready",
+      "productionStatus": "prompt-ready-v2",
       "reviewStatus": "not-reviewed",
       "sourceReferenceId": "rws-public-domain-v1:major-magician",
-      "promptId": "premium-tarot-prompts-v1:major-magician",
-      "styleVersion": "premium-tarot-style-v1",
+      "promptId": "premium-tarot-pilot-prompts-v2:major-magician",
+      "styleVersion": "premium-tarot-style-v2",
+      "goldenMasterLineage": {
+        "goldenMasterCard": "major-fool",
+        "goldenMasterReferenceVersion": "premium-tarot-golden-master-v1",
+        "goldenMasterArtworkVersion": "premium-tarot-art-v1",
+        "goldenMasterChecksum": "8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f"
+      },
       "compositionReference": {
         "background": "Preserve the canonical distant landscape, architecture, weather, and celestial elements.",
         "emotionalTone": "focused agency and controlled potential",
@@ -193,11 +195,17 @@
       "arcana": "major",
       "canonicalName": "The High Priestess",
       "cardId": "major-high-priestess",
-      "productionStatus": "prompt-ready",
+      "productionStatus": "prompt-ready-v2",
       "reviewStatus": "not-reviewed",
       "sourceReferenceId": "rws-public-domain-v1:major-high-priestess",
-      "promptId": "premium-tarot-prompts-v1:major-high-priestess",
-      "styleVersion": "premium-tarot-style-v1",
+      "promptId": "premium-tarot-pilot-prompts-v2:major-high-priestess",
+      "styleVersion": "premium-tarot-style-v2",
+      "goldenMasterLineage": {
+        "goldenMasterCard": "major-fool",
+        "goldenMasterReferenceVersion": "premium-tarot-golden-master-v1",
+        "goldenMasterArtworkVersion": "premium-tarot-art-v1",
+        "goldenMasterChecksum": "8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f"
+      },
       "compositionReference": {
         "background": "Preserve the canonical distant landscape, architecture, weather, and celestial elements.",
         "emotionalTone": "silent mystery and guarded knowledge",
@@ -520,13 +528,7 @@
         "distant mountain",
         "gentle hand position"
       ],
-      "requiredObjects": [
-        "woman",
-        "lion",
-        "flowers",
-        "infinity sign",
-        "mountain"
-      ],
+      "requiredObjects": ["woman", "lion", "flowers", "infinity sign", "mountain"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -567,14 +569,7 @@
         "snowy peak",
         "elder profile"
       ],
-      "requiredObjects": [
-        "elder",
-        "lantern",
-        "star",
-        "staff",
-        "cloak",
-        "mountains"
-      ],
+      "requiredObjects": ["elder", "lantern", "star", "staff", "cloak", "mountains"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -667,14 +662,7 @@
         "two pillars",
         "purple veil"
       ],
-      "requiredObjects": [
-        "justice figure",
-        "sword",
-        "scales",
-        "crown",
-        "pillars",
-        "veil"
-      ],
+      "requiredObjects": ["justice figure", "sword", "scales", "crown", "pillars", "veil"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -742,11 +730,17 @@
       "arcana": "major",
       "canonicalName": "Death",
       "cardId": "major-death",
-      "productionStatus": "prompt-ready",
+      "productionStatus": "prompt-ready-v2",
       "reviewStatus": "not-reviewed",
       "sourceReferenceId": "rws-public-domain-v1:major-death",
-      "promptId": "premium-tarot-prompts-v1:major-death",
-      "styleVersion": "premium-tarot-style-v1",
+      "promptId": "premium-tarot-pilot-prompts-v2:major-death",
+      "styleVersion": "premium-tarot-style-v2",
+      "goldenMasterLineage": {
+        "goldenMasterCard": "major-fool",
+        "goldenMasterReferenceVersion": "premium-tarot-golden-master-v1",
+        "goldenMasterArtworkVersion": "premium-tarot-art-v1",
+        "goldenMasterChecksum": "8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f"
+      },
       "compositionReference": {
         "background": "Preserve the canonical distant landscape, architecture, weather, and celestial elements.",
         "emotionalTone": "solemn transformation with distant renewal",
@@ -902,11 +896,17 @@
       "arcana": "major",
       "canonicalName": "The Tower",
       "cardId": "major-tower",
-      "productionStatus": "prompt-ready",
+      "productionStatus": "prompt-ready-v2",
       "reviewStatus": "not-reviewed",
       "sourceReferenceId": "rws-public-domain-v1:major-tower",
-      "promptId": "premium-tarot-prompts-v1:major-tower",
-      "styleVersion": "premium-tarot-style-v1",
+      "promptId": "premium-tarot-pilot-prompts-v2:major-tower",
+      "styleVersion": "premium-tarot-style-v2",
+      "goldenMasterLineage": {
+        "goldenMasterCard": "major-fool",
+        "goldenMasterReferenceVersion": "premium-tarot-golden-master-v1",
+        "goldenMasterArtworkVersion": "premium-tarot-art-v1",
+        "goldenMasterChecksum": "8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f"
+      },
       "compositionReference": {
         "background": "Preserve the canonical distant landscape, architecture, weather, and celestial elements.",
         "emotionalTone": "violent revelation and destabilizing truth",
@@ -951,11 +951,17 @@
       "arcana": "major",
       "canonicalName": "The Star",
       "cardId": "major-star",
-      "productionStatus": "prompt-ready",
+      "productionStatus": "prompt-ready-v2",
       "reviewStatus": "not-reviewed",
       "sourceReferenceId": "rws-public-domain-v1:major-star",
-      "promptId": "premium-tarot-prompts-v1:major-star",
-      "styleVersion": "premium-tarot-style-v1",
+      "promptId": "premium-tarot-pilot-prompts-v2:major-star",
+      "styleVersion": "premium-tarot-style-v2",
+      "goldenMasterLineage": {
+        "goldenMasterCard": "major-fool",
+        "goldenMasterReferenceVersion": "premium-tarot-golden-master-v1",
+        "goldenMasterArtworkVersion": "premium-tarot-art-v1",
+        "goldenMasterChecksum": "8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f"
+      },
       "compositionReference": {
         "background": "Preserve the canonical distant landscape, architecture, weather, and celestial elements.",
         "emotionalTone": "quiet renewal, openness, and celestial hope",
@@ -1077,14 +1083,7 @@
         "four sunflowers",
         "garden wall"
       ],
-      "requiredObjects": [
-        "sun",
-        "child",
-        "white horse",
-        "banner",
-        "four sunflowers",
-        "wall"
-      ],
+      "requiredObjects": ["sun", "child", "white horse", "banner", "four sunflowers", "wall"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1227,15 +1226,7 @@
         "castle",
         "river and hills"
       ],
-      "requiredObjects": [
-        "hand",
-        "cloud",
-        "one wand",
-        "leaves",
-        "castle",
-        "river",
-        "hills"
-      ],
+      "requiredObjects": ["hand", "cloud", "one wand", "leaves", "castle", "river", "hills"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1279,14 +1270,7 @@
         "ships and sea",
         "distant land"
       ],
-      "requiredObjects": [
-        "figure",
-        "globe",
-        "two wands",
-        "battlement",
-        "ships",
-        "sea"
-      ],
+      "requiredObjects": ["figure", "globe", "two wands", "battlement", "ships", "sea"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1329,14 +1313,7 @@
         "three ships",
         "coastline"
       ],
-      "requiredObjects": [
-        "figure",
-        "three wands",
-        "red cloak",
-        "ships",
-        "sea",
-        "coast"
-      ],
+      "requiredObjects": ["figure", "three wands", "red cloak", "ships", "sea", "coast"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1379,12 +1356,7 @@
         "gathering behind",
         "castle"
       ],
-      "requiredObjects": [
-        "four wands",
-        "garland",
-        "celebrants",
-        "castle"
-      ],
+      "requiredObjects": ["four wands", "garland", "celebrants", "castle"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1427,11 +1399,7 @@
         "open ground",
         "conflicting diagonals"
       ],
-      "requiredObjects": [
-        "five youths",
-        "five wands",
-        "tunics"
-      ],
+      "requiredObjects": ["five youths", "five wands", "tunics"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1475,14 +1443,7 @@
         "victory wreath on wand",
         "attendant crowd"
       ],
-      "requiredObjects": [
-        "rider",
-        "horse",
-        "six wands",
-        "laurel crown",
-        "wreath",
-        "crowd"
-      ],
+      "requiredObjects": ["rider", "horse", "six wands", "laurel crown", "wreath", "crowd"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1525,12 +1486,7 @@
         "high ground",
         "mismatched footwear"
       ],
-      "requiredObjects": [
-        "figure",
-        "seven wands",
-        "hill",
-        "mismatched shoes"
-      ],
+      "requiredObjects": ["figure", "seven wands", "hill", "mismatched shoes"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1573,13 +1529,7 @@
         "river",
         "distant settlement"
       ],
-      "requiredObjects": [
-        "eight wands",
-        "sky",
-        "river",
-        "fields",
-        "settlement"
-      ],
+      "requiredObjects": ["eight wands", "sky", "river", "fields", "settlement"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1622,12 +1572,7 @@
         "guarded posture",
         "distant hills"
       ],
-      "requiredObjects": [
-        "figure",
-        "bandage",
-        "nine wands",
-        "hills"
-      ],
+      "requiredObjects": ["figure", "bandage", "nine wands", "hills"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1670,12 +1615,7 @@
         "town ahead",
         "worked earth"
       ],
-      "requiredObjects": [
-        "figure",
-        "ten wands",
-        "town",
-        "earth"
-      ],
+      "requiredObjects": ["figure", "ten wands", "town", "earth"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1718,14 +1658,7 @@
         "three pyramids",
         "desert ground"
       ],
-      "requiredObjects": [
-        "page",
-        "wand",
-        "salamander tunic",
-        "hat",
-        "pyramids",
-        "desert"
-      ],
+      "requiredObjects": ["page", "wand", "salamander tunic", "hat", "pyramids", "desert"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1821,15 +1754,7 @@
         "lion motifs",
         "pyramids"
       ],
-      "requiredObjects": [
-        "queen",
-        "throne",
-        "wand",
-        "sunflower",
-        "black cat",
-        "lions",
-        "pyramids"
-      ],
+      "requiredObjects": ["queen", "throne", "wand", "sunflower", "black cat", "lions", "pyramids"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1872,14 +1797,7 @@
         "red-orange robes",
         "small salamander"
       ],
-      "requiredObjects": [
-        "king",
-        "throne",
-        "wand",
-        "crown",
-        "salamanders",
-        "lions"
-      ],
+      "requiredObjects": ["king", "throne", "wand", "crown", "salamanders", "lions"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1899,11 +1817,17 @@
       "cardId": "cups-ace",
       "rank": "ace",
       "suit": "cups",
-      "productionStatus": "prompt-ready",
+      "productionStatus": "prompt-ready-v2",
       "reviewStatus": "not-reviewed",
       "sourceReferenceId": "rws-public-domain-v1:cups-ace",
-      "promptId": "premium-tarot-prompts-v1:cups-ace",
-      "styleVersion": "premium-tarot-style-v1",
+      "promptId": "premium-tarot-pilot-prompts-v2:cups-ace",
+      "styleVersion": "premium-tarot-style-v2",
+      "goldenMasterLineage": {
+        "goldenMasterCard": "major-fool",
+        "goldenMasterReferenceVersion": "premium-tarot-golden-master-v1",
+        "goldenMasterArtworkVersion": "premium-tarot-art-v1",
+        "goldenMasterChecksum": "8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f"
+      },
       "compositionReference": {
         "background": "Preserve the canonical distant landscape, architecture, weather, and celestial elements.",
         "emotionalTone": "sacred abundance and emotional opening",
@@ -1975,14 +1899,7 @@
         "winged lion head",
         "distant house and hills"
       ],
-      "requiredObjects": [
-        "man",
-        "woman",
-        "two cups",
-        "caduceus",
-        "lion head",
-        "house"
-      ],
+      "requiredObjects": ["man", "woman", "two cups", "caduceus", "lion head", "house"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2025,13 +1942,7 @@
         "flowers",
         "circular dance"
       ],
-      "requiredObjects": [
-        "three women",
-        "three cups",
-        "fruit",
-        "pumpkins",
-        "flowers"
-      ],
+      "requiredObjects": ["three women", "three cups", "fruit", "pumpkins", "flowers"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2074,13 +1985,7 @@
         "fourth cup from cloud",
         "green landscape"
       ],
-      "requiredObjects": [
-        "figure",
-        "tree",
-        "four cups",
-        "cloud",
-        "landscape"
-      ],
+      "requiredObjects": ["figure", "tree", "four cups", "cloud", "landscape"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2124,14 +2029,7 @@
         "bridge",
         "distant building"
       ],
-      "requiredObjects": [
-        "figure",
-        "cloak",
-        "five cups",
-        "river",
-        "bridge",
-        "building"
-      ],
+      "requiredObjects": ["figure", "cloak", "five cups", "river", "bridge", "building"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2174,13 +2072,7 @@
         "village buildings",
         "guarded adult in distance"
       ],
-      "requiredObjects": [
-        "two children",
-        "six cups",
-        "white flowers",
-        "village",
-        "adult"
-      ],
+      "requiredObjects": ["two children", "six cups", "white flowers", "village", "adult"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2281,15 +2173,7 @@
         "river",
         "moon and sun overlap"
       ],
-      "requiredObjects": [
-        "traveler",
-        "cloak",
-        "staff",
-        "eight cups",
-        "mountains",
-        "river",
-        "moon"
-      ],
+      "requiredObjects": ["traveler", "cloak", "staff", "eight cups", "mountains", "river", "moon"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2332,14 +2216,7 @@
         "curved blue-draped table",
         "red cap"
       ],
-      "requiredObjects": [
-        "figure",
-        "chair",
-        "nine cups",
-        "table",
-        "blue cloth",
-        "red cap"
-      ],
+      "requiredObjects": ["figure", "chair", "nine cups", "table", "blue cloth", "red cap"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2435,14 +2312,7 @@
         "beret and scarf",
         "rolling sea"
       ],
-      "requiredObjects": [
-        "page",
-        "cup",
-        "fish",
-        "floral tunic",
-        "hat",
-        "sea"
-      ],
+      "requiredObjects": ["page", "cup", "fish", "floral tunic", "hat", "sea"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2538,14 +2408,7 @@
         "pebbles",
         "sea cliffs"
       ],
-      "requiredObjects": [
-        "queen",
-        "throne",
-        "closed cup",
-        "cherubs",
-        "pebbles",
-        "sea"
-      ],
+      "requiredObjects": ["queen", "throne", "closed cup", "cherubs", "pebbles", "sea"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2589,15 +2452,7 @@
         "ship",
         "leaping fish"
       ],
-      "requiredObjects": [
-        "king",
-        "throne",
-        "cup",
-        "scepter",
-        "sea",
-        "ship",
-        "fish"
-      ],
+      "requiredObjects": ["king", "throne", "cup", "scepter", "sea", "ship", "fish"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2640,15 +2495,7 @@
         "falling yod shapes",
         "distant mountains"
       ],
-      "requiredObjects": [
-        "hand",
-        "cloud",
-        "sword",
-        "crown",
-        "wreath",
-        "yods",
-        "mountains"
-      ],
+      "requiredObjects": ["hand", "cloud", "sword", "crown", "wreath", "yods", "mountains"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2692,15 +2539,7 @@
         "rocky islands",
         "calm sea"
       ],
-      "requiredObjects": [
-        "woman",
-        "blindfold",
-        "two swords",
-        "seat",
-        "moon",
-        "rocks",
-        "sea"
-      ],
+      "requiredObjects": ["woman", "blindfold", "two swords", "seat", "moon", "rocks", "sea"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2720,11 +2559,17 @@
       "cardId": "swords-three",
       "rank": "three",
       "suit": "swords",
-      "productionStatus": "prompt-ready",
+      "productionStatus": "prompt-ready-v2",
       "reviewStatus": "not-reviewed",
       "sourceReferenceId": "rws-public-domain-v1:swords-three",
-      "promptId": "premium-tarot-prompts-v1:swords-three",
-      "styleVersion": "premium-tarot-style-v1",
+      "promptId": "premium-tarot-pilot-prompts-v2:swords-three",
+      "styleVersion": "premium-tarot-style-v2",
+      "goldenMasterLineage": {
+        "goldenMasterCard": "major-fool",
+        "goldenMasterReferenceVersion": "premium-tarot-golden-master-v1",
+        "goldenMasterArtworkVersion": "premium-tarot-art-v1",
+        "goldenMasterChecksum": "8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f"
+      },
       "compositionReference": {
         "background": "Preserve the canonical distant landscape, architecture, weather, and celestial elements.",
         "emotionalTone": "direct sorrow and painful clarity",
@@ -2742,12 +2587,7 @@
         "rain",
         "grey storm clouds"
       ],
-      "requiredObjects": [
-        "heart",
-        "three swords",
-        "rain",
-        "clouds"
-      ],
+      "requiredObjects": ["heart", "three swords", "rain", "clouds"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2790,13 +2630,7 @@
         "stained-glass window",
         "praying hands"
       ],
-      "requiredObjects": [
-        "knight effigy",
-        "four swords",
-        "tomb",
-        "stained glass",
-        "church wall"
-      ],
+      "requiredObjects": ["knight effigy", "four swords", "tomb", "stained glass", "church wall"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2839,13 +2673,7 @@
         "jagged clouds",
         "water"
       ],
-      "requiredObjects": [
-        "three figures",
-        "five swords",
-        "clouds",
-        "shore",
-        "water"
-      ],
+      "requiredObjects": ["three figures", "five swords", "clouds", "shore", "water"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2889,14 +2717,7 @@
         "six upright swords in boat",
         "rough and calm water"
       ],
-      "requiredObjects": [
-        "boat",
-        "ferryman",
-        "adult",
-        "child",
-        "six swords",
-        "water"
-      ],
+      "requiredObjects": ["boat", "ferryman", "adult", "child", "six swords", "water"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2939,12 +2760,7 @@
         "tents",
         "distant people"
       ],
-      "requiredObjects": [
-        "figure",
-        "seven swords",
-        "tents",
-        "camp"
-      ],
+      "requiredObjects": ["figure", "seven swords", "tents", "camp"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2987,14 +2803,7 @@
         "mud and water",
         "distant castle"
       ],
-      "requiredObjects": [
-        "woman",
-        "blindfold",
-        "bindings",
-        "eight swords",
-        "water",
-        "castle"
-      ],
+      "requiredObjects": ["woman", "blindfold", "bindings", "eight swords", "water", "castle"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3037,13 +2846,7 @@
         "carved bed frame",
         "astrological quilt"
       ],
-      "requiredObjects": [
-        "person",
-        "bed",
-        "nine swords",
-        "quilt",
-        "carved frame"
-      ],
+      "requiredObjects": ["person", "bed", "nine swords", "quilt", "carved frame"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3087,14 +2890,7 @@
         "calm water",
         "distant mountains"
       ],
-      "requiredObjects": [
-        "figure",
-        "ten swords",
-        "dark sky",
-        "sunrise",
-        "water",
-        "mountains"
-      ],
+      "requiredObjects": ["figure", "ten swords", "dark sky", "sunrise", "water", "mountains"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3138,14 +2934,7 @@
         "circling birds",
         "distant trees"
       ],
-      "requiredObjects": [
-        "page",
-        "sword",
-        "clouds",
-        "birds",
-        "trees",
-        "hill"
-      ],
+      "requiredObjects": ["page", "sword", "clouds", "birds", "trees", "hill"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3189,14 +2978,7 @@
         "bent trees",
         "butterfly and bird motifs"
       ],
-      "requiredObjects": [
-        "knight",
-        "white horse",
-        "armor",
-        "sword",
-        "clouds",
-        "trees"
-      ],
+      "requiredObjects": ["knight", "white horse", "armor", "sword", "clouds", "trees"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3240,15 +3022,7 @@
         "clouds",
         "single bird"
       ],
-      "requiredObjects": [
-        "queen",
-        "throne",
-        "sword",
-        "crown",
-        "butterflies",
-        "clouds",
-        "bird"
-      ],
+      "requiredObjects": ["queen", "throne", "sword", "crown", "butterflies", "clouds", "bird"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3292,14 +3066,7 @@
         "trees",
         "two birds"
       ],
-      "requiredObjects": [
-        "king",
-        "throne",
-        "sword",
-        "butterflies",
-        "trees",
-        "two birds"
-      ],
+      "requiredObjects": ["king", "throne", "sword", "butterflies", "trees", "two birds"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3343,15 +3110,7 @@
         "path",
         "distant mountain"
       ],
-      "requiredObjects": [
-        "hand",
-        "cloud",
-        "pentacle",
-        "garden",
-        "arch",
-        "path",
-        "mountain"
-      ],
+      "requiredObjects": ["hand", "cloud", "pentacle", "garden", "arch", "path", "mountain"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3395,14 +3154,7 @@
         "rolling waves",
         "tall red hat"
       ],
-      "requiredObjects": [
-        "figure",
-        "two pentacles",
-        "infinity ribbon",
-        "ships",
-        "waves",
-        "hat"
-      ],
+      "requiredObjects": ["figure", "two pentacles", "infinity ribbon", "ships", "waves", "hat"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3446,13 +3198,7 @@
         "bench",
         "plan or document"
       ],
-      "requiredObjects": [
-        "three figures",
-        "three pentacles",
-        "cathedral",
-        "bench",
-        "document"
-      ],
+      "requiredObjects": ["three figures", "three pentacles", "cathedral", "bench", "document"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3496,13 +3242,7 @@
         "seated figure",
         "city behind"
       ],
-      "requiredObjects": [
-        "figure",
-        "crown",
-        "four pentacles",
-        "seat",
-        "city"
-      ],
+      "requiredObjects": ["figure", "crown", "four pentacles", "seat", "city"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3596,14 +3336,7 @@
         "coins being distributed",
         "town setting"
       ],
-      "requiredObjects": [
-        "merchant",
-        "two recipients",
-        "scales",
-        "six pentacles",
-        "coins",
-        "town"
-      ],
+      "requiredObjects": ["merchant", "two recipients", "scales", "six pentacles", "coins", "town"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3647,13 +3380,7 @@
         "worked soil",
         "patient posture"
       ],
-      "requiredObjects": [
-        "farmer",
-        "hoe",
-        "seven pentacles",
-        "vine",
-        "soil"
-      ],
+      "requiredObjects": ["farmer", "hoe", "seven pentacles", "vine", "soil"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3696,13 +3423,7 @@
         "work bench",
         "distant town"
       ],
-      "requiredObjects": [
-        "craftsperson",
-        "tools",
-        "eight pentacles",
-        "bench",
-        "town"
-      ],
+      "requiredObjects": ["craftsperson", "tools", "eight pentacles", "bench", "town"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3746,14 +3467,7 @@
         "snail",
         "estate"
       ],
-      "requiredObjects": [
-        "woman",
-        "nine pentacles",
-        "grapes",
-        "falcon",
-        "snail",
-        "estate"
-      ],
+      "requiredObjects": ["woman", "nine pentacles", "grapes", "falcon", "snail", "estate"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3849,13 +3563,7 @@
         "plowed field",
         "distant mountains"
       ],
-      "requiredObjects": [
-        "page",
-        "pentacle",
-        "field",
-        "flowers",
-        "mountains"
-      ],
+      "requiredObjects": ["page", "pentacle", "field", "flowers", "mountains"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3899,14 +3607,7 @@
         "oak leaves",
         "distant hills"
       ],
-      "requiredObjects": [
-        "knight",
-        "armor",
-        "dark horse",
-        "pentacle",
-        "fields",
-        "hills"
-      ],
+      "requiredObjects": ["knight", "armor", "dark horse", "pentacle", "fields", "hills"],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",

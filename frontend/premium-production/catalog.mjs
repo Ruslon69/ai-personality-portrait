@@ -17,6 +17,7 @@ export const PRODUCTION_VERSIONS = {
   goldenStyle: 'premium-tarot-style-v2',
   prompts: 'premium-tarot-prompts-v1',
   preparation: 'premium-tarot-preparation-v1',
+  pilotPrompts: 'premium-tarot-pilot-prompts-v2',
   review: 'premium-tarot-review-v1',
   style: 'premium-tarot-style-v1',
 };

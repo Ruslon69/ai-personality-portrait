@@ -15,6 +15,7 @@ process.stdout.write(`78 total\n`);
 for (const status of [
   'pending',
   'prompt-ready',
+  'prompt-ready-v2',
   'generated',
   'processing',
   'review',

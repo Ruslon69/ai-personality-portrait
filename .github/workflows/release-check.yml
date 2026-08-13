@@ -42,6 +42,8 @@ jobs:
           python-version-file: .python-version
           cache: pip
           cache-dependency-path: backend/pyproject.toml
+      - name: Install and verify FFmpeg
+        run: sudo bash scripts/install-ci-media-tools.sh
       - name: Install frontend dependencies
         working-directory: frontend
         run: npm ci

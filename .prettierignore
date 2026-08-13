@@ -4,6 +4,8 @@
 **/coverage/
 **/reports/
 frontend/premium-production/generated/
+frontend/premium-production/prepared/
+frontend/premium-production/reviews/
 **/.venv/
 **/__pycache__/
 **/.ruff_cache/

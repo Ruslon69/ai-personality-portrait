@@ -1,7 +1,9 @@
 import { execFileSync } from 'node:child_process';
 import { constants, existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { copyFile, mkdir, rename, rm } from 'node:fs/promises';
 import { basename, extname, isAbsolute, resolve, sep } from 'node:path';
+import process from 'node:process';
 
 import {
   assertRegularFile,
@@ -21,6 +23,54 @@ export const MAX_CROP_FRACTION = 0.04;
 const MAX_SOURCE_BYTES = 100 * 1024 * 1024;
 const SUPPORTED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png']);
 const SRGB_PROFILE = '/System/Library/ColorSync/Profiles/sRGB Profile.icc';
+
+function colorSyncAvailable() {
+  return (
+    process.platform === 'darwin' &&
+    process.env.TAROT_PREPARATION_DISABLE_COLOR_SYNC !== '1' &&
+    existsSync(SRGB_PROFILE)
+  );
+}
+
+function readJpegExifOrientation(path) {
+  if (!['.jpg', '.jpeg'].includes(extname(path).toLowerCase())) return 1;
+  const bytes = readFileSync(path);
+  if (bytes.length < 4 || bytes.readUInt16BE(0) !== 0xffd8) return 1;
+  let offset = 2;
+  while (offset + 4 <= bytes.length) {
+    if (bytes[offset] !== 0xff) break;
+    const marker = bytes[offset + 1];
+    offset += 2;
+    if (marker === 0xda || marker === 0xd9) break;
+    const segmentLength = bytes.readUInt16BE(offset);
+    if (segmentLength < 2 || offset + segmentLength > bytes.length) break;
+    const segmentStart = offset + 2;
+    if (
+      marker === 0xe1 &&
+      bytes.subarray(segmentStart, segmentStart + 6).toString('ascii') === 'Exif\0\0'
+    ) {
+      const tiff = segmentStart + 6;
+      const littleEndian = bytes.subarray(tiff, tiff + 2).toString('ascii') === 'II';
+      const read16 = (position) =>
+        littleEndian ? bytes.readUInt16LE(position) : bytes.readUInt16BE(position);
+      const read32 = (position) =>
+        littleEndian ? bytes.readUInt32LE(position) : bytes.readUInt32BE(position);
+      if (read16(tiff + 2) !== 42) return 1;
+      const directory = tiff + read32(tiff + 4);
+      if (directory + 2 > bytes.length) return 1;
+      const entries = read16(directory);
+      for (let index = 0; index < entries; index += 1) {
+        const entry = directory + 2 + index * 12;
+        if (entry + 12 > bytes.length) return 1;
+        if (read16(entry) === 0x0112 && read16(entry + 2) === 3) {
+          return read16(entry + 8);
+        }
+      }
+    }
+    offset += segmentLength;
+  }
+  return 1;
+}
 
 function roundEven(value) {
   return Math.max(2, Math.floor(value / 2) * 2);
@@ -52,20 +102,13 @@ function probeImage(path) {
     throw new Error('Source does not contain a valid image stream.');
   }
   let rotation = Number(stream.tags?.rotate ?? stream.side_data_list?.[0]?.rotation ?? 0);
-  if (rotation === 0 && existsSync('/usr/bin/sips')) {
-    try {
-      const orientationOutput = execFileSync('/usr/bin/sips', ['-g', 'orientation', path], {
-        encoding: 'utf8',
-      });
-      const exifOrientation = Number(orientationOutput.match(/orientation:\s*(\d+)/u)?.[1] ?? 1);
-      const exifRotation = { 1: 0, 3: 180, 6: 270, 8: 90 }[exifOrientation];
-      if (exifRotation === undefined) {
-        throw new Error(`Mirrored EXIF orientation ${exifOrientation} is not supported.`);
-      }
-      rotation = exifRotation;
-    } catch (error) {
-      if (error.message?.startsWith('Mirrored EXIF orientation')) throw error;
+  if (rotation === 0) {
+    const exifOrientation = readJpegExifOrientation(path);
+    const exifRotation = { 1: 0, 3: 180, 6: 270, 8: 90 }[exifOrientation];
+    if (exifRotation === undefined) {
+      throw new Error(`Mirrored EXIF orientation ${exifOrientation} is not supported.`);
     }
+    rotation = exifRotation;
   }
   const normalizedRotation = ((rotation % 360) + 360) % 360;
   if (![0, 90, 180, 270].includes(normalizedRotation)) {
@@ -252,6 +295,7 @@ export async function prepareArtwork(
 
   const rasterPath = resolve(preparedRoot, `${stableBase}.raster.png`);
   const profilePath = resolve(preparedRoot, `${stableBase}.profile.png`);
+  const useColorSync = colorSyncAvailable();
   await Promise.all([rm(rasterPath, { force: true }), rm(profilePath, { force: true })]);
   try {
     activeArtworkUpscaleProvider.process(
@@ -259,7 +303,7 @@ export async function prepareArtwork(
       rasterPath,
       buildFilterGraph(plan, inspection.rotation),
     );
-    if (existsSync(SRGB_PROFILE)) {
+    if (useColorSync) {
       await copyFile(rasterPath, profilePath, constants.COPYFILE_EXCL);
       execFileSync('/usr/bin/sips', ['-s', 'format', 'png', '-m', SRGB_PROFILE, profilePath], {
         stdio: 'ignore',
@@ -302,10 +346,8 @@ export async function prepareArtwork(
       sharpenApplied: plan.sharpenApplied,
       sharpenMethod: plan.sharpenApplied ? 'FFmpeg unsharp 3×3 amount 0.25, one pass' : 'none',
       colorProfileBefore: inspection.colorProfile,
-      colorProfileAfter: existsSync(SRGB_PROFILE)
-        ? 'sRGB IEC61966-2.1 (ColorSync)'
-        : 'not embedded',
-      colorProfileTransformation: existsSync(SRGB_PROFILE)
+      colorProfileAfter: useColorSync ? 'sRGB IEC61966-2.1 (ColorSync)' : 'not embedded',
+      colorProfileTransformation: useColorSync
         ? 'ColorSync profile conversion to sRGB IEC61966-2.1'
         : 'no safe local profile conversion available',
       metadataRemoved: [

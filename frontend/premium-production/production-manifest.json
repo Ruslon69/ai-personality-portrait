@@ -75,7 +75,7 @@
       "paletteFamily": "major",
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
-      "outputPath": "premium-production/candidates/major-fool-v1.jpg",
+      "outputPath": "premium-production/golden-master/approved/major-fool-v1.jpg",
       "isGoldenMaster": true,
       "goldenMasterStatus": "approved",
       "goldenMasterVersion": "premium-tarot-golden-master-v1",
@@ -85,7 +85,7 @@
       "version": 1,
       "checksum": "8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f",
       "previewPath": "premium-production/previews/major-fool-v1.jpg",
-      "reviewPath": "premium-production/reviews/major-fool-v1.json",
+      "reviewPath": "premium-production/golden-master/approved/major-fool-v1.review.json",
       "sourcePath": "premium-production/source/major-fool/major-fool-v1.png",
       "goldenMasterReferenceChecksum": "8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f",
       "candidateMetadata": {

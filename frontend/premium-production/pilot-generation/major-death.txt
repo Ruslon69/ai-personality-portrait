@@ -1,19 +1,4 @@
----
-cardId: major-death
-canonicalName: Death
-promptId: premium-tarot-pilot-prompts-v2:major-death
-styleVersion: premium-tarot-style-v2
-promptVersion: premium-tarot-pilot-prompts-v2
-artworkVersion: premium-tarot-art-v1
-editionId: premium-rws-remastered
-canonicalOrientation: upright
-goldenMasterCard: major-fool
-goldenMasterReferenceVersion: premium-tarot-golden-master-v1
-goldenMasterArtworkVersion: premium-tarot-art-v1
-goldenMasterChecksum: 8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f
----
-
-# Final generation prompt
+FINAL PROMPT
 
 CARD TITLE: Death.
 
@@ -45,33 +30,10 @@ FRAMING: Use a monumental but readable 7:12 procession with the banner, horse, f
 
 REALISM LEVEL: Museum-quality hand-painted digital oil and gouache realism with controlled brush texture, natural surface variation, and subtly stylized dimensional depth. Anatomically credible painted realism with individual natural faces, believable hands and feet, weighted posture, and subtle expression; never photographic, plastic, waxen, mannequin-like, or idealized into a generic beauty face. Maintain the approved Golden Master level of craftsmanship, focal hierarchy, symbolic clarity, painterly finish, and premium collectible quality without imitating The Fool's scene.
 
-# Negative prompt
+NEGATIVE PROMPT
 
-NEGATIVE PROMPT: no text inside artwork; no card title or Roman numeral; no baked card frame, border, UI, logo or watermark; no anime, manga, cartoon proportions or childish fantasy; no cyberpunk, science-fiction technology, purple fantasy glow or hyper-neon palette; no generic AI fantasy scene replacing the recognizable Tarot identity; no modern clothing or technology unless explicitly canonical; no excessive particles, rarity effects, explosions, bloom or magical spectacle; no plastic skin, wax face, mannequin anatomy or generic AI beauty face; no extra limbs, malformed hands or feet, duplicated characters or fused objects; no missing, added, duplicated, mirrored or unreadable primary symbols; no random zodiac, alchemical or occult symbols not required by the card; no generic fantasy armor unless symbolically appropriate; no cropped mandatory subject, object, gesture, terrain, horizon or celestial element; no oversaturation, HDR treatment, synthetic orange-and-teal grading or crushed shadow detail; no indiscriminate background blur used to fake dimensional depth; no overly glossy, airbrushed or uniformly smooth material rendering; no gore, blood spectacle, decomposition, or horror lighting; no demon, monster, skull close-up, or aggressive charging pose; no excessive darkness that hides the reacting figures or distant transition; no missing bishop, child, maiden, fallen crowned figure, river, towers, or rising light; no replacement of solemn inevitability with battle or apocalyptic fantasy
+no text inside artwork; no card title or Roman numeral; no baked card frame, border, UI, logo or watermark; no anime, manga, cartoon proportions or childish fantasy; no cyberpunk, science-fiction technology, purple fantasy glow or hyper-neon palette; no generic AI fantasy scene replacing the recognizable Tarot identity; no modern clothing or technology unless explicitly canonical; no excessive particles, rarity effects, explosions, bloom or magical spectacle; no plastic skin, wax face, mannequin anatomy or generic AI beauty face; no extra limbs, malformed hands or feet, duplicated characters or fused objects; no missing, added, duplicated, mirrored or unreadable primary symbols; no random zodiac, alchemical or occult symbols not required by the card; no generic fantasy armor unless symbolically appropriate; no cropped mandatory subject, object, gesture, terrain, horizon or celestial element; no oversaturation, HDR treatment, synthetic orange-and-teal grading or crushed shadow detail; no indiscriminate background blur used to fake dimensional depth; no overly glossy, airbrushed or uniformly smooth material rendering; no gore, blood spectacle, decomposition, or horror lighting; no demon, monster, skull close-up, or aggressive charging pose; no excessive darkness that hides the reacting figures or distant transition; no missing bishop, child, maiden, fallen crowned figure, river, towers, or rising light; no replacement of solemn inevitability with battle or apocalyptic fantasy
 
-# Output requirements
+OUTPUT REQUIREMENTS
 
-OUTPUT REQUIREMENTS: Portrait 7:12; preferred native source at least 1400×2400; sRGB; physically upright canonical orientation; illustration only; no transparent outer edges; no baked title; no numeral; no card frame or border; no watermark; no logo; no UI.
-
-# Symbolism checklist
-
-- [ ] skeletal rider
-- [ ] white horse
-- [ ] black banner with white rose
-- [ ] fallen crowned figure
-- [ ] bishop
-- [ ] child and maiden
-- [ ] river and two towers
-- [ ] sunrise on horizon
-
-# Review checklist
-
-- [ ] allRequiredSymbolsPresent
-- [ ] noForbiddenContent
-- [ ] canonicalIdentityObvious
-- [ ] styleMatchesPilotSet
-- [ ] cropSafeAtSevenByTwelve
-- [ ] noBakedText
-- [ ] noBakedFrame
-- [ ] canonicalOrientationUpright
-- [ ] reviewerExplicitApproval
+Portrait 7:12; preferred native source at least 1400×2400; sRGB; physically upright canonical orientation; illustration only; no transparent outer edges; no baked title; no numeral; no card frame or border; no watermark; no logo; no UI.

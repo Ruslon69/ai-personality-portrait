@@ -9,11 +9,16 @@ import {
   PILOT_CARD_IDS,
   PRODUCTION_VERSIONS,
   buildGoldenGenerationHandoff,
+  buildPilotGenerationHandoff,
+  buildPilotPromptHandoff,
   buildPromptHandoff,
   frontendRoot,
   goldenHandoffPath,
   goldenMasterRoot,
+  goldenReferencePath,
   goldenRubricPath,
+  pilotDirectionPath,
+  pilotGenerationRoot,
   promptFileName,
   promptsRoot,
   readJson,
@@ -23,8 +28,42 @@ import {
   validateProductionManifest,
 } from './lib.mjs';
 
-const [manifest, rubric] = await Promise.all([readProductionManifest(), readJson(rubricPath)]);
+const [manifest, rubric, goldenReference, pilotMatrix] = await Promise.all([
+  readProductionManifest(),
+  readJson(rubricPath),
+  readJson(goldenReferencePath),
+  readJson(pilotDirectionPath),
+]);
 const failures = await validateProductionManifest(manifest);
+const propagatedPilotIds = PILOT_CARD_IDS.filter((cardId) => cardId !== 'major-fool');
+const golden = manifest.cards.find((card) => card.cardId === 'major-fool');
+const expectedGoldenChecksum = '8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f';
+if (
+  golden?.productionStatus !== 'approved' ||
+  golden.reviewStatus !== 'approved' ||
+  golden.goldenMasterStatus !== 'approved' ||
+  golden.goldenMasterReviewStatus !== 'approved' ||
+  golden.styleVersion !== PRODUCTION_VERSIONS.goldenStyle ||
+  golden.checksum !== expectedGoldenChecksum ||
+  goldenReference.checksum !== expectedGoldenChecksum
+) {
+  failures.push('The approved Fool Golden Master record changed or is incomplete.');
+}
+const expectedLineage = {
+  goldenMasterCard: 'major-fool',
+  goldenMasterReferenceVersion: PRODUCTION_VERSIONS.goldenMaster,
+  goldenMasterArtworkVersion: goldenReference.artworkVersion,
+  goldenMasterChecksum: goldenReference.checksum,
+};
+if (
+  pilotMatrix.version !== 'premium-tarot-pilot-direction-v2' ||
+  pilotMatrix.goldenMasterCard !== 'major-fool' ||
+  pilotMatrix.cards.length !== 7 ||
+  JSON.stringify(pilotMatrix.cards.map((card) => card.cardId).sort()) !==
+    JSON.stringify([...propagatedPilotIds].sort())
+) {
+  failures.push('Pilot art-direction matrix must contain exactly the seven propagated cards.');
+}
 const goldenRubric = await readJson(goldenRubricPath);
 const expectedGoldenSections = [
   'composition',
@@ -93,7 +132,10 @@ for (const cardId of PILOT_CARD_IDS) {
   const card = manifest.cards.find((candidate) => candidate.cardId === cardId);
   if (!card) continue;
   const style = await readStyleLock(card.styleVersion);
-  const expected = buildPromptHandoff(card, style, rubric);
+  const direction = pilotMatrix.cards.find((candidate) => candidate.cardId === cardId);
+  const expected = card.isGoldenMaster
+    ? buildPromptHandoff(card, style, rubric)
+    : buildPilotPromptHandoff(card, style, direction, expectedLineage, rubric);
   const path = resolve(promptsRoot, promptFileName(cardId));
   if (!existsSync(path) || (await readFile(path, 'utf8')) !== expected) {
     failures.push(`${cardId}: checked-in prompt differs from deterministic prompt builder output.`);
@@ -105,6 +147,131 @@ for (const cardId of PILOT_CARD_IDS) {
   ) {
     failures.push(`${cardId}: Golden Master generation handoff is missing or non-deterministic.`);
   }
+  if (!card.isGoldenMaster) {
+    const handoffPath = resolve(pilotGenerationRoot, `${cardId}.txt`);
+    const expectedHandoff = buildPilotGenerationHandoff(card, style, direction);
+    if (!existsSync(handoffPath) || (await readFile(handoffPath, 'utf8')) !== expectedHandoff) {
+      failures.push(`${cardId}: pilot generation handoff is missing or non-deterministic.`);
+    }
+    if (
+      card.productionStatus !== 'prompt-ready-v2' ||
+      card.reviewStatus !== 'not-reviewed' ||
+      card.styleVersion !== PRODUCTION_VERSIONS.goldenStyle ||
+      JSON.stringify(card.goldenMasterLineage) !== JSON.stringify(expectedLineage) ||
+      card.checksum ||
+      card.candidateMetadata ||
+      card.reviewPath ||
+      card.sourcePath
+    ) {
+      failures.push(`${cardId}: propagated pilot state or Golden Master lineage is invalid.`);
+    }
+  }
+}
+
+const pilotHandoffFiles = existsSync(pilotGenerationRoot)
+  ? (await readdir(pilotGenerationRoot)).filter((name) => name.endsWith('.txt')).sort()
+  : [];
+if (
+  JSON.stringify(pilotHandoffFiles) !==
+  JSON.stringify(propagatedPilotIds.map((cardId) => `${cardId}.txt`).sort())
+) {
+  failures.push('Expected exactly seven Golden-Master-aware pilot generation handoffs.');
+}
+
+const requiredPromptSections = [
+  'CARD TITLE:',
+  'RIDER–WAITE SYMBOLIC IDENTITY:',
+  'MAIN SUBJECT:',
+  'POSE AND COMPOSITION:',
+  'MANDATORY OBJECTS:',
+  'EMOTIONAL TONE:',
+  'FOREGROUND:',
+  'MIDGROUND:',
+  'BACKGROUND:',
+  'LIGHTING:',
+  'MATERIAL RENDERING:',
+  'PALETTE:',
+  'DEPTH:',
+  'FRAMING:',
+  'REALISM LEVEL:',
+  'NEGATIVE PROMPT:',
+  'OUTPUT REQUIREMENTS:',
+];
+const genericPromptLanguage = [
+  'Preserve the canonical distant landscape',
+  'Keep every canonical near-field',
+  'where applicable',
+  'dark fantasy atmosphere without horror spectacle',
+];
+for (const cardId of propagatedPilotIds) {
+  const card = manifest.cards.find((candidate) => candidate.cardId === cardId);
+  const prompt = await readFile(resolve(promptsRoot, `${cardId}.md`), 'utf8');
+  const handoff = await readFile(resolve(pilotGenerationRoot, `${cardId}.txt`), 'utf8');
+  const headings = [...handoff.matchAll(/^(FINAL PROMPT|NEGATIVE PROMPT|OUTPUT REQUIREMENTS)$/gmu)];
+  if (
+    requiredPromptSections.some((section) => !prompt.includes(section)) ||
+    genericPromptLanguage.some((phrase) => prompt.includes(phrase)) ||
+    card.symbolismChecklist.some((symbol) => !prompt.includes(symbol)) ||
+    !prompt.includes(`goldenMasterChecksum: ${goldenReference.checksum}`) ||
+    !prompt.includes('no baked card frame') ||
+    headings.length !== 3 ||
+    handoff.includes('goldenMasterChecksum') ||
+    handoff.includes('Review checklist')
+  ) {
+    failures.push(`${cardId}: v2 prompt is generic, incomplete, or has an invalid handoff shape.`);
+  }
+}
+const exactCountCoverage = {
+  'major-magician': ['one Cup, one Pentacle, one Sword, and one Wand'],
+  'major-star': ['one large eight-pointed star', 'seven smaller stars'],
+  'swords-three': ['exactly three clearly separated swords'],
+  'cups-ace': ['one and only one principal Cup', 'exactly five overflowing streams'],
+};
+for (const [cardId, phrases] of Object.entries(exactCountCoverage)) {
+  const prompt = await readFile(resolve(promptsRoot, `${cardId}.md`), 'utf8');
+  if (phrases.some((phrase) => !prompt.includes(phrase))) {
+    failures.push(`${cardId}: exact-count symbolism is not explicit in the v2 prompt.`);
+  }
+}
+
+const matrixFields = [
+  'dominantMood',
+  'paletteFamily',
+  'lightingFamily',
+  'materialEmphasis',
+  'depthStrategy',
+  'compositionStrategy',
+  'mainVisualRisk',
+  'mainSubject',
+  'poseAndComposition',
+  'foreground',
+  'midground',
+  'background',
+  'lighting',
+  'materialRendering',
+  'palette',
+  'framing',
+];
+for (const direction of pilotMatrix.cards) {
+  if (
+    matrixFields.some(
+      (field) => typeof direction[field] !== 'string' || !direction[field].trim(),
+    ) ||
+    !Array.isArray(direction.negativeConstraints) ||
+    direction.negativeConstraints.length < 4
+  ) {
+    failures.push(`${direction.cardId}: pilot art direction is incomplete.`);
+  }
+}
+
+const nonPilotCards = manifest.cards.filter((card) => !PILOT_CARD_IDS.includes(card.cardId));
+if (
+  nonPilotCards.length !== 70 ||
+  nonPilotCards.some(
+    (card) => card.productionStatus !== 'pending' || card.reviewStatus !== 'not-reviewed',
+  )
+) {
+  failures.push('The 70 non-pilot cards must remain pending and not reviewed.');
 }
 
 const rightsSource = await readFile(

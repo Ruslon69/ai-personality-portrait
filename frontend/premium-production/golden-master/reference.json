@@ -3,6 +3,8 @@
   "styleVersion": "premium-tarot-style-v2",
   "artworkVersion": "premium-tarot-art-v1",
   "checksum": "8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f",
+  "approvedArtworkPath": "premium-production/golden-master/approved/major-fool-v1.jpg",
+  "approvedReviewPath": "premium-production/golden-master/approved/major-fool-v1.review.json",
   "approvedBy": "Ruslan",
   "approvalNotes": "Approved as the Golden Master for the premium Tarot deck. Preserve this visual language across the deck.",
   "visualCharacteristics": [

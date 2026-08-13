@@ -136,7 +136,18 @@ try {
 
   const largePath = resolve(temporaryRoot, 'native-1680x2880.png');
   fixture(largePath, 1680, 2880);
-  const large = await prepareArtwork(largePath, { cardId: 'major-magician', outputRoot });
+  const previousColorSyncFlag = process.env.TAROT_PREPARATION_DISABLE_COLOR_SYNC;
+  let large;
+  try {
+    process.env.TAROT_PREPARATION_DISABLE_COLOR_SYNC = '1';
+    large = await prepareArtwork(largePath, { cardId: 'major-magician', outputRoot });
+  } finally {
+    if (previousColorSyncFlag === undefined) {
+      delete process.env.TAROT_PREPARATION_DISABLE_COLOR_SYNC;
+    } else {
+      process.env.TAROT_PREPARATION_DISABLE_COLOR_SYNC = previousColorSyncFlag;
+    }
+  }
   check(
     !large.report.resizeApplied && large.report.nativeResolutionEligible,
     'valid large source skips unnecessary upscale',
@@ -145,6 +156,10 @@ try {
     large.report.preparedWidth >= GOLDEN_MASTER_MINIMUM.width &&
       large.report.preparedHeight >= GOLDEN_MASTER_MINIMUM.height,
     'native prepared output meets minimum dimensions',
+  );
+  check(
+    large.report.colorProfileTransformation === 'no safe local profile conversion available',
+    'Linux-compatible path reports the absence of optional ColorSync conversion',
   );
 
   const invalidPath = resolve(temporaryRoot, 'invalid-ratio.png');

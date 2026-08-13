@@ -15,6 +15,14 @@ export function runTarotPreparationGate(rootDir: string) {
     resolve(rootDir, 'premium-production/golden-master/studio-template.html'),
     'utf8',
   );
+  const workflowRoot = resolve(rootDir, '..', '.github/workflows');
+  const ciWorkflow = readFileSync(resolve(workflowRoot, 'ci.yml'), 'utf8');
+  const releaseWorkflow = readFileSync(resolve(workflowRoot, 'release-check.yml'), 'utf8');
+  const mediaSetup = readFileSync(
+    resolve(rootDir, '..', 'scripts/install-ci-media-tools.sh'),
+    'utf8',
+  );
+  const ffmpegVersion = execFileSync('ffmpeg', ['-version'], { encoding: 'utf8' });
   const result = JSON.parse(
     execFileSync(process.execPath, [resolve(scriptRoot, 'test-preparation.mjs'), '--json'], {
       encoding: 'utf8',
@@ -34,6 +42,17 @@ export function runTarotPreparationGate(rootDir: string) {
       actual: result,
       code: 'premium-preparation-regressions',
       message: 'Deterministic preparation fixtures must cover the real source class and gates.',
+    },
+  );
+  assertions.assert(
+    ffmpegVersion.startsWith('ffmpeg version') &&
+      ciWorkflow.includes('sudo bash ../scripts/install-ci-media-tools.sh') &&
+      releaseWorkflow.includes('sudo bash scripts/install-ci-media-tools.sh') &&
+      mediaSetup.includes('apt-get install --yes --no-install-recommends ffmpeg') &&
+      mediaSetup.includes('ffprobe -version'),
+    {
+      code: 'premium-preparation-ci-dependency',
+      message: 'Every hosted quality workflow must install and verify FFmpeg explicitly.',
     },
   );
   assertions.assert(

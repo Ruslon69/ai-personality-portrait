@@ -32,6 +32,7 @@
     "tarot:premium:release": "node scripts/premium-tarot/release.mjs",
     "tarot:premium:review": "node scripts/premium-tarot/review.mjs",
     "tarot:premium:status": "node scripts/premium-tarot/status.mjs",
+    "tarot:premium:state:test": "node scripts/premium-tarot/test-production-state.mjs",
     "tarot:premium:validate": "node scripts/premium-tarot/validate.mjs"
   },
   "dependencies": {

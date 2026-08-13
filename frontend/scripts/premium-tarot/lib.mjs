@@ -12,16 +12,28 @@ export const styleLockPath = resolve(productionRoot, 'style-lock.json');
 export const goldenStyleLockPath = resolve(productionRoot, 'style-lock-v2.json');
 export const rubricPath = resolve(productionRoot, 'review-rubric.json');
 export const goldenMasterRoot = resolve(productionRoot, 'golden-master');
+export const goldenApprovedRoot = resolve(goldenMasterRoot, 'approved');
 export const goldenRubricPath = resolve(goldenMasterRoot, 'rubric.json');
 export const goldenHandoffPath = resolve(goldenMasterRoot, 'the-fool-generation.txt');
 export const goldenReferencePath = resolve(goldenMasterRoot, 'reference.json');
 export const promptsRoot = resolve(productionRoot, 'prompts');
+export const pilotDirectionPath = resolve(productionRoot, 'pilot-art-direction.json');
+export const pilotGenerationRoot = resolve(productionRoot, 'pilot-generation');
 export const generatedRoot = resolve(productionRoot, 'generated');
 export const goldenRuntimePreviewPath = resolve(generatedRoot, 'golden-master-runtime-preview.jpg');
+
+export function goldenApprovedArtworkPath(version) {
+  return resolve(goldenApprovedRoot, `major-fool-v${version}.jpg`);
+}
+
+export function goldenApprovedReviewPath(version) {
+  return resolve(goldenApprovedRoot, `major-fool-v${version}.review.json`);
+}
 
 export const productionStatuses = [
   'pending',
   'prompt-ready',
+  'prompt-ready-v2',
   'generated',
   'processing',
   'review',
@@ -32,6 +44,7 @@ export const productionStatuses = [
 export const reviewStatuses = ['not-reviewed', 'needs-review', 'approved', 'rejected'];
 export const releaseModes = ['classic', 'premium-preview', 'premium-complete'];
 export const goldenMasterStatuses = ['not-started', 'candidate', 'review', 'approved', 'rejected'];
+const propagatedPilotIds = new Set(PILOT_CARD_IDS.filter((cardId) => cardId !== 'major-fool'));
 
 export async function readJson(path) {
   return JSON.parse(await readFile(path, 'utf8'));
@@ -138,6 +151,35 @@ export async function validateProductionManifest(manifest, { checkFiles = true }
       failures.push(`${prefix}: invalid reviewStatus.`);
     if (!Number.isInteger(card.version) || card.version < 1)
       failures.push(`${prefix}: invalid version.`);
+    const isPromptState = ['prompt-ready', 'prompt-ready-v2'].includes(card.productionStatus);
+    if (
+      (card.productionStatus === 'pending' || isPromptState) &&
+      (card.reviewStatus !== 'not-reviewed' ||
+        card.checksum ||
+        card.candidateMetadata ||
+        card.reviewPath ||
+        card.sourcePath ||
+        card.finalPath ||
+        card.approvedBy ||
+        card.approvalNotes)
+    ) {
+      failures.push(
+        `${prefix}: ${card.productionStatus} state contains generated or reviewed data.`,
+      );
+    }
+    if (propagatedPilotIds.has(card.cardId)) {
+      const lineage = card.goldenMasterLineage;
+      if (
+        card.styleVersion !== PRODUCTION_VERSIONS.goldenStyle ||
+        card.promptId !== `${PRODUCTION_VERSIONS.pilotPrompts}:${card.cardId}` ||
+        lineage?.goldenMasterCard !== 'major-fool' ||
+        lineage?.goldenMasterReferenceVersion !== PRODUCTION_VERSIONS.goldenMaster ||
+        lineage?.goldenMasterArtworkVersion !== PRODUCTION_VERSIONS.artwork ||
+        lineage?.goldenMasterChecksum !== goldenMasters[0]?.checksum
+      ) {
+        failures.push(`${prefix}: Golden Master pilot lineage is incomplete or stale.`);
+      }
+    }
     if (card.cardId !== 'major-fool' && card.isGoldenMaster !== false)
       failures.push(`${prefix}: only major-fool may be the Golden Master.`);
     if (card.isGoldenMaster) {
@@ -232,6 +274,23 @@ export async function validateProductionManifest(manifest, { checkFiles = true }
       if (checkFiles && card.reviewPath && !existsSync(resolveFrontendPath(card.reviewPath)))
         failures.push(`${prefix}: approved review record is missing.`);
     }
+    if (card.productionStatus === 'review') {
+      if (
+        card.reviewStatus !== 'needs-review' ||
+        !card.checksum ||
+        !card.outputPath ||
+        !card.reviewPath ||
+        !card.sourcePath
+      ) {
+        failures.push(`${prefix}: review state lacks candidate, checksum, source, or review data.`);
+      }
+      if (checkFiles && card.outputPath && !existsSync(resolveFrontendPath(card.outputPath))) {
+        failures.push(`${prefix}: review candidate file is missing.`);
+      }
+      if (checkFiles && card.reviewPath && !existsSync(resolveFrontendPath(card.reviewPath))) {
+        failures.push(`${prefix}: review record is missing.`);
+      }
+    }
     if (card.productionStatus === 'integrated') {
       if (!card.finalPath || card.reviewStatus === 'rejected')
         failures.push(`${prefix}: invalid integrated record.`);
@@ -241,6 +300,53 @@ export async function validateProductionManifest(manifest, { checkFiles = true }
     if (card.productionStatus === 'rejected') {
       if (card.reviewStatus !== 'rejected' || !card.rejectionReason)
         failures.push(`${prefix}: rejected asset lacks rejection record.`);
+    }
+  }
+
+  const golden = goldenMasters[0];
+  if (checkFiles && golden?.goldenMasterStatus === 'approved') {
+    try {
+      const [reference, review, rubric] = await Promise.all([
+        readJson(goldenReferencePath),
+        readJson(resolveFrontendPath(golden.reviewPath)),
+        readJson(goldenRubricPath),
+      ]);
+      const artworkChecksum = await sha256(resolveFrontendPath(golden.outputPath));
+      const invalidSections = rubric.reviewSections.filter(
+        (section) =>
+          !Number.isInteger(review.sections?.[section]?.score) ||
+          review.sections[section].score < rubric.scale.approvalMinimumPerCategory ||
+          review.sections[section].requiredPass !== true,
+      );
+      const missingSymbols = golden.symbolismChecklist.filter(
+        (symbol) => review.symbols?.find((item) => item.symbol === symbol)?.status !== 'present',
+      );
+      const failedPasses = rubric.requiredPasses.filter(
+        (requirement) => review.requiredPasses?.[requirement] !== true,
+      );
+      if (
+        artworkChecksum !== golden.checksum ||
+        reference.checksum !== artworkChecksum ||
+        reference.approvedArtworkPath !== golden.outputPath ||
+        reference.approvedReviewPath !== golden.reviewPath ||
+        review.candidateChecksum !== artworkChecksum ||
+        review.cardId !== golden.cardId ||
+        review.artworkVersion !== golden.version ||
+        review.styleVersion !== golden.styleVersion ||
+        review.decision !== 'approved' ||
+        review.reviewer !== golden.goldenMasterApprovedBy ||
+        invalidSections.length ||
+        missingSymbols.length ||
+        failedPasses.length
+      ) {
+        failures.push(
+          'major-fool: approved artwork, reference, or human review provenance differs.',
+        );
+      }
+    } catch (error) {
+      failures.push(
+        `major-fool: approved Golden Master provenance is unreadable: ${error.message}`,
+      );
     }
   }
 
@@ -290,6 +396,55 @@ export function promptFileName(cardId) {
 export function buildPromptHandoff(card, style, rubric) {
   const prompt = buildMasterPrompt(card, style);
   return `---\ncardId: ${card.cardId}\ncanonicalName: ${card.canonicalName}\npromptId: ${card.promptId}\nstyleVersion: ${card.styleVersion}\npromptVersion: ${PRODUCTION_VERSIONS.prompts}\nartworkVersion: ${PRODUCTION_VERSIONS.artwork}\neditionId: ${PRODUCTION_VERSIONS.edition}\ncanonicalOrientation: upright\n---\n\n# Final generation prompt\n\n${prompt}\n\n# Negative constraints\n\n${style.globalNegativeConstraints.map((item) => `- ${item}`).join('\n')}\n${card.forbiddenChanges.map((item) => `- ${item}`).join('\n')}\n\n# Symbolism checklist\n\n${card.symbolismChecklist.map((item) => `- [ ] ${item}`).join('\n')}\n\n# Review checklist\n\n${rubric.requiredPasses.map((item) => `- [ ] ${item}`).join('\n')}\n\nScores use the ${rubric.scale.minimum}–${rubric.scale.maximum} rubric in \`premium-production/review-rubric.json\`; approval requires at least ${rubric.scale.approvalMinimumPerCategory} in every category plus explicit human approval.\n`;
+}
+
+function uniqueConstraints(...constraintGroups) {
+  const seen = new Set();
+  return constraintGroups.flat().filter((constraint) => {
+    const key = constraint.trim().toLowerCase();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+export function buildPilotPromptParts(card, style, direction) {
+  const identity = card.symbolismChecklist.join('; ');
+  const mandatory = card.requiredObjects.join('; ');
+  const negativePrompt = uniqueConstraints(
+    style.globalNegativeConstraints,
+    direction.negativeConstraints,
+  ).join('; ');
+  const output = style.outputContract;
+  const finalPrompt = [
+    `CARD TITLE: ${card.canonicalName}.`,
+    `RIDER–WAITE SYMBOLIC IDENTITY: Preserve the immediately recognizable Rider–Waite–Smith symbolic relationship: ${identity}. Interpret the semantic composition rather than copying scan pixels.`,
+    `MAIN SUBJECT: ${direction.mainSubject}`,
+    `POSE AND COMPOSITION: ${direction.poseAndComposition}`,
+    `MANDATORY OBJECTS: ${mandatory}. Preserve every stated count, relationship, gesture, and identity anchor exactly.`,
+    `EMOTIONAL TONE: ${direction.dominantMood}`,
+    `FOREGROUND: ${direction.foreground}`,
+    `MIDGROUND: ${direction.midground}`,
+    `BACKGROUND: ${direction.background}`,
+    `LIGHTING: ${direction.lighting} Maintain restrained cinematic illumination, readable shadows, protected highlights, and scene-motivated atmospheric separation.`,
+    `MATERIAL RENDERING: ${direction.materialRendering} Match the approved deck reference in tactile specificity, painterly surface variation, material-dependent light response, and—where figures appear—natural anatomy with believable faces and hands.`,
+    `PALETTE: ${direction.palette} Keep saturation controlled and preserve natural shadow color; do not copy another card's weather or light temperature.`,
+    `DEPTH: ${direction.depthStrategy} Build depth through perspective, overlap, scale, value, edge control, and atmosphere rather than artificial blur.`,
+    `FRAMING: ${direction.framing}`,
+    `REALISM LEVEL: ${style.medium} ${style.realismLevel} Maintain the approved Golden Master level of craftsmanship, focal hierarchy, symbolic clarity, painterly finish, and premium collectible quality without imitating The Fool's scene.`,
+  ].join('\n\n');
+  const outputRequirements = `Portrait ${output.masterRatio}; preferred native source at least ${output.masterMinimumWidth}×${output.masterMinimumHeight}; ${output.colorSpace}; physically upright canonical orientation; illustration only; no transparent outer edges; no baked title; no numeral; no card frame or border; no watermark; no logo; no UI.`;
+  return { finalPrompt, negativePrompt, outputRequirements };
+}
+
+export function buildPilotPromptHandoff(card, style, direction, lineage, rubric) {
+  const parts = buildPilotPromptParts(card, style, direction);
+  return `---\ncardId: ${card.cardId}\ncanonicalName: ${card.canonicalName}\npromptId: ${card.promptId}\nstyleVersion: ${card.styleVersion}\npromptVersion: ${PRODUCTION_VERSIONS.pilotPrompts}\nartworkVersion: ${PRODUCTION_VERSIONS.artwork}\neditionId: ${PRODUCTION_VERSIONS.edition}\ncanonicalOrientation: upright\ngoldenMasterCard: ${lineage.goldenMasterCard}\ngoldenMasterReferenceVersion: ${lineage.goldenMasterReferenceVersion}\ngoldenMasterArtworkVersion: ${lineage.goldenMasterArtworkVersion}\ngoldenMasterChecksum: ${lineage.goldenMasterChecksum}\n---\n\n# Final generation prompt\n\n${parts.finalPrompt}\n\n# Negative prompt\n\nNEGATIVE PROMPT: ${parts.negativePrompt}\n\n# Output requirements\n\nOUTPUT REQUIREMENTS: ${parts.outputRequirements}\n\n# Symbolism checklist\n\n${card.symbolismChecklist.map((item) => `- [ ] ${item}`).join('\n')}\n\n# Review checklist\n\n${rubric.requiredPasses.map((item) => `- [ ] ${item}`).join('\n')}\n`;
+}
+
+export function buildPilotGenerationHandoff(card, style, direction) {
+  const parts = buildPilotPromptParts(card, style, direction);
+  return `FINAL PROMPT\n\n${parts.finalPrompt}\n\nNEGATIVE PROMPT\n\n${parts.negativePrompt}\n\nOUTPUT REQUIREMENTS\n\n${parts.outputRequirements}\n`;
 }
 
 export function buildGoldenGenerationHandoff(card, style) {

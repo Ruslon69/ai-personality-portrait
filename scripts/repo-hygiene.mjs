@@ -1,5 +1,12 @@
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, join, resolve } from 'node:path';
 
@@ -68,6 +75,10 @@ export function scanRepositoryFiles(paths) {
       violations.push({ category: 'case-collision', path: `${previous} / ${path}` });
     else caseMap.set(lower, path);
     const absolute = resolve(rootDir, path);
+    // A tracked path can be absent while a dirty worktree records a legitimate
+    // deletion or move. Git validates that change; hygiene scans only files
+    // that are present in the candidate tree.
+    if (!existsSync(absolute)) continue;
     const size = statSync(absolute).size;
     if (size > 5 * 1024 * 1024) violations.push({ category: 'large-file', path });
     if (!textExtensions.has(extension(path))) continue;

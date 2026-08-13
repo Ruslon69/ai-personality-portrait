@@ -1,10 +1,14 @@
 #!/usr/bin/env node
 
 import { existsSync } from 'node:fs';
+import { mkdir, rename } from 'node:fs/promises';
 import process from 'node:process';
 
 import {
   findProductionCard,
+  goldenApprovedArtworkPath,
+  goldenApprovedReviewPath,
+  goldenApprovedRoot,
   goldenReferencePath,
   goldenRubricPath,
   manifestPath,
@@ -14,6 +18,7 @@ import {
   readStyleLock,
   resolveFrontendPath,
   sha256,
+  toFrontendPath,
   validateProductionManifest,
   writeJsonAtomic,
 } from './lib.mjs';
@@ -70,6 +75,9 @@ if (
 ) {
   throw new Error('Golden Master review metadata does not match the active candidate.');
 }
+if (review.candidateChecksum !== card.checksum) {
+  throw new Error('Golden Master review checksum does not match the active candidate.');
+}
 const invalidSections = rubric.reviewSections.filter(
   (section) =>
     !Number.isInteger(review.sections?.[section]?.score) ||
@@ -102,11 +110,28 @@ Object.assign(review, {
   reviewer,
 });
 await writeJsonAtomic(resolveFrontendPath(card.reviewPath), review);
+const approvedArtworkPath = goldenApprovedArtworkPath(card.version);
+const approvedReviewPath = goldenApprovedReviewPath(card.version);
+if (existsSync(approvedArtworkPath) || existsSync(approvedReviewPath)) {
+  throw new Error('Tracked Golden Master approval paths already exist for this version.');
+}
+await mkdir(goldenApprovedRoot, { recursive: true });
+await rename(resolveFrontendPath(card.outputPath), approvedArtworkPath);
+try {
+  await rename(resolveFrontendPath(card.reviewPath), approvedReviewPath);
+} catch (error) {
+  await rename(approvedArtworkPath, resolveFrontendPath(card.outputPath));
+  throw error;
+}
+card.outputPath = toFrontendPath(approvedArtworkPath);
+card.reviewPath = toFrontendPath(approvedReviewPath);
 await writeJsonAtomic(goldenReferencePath, {
   cardId: card.cardId,
   styleVersion: card.goldenMasterStyleVersion,
   artworkVersion: `premium-tarot-art-v${card.version}`,
   checksum: card.checksum,
+  approvedArtworkPath: card.outputPath,
+  approvedReviewPath: card.reviewPath,
   approvedBy: reviewer,
   approvalNotes: notes,
   visualCharacteristics: [

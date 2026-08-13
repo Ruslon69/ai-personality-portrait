@@ -259,6 +259,7 @@ await writeFile(
       reviewVersion: rubric.version,
       cardId,
       artworkVersion: version,
+      candidateChecksum: checksum,
       styleVersion: card.styleVersion,
       reviewer: '',
       notes: '',

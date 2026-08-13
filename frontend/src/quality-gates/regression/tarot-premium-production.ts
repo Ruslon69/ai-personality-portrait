@@ -1,3 +1,5 @@
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { extname, resolve } from 'node:path';
 
@@ -15,9 +17,11 @@ const pilotIds = [
   'swords-three',
   'cups-ace',
 ];
+const propagatedPilotIds = pilotIds.filter((cardId) => cardId !== 'major-fool');
 const productionStatuses = [
   'pending',
   'prompt-ready',
+  'prompt-ready-v2',
   'generated',
   'processing',
   'review',
@@ -42,7 +46,6 @@ const promptSections = [
   'DEPTH:',
   'FRAMING:',
   'REALISM LEVEL:',
-  'NEGATIVE CONSTRAINTS:',
 ];
 const requiredExclusions = [
   'no text inside artwork',
@@ -63,6 +66,12 @@ type PremiumProductionCard = {
   compositionReference: Record<string, string>;
   finalPath?: string;
   forbiddenChanges: string[];
+  goldenMasterLineage?: {
+    goldenMasterArtworkVersion: string;
+    goldenMasterCard: string;
+    goldenMasterChecksum: string;
+    goldenMasterReferenceVersion: string;
+  };
   isGoldenMaster: boolean;
   outputPath: string;
   productionStatus: string;
@@ -87,6 +96,16 @@ export function runTarotPremiumProductionGate(rootDir: string) {
     readFileSync(resolve(productionRoot, 'style-lock-v2.json'), 'utf8'),
   );
   const rubric = JSON.parse(readFileSync(resolve(productionRoot, 'review-rubric.json'), 'utf8'));
+  const goldenReference = JSON.parse(
+    readFileSync(resolve(productionRoot, 'golden-master/reference.json'), 'utf8'),
+  );
+  const pilotMatrix = JSON.parse(
+    readFileSync(resolve(productionRoot, 'pilot-art-direction.json'), 'utf8'),
+  );
+  const visualBible = readFileSync(
+    resolve(productionRoot, 'GOLDEN_MASTER_VISUAL_LANGUAGE.md'),
+    'utf8',
+  );
   const release = JSON.parse(
     readFileSync(
       resolve(rootDir, 'src/assets/tarot/metadata/premium-release-manifest.json'),
@@ -94,6 +113,16 @@ export function runTarotPremiumProductionGate(rootDir: string) {
     ),
   );
   const cards = manifest.cards as PremiumProductionCard[];
+  const lifecycleResult = JSON.parse(
+    execFileSync(
+      process.execPath,
+      [resolve(rootDir, 'scripts/premium-tarot/test-production-state.mjs'), '--json'],
+      { encoding: 'utf8' },
+    )
+      .trim()
+      .split('\n')
+      .at(-1) ?? '{}',
+  );
   const canonicalIds = standardTarotDeck.cards.map((card) => card.id).sort();
   const productionIds = cards.map((card) => card.cardId).sort();
 
@@ -110,6 +139,41 @@ export function runTarotPremiumProductionGate(rootDir: string) {
   assertions.assert(JSON.stringify(manifest.pilotCardIds) === JSON.stringify(pilotIds), {
     code: 'premium-production-pilot-lock',
     message: 'Premium production must retain the exact eight-card pilot batch.',
+  });
+  const golden = cards.find((card) => card.cardId === 'major-fool');
+  const goldenArtworkPath = resolve(rootDir, golden?.outputPath ?? '__missing-artwork__');
+  const goldenReviewPath = resolve(rootDir, golden?.reviewPath ?? '__missing-review__');
+  const goldenReview = existsSync(goldenReviewPath)
+    ? JSON.parse(readFileSync(goldenReviewPath, 'utf8'))
+    : undefined;
+  const actualGoldenChecksum = existsSync(goldenArtworkPath)
+    ? createHash('sha256').update(readFileSync(goldenArtworkPath)).digest('hex')
+    : undefined;
+  assertions.assert(
+    golden?.isGoldenMaster === true &&
+      golden.productionStatus === 'approved' &&
+      golden.reviewStatus === 'approved' &&
+      golden.styleVersion === 'premium-tarot-style-v2' &&
+      golden.checksum === goldenReference.checksum &&
+      golden.outputPath.startsWith('premium-production/golden-master/approved/') &&
+      golden.reviewPath?.startsWith('premium-production/golden-master/approved/') &&
+      goldenReference.approvedArtworkPath === golden.outputPath &&
+      goldenReference.approvedReviewPath === golden.reviewPath &&
+      actualGoldenChecksum === golden.checksum &&
+      goldenReview?.candidateChecksum === golden.checksum &&
+      goldenReview?.reviewer === 'Ruslan' &&
+      goldenReview?.decision === 'approved' &&
+      goldenReference.checksum ===
+        '8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f',
+    {
+      code: 'premium-production-approved-golden-master',
+      message: 'The approved Fool Golden Master and its authoritative checksum must remain intact.',
+    },
+  );
+  assertions.assert(lifecycleResult.passed === true && lifecycleResult.assertions >= 8, {
+    actual: lifecycleResult,
+    code: 'premium-production-lifecycle-regressions',
+    message: 'Lifecycle regression fixtures must enforce prompt, review, and approved boundaries.',
   });
   assertions.assert(
     manifest.releaseThreshold?.approved === 78 &&
@@ -133,9 +197,12 @@ export function runTarotPremiumProductionGate(rootDir: string) {
         productionStatuses.includes(card.productionStatus) &&
         reviewStatuses.includes(card.reviewStatus) &&
         card.sourceReferenceId === `rws-public-domain-v1:${card.cardId}` &&
-        card.promptId === `premium-tarot-prompts-v1:${card.cardId}` &&
+        card.promptId ===
+          (pilotIds.includes(card.cardId) && !card.isGoldenMaster
+            ? `premium-tarot-pilot-prompts-v2:${card.cardId}`
+            : `premium-tarot-prompts-v1:${card.cardId}`) &&
         card.styleVersion ===
-          (card.isGoldenMaster ? 'premium-tarot-style-v2' : 'premium-tarot-style-v1') &&
+          (pilotIds.includes(card.cardId) ? 'premium-tarot-style-v2' : 'premium-tarot-style-v1') &&
         Number.isInteger(card.version),
       {
         code: `premium-production-record-${card.cardId}`,
@@ -209,8 +276,12 @@ export function runTarotPremiumProductionGate(rootDir: string) {
   );
   promptFiles.forEach((name) => {
     const prompt = readFileSync(resolve(promptRoot, name), 'utf8');
+    const isGoldenPrompt = name === 'major-fool.md';
     assertions.assert(
-      promptSections.every((section) => prompt.includes(section)),
+      promptSections.every((section) => prompt.includes(section)) &&
+        (isGoldenPrompt
+          ? prompt.includes('NEGATIVE CONSTRAINTS:') && prompt.includes('OUTPUT:')
+          : prompt.includes('NEGATIVE PROMPT:') && prompt.includes('OUTPUT REQUIREMENTS:')),
       {
         code: `premium-production-prompt-sections-${name}`,
         message: `${name} lacks a required master prompt section.`,
@@ -224,6 +295,139 @@ export function runTarotPremiumProductionGate(rootDir: string) {
       },
     );
   });
+
+  assertions.assert(
+    pilotMatrix.version === 'premium-tarot-pilot-direction-v2' &&
+      pilotMatrix.goldenMasterCard === 'major-fool' &&
+      pilotMatrix.cards.length === 7 &&
+      JSON.stringify(pilotMatrix.cards.map((card: { cardId: string }) => card.cardId).sort()) ===
+        JSON.stringify([...propagatedPilotIds].sort()),
+    {
+      code: 'premium-production-pilot-direction-matrix',
+      message: 'The Golden-Master-derived pilot matrix must cover exactly seven cards.',
+    },
+  );
+  const expectedLineage = {
+    goldenMasterCard: 'major-fool',
+    goldenMasterReferenceVersion: 'premium-tarot-golden-master-v1',
+    goldenMasterArtworkVersion: 'premium-tarot-art-v1',
+    goldenMasterChecksum: goldenReference.checksum,
+  };
+  const propagatedCards = cards.filter((card) => propagatedPilotIds.includes(card.cardId));
+  assertions.assert(
+    propagatedCards.length === 7 &&
+      propagatedCards.every(
+        (card) =>
+          card.productionStatus === 'prompt-ready-v2' &&
+          card.reviewStatus === 'not-reviewed' &&
+          card.styleVersion === 'premium-tarot-style-v2' &&
+          JSON.stringify(card.goldenMasterLineage) === JSON.stringify(expectedLineage) &&
+          !card.checksum &&
+          !card.reviewPath,
+      ),
+    {
+      code: 'premium-production-pilot-lineage-state',
+      message: 'Seven propagated pilots require approved Fool lineage without false artwork state.',
+    },
+  );
+  assertions.assert(
+    cards.filter((card) => !pilotIds.includes(card.cardId)).length === 70 &&
+      cards
+        .filter((card) => !pilotIds.includes(card.cardId))
+        .every(
+          (card) => card.productionStatus === 'pending' && card.reviewStatus === 'not-reviewed',
+        ),
+    {
+      code: 'premium-production-nonpilot-state',
+      message: 'The other 70 cards must remain pending and unreviewed.',
+    },
+  );
+
+  const handoffRoot = resolve(productionRoot, 'pilot-generation');
+  const handoffFiles = readdirSync(handoffRoot)
+    .filter((name) => extname(name) === '.txt')
+    .sort();
+  assertions.assert(
+    JSON.stringify(handoffFiles) ===
+      JSON.stringify(propagatedPilotIds.map((cardId) => `${cardId}.txt`).sort()),
+    {
+      actual: handoffFiles.length,
+      code: 'premium-production-pilot-handoff-count',
+      expected: 7,
+      message: 'Exactly seven external generation handoffs must exist.',
+    },
+  );
+  handoffFiles.forEach((name) => {
+    const handoff = readFileSync(resolve(handoffRoot, name), 'utf8');
+    const headings = [
+      ...handoff.matchAll(/^(FINAL PROMPT|NEGATIVE PROMPT|OUTPUT REQUIREMENTS)$/gmu),
+    ];
+    assertions.assert(
+      headings.length === 3 &&
+        handoff.startsWith('FINAL PROMPT\n') &&
+        !handoff.includes('goldenMasterChecksum') &&
+        !handoff.includes('Review checklist') &&
+        !handoff.includes('implementation'),
+      {
+        code: `premium-production-pilot-handoff-shape-${name}`,
+        message: `${name} must contain only the three external-generation sections.`,
+      },
+    );
+  });
+
+  const genericPromptLanguage = [
+    'Preserve the canonical distant landscape',
+    'Keep every canonical near-field',
+    'where applicable',
+    'dark fantasy atmosphere without horror spectacle',
+  ];
+  const propagatedPrompts = propagatedPilotIds.map((cardId) =>
+    readFileSync(resolve(promptRoot, `${cardId}.md`), 'utf8'),
+  );
+  assertions.assert(
+    propagatedPrompts.every(
+      (prompt) =>
+        !genericPromptLanguage.some((generic) => prompt.includes(generic)) &&
+        prompt.includes('goldenMasterCard: major-fool') &&
+        prompt.includes(`goldenMasterChecksum: ${goldenReference.checksum}`) &&
+        prompt.includes('no baked card frame') &&
+        prompt.includes('no card frame or border'),
+    ) && new Set(propagatedPrompts).size === 7,
+    {
+      code: 'premium-production-card-specific-prompts',
+      message: 'Pilot prompts must be distinct, lineage-aware, specific, and frame-free.',
+    },
+  );
+  const promptById = Object.fromEntries(
+    propagatedPilotIds.map((cardId, index) => [cardId, propagatedPrompts[index]]),
+  );
+  assertions.assert(
+    promptById['major-magician'].includes('one Cup, one Pentacle, one Sword, and one Wand') &&
+      promptById['swords-three'].includes('exactly three clearly separated swords') &&
+      promptById['major-star'].includes('one large eight-pointed star') &&
+      promptById['major-star'].includes('seven smaller stars') &&
+      promptById['cups-ace'].includes('one and only one principal Cup') &&
+      promptById['cups-ace'].includes('exactly five overflowing streams'),
+    {
+      code: 'premium-production-exact-symbol-counts',
+      message: 'Critical suit tools, swords, stars, vessels, and streams must retain exact counts.',
+    },
+  );
+  assertions.assert(
+    [
+      'Painterly surface',
+      'Anatomy, faces, and hands',
+      'Major and Minor Arcana',
+      'Permitted artistic freedom',
+      'Forbidden style drift',
+      'Pilot coherence review',
+    ].every((section) => visualBible.includes(section)) &&
+      visualBible.includes(goldenReference.checksum),
+    {
+      code: 'premium-production-visual-language-bible',
+      message: 'The approved Golden Master must anchor practical production guidance.',
+    },
+  );
 
   assertions.assert(
     style.version === 'premium-tarot-style-v1' &&
@@ -297,8 +501,10 @@ export function runTarotPremiumProductionGate(rootDir: string) {
     .join('');
   assertions.assert(
     !builtJavaScript.includes('premium-tarot-prompts-v1') &&
+      !builtJavaScript.includes('premium-tarot-pilot-prompts-v2') &&
       !builtJavaScript.includes('premium-tarot-style-v2') &&
-      !builtJavaScript.includes('Final generation prompt'),
+      !builtJavaScript.includes('Final generation prompt') &&
+      !builtJavaScript.includes('generic fantasy wizard'),
     {
       code: 'premium-production-runtime-isolation',
       message: 'Prompt and review production metadata must not enter production JavaScript.',

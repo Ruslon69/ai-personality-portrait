@@ -42,6 +42,8 @@ for (const required of [
   'npm ci',
   'npm run quality -- --report=reports/quality-gates.json',
   'npm audit --omit=dev',
+  'Install and verify FFmpeg',
+  'sudo bash ../scripts/install-ci-media-tools.sh',
   'ruff format --check .',
   'python ../scripts/backend-health-smoke.py',
 ]) {
@@ -55,6 +57,8 @@ for (const required of [
   'git merge-base --is-ancestor "$GITHUB_SHA" origin/main',
   'node scripts/build-reproducibility.mjs',
   'frontend/dist',
+  'Install and verify FFmpeg',
+  'sudo bash scripts/install-ci-media-tools.sh',
 ]) {
   if (!release.includes(required))
     errors.push(`release-check.yml: required control is missing: ${required}`);

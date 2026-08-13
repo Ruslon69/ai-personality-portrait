@@ -3,6 +3,7 @@
 **/build/
 **/coverage/
 **/reports/
+frontend/premium-production/generated/
 **/.venv/
 **/__pycache__/
 **/.ruff_cache/

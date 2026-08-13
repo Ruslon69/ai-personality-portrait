@@ -1,0 +1,59 @@
+{
+  "cardId": "major-fool",
+  "styleVersion": "premium-tarot-style-v2",
+  "artworkVersion": "premium-tarot-art-v1",
+  "checksum": "8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f",
+  "approvedBy": "Ruslan",
+  "approvalNotes": "Approved as the Golden Master for the premium Tarot deck. Preserve this visual language across the deck.",
+  "visualCharacteristics": [
+    "luminous mystical painted realism",
+    "museum-quality semantic composition",
+    "tactile natural materials",
+    "restrained high-altitude cinematic light",
+    "six-plane atmospheric depth",
+    "mature collectible-card finish without a baked frame"
+  ],
+  "paletteFamily": "major",
+  "lightingFamily": "major-symbolic",
+  "materialLevel": [
+    "believable fabric weight with woven textile texture and construction-aware folds",
+    "realistic worn leather with controlled edge response",
+    "weathered grain-bearing wood",
+    "cold porous stone with natural fractures and mineral variation",
+    "living vegetation with specific structure rather than decorative noise",
+    "natural dog fur responding coherently to light and movement",
+    "believable skin with painterly variation and subsurface warmth",
+    "controlled aged-metal response only where metal is compositionally present"
+  ],
+  "realismLevel": "Anatomically credible painted realism with individual natural faces, believable hands and feet, weighted posture, and subtle expression; never photographic, plastic, waxen, mannequin-like, or idealized into a generic beauty face.",
+  "depthProfile": "Six readable planes—foreground, main subject, midground, background, atmosphere, and sky—organized through perspective and light while keeping symbolic hierarchy immediate.",
+  "preparationProvenance": {
+    "pipelineVersion": "premium-tarot-preparation-v1",
+    "sourceWidth": 957,
+    "sourceHeight": 1643,
+    "preparedWidth": 1680,
+    "preparedHeight": 2880,
+    "resizeApplied": true,
+    "resizeMethod": "FFmpeg Lanczos single-pass high-quality resampling",
+    "resizeProviderKind": "deterministic-resample",
+    "trueSuperResolution": false,
+    "resizeScale": 1.756098,
+    "cropApplied": true,
+    "cropBox": {
+      "x": 0,
+      "y": 1,
+      "width": 957,
+      "height": 1640
+    },
+    "sharpenApplied": false,
+    "colorProfileBefore": "bt709 / iec61966-2-1 / gbr",
+    "colorProfileAfter": "sRGB IEC61966-2.1 (ColorSync)",
+    "colorProfileTransformation": "ColorSync profile conversion to sRGB IEC61966-2.1",
+    "orientationTransform": "none",
+    "sourceChecksum": "521e5e2e7f45ac8f8b66cc5a775b4680f12cc91de21254161c9a94e5370beebf",
+    "sourceModifiedAt": "2026-08-13T18:46:59.099Z",
+    "preparedChecksum": "b818ea488a9816efd5718a02bb5d370dbc4403a92a029e7322f28cb358db9712",
+    "nativeResolutionEligible": false,
+    "preparedResolutionEligible": true
+  }
+}

@@ -63,6 +63,7 @@ type PremiumProductionCard = {
   compositionReference: Record<string, string>;
   finalPath?: string;
   forbiddenChanges: string[];
+  isGoldenMaster: boolean;
   outputPath: string;
   productionStatus: string;
   promptId: string;
@@ -82,6 +83,9 @@ export function runTarotPremiumProductionGate(rootDir: string) {
     readFileSync(resolve(productionRoot, 'production-manifest.json'), 'utf8'),
   );
   const style = JSON.parse(readFileSync(resolve(productionRoot, 'style-lock.json'), 'utf8'));
+  const goldenStyle = JSON.parse(
+    readFileSync(resolve(productionRoot, 'style-lock-v2.json'), 'utf8'),
+  );
   const rubric = JSON.parse(readFileSync(resolve(productionRoot, 'review-rubric.json'), 'utf8'));
   const release = JSON.parse(
     readFileSync(
@@ -130,7 +134,8 @@ export function runTarotPremiumProductionGate(rootDir: string) {
         reviewStatuses.includes(card.reviewStatus) &&
         card.sourceReferenceId === `rws-public-domain-v1:${card.cardId}` &&
         card.promptId === `premium-tarot-prompts-v1:${card.cardId}` &&
-        card.styleVersion === 'premium-tarot-style-v1' &&
+        card.styleVersion ===
+          (card.isGoldenMaster ? 'premium-tarot-style-v2' : 'premium-tarot-style-v1') &&
         Number.isInteger(card.version),
       {
         code: `premium-production-record-${card.cardId}`,
@@ -232,6 +237,16 @@ export function runTarotPremiumProductionGate(rootDir: string) {
     },
   );
   assertions.assert(
+    goldenStyle.version === 'premium-tarot-style-v2' &&
+      goldenStyle.supersedesForGoldenMaster === style.version &&
+      goldenStyle.outputContract?.canonicalOrientation === 'upright' &&
+      goldenStyle.globalNegativeConstraints.length >= 14,
+    {
+      code: 'premium-production-golden-style-lock',
+      message: 'Golden Master style v2 must remain a canonical-upright refinement of v1.',
+    },
+  );
+  assertions.assert(
     rubric.version === 'premium-tarot-review-v1' &&
       rubric.scoreCategories.length === 11 &&
       rubric.requiredPasses.length === 9 &&
@@ -282,6 +297,7 @@ export function runTarotPremiumProductionGate(rootDir: string) {
     .join('');
   assertions.assert(
     !builtJavaScript.includes('premium-tarot-prompts-v1') &&
+      !builtJavaScript.includes('premium-tarot-style-v2') &&
       !builtJavaScript.includes('Final generation prompt'),
     {
       code: 'premium-production-runtime-isolation',

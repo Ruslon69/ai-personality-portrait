@@ -1,0 +1,140 @@
+{
+  "reviewVersion": "premium-tarot-golden-review-v1",
+  "cardId": "major-fool",
+  "artworkVersion": 1,
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "Approved as the Golden Master for the premium Tarot deck.\n\nThis establishes the visual language for all future premium Tarot artwork.\n\nMaintain painterly realism, natural anatomy, tactile materials, cinematic depth, restrained lighting, symbolic clarity and premium collectible quality.",
+  "decision": "approved",
+  "sections": {
+    "composition": {
+      "score": 5,
+      "notes": "Ruslan",
+      "requiredPass": true
+    },
+    "lighting": {
+      "score": 5,
+      "notes": "Ruslan",
+      "requiredPass": true
+    },
+    "perspective": {
+      "score": 5,
+      "notes": "Ruslan",
+      "requiredPass": true
+    },
+    "depth": {
+      "score": 5,
+      "notes": "Ruslan",
+      "requiredPass": true
+    },
+    "anatomy": {
+      "score": 5,
+      "notes": "Ruslan",
+      "requiredPass": true
+    },
+    "materials": {
+      "score": 5,
+      "notes": "Ruslan",
+      "requiredPass": true
+    },
+    "color": {
+      "score": 5,
+      "notes": "Ruslan",
+      "requiredPass": true
+    },
+    "symbolism": {
+      "score": 5,
+      "notes": "Ruslan",
+      "requiredPass": true
+    },
+    "recognizability": {
+      "score": 5,
+      "notes": "Ruslan",
+      "requiredPass": true
+    },
+    "collectibleQuality": {
+      "score": 5,
+      "notes": "Ruslan",
+      "requiredPass": true
+    },
+    "overallImpression": {
+      "score": 5,
+      "notes": "Ruslan",
+      "requiredPass": true
+    }
+  },
+  "symbols": [
+    {
+      "symbol": "traveler at cliff edge",
+      "status": "present",
+      "comments": "Ruslan"
+    },
+    {
+      "symbol": "small white dog",
+      "status": "present",
+      "comments": "Ruslan"
+    },
+    {
+      "symbol": "white rose",
+      "status": "present",
+      "comments": "Ruslan"
+    },
+    {
+      "symbol": "bundle on staff",
+      "status": "present",
+      "comments": "Ruslan"
+    },
+    {
+      "symbol": "distant mountains",
+      "status": "present",
+      "comments": "Ruslan"
+    },
+    {
+      "symbol": "bright sun",
+      "status": "present",
+      "comments": "Ruslan"
+    }
+  ],
+  "warnings": {
+    "croppingRisk": {
+      "flagged": false,
+      "notes": ""
+    },
+    "lowContrast": {
+      "flagged": false,
+      "notes": ""
+    },
+    "possibleAiArtifact": {
+      "flagged": false,
+      "notes": ""
+    },
+    "unreadableHand": {
+      "flagged": false,
+      "notes": ""
+    },
+    "unreadableFace": {
+      "flagged": false,
+      "notes": ""
+    },
+    "compositionImbalance": {
+      "flagged": false,
+      "notes": ""
+    },
+    "perspectiveIssue": {
+      "flagged": false,
+      "notes": ""
+    }
+  },
+  "requiredPasses": {
+    "immediatelyRecognizableAsTheFool": true,
+    "allSixPrimarySymbolsPresent": true,
+    "noBakedTextOrFrame": true,
+    "noAnatomyDefect": true,
+    "noObviousAiArtifact": true,
+    "visuallySuperiorToClassicScan": true,
+    "suitableAsStyleReferenceForFutureCards": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  },
+  "approvalNotes": "Approved as the Golden Master for the premium Tarot deck. Preserve this visual language across the deck."
+}

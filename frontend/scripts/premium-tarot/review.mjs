@@ -27,6 +27,9 @@ const manifest = await readProductionManifest();
 const failures = await validateProductionManifest(manifest);
 if (failures.length) throw new Error(failures.join('\n'));
 const card = findProductionCard(manifest, cardId);
+if (card.isGoldenMaster) {
+  throw new Error('Use the dedicated Golden Master approval or rejection command for major-fool.');
+}
 if (card.productionStatus !== 'review') {
   throw new Error(`${cardId} must be in review before an approval decision.`);
 }

@@ -1,0 +1,1129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Fool · Golden Master Comparison Studio</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+        background: #07090e;
+        color: #eee8dc;
+        --gold: #d3ad67;
+        --gold-dim: #806433;
+        --panel: #10151f;
+        --panel-2: #141b28;
+        --line: #ffffff16;
+        --muted: #a9a193;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-width: 320px;
+        background: radial-gradient(circle at 50% -12%, #27304a 0, #0b0f18 31%, #07090e 68%);
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button,
+      select,
+      input,
+      textarea {
+        color: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      .shell {
+        width: min(1880px, 100%);
+        margin: auto;
+        padding: 24px;
+      }
+      .topbar {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 18px;
+      }
+      .eyebrow,
+      .sectionLabel {
+        color: var(--gold);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 5px 0 4px;
+        font:
+          500 clamp(28px, 4vw, 48px)/1.04 Georgia,
+          serif;
+      }
+      .subtle {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .statusPill {
+        padding: 8px 12px;
+        border: 1px solid var(--gold-dim);
+        border-radius: 999px;
+        background: #161a20;
+        color: #dfc48f;
+        white-space: nowrap;
+      }
+      .toolbar {
+        position: sticky;
+        z-index: 30;
+        top: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #0c111adf;
+        box-shadow: 0 12px 40px #0008;
+        backdrop-filter: blur(18px);
+      }
+      .toolGroup {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding-right: 14px;
+        border-right: 1px solid var(--line);
+      }
+      .toolGroup:last-child {
+        padding-right: 0;
+        border: 0;
+      }
+      .toolButton,
+      .zoomButton,
+      select {
+        min-height: 34px;
+        border: 1px solid #ffffff1f;
+        border-radius: 8px;
+        background: #171e2a;
+        padding: 6px 10px;
+      }
+      .toolButton:hover,
+      .zoomButton:hover {
+        border-color: var(--gold-dim);
+      }
+      .toolButton[aria-pressed='true'],
+      .zoomButton[aria-pressed='true'] {
+        border-color: var(--gold);
+        background: #312819;
+        color: #f2d79f;
+      }
+      .rangeControl {
+        display: grid;
+        grid-template-columns: auto 110px 42px;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      input[type='range'] {
+        accent-color: var(--gold);
+      }
+      .visualStage {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(320px, 0.85fr);
+        gap: 16px;
+        margin-top: 16px;
+      }
+      .visualPanel {
+        min-width: 0;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: linear-gradient(145deg, #141b27, #0c111a);
+        box-shadow: 0 18px 55px #0008;
+        overflow: hidden;
+      }
+      .visualPanel header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+      .visualPanel header strong {
+        font:
+          500 17px/1.2 Georgia,
+          serif;
+        color: #e0c58e;
+      }
+      .artViewport {
+        position: relative;
+        min-height: 630px;
+        overflow: hidden;
+        background-color: #06080c;
+        background-image:
+          linear-gradient(45deg, #131821 25%, transparent 25%),
+          linear-gradient(-45deg, #131821 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #131821 75%),
+          linear-gradient(-45deg, transparent 75%, #131821 75%);
+        background-position:
+          0 0,
+          0 8px,
+          8px -8px,
+          -8px 0;
+        background-size: 16px 16px;
+        cursor: grab;
+        touch-action: none;
+      }
+      .artViewport[data-dragging='true'] {
+        cursor: grabbing;
+      }
+      .artPlane {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        transform: translate3d(var(--pan-x, 0px), var(--pan-y, 0px), 0) scale(var(--zoom, 1));
+        transform-origin: 50% 50%;
+        will-change: transform;
+      }
+      .artPlane img {
+        display: block;
+        width: min(82%, 430px);
+        max-height: 92%;
+        aspect-ratio: 7 / 12;
+        object-fit: contain;
+        box-shadow: 0 24px 65px #000b;
+        user-select: none;
+        pointer-events: none;
+      }
+      .missing {
+        display: grid;
+        width: min(82%, 430px);
+        aspect-ratio: 7 / 12;
+        place-items: center;
+        border: 1px dashed #6c5a37;
+        border-radius: 8px;
+        color: #827966;
+        text-align: center;
+        padding: 25px;
+      }
+      .composite .candidateLayer {
+        position: absolute;
+        opacity: var(--opacity, 0.5);
+      }
+      .composite[data-comparison='split'] .candidateLayer {
+        opacity: 1;
+        clip-path: inset(0 calc(100% - var(--split, 50%)) 0 0);
+      }
+      .composite[data-comparison='difference'] .candidateLayer {
+        opacity: 1;
+        mix-blend-mode: difference;
+      }
+      .splitGuide {
+        display: none;
+        position: absolute;
+        z-index: 5;
+        top: 0;
+        bottom: 0;
+        left: var(--split, 50%);
+        width: 1px;
+        background: #fff;
+        box-shadow: 0 0 0 1px #000;
+        pointer-events: none;
+      }
+      .composite[data-comparison='split'] .splitGuide {
+        display: block;
+      }
+      .visualStage[data-mode='classic'] {
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 0.85fr);
+      }
+      .visualStage[data-mode='classic'] .candidatePanel {
+        display: none;
+      }
+      .visualStage[data-mode='candidate'] {
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 0.85fr);
+      }
+      .visualStage[data-mode='candidate'] .classicPanel {
+        display: none;
+      }
+      .visualStage[data-mode='overlay'],
+      .visualStage[data-mode='split'],
+      .visualStage[data-mode='difference'] {
+        grid-template-columns: 1fr;
+      }
+      .visualStage[data-mode='overlay'] .classicPanel,
+      .visualStage[data-mode='overlay'] .candidatePanel,
+      .visualStage[data-mode='split'] .classicPanel,
+      .visualStage[data-mode='split'] .candidatePanel,
+      .visualStage[data-mode='difference'] .classicPanel,
+      .visualStage[data-mode='difference'] .candidatePanel {
+        display: none;
+      }
+      .reviewGrid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.45fr) minmax(330px, 0.75fr);
+        gap: 16px;
+        margin-top: 16px;
+        align-items: start;
+      }
+      .reviewPanel {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+        padding: 18px;
+      }
+      .reviewPanel h2 {
+        margin: 4px 0 16px;
+        font:
+          500 25px/1.2 Georgia,
+          serif;
+        color: #e0c58e;
+      }
+      .sectionCards {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .reviewCard {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--panel-2);
+        padding: 13px;
+      }
+      .reviewCard header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+      .reviewCard h3 {
+        margin: 0;
+        font-size: 14px;
+      }
+      .scoreGroup {
+        display: flex;
+        gap: 4px;
+      }
+      .scoreGroup label {
+        display: grid;
+        width: 28px;
+        height: 28px;
+        place-items: center;
+        border: 1px solid #ffffff1c;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      .scoreGroup input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .scoreGroup label:has(input:checked) {
+        border-color: var(--gold);
+        background: #3b3020;
+        color: #f5dca8;
+      }
+      textarea,
+      .textInput {
+        width: 100%;
+        border: 1px solid #ffffff1b;
+        border-radius: 8px;
+        background: #090d14;
+        padding: 9px 10px;
+        resize: vertical;
+      }
+      textarea {
+        min-height: 70px;
+      }
+      .passRow {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: 9px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .sideStack {
+        display: grid;
+        gap: 16px;
+      }
+      .metadataList,
+      .historyList {
+        display: grid;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .metadataList li,
+      .historyItem {
+        display: grid;
+        grid-template-columns: 132px 1fr;
+        gap: 10px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--line);
+        font-size: 12px;
+      }
+      .metadataList span,
+      .historyItem span {
+        color: var(--muted);
+      }
+      .metadataList strong {
+        overflow-wrap: anywhere;
+        font-weight: 500;
+      }
+      .technicalWarning {
+        margin: 12px 0 0;
+        border: 1px solid #9a713d;
+        border-radius: 8px;
+        background: #2b2115;
+        padding: 10px 12px;
+        color: #f1d39a;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .symbolRow,
+      .warningRow {
+        display: grid;
+        grid-template-columns: minmax(130px, 0.7fr) 120px minmax(160px, 1fr);
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .symbolRow select[data-state='present'] {
+        border-color: #56774f;
+        color: #bfe3b4;
+      }
+      .symbolRow select[data-state='missing'] {
+        border-color: #8b4747;
+        color: #f0abab;
+      }
+      .warningRow {
+        grid-template-columns: minmax(170px, 0.65fr) minmax(200px, 1fr);
+      }
+      .warningRow label {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .approvalPanel {
+        border-color: #8a6a31;
+        background: linear-gradient(145deg, #1b1813, #11151d);
+      }
+      .approvalActions {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .decisionButton {
+        min-height: 42px;
+        border: 1px solid #ffffff22;
+        border-radius: 9px;
+        background: #171d27;
+      }
+      .decisionButton[data-decision='rejected'] {
+        color: #e6a4a0;
+      }
+      .decisionButton[data-decision='needs-revision'] {
+        color: #e6ca91;
+      }
+      .decisionButton[data-decision='approved'] {
+        color: #b8dda7;
+      }
+      .decisionButton[aria-pressed='true'] {
+        border-color: currentColor;
+        background: #ffffff0b;
+      }
+      .exportActions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .primaryButton {
+        border: 1px solid var(--gold);
+        border-radius: 9px;
+        background: #3a2d19;
+        padding: 9px 12px;
+        color: #f3d79e;
+      }
+      .secondaryButton {
+        border: 1px solid #ffffff22;
+        border-radius: 9px;
+        background: #171d27;
+        padding: 9px 12px;
+      }
+      .validation {
+        min-height: 20px;
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        white-space: pre-line;
+      }
+      .validation[data-state='error'] {
+        color: #e9aaa5;
+      }
+      .validation[data-state='ready'] {
+        color: #b8dda7;
+      }
+      code {
+        color: #d8bc86;
+        overflow-wrap: anywhere;
+      }
+      @media (max-width: 1250px) {
+        .visualStage {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .inspectorPanel {
+          grid-column: 1 / -1;
+        }
+        .artViewport {
+          min-height: 560px;
+        }
+      }
+      @media (max-width: 900px) {
+        .shell {
+          padding: 14px;
+        }
+        .visualStage,
+        .visualStage[data-mode] {
+          grid-template-columns: 1fr;
+        }
+        .visualStage[data-mode='side-by-side'] .visualPanel {
+          display: block;
+        }
+        .reviewGrid,
+        .sectionCards {
+          grid-template-columns: 1fr;
+        }
+        .artViewport {
+          min-height: 500px;
+        }
+        .symbolRow,
+        .warningRow {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">Premium Tarot production · development only</div>
+          <h1>The Fool · Comparison Studio</h1>
+          <div class="subtle">
+            Pixel-safe visual comparison and human review. Original files remain unchanged.
+          </div>
+        </div>
+        <div class="statusPill" id="statusPill"></div>
+      </header>
+
+      <nav class="toolbar" aria-label="Artwork comparison tools">
+        <div class="toolGroup" id="viewModes">
+          <button class="toolButton" data-mode="classic" type="button">Classic</button>
+          <button class="toolButton" data-mode="candidate" type="button">Candidate</button>
+          <button class="toolButton" data-mode="side-by-side" type="button">Side-by-side</button>
+          <button class="toolButton" data-mode="overlay" type="button">Overlay</button>
+          <button class="toolButton" data-mode="split" type="button">Split view</button>
+          <button class="toolButton" data-mode="difference" type="button">Difference</button>
+        </div>
+        <div class="toolGroup" id="zoomTools" aria-label="Zoom">
+          <button class="zoomButton" data-zoom=".25" type="button">25%</button>
+          <button class="zoomButton" data-zoom=".5" type="button">50%</button>
+          <button class="zoomButton" data-zoom="1" type="button">100%</button>
+          <button class="zoomButton" data-zoom="2" type="button">200%</button>
+          <button class="zoomButton" data-zoom="4" type="button">400%</button>
+          <button class="toolButton" id="resetPan" type="button">Reset pan</button>
+        </div>
+        <label class="rangeControl"
+          >Opacity <input id="opacity" type="range" min="0" max="100" value="50" /><output
+            id="opacityOutput"
+            >50%</output
+          ></label
+        >
+        <label class="rangeControl"
+          >Split <input id="split" type="range" min="0" max="100" value="50" /><output
+            id="splitOutput"
+            >50%</output
+          ></label
+        >
+        <label class="toolGroup"
+          >Attempt
+          <select id="attemptSelect"></select
+        ></label>
+      </nav>
+
+      <section class="visualStage" data-mode="side-by-side" id="visualStage">
+        <article class="visualPanel classicPanel">
+          <header>
+            <strong>Classic Rider–Waite</strong><span class="subtle">Semantic reference</span>
+          </header>
+          <div class="artViewport">
+            <div class="artPlane">
+              <img id="classicImage" alt="Classic Rider–Waite reference for The Fool" />
+            </div>
+          </div>
+        </article>
+        <article class="visualPanel candidatePanel">
+          <header>
+            <strong>Current Premium Candidate</strong
+            ><span class="subtle" id="candidateLabel"></span>
+          </header>
+          <div class="artViewport"><div class="artPlane" id="candidatePlane"></div></div>
+        </article>
+        <article class="visualPanel inspectorPanel">
+          <header>
+            <strong>Zoomed Difference / Overlay</strong
+            ><span class="subtle" id="inspectorMode">Overlay · 50%</span>
+          </header>
+          <div class="artViewport composite" data-comparison="overlay" id="compositeViewport">
+            <div class="artPlane">
+              <img alt="Classic comparison layer" id="compositeClassic" /><img
+                alt="Premium comparison layer"
+                class="candidateLayer"
+                id="compositeCandidate"
+              /><span class="splitGuide"></span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="reviewGrid">
+        <article class="reviewPanel">
+          <div class="sectionLabel">Review rubric</div>
+          <h2>Professional art assessment</h2>
+          <div class="sectionCards" id="reviewSections"></div>
+        </article>
+        <div class="sideStack">
+          <article class="reviewPanel">
+            <div class="sectionLabel">Automatic metadata</div>
+            <h2>Candidate record</h2>
+            <ul class="metadataList" id="metadataList"></ul>
+            <p class="technicalWarning" id="preparationWarning" hidden></p>
+          </article>
+          <article class="reviewPanel">
+            <div class="sectionLabel">Attempts</div>
+            <h2>Review history</h2>
+            <ul class="historyList" id="historyList"></ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="reviewGrid">
+        <article class="reviewPanel">
+          <div class="sectionLabel">Canonical identity</div>
+          <h2>Mandatory symbolism</h2>
+          <div id="symbolChecklist"></div>
+        </article>
+        <article class="reviewPanel">
+          <div class="sectionLabel">Reviewer flags only</div>
+          <h2>Visual warnings</h2>
+          <p class="subtle">No automated detection or scoring is performed.</p>
+          <div id="warningChecklist"></div>
+        </article>
+      </section>
+
+      <section class="reviewGrid">
+        <article class="reviewPanel">
+          <div class="sectionLabel">Approval safeguards</div>
+          <h2>Mandatory passes</h2>
+          <div id="mandatoryPasses"></div>
+        </article>
+        <article class="reviewPanel approvalPanel">
+          <div class="sectionLabel">Pipeline handoff</div>
+          <h2>Golden Master decision</h2>
+          <label class="subtle" for="reviewer">Reviewer</label
+          ><input class="textInput" id="reviewer" autocomplete="name" /><label
+            class="subtle"
+            for="approvalNotes"
+            >Decision notes</label
+          ><textarea id="approvalNotes"></textarea>
+          <div class="approvalActions" id="approvalActions">
+            <button class="decisionButton" data-decision="rejected" type="button">Reject</button
+            ><button class="decisionButton" data-decision="needs-revision" type="button">
+              Needs Revision</button
+            ><button class="decisionButton" data-decision="approved" type="button">Approve</button>
+          </div>
+          <div class="exportActions">
+            <button class="primaryButton" id="downloadReview" type="button">
+              Download review JSON</button
+            ><button class="secondaryButton" id="copyReview" type="button">Copy JSON</button>
+          </div>
+          <p class="validation" id="validationMessage"></p>
+          <p class="subtle">
+            Approval is not activated here. Save the JSON to <code id="reviewPath"></code>, then run
+            the existing approval or rejection command.
+          </p>
+        </article>
+      </section>
+    </main>
+
+    <script id="studioData" type="application/json">
+      __GOLDEN_MASTER_STUDIO_DATA__
+    </script>
+    <script>
+      const data = JSON.parse(document.getElementById('studioData').textContent);
+      const humanize = (value) =>
+        value.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (letter) => letter.toUpperCase());
+      const escapeMarkup = (value) =>
+        String(value ?? '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#039;');
+      const formatBytes = (bytes) =>
+        bytes
+          ? new Intl.NumberFormat(undefined, {
+              style: 'unit',
+              unit: 'kilobyte',
+              maximumFractionDigits: 1,
+            }).format(bytes / 1024)
+          : 'Not imported';
+      const currentIndex = data.attempts.length - 1;
+      const storageKey = `golden-master-studio:${data.card.cardId}:${data.attempts[currentIndex]?.checksum || 'pending'}`;
+      const emptyReview = {
+        reviewVersion: data.rubric.version,
+        cardId: data.card.cardId,
+        artworkVersion: data.attempts[currentIndex]?.candidateVersion,
+        styleVersion: data.card.styleVersion,
+        reviewer: '',
+        notes: '',
+        decision: 'needs-revision',
+        sections: Object.fromEntries(
+          data.rubric.reviewSections.map((section) => [
+            section,
+            { score: null, notes: '', requiredPass: false },
+          ]),
+        ),
+        symbols: data.card.symbolismChecklist.map((symbol) => ({
+          symbol,
+          status: 'unreviewed',
+          comments: '',
+        })),
+        warnings: Object.fromEntries(
+          data.rubric.reviewWarnings.map((warning) => [warning, { flagged: false, notes: '' }]),
+        ),
+        requiredPasses: Object.fromEntries(data.rubric.requiredPasses.map((pass) => [pass, false])),
+      };
+      let storedReview = {};
+      try {
+        storedReview = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      } catch {
+        storedReview = {};
+      }
+      let review = {
+        ...emptyReview,
+        ...(data.currentReview || {}),
+        ...storedReview,
+      };
+      review.sections = { ...emptyReview.sections, ...(review.sections || {}) };
+      review.warnings = { ...emptyReview.warnings, ...(review.warnings || {}) };
+      review.requiredPasses = { ...emptyReview.requiredPasses, ...(review.requiredPasses || {}) };
+      review.symbols = Array.isArray(review.symbols) ? review.symbols : emptyReview.symbols;
+      let activeAttemptIndex = currentIndex;
+      let zoom = 1;
+      let pan = { x: 0, y: 0 };
+      let dragStart;
+
+      const stage = document.getElementById('visualStage');
+      const composite = document.getElementById('compositeViewport');
+      const candidatePlane = document.getElementById('candidatePlane');
+      const candidateImage = document.getElementById('compositeCandidate');
+      const opacity = document.getElementById('opacity');
+      const split = document.getElementById('split');
+
+      function persist() {
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(review));
+        } catch {
+          // Review export remains available when file-origin storage is disabled.
+        }
+      }
+      function imageOrMissing(url, alt) {
+        return url
+          ? `<img src="${escapeMarkup(url)}" alt="${escapeMarkup(alt)}">`
+          : '<div class="missing">No candidate imported yet.<br>Use the Golden Master import command.</div>';
+      }
+      function renderAttempt(index) {
+        activeAttemptIndex = Number(index);
+        const attempt = data.attempts[activeAttemptIndex];
+        candidatePlane.innerHTML = imageOrMissing(
+          attempt.candidateUrl,
+          `Premium candidate v${attempt.candidateVersion}`,
+        );
+        candidateImage.hidden = !attempt.candidateUrl;
+        candidateImage.src = attempt.candidateUrl || '';
+        document.getElementById('candidateLabel').textContent =
+          `v${attempt.candidateVersion} · ${attempt.status}`;
+        renderMetadata(attempt);
+        applyTransform();
+      }
+      function renderMetadata(attempt) {
+        const metadata = attempt.candidateMetadata || {};
+        const preparation = metadata.preparation || {};
+        const crop =
+          preparation.cropApplied && preparation.cropBox
+            ? `${preparation.cropBox.width} × ${preparation.cropBox.height} at ${preparation.cropBox.x},${preparation.cropBox.y}`
+            : 'None';
+        const values = [
+          ['Candidate version', `v${attempt.candidateVersion}`],
+          ['Style version', attempt.styleVersion || data.card.styleVersion],
+          ['Checksum', attempt.checksum || 'Not imported'],
+          [
+            'Dimensions',
+            metadata.width && metadata.height
+              ? `${metadata.width} × ${metadata.height}`
+              : 'Not imported',
+          ],
+          ['Aspect ratio', metadata.aspectRatio || 'Not imported'],
+          ['Color profile', metadata.colorProfile || 'Not imported'],
+          ['Pixel format', metadata.pixelFormat || 'Not imported'],
+          ['File size', formatBytes(metadata.fileSizeBytes)],
+          ['Review status', attempt.status || data.card.reviewStatus],
+          ['Previous attempts', String(Math.max(0, data.attempts.length - 1))],
+          [
+            'Generation date',
+            metadata.generationDate
+              ? new Date(metadata.generationDate).toLocaleString()
+              : 'Not supplied',
+          ],
+          [
+            'Imported at',
+            metadata.importedAt ? new Date(metadata.importedAt).toLocaleString() : 'Not imported',
+          ],
+          ['Reviewer', attempt.review?.reviewer || attempt.reviewer || 'Unassigned'],
+          [
+            'Source resolution',
+            preparation.sourceWidth && preparation.sourceHeight
+              ? `${preparation.sourceWidth} × ${preparation.sourceHeight}`
+              : 'No preparation record',
+          ],
+          [
+            'Prepared resolution',
+            preparation.preparedWidth && preparation.preparedHeight
+              ? `${preparation.preparedWidth} × ${preparation.preparedHeight}`
+              : 'No preparation record',
+          ],
+          [
+            'Preparation',
+            preparation.resizeApplied ? 'High-quality resample' : 'Native dimensions',
+          ],
+          ['Resize method', preparation.resizeMethod || 'No preparation record'],
+          [
+            'Scale factor',
+            Number.isFinite(preparation.resizeScale)
+              ? `${preparation.resizeScale}×`
+              : 'Not available',
+          ],
+          ['Crop', crop],
+          ['Color conversion', preparation.colorProfileTransformation || 'No preparation record'],
+          ['Preparation version', preparation.pipelineVersion || 'No preparation record'],
+          [
+            'Resolution eligibility',
+            preparation.nativeResolutionEligible
+              ? 'nativeResolutionEligible'
+              : preparation.preparedResolutionEligible
+                ? 'preparedResolutionEligible'
+                : 'Not eligible',
+          ],
+        ];
+        document.getElementById('metadataList').innerHTML = values
+          .map(
+            ([label, value]) =>
+              `<li><span>${escapeMarkup(label)}</span><strong>${escapeMarkup(value)}</strong></li>`,
+          )
+          .join('');
+        const preparationWarning = document.getElementById('preparationWarning');
+        const wasUpscaled =
+          preparation.resizeApplied === true && preparation.nativeResolutionEligible === false;
+        preparationWarning.hidden = !wasUpscaled;
+        preparationWarning.textContent = wasUpscaled
+          ? 'Candidate source was below Golden Master native resolution and was upscaled.'
+          : '';
+      }
+      function renderHistory() {
+        const select = document.getElementById('attemptSelect');
+        select.innerHTML = data.attempts
+          .map(
+            (attempt, index) =>
+              `<option value="${index}" ${index === currentIndex ? 'selected' : ''}>v${escapeMarkup(attempt.candidateVersion)} · ${escapeMarkup(attempt.status)}</option>`,
+          )
+          .join('');
+        document.getElementById('historyList').innerHTML = data.attempts
+          .map(
+            (attempt, index) =>
+              `<li class="historyItem"><span>v${escapeMarkup(attempt.candidateVersion)}</span><button class="toolButton" data-attempt="${index}" type="button">${escapeMarkup(attempt.status)} · ${escapeMarkup(attempt.reviewer || attempt.review?.reviewer || 'unassigned')}</button></li>`,
+          )
+          .join('');
+      }
+      function renderSections() {
+        document.getElementById('reviewSections').innerHTML = data.rubric.reviewSections
+          .map((section) => {
+            const value = review.sections[section] || {};
+            const scores = [1, 2, 3, 4, 5]
+              .map(
+                (score) =>
+                  `<label>${score}<input type="radio" name="score-${section}" value="${score}" ${value.score === score ? 'checked' : ''}></label>`,
+              )
+              .join('');
+            return `<section class="reviewCard" data-section="${escapeMarkup(section)}"><header><h3>${escapeMarkup(humanize(section))}</h3><div class="scoreGroup">${scores}</div></header><textarea data-field="notes" placeholder="Reviewer notes are required for approval">${escapeMarkup(value.notes || '')}</textarea><label class="passRow"><input data-field="requiredPass" type="checkbox" ${value.requiredPass ? 'checked' : ''}> Required section pass</label></section>`;
+          })
+          .join('');
+      }
+      function renderSymbols() {
+        document.getElementById('symbolChecklist').innerHTML = data.card.symbolismChecklist
+          .map((symbol) => {
+            const value = review.symbols.find((item) => item.symbol === symbol) || {
+              status: 'unreviewed',
+              comments: '',
+            };
+            return `<div class="symbolRow" data-symbol="${escapeMarkup(symbol)}"><strong>${escapeMarkup(symbol)}</strong><select data-field="status" data-state="${escapeMarkup(value.status)}"><option value="unreviewed" ${value.status === 'unreviewed' ? 'selected' : ''}>— Unreviewed</option><option value="present" ${value.status === 'present' ? 'selected' : ''}>✔ Present</option><option value="missing" ${value.status === 'missing' ? 'selected' : ''}>✖ Missing</option></select><input class="textInput" data-field="comments" value="${escapeMarkup(value.comments || '')}" placeholder="Reviewer comments"></div>`;
+          })
+          .join('');
+      }
+      function renderWarnings() {
+        document.getElementById('warningChecklist').innerHTML = data.rubric.reviewWarnings
+          .map((warning) => {
+            const value = review.warnings[warning] || {};
+            return `<div class="warningRow" data-warning="${escapeMarkup(warning)}"><label><input data-field="flagged" type="checkbox" ${value.flagged ? 'checked' : ''}> ${escapeMarkup(humanize(warning))}</label><input class="textInput" data-field="notes" value="${escapeMarkup(value.notes || '')}" placeholder="Flag notes"></div>`;
+          })
+          .join('');
+      }
+      function renderPasses() {
+        document.getElementById('mandatoryPasses').innerHTML = data.rubric.requiredPasses
+          .map(
+            (pass) =>
+              `<label class="passRow"><input data-pass="${pass}" type="checkbox" ${review.requiredPasses[pass] ? 'checked' : ''}> ${humanize(pass)}</label>`,
+          )
+          .join('');
+      }
+      function applyTransform() {
+        document.querySelectorAll('.artPlane').forEach((plane) => {
+          plane.style.setProperty('--zoom', zoom);
+          plane.style.setProperty('--pan-x', `${pan.x}px`);
+          plane.style.setProperty('--pan-y', `${pan.y}px`);
+        });
+        document
+          .querySelectorAll('[data-zoom]')
+          .forEach((button) =>
+            button.setAttribute('aria-pressed', Number(button.dataset.zoom) === zoom),
+          );
+      }
+      function setMode(mode) {
+        stage.dataset.mode = mode;
+        composite.dataset.comparison = ['split', 'difference'].includes(mode) ? mode : 'overlay';
+        document.getElementById('inspectorMode').textContent =
+          mode === 'difference'
+            ? 'Difference blend'
+            : mode === 'split'
+              ? `Split · ${split.value}%`
+              : `Overlay · ${opacity.value}%`;
+        document
+          .querySelectorAll('[data-mode]')
+          .forEach((button) => button.setAttribute('aria-pressed', button.dataset.mode === mode));
+      }
+      function collectReview() {
+        document.querySelectorAll('[data-section]').forEach((element) => {
+          const section = element.dataset.section;
+          review.sections[section] = {
+            score: Number(element.querySelector('input[type=radio]:checked')?.value) || null,
+            notes: element.querySelector('[data-field=notes]').value.trim(),
+            requiredPass: element.querySelector('[data-field=requiredPass]').checked,
+          };
+        });
+        review.symbols = [...document.querySelectorAll('[data-symbol]')].map((element) => ({
+          symbol: element.dataset.symbol,
+          status: element.querySelector('[data-field=status]').value,
+          comments: element.querySelector('[data-field=comments]').value.trim(),
+        }));
+        document.querySelectorAll('[data-warning]').forEach((element) => {
+          const key = element.dataset.warning;
+          review.warnings[key] = {
+            flagged: element.querySelector('[data-field=flagged]').checked,
+            notes: element.querySelector('[data-field=notes]').value.trim(),
+          };
+        });
+        document.querySelectorAll('[data-pass]').forEach((element) => {
+          review.requiredPasses[element.dataset.pass] = element.checked;
+        });
+        review.reviewer = document.getElementById('reviewer').value.trim();
+        review.notes = document.getElementById('approvalNotes').value.trim();
+        persist();
+        return review;
+      }
+      function validateApproval() {
+        const current = collectReview();
+        const failures = [];
+        data.rubric.reviewSections.forEach((section) => {
+          const value = current.sections[section];
+          if (!value.score || value.score < 4 || !value.notes || !value.requiredPass)
+            failures.push(humanize(section));
+        });
+        const missingSymbols = current.symbols
+          .filter((symbol) => symbol.status !== 'present')
+          .map((symbol) => symbol.symbol);
+        const failedPasses = data.rubric.requiredPasses.filter(
+          (pass) => !current.requiredPasses[pass],
+        );
+        if (!current.reviewer) failures.push('Reviewer');
+        if (!current.notes) failures.push('Decision notes');
+        if (missingSymbols.length) failures.push(`Symbols: ${missingSymbols.join(', ')}`);
+        if (failedPasses.length) failures.push(`Passes: ${failedPasses.map(humanize).join(', ')}`);
+        return failures;
+      }
+      function serializeReview() {
+        return JSON.stringify(collectReview(), null, 2) + '\n';
+      }
+      function downloadReview() {
+        if (!data.attempts[currentIndex]?.candidateUrl) {
+          showMessage('Import a Golden Master candidate before exporting a review.', 'error');
+          return;
+        }
+        if (review.decision === 'approved') {
+          const failures = validateApproval();
+          if (failures.length) {
+            showMessage(`Approval blocked:\n${failures.join('\n')}`, 'error');
+            return;
+          }
+        }
+        const blob = new Blob([serializeReview()], { type: 'application/json' });
+        const anchor = document.createElement('a');
+        anchor.href = URL.createObjectURL(blob);
+        anchor.download = `major-fool-v${review.artworkVersion}.json`;
+        anchor.click();
+        URL.revokeObjectURL(anchor.href);
+        showMessage(
+          review.decision === 'approved'
+            ? 'Review is complete. Save it at the displayed review path, then run golden-approve.'
+            : 'Review exported. Apply the decision through the existing Golden Master pipeline.',
+          'ready',
+        );
+      }
+      function showMessage(message, state) {
+        const target = document.getElementById('validationMessage');
+        target.textContent = message;
+        target.dataset.state = state;
+      }
+
+      document.getElementById('classicImage').src = data.classicUrl;
+      document.getElementById('compositeClassic').src = data.classicUrl;
+      document.getElementById('statusPill').textContent =
+        `${data.card.status} · ${data.card.reviewStatus}`;
+      document.getElementById('reviewPath').textContent =
+        data.card.reviewPath || 'premium-production/reviews/major-fool-v1.json';
+      document.getElementById('reviewer').value = review.reviewer || '';
+      document.getElementById('approvalNotes').value = review.notes || '';
+      renderHistory();
+      renderSections();
+      renderSymbols();
+      renderWarnings();
+      renderPasses();
+      renderAttempt(currentIndex);
+      setMode('side-by-side');
+      applyTransform();
+
+      document.getElementById('viewModes').addEventListener('click', (event) => {
+        const mode = event.target.dataset.mode;
+        if (mode) setMode(mode);
+      });
+      document.getElementById('zoomTools').addEventListener('click', (event) => {
+        if (event.target.dataset.zoom) {
+          zoom = Number(event.target.dataset.zoom);
+          applyTransform();
+        }
+      });
+      document.getElementById('resetPan').addEventListener('click', () => {
+        pan = { x: 0, y: 0 };
+        applyTransform();
+      });
+      opacity.addEventListener('input', () => {
+        composite.style.setProperty('--opacity', opacity.value / 100);
+        document.getElementById('opacityOutput').value = `${opacity.value}%`;
+        setMode(stage.dataset.mode);
+      });
+      split.addEventListener('input', () => {
+        composite.style.setProperty('--split', `${split.value}%`);
+        document.getElementById('splitOutput').value = `${split.value}%`;
+        setMode(stage.dataset.mode);
+      });
+      document
+        .getElementById('attemptSelect')
+        .addEventListener('change', (event) => renderAttempt(event.target.value));
+      document.getElementById('historyList').addEventListener('click', (event) => {
+        if (event.target.dataset.attempt) {
+          document.getElementById('attemptSelect').value = event.target.dataset.attempt;
+          renderAttempt(event.target.dataset.attempt);
+        }
+      });
+      document.querySelectorAll('.artViewport').forEach((viewport) => {
+        viewport.addEventListener('pointerdown', (event) => {
+          viewport.setPointerCapture(event.pointerId);
+          viewport.dataset.dragging = 'true';
+          dragStart = { x: event.clientX, y: event.clientY, panX: pan.x, panY: pan.y };
+        });
+        viewport.addEventListener('pointermove', (event) => {
+          if (!dragStart) return;
+          pan = {
+            x: dragStart.panX + event.clientX - dragStart.x,
+            y: dragStart.panY + event.clientY - dragStart.y,
+          };
+          applyTransform();
+        });
+        viewport.addEventListener('pointerup', () => {
+          dragStart = undefined;
+          viewport.dataset.dragging = 'false';
+        });
+        viewport.addEventListener('pointercancel', () => {
+          dragStart = undefined;
+          viewport.dataset.dragging = 'false';
+        });
+      });
+      document
+        .querySelectorAll(
+          '[data-section], [data-symbol], [data-warning], [data-pass], #reviewer, #approvalNotes',
+        )
+        .forEach((element) => element.addEventListener('change', collectReview));
+      document.getElementById('approvalActions').addEventListener('click', (event) => {
+        const decision = event.target.dataset.decision;
+        if (!decision) return;
+        review.decision = decision;
+        document
+          .querySelectorAll('[data-decision]')
+          .forEach((button) =>
+            button.setAttribute('aria-pressed', button.dataset.decision === decision),
+          );
+        persist();
+        showMessage(
+          decision === 'approved'
+            ? 'Complete every 4/5 score, note, pass, symbol, reviewer, and decision note before export.'
+            : `${humanize(decision)} selected. Export the review and apply it through the pipeline.`,
+          'ready',
+        );
+      });
+      document
+        .querySelectorAll('[data-decision]')
+        .forEach((button) =>
+          button.setAttribute('aria-pressed', button.dataset.decision === review.decision),
+        );
+      document.getElementById('downloadReview').addEventListener('click', downloadReview);
+      document.getElementById('copyReview').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(serializeReview());
+          showMessage('Review JSON copied.', 'ready');
+        } catch {
+          showMessage('Clipboard access is unavailable. Use Download review JSON.', 'error');
+        }
+      });
+    </script>
+  </body>
+</html>

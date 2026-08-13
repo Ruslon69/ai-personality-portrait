@@ -1,0 +1,58 @@
+{
+  "version": "premium-tarot-golden-review-v1",
+  "cardId": "major-fool",
+  "scale": {
+    "minimum": 1,
+    "maximum": 5,
+    "approvalMinimumPerCategory": 4
+  },
+  "reviewSections": [
+    "composition",
+    "lighting",
+    "perspective",
+    "depth",
+    "anatomy",
+    "materials",
+    "color",
+    "symbolism",
+    "recognizability",
+    "collectibleQuality",
+    "overallImpression"
+  ],
+  "reviewWarnings": [
+    "croppingRisk",
+    "lowContrast",
+    "possibleAiArtifact",
+    "unreadableHand",
+    "unreadableFace",
+    "compositionImbalance",
+    "perspectiveIssue"
+  ],
+  "requiredPasses": [
+    "immediatelyRecognizableAsTheFool",
+    "allSixPrimarySymbolsPresent",
+    "noBakedTextOrFrame",
+    "noAnatomyDefect",
+    "noObviousAiArtifact",
+    "visuallySuperiorToClassicScan",
+    "suitableAsStyleReferenceForFutureCards",
+    "canonicalOrientationUpright",
+    "reviewerExplicitApproval"
+  ],
+  "rejectionCategories": [
+    "missing-symbol",
+    "weak-recognizability",
+    "wrong-composition",
+    "wrong-anatomy",
+    "material-failure",
+    "depth-failure",
+    "style-drift",
+    "obvious-ai-artifact",
+    "poor-lighting",
+    "palette-failure",
+    "crop-failure",
+    "forbidden-content",
+    "technical-output"
+  ],
+  "policy": "Golden Master scores, notes, section passes, symbolism dispositions, and warnings are explicit human judgments, never automated quality claims. Approval requires every section at 4 or higher, section notes, every section pass, all six symbols present, every mandatory pass, and a named reviewer with approval notes."
+}

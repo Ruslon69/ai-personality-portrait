@@ -29,3 +29,8 @@ for (const cardId of PILOT_CARD_IDS) {
   const card = manifest.cards.find((candidate) => candidate.cardId === cardId);
   process.stdout.write(`${cardId}: ${card?.productionStatus} / ${card?.reviewStatus}\n`);
 }
+const goldenMaster = manifest.cards.find((card) => card.isGoldenMaster);
+process.stdout.write('\nGolden Master\n');
+process.stdout.write(
+  `${goldenMaster.cardId}: ${goldenMaster.goldenMasterStatus} / ${goldenMaster.goldenMasterReviewStatus} / ${goldenMaster.goldenMasterStyleVersion} / candidate v${goldenMaster.goldenMasterCandidateVersion}\n`,
+);

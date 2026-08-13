@@ -13,6 +13,7 @@ import {
 } from './tarot-artwork-loading';
 import { getTarotArtworkRotation } from './tarot-artwork-orientation';
 import { TarotCardBack } from './TarotCardBack';
+import { withGoldenMasterDevelopmentPreview } from './golden-master-preview';
 
 type Props = {
   ariaLabel?: string;
@@ -86,7 +87,9 @@ export function TarotCardView({
 }: Props) {
   const copy = tarotCopy[locale];
   const card = selection ? tarotCardById.get(selection.cardId) : undefined;
-  const artwork = card ? getTarotCardArtwork(card.id) : undefined;
+  const artwork = card
+    ? withGoldenMasterDevelopmentPreview(card.id, getTarotCardArtwork(card.id))
+    : undefined;
   const [failedAssets, setFailedAssets] = useState<readonly string[]>([]);
   const shouldRequestFaceArtwork =
     Boolean(card) && shouldLoadTarotFaceArtwork(isRevealed, variant, preloadFace);

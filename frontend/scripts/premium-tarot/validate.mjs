@@ -7,8 +7,13 @@ import process from 'node:process';
 
 import {
   PILOT_CARD_IDS,
+  PRODUCTION_VERSIONS,
+  buildGoldenGenerationHandoff,
   buildPromptHandoff,
   frontendRoot,
+  goldenHandoffPath,
+  goldenMasterRoot,
+  goldenRubricPath,
   promptFileName,
   promptsRoot,
   readJson,
@@ -18,12 +23,65 @@ import {
   validateProductionManifest,
 } from './lib.mjs';
 
-const [manifest, style, rubric] = await Promise.all([
-  readProductionManifest(),
-  readStyleLock(),
-  readJson(rubricPath),
-]);
+const [manifest, rubric] = await Promise.all([readProductionManifest(), readJson(rubricPath)]);
 const failures = await validateProductionManifest(manifest);
+const goldenRubric = await readJson(goldenRubricPath);
+const expectedGoldenSections = [
+  'composition',
+  'lighting',
+  'perspective',
+  'depth',
+  'anatomy',
+  'materials',
+  'color',
+  'symbolism',
+  'recognizability',
+  'collectibleQuality',
+  'overallImpression',
+];
+const expectedGoldenWarnings = [
+  'croppingRisk',
+  'lowContrast',
+  'possibleAiArtifact',
+  'unreadableHand',
+  'unreadableFace',
+  'compositionImbalance',
+  'perspectiveIssue',
+];
+if (
+  JSON.stringify(goldenRubric.reviewSections) !== JSON.stringify(expectedGoldenSections) ||
+  JSON.stringify(goldenRubric.reviewWarnings) !== JSON.stringify(expectedGoldenWarnings) ||
+  goldenRubric.scale?.approvalMinimumPerCategory !== 4
+) {
+  failures.push('Golden Master Comparison Studio rubric differs from the locked review contract.');
+}
+const studioTemplate = await readFile(resolve(goldenMasterRoot, 'studio-template.html'), 'utf8');
+if (
+  !studioTemplate.includes('__GOLDEN_MASTER_STUDIO_DATA__') ||
+  !['Classic', 'Candidate', 'Side-by-side', 'Overlay', 'Split view', 'Difference'].every((mode) =>
+    studioTemplate.includes(mode),
+  ) ||
+  ![
+    'Source resolution',
+    'Prepared resolution',
+    'Resize method',
+    'Preparation version',
+    'nativeResolutionEligible',
+    'preparedResolutionEligible',
+  ].every((field) => studioTemplate.includes(field)) ||
+  !studioTemplate.includes(
+    'Candidate source was below Golden Master native resolution and was upscaled.',
+  )
+) {
+  failures.push('Golden Master Comparison Studio template is incomplete.');
+}
+if (
+  PRODUCTION_VERSIONS.preparation !== 'premium-tarot-preparation-v1' ||
+  !existsSync(resolve(frontendRoot, 'scripts/premium-tarot/prepare.mjs')) ||
+  !existsSync(resolve(frontendRoot, 'scripts/premium-tarot/golden-process.mjs'))
+) {
+  failures.push('Premium artwork preparation pipeline is missing or has an invalid version.');
+}
 const promptFiles = existsSync(promptsRoot)
   ? (await readdir(promptsRoot)).filter((name) => name.endsWith('.md')).sort()
   : [];
@@ -34,10 +92,18 @@ if (JSON.stringify(promptFiles) !== JSON.stringify(expectedPromptFiles)) {
 for (const cardId of PILOT_CARD_IDS) {
   const card = manifest.cards.find((candidate) => candidate.cardId === cardId);
   if (!card) continue;
+  const style = await readStyleLock(card.styleVersion);
   const expected = buildPromptHandoff(card, style, rubric);
   const path = resolve(promptsRoot, promptFileName(cardId));
   if (!existsSync(path) || (await readFile(path, 'utf8')) !== expected) {
     failures.push(`${cardId}: checked-in prompt differs from deterministic prompt builder output.`);
+  }
+  if (
+    card.isGoldenMaster &&
+    (!existsSync(goldenHandoffPath) ||
+      (await readFile(goldenHandoffPath, 'utf8')) !== buildGoldenGenerationHandoff(card, style))
+  ) {
+    failures.push(`${cardId}: Golden Master generation handoff is missing or non-deterministic.`);
   }
 }
 

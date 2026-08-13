@@ -4,8 +4,14 @@
   "styleVersion": "premium-tarot-style-v1",
   "promptVersion": "premium-tarot-prompts-v1",
   "reviewVersion": "premium-tarot-review-v1",
+  "goldenMasterCardId": "major-fool",
+  "goldenMasterVersion": "premium-tarot-golden-master-v1",
   "releaseMode": "classic",
-  "allowedReleaseModes": ["classic", "premium-preview", "premium-complete"],
+  "allowedReleaseModes": [
+    "classic",
+    "premium-preview",
+    "premium-complete"
+  ],
   "releaseThreshold": {
     "approved": 78,
     "canonicalIds": 78,
@@ -30,21 +36,21 @@
       "arcana": "major",
       "canonicalName": "The Fool",
       "cardId": "major-fool",
-      "productionStatus": "prompt-ready",
-      "reviewStatus": "not-reviewed",
+      "productionStatus": "approved",
+      "reviewStatus": "approved",
       "sourceReferenceId": "rws-public-domain-v1:major-fool",
       "promptId": "premium-tarot-prompts-v1:major-fool",
-      "styleVersion": "premium-tarot-style-v1",
+      "styleVersion": "premium-tarot-style-v2",
       "compositionReference": {
-        "background": "Preserve the canonical distant landscape, architecture, weather, and celestial elements.",
-        "emotionalTone": "hopeful freedom and alert possibility",
-        "foreground": "Keep every canonical near-field figure, object, and suit symbol unobscured.",
-        "framing": "Portrait 7:12 illustration-only composition with safe edges and no baked card frame or typography.",
-        "mainSubject": "A young traveler steps lightly at a cliff edge, head lifted and posture open",
-        "midground": "A young traveler steps lightly at a cliff edge, head lifted and posture open.",
-        "poseAndComposition": "A young traveler steps lightly at a cliff edge, head lifted and posture open.",
+        "background": "Distant mountains recede through clear high-altitude haze beneath a bright sun and expansive blue sky.",
+        "emotionalTone": "Luminous, adventurous, optimistic, free, slightly dangerous, elevated, and alive",
+        "foreground": "The small white dog, white rose and hand relationship where natural, and tactile cliff-edge detail establish the nearest plane.",
+        "framing": "Portrait 7:12 illustration-only composition with open sky, breathable edges, and safe placement for every primary symbol; no typography or frame.",
+        "mainSubject": "A naturally proportioned young traveler moves with confident openness and curiosity at a high cliff edge, subtly unaware of the danger",
+        "midground": "The traveler occupies a distinct subject plane while the path, cliff terrain, and supporting landscape overlap into the distance.",
+        "poseAndComposition": "Preserve the recognizable symbolic relationship and narrative role while allowing naturalistic pose refinement, cinematic depth, perspective, and lighting.",
         "referenceAsset": "src/assets/tarot/cards/rws/major/00-fool.jpg",
-        "referenceRule": "Use the normalized RWS card only to verify semantic composition and symbol placement."
+        "referenceRule": "Use the normalized RWS card only as a semantic identity reference; do not reconstruct its pixels or rigidly trace its pose."
       },
       "symbolismChecklist": [
         "traveler at cliff edge",
@@ -65,16 +71,71 @@
         "sun"
       ],
       "forbiddenChanges": [
-        "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
-        "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
+        "Do not remove, duplicate, mirror, or make ambiguous any of the six primary symbols.",
+        "Do not rigidly trace or reconstruct the classic scan; preserve semantic identity while refining pose and perspective naturally.",
         "Do not bake a card frame, title, numeral, watermark, logo, or other text into the illustration.",
-        "Do not weaken or replace the card-specific emotional identity: hopeful freedom and alert possibility."
+        "Do not replace luminous optimism and slight danger with generic dark-fantasy gloom."
       ],
       "paletteFamily": "major",
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-fool-v1.jpg",
-      "version": 1
+      "isGoldenMaster": true,
+      "goldenMasterStatus": "approved",
+      "goldenMasterVersion": "premium-tarot-golden-master-v1",
+      "goldenMasterCandidateVersion": 1,
+      "goldenMasterStyleVersion": "premium-tarot-style-v2",
+      "goldenMasterReviewStatus": "approved",
+      "version": 1,
+      "checksum": "8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f",
+      "previewPath": "premium-production/previews/major-fool-v1.jpg",
+      "reviewPath": "premium-production/reviews/major-fool-v1.json",
+      "sourcePath": "premium-production/source/major-fool/major-fool-v1.png",
+      "goldenMasterReferenceChecksum": "8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f",
+      "candidateMetadata": {
+        "width": 1400,
+        "height": 2400,
+        "aspectRatio": "1400:2400",
+        "aspectRatioDecimal": 0.583333,
+        "colorProfile": "bt470bg",
+        "pixelFormat": "yuvj444p",
+        "fileSizeBytes": 1018532,
+        "generationDate": "2026-08-13T18:46:59.099Z",
+        "importedAt": "2026-08-13T19:11:50.636Z",
+        "preparation": {
+          "pipelineVersion": "premium-tarot-preparation-v1",
+          "sourceWidth": 957,
+          "sourceHeight": 1643,
+          "preparedWidth": 1680,
+          "preparedHeight": 2880,
+          "resizeApplied": true,
+          "resizeMethod": "FFmpeg Lanczos single-pass high-quality resampling",
+          "resizeProviderKind": "deterministic-resample",
+          "trueSuperResolution": false,
+          "resizeScale": 1.756098,
+          "cropApplied": true,
+          "cropBox": {
+            "x": 0,
+            "y": 1,
+            "width": 957,
+            "height": 1640
+          },
+          "sharpenApplied": false,
+          "colorProfileBefore": "bt709 / iec61966-2-1 / gbr",
+          "colorProfileAfter": "sRGB IEC61966-2.1 (ColorSync)",
+          "colorProfileTransformation": "ColorSync profile conversion to sRGB IEC61966-2.1",
+          "orientationTransform": "none",
+          "sourceChecksum": "521e5e2e7f45ac8f8b66cc5a775b4680f12cc91de21254161c9a94e5370beebf",
+          "sourceModifiedAt": "2026-08-13T18:46:59.099Z",
+          "preparedChecksum": "b818ea488a9816efd5718a02bb5d370dbc4403a92a029e7322f28cb358db9712",
+          "nativeResolutionEligible": false,
+          "preparedResolutionEligible": true
+        }
+      },
+      "approvalNotes": "Approved as the Golden Master for the premium Tarot deck. Preserve this visual language across the deck.",
+      "approvedBy": "Ruslan",
+      "goldenMasterApprovalNotes": "Approved as the Golden Master for the premium Tarot deck. Preserve this visual language across the deck.",
+      "goldenMasterApprovedBy": "Ruslan"
     },
     {
       "arcana": "major",
@@ -125,6 +186,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-magician-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -175,6 +237,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-high-priestess-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -225,6 +288,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-empress-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -275,6 +339,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-emperor-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -323,6 +388,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-hierophant-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -372,6 +438,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-lovers-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -422,6 +489,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-chariot-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -452,7 +520,13 @@
         "distant mountain",
         "gentle hand position"
       ],
-      "requiredObjects": ["woman", "lion", "flowers", "infinity sign", "mountain"],
+      "requiredObjects": [
+        "woman",
+        "lion",
+        "flowers",
+        "infinity sign",
+        "mountain"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -463,6 +537,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-strength-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -492,7 +567,14 @@
         "snowy peak",
         "elder profile"
       ],
-      "requiredObjects": ["elder", "lantern", "star", "staff", "cloak", "mountains"],
+      "requiredObjects": [
+        "elder",
+        "lantern",
+        "star",
+        "staff",
+        "cloak",
+        "mountains"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -503,6 +585,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-hermit-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -553,6 +636,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-wheel-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -583,7 +667,14 @@
         "two pillars",
         "purple veil"
       ],
-      "requiredObjects": ["justice figure", "sword", "scales", "crown", "pillars", "veil"],
+      "requiredObjects": [
+        "justice figure",
+        "sword",
+        "scales",
+        "crown",
+        "pillars",
+        "veil"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -594,6 +685,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-justice-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -643,6 +735,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-hanged-man-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -699,6 +792,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-death-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -750,6 +844,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-temperance-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -800,6 +895,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-devil-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -848,6 +944,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-tower-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -897,6 +994,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-star-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -948,6 +1046,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-moon-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -978,7 +1077,14 @@
         "four sunflowers",
         "garden wall"
       ],
-      "requiredObjects": ["sun", "child", "white horse", "banner", "four sunflowers", "wall"],
+      "requiredObjects": [
+        "sun",
+        "child",
+        "white horse",
+        "banner",
+        "four sunflowers",
+        "wall"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -989,6 +1095,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-sun-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1038,6 +1145,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-judgement-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1087,6 +1195,7 @@
       "lightingFamily": "major-symbolic",
       "depthFamily": "ceremonial-depth",
       "outputPath": "premium-production/candidates/major-world-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1118,7 +1227,15 @@
         "castle",
         "river and hills"
       ],
-      "requiredObjects": ["hand", "cloud", "one wand", "leaves", "castle", "river", "hills"],
+      "requiredObjects": [
+        "hand",
+        "cloud",
+        "one wand",
+        "leaves",
+        "castle",
+        "river",
+        "hills"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1129,6 +1246,7 @@
       "lightingFamily": "wands-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/wands-ace-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1161,7 +1279,14 @@
         "ships and sea",
         "distant land"
       ],
-      "requiredObjects": ["figure", "globe", "two wands", "battlement", "ships", "sea"],
+      "requiredObjects": [
+        "figure",
+        "globe",
+        "two wands",
+        "battlement",
+        "ships",
+        "sea"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1172,6 +1297,7 @@
       "lightingFamily": "wands-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/wands-two-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1203,7 +1329,14 @@
         "three ships",
         "coastline"
       ],
-      "requiredObjects": ["figure", "three wands", "red cloak", "ships", "sea", "coast"],
+      "requiredObjects": [
+        "figure",
+        "three wands",
+        "red cloak",
+        "ships",
+        "sea",
+        "coast"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1214,6 +1347,7 @@
       "lightingFamily": "wands-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/wands-three-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1245,7 +1379,12 @@
         "gathering behind",
         "castle"
       ],
-      "requiredObjects": ["four wands", "garland", "celebrants", "castle"],
+      "requiredObjects": [
+        "four wands",
+        "garland",
+        "celebrants",
+        "castle"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1256,6 +1395,7 @@
       "lightingFamily": "wands-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/wands-four-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1287,7 +1427,11 @@
         "open ground",
         "conflicting diagonals"
       ],
-      "requiredObjects": ["five youths", "five wands", "tunics"],
+      "requiredObjects": [
+        "five youths",
+        "five wands",
+        "tunics"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1298,6 +1442,7 @@
       "lightingFamily": "wands-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/wands-five-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1330,7 +1475,14 @@
         "victory wreath on wand",
         "attendant crowd"
       ],
-      "requiredObjects": ["rider", "horse", "six wands", "laurel crown", "wreath", "crowd"],
+      "requiredObjects": [
+        "rider",
+        "horse",
+        "six wands",
+        "laurel crown",
+        "wreath",
+        "crowd"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1341,6 +1493,7 @@
       "lightingFamily": "wands-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/wands-six-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1372,7 +1525,12 @@
         "high ground",
         "mismatched footwear"
       ],
-      "requiredObjects": ["figure", "seven wands", "hill", "mismatched shoes"],
+      "requiredObjects": [
+        "figure",
+        "seven wands",
+        "hill",
+        "mismatched shoes"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1383,6 +1541,7 @@
       "lightingFamily": "wands-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/wands-seven-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1414,7 +1573,13 @@
         "river",
         "distant settlement"
       ],
-      "requiredObjects": ["eight wands", "sky", "river", "fields", "settlement"],
+      "requiredObjects": [
+        "eight wands",
+        "sky",
+        "river",
+        "fields",
+        "settlement"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1425,6 +1590,7 @@
       "lightingFamily": "wands-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/wands-eight-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1456,7 +1622,12 @@
         "guarded posture",
         "distant hills"
       ],
-      "requiredObjects": ["figure", "bandage", "nine wands", "hills"],
+      "requiredObjects": [
+        "figure",
+        "bandage",
+        "nine wands",
+        "hills"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1467,6 +1638,7 @@
       "lightingFamily": "wands-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/wands-nine-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1498,7 +1670,12 @@
         "town ahead",
         "worked earth"
       ],
-      "requiredObjects": ["figure", "ten wands", "town", "earth"],
+      "requiredObjects": [
+        "figure",
+        "ten wands",
+        "town",
+        "earth"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1509,6 +1686,7 @@
       "lightingFamily": "wands-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/wands-ten-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1540,7 +1718,14 @@
         "three pyramids",
         "desert ground"
       ],
-      "requiredObjects": ["page", "wand", "salamander tunic", "hat", "pyramids", "desert"],
+      "requiredObjects": [
+        "page",
+        "wand",
+        "salamander tunic",
+        "hat",
+        "pyramids",
+        "desert"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1551,6 +1736,7 @@
       "lightingFamily": "wands-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/wands-page-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1602,6 +1788,7 @@
       "lightingFamily": "wands-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/wands-knight-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1634,7 +1821,15 @@
         "lion motifs",
         "pyramids"
       ],
-      "requiredObjects": ["queen", "throne", "wand", "sunflower", "black cat", "lions", "pyramids"],
+      "requiredObjects": [
+        "queen",
+        "throne",
+        "wand",
+        "sunflower",
+        "black cat",
+        "lions",
+        "pyramids"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1645,6 +1840,7 @@
       "lightingFamily": "wands-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/wands-queen-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1676,7 +1872,14 @@
         "red-orange robes",
         "small salamander"
       ],
-      "requiredObjects": ["king", "throne", "wand", "crown", "salamanders", "lions"],
+      "requiredObjects": [
+        "king",
+        "throne",
+        "wand",
+        "crown",
+        "salamanders",
+        "lions"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1687,6 +1890,7 @@
       "lightingFamily": "wands-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/wands-king-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1739,6 +1943,7 @@
       "lightingFamily": "cups-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/cups-ace-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1770,7 +1975,14 @@
         "winged lion head",
         "distant house and hills"
       ],
-      "requiredObjects": ["man", "woman", "two cups", "caduceus", "lion head", "house"],
+      "requiredObjects": [
+        "man",
+        "woman",
+        "two cups",
+        "caduceus",
+        "lion head",
+        "house"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1781,6 +1993,7 @@
       "lightingFamily": "cups-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/cups-two-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1812,7 +2025,13 @@
         "flowers",
         "circular dance"
       ],
-      "requiredObjects": ["three women", "three cups", "fruit", "pumpkins", "flowers"],
+      "requiredObjects": [
+        "three women",
+        "three cups",
+        "fruit",
+        "pumpkins",
+        "flowers"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1823,6 +2042,7 @@
       "lightingFamily": "cups-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/cups-three-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1854,7 +2074,13 @@
         "fourth cup from cloud",
         "green landscape"
       ],
-      "requiredObjects": ["figure", "tree", "four cups", "cloud", "landscape"],
+      "requiredObjects": [
+        "figure",
+        "tree",
+        "four cups",
+        "cloud",
+        "landscape"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1865,6 +2091,7 @@
       "lightingFamily": "cups-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/cups-four-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1897,7 +2124,14 @@
         "bridge",
         "distant building"
       ],
-      "requiredObjects": ["figure", "cloak", "five cups", "river", "bridge", "building"],
+      "requiredObjects": [
+        "figure",
+        "cloak",
+        "five cups",
+        "river",
+        "bridge",
+        "building"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1908,6 +2142,7 @@
       "lightingFamily": "cups-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/cups-five-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -1939,7 +2174,13 @@
         "village buildings",
         "guarded adult in distance"
       ],
-      "requiredObjects": ["two children", "six cups", "white flowers", "village", "adult"],
+      "requiredObjects": [
+        "two children",
+        "six cups",
+        "white flowers",
+        "village",
+        "adult"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -1950,6 +2191,7 @@
       "lightingFamily": "cups-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/cups-six-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2006,6 +2248,7 @@
       "lightingFamily": "cups-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/cups-seven-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2038,7 +2281,15 @@
         "river",
         "moon and sun overlap"
       ],
-      "requiredObjects": ["traveler", "cloak", "staff", "eight cups", "mountains", "river", "moon"],
+      "requiredObjects": [
+        "traveler",
+        "cloak",
+        "staff",
+        "eight cups",
+        "mountains",
+        "river",
+        "moon"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2049,6 +2300,7 @@
       "lightingFamily": "cups-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/cups-eight-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2080,7 +2332,14 @@
         "curved blue-draped table",
         "red cap"
       ],
-      "requiredObjects": ["figure", "chair", "nine cups", "table", "blue cloth", "red cap"],
+      "requiredObjects": [
+        "figure",
+        "chair",
+        "nine cups",
+        "table",
+        "blue cloth",
+        "red cap"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2091,6 +2350,7 @@
       "lightingFamily": "cups-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/cups-nine-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2142,6 +2402,7 @@
       "lightingFamily": "cups-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/cups-ten-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2174,7 +2435,14 @@
         "beret and scarf",
         "rolling sea"
       ],
-      "requiredObjects": ["page", "cup", "fish", "floral tunic", "hat", "sea"],
+      "requiredObjects": [
+        "page",
+        "cup",
+        "fish",
+        "floral tunic",
+        "hat",
+        "sea"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2185,6 +2453,7 @@
       "lightingFamily": "cups-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/cups-page-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2236,6 +2505,7 @@
       "lightingFamily": "cups-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/cups-knight-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2268,7 +2538,14 @@
         "pebbles",
         "sea cliffs"
       ],
-      "requiredObjects": ["queen", "throne", "closed cup", "cherubs", "pebbles", "sea"],
+      "requiredObjects": [
+        "queen",
+        "throne",
+        "closed cup",
+        "cherubs",
+        "pebbles",
+        "sea"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2279,6 +2556,7 @@
       "lightingFamily": "cups-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/cups-queen-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2311,7 +2589,15 @@
         "ship",
         "leaping fish"
       ],
-      "requiredObjects": ["king", "throne", "cup", "scepter", "sea", "ship", "fish"],
+      "requiredObjects": [
+        "king",
+        "throne",
+        "cup",
+        "scepter",
+        "sea",
+        "ship",
+        "fish"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2322,6 +2608,7 @@
       "lightingFamily": "cups-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/cups-king-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2353,7 +2640,15 @@
         "falling yod shapes",
         "distant mountains"
       ],
-      "requiredObjects": ["hand", "cloud", "sword", "crown", "wreath", "yods", "mountains"],
+      "requiredObjects": [
+        "hand",
+        "cloud",
+        "sword",
+        "crown",
+        "wreath",
+        "yods",
+        "mountains"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2364,6 +2659,7 @@
       "lightingFamily": "swords-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/swords-ace-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2396,7 +2692,15 @@
         "rocky islands",
         "calm sea"
       ],
-      "requiredObjects": ["woman", "blindfold", "two swords", "seat", "moon", "rocks", "sea"],
+      "requiredObjects": [
+        "woman",
+        "blindfold",
+        "two swords",
+        "seat",
+        "moon",
+        "rocks",
+        "sea"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2407,6 +2711,7 @@
       "lightingFamily": "swords-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/swords-two-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2437,7 +2742,12 @@
         "rain",
         "grey storm clouds"
       ],
-      "requiredObjects": ["heart", "three swords", "rain", "clouds"],
+      "requiredObjects": [
+        "heart",
+        "three swords",
+        "rain",
+        "clouds"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2448,6 +2758,7 @@
       "lightingFamily": "swords-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/swords-three-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2479,7 +2790,13 @@
         "stained-glass window",
         "praying hands"
       ],
-      "requiredObjects": ["knight effigy", "four swords", "tomb", "stained glass", "church wall"],
+      "requiredObjects": [
+        "knight effigy",
+        "four swords",
+        "tomb",
+        "stained glass",
+        "church wall"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2490,6 +2807,7 @@
       "lightingFamily": "swords-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/swords-four-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2521,7 +2839,13 @@
         "jagged clouds",
         "water"
       ],
-      "requiredObjects": ["three figures", "five swords", "clouds", "shore", "water"],
+      "requiredObjects": [
+        "three figures",
+        "five swords",
+        "clouds",
+        "shore",
+        "water"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2532,6 +2856,7 @@
       "lightingFamily": "swords-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/swords-five-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2564,7 +2889,14 @@
         "six upright swords in boat",
         "rough and calm water"
       ],
-      "requiredObjects": ["boat", "ferryman", "adult", "child", "six swords", "water"],
+      "requiredObjects": [
+        "boat",
+        "ferryman",
+        "adult",
+        "child",
+        "six swords",
+        "water"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2575,6 +2907,7 @@
       "lightingFamily": "swords-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/swords-six-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2606,7 +2939,12 @@
         "tents",
         "distant people"
       ],
-      "requiredObjects": ["figure", "seven swords", "tents", "camp"],
+      "requiredObjects": [
+        "figure",
+        "seven swords",
+        "tents",
+        "camp"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2617,6 +2955,7 @@
       "lightingFamily": "swords-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/swords-seven-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2648,7 +2987,14 @@
         "mud and water",
         "distant castle"
       ],
-      "requiredObjects": ["woman", "blindfold", "bindings", "eight swords", "water", "castle"],
+      "requiredObjects": [
+        "woman",
+        "blindfold",
+        "bindings",
+        "eight swords",
+        "water",
+        "castle"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2659,6 +3005,7 @@
       "lightingFamily": "swords-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/swords-eight-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2690,7 +3037,13 @@
         "carved bed frame",
         "astrological quilt"
       ],
-      "requiredObjects": ["person", "bed", "nine swords", "quilt", "carved frame"],
+      "requiredObjects": [
+        "person",
+        "bed",
+        "nine swords",
+        "quilt",
+        "carved frame"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2701,6 +3054,7 @@
       "lightingFamily": "swords-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/swords-nine-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2733,7 +3087,14 @@
         "calm water",
         "distant mountains"
       ],
-      "requiredObjects": ["figure", "ten swords", "dark sky", "sunrise", "water", "mountains"],
+      "requiredObjects": [
+        "figure",
+        "ten swords",
+        "dark sky",
+        "sunrise",
+        "water",
+        "mountains"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2744,6 +3105,7 @@
       "lightingFamily": "swords-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/swords-ten-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2776,7 +3138,14 @@
         "circling birds",
         "distant trees"
       ],
-      "requiredObjects": ["page", "sword", "clouds", "birds", "trees", "hill"],
+      "requiredObjects": [
+        "page",
+        "sword",
+        "clouds",
+        "birds",
+        "trees",
+        "hill"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2787,6 +3156,7 @@
       "lightingFamily": "swords-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/swords-page-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2819,7 +3189,14 @@
         "bent trees",
         "butterfly and bird motifs"
       ],
-      "requiredObjects": ["knight", "white horse", "armor", "sword", "clouds", "trees"],
+      "requiredObjects": [
+        "knight",
+        "white horse",
+        "armor",
+        "sword",
+        "clouds",
+        "trees"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2830,6 +3207,7 @@
       "lightingFamily": "swords-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/swords-knight-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2862,7 +3240,15 @@
         "clouds",
         "single bird"
       ],
-      "requiredObjects": ["queen", "throne", "sword", "crown", "butterflies", "clouds", "bird"],
+      "requiredObjects": [
+        "queen",
+        "throne",
+        "sword",
+        "crown",
+        "butterflies",
+        "clouds",
+        "bird"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2873,6 +3259,7 @@
       "lightingFamily": "swords-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/swords-queen-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2905,7 +3292,14 @@
         "trees",
         "two birds"
       ],
-      "requiredObjects": ["king", "throne", "sword", "butterflies", "trees", "two birds"],
+      "requiredObjects": [
+        "king",
+        "throne",
+        "sword",
+        "butterflies",
+        "trees",
+        "two birds"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2916,6 +3310,7 @@
       "lightingFamily": "swords-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/swords-king-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2948,7 +3343,15 @@
         "path",
         "distant mountain"
       ],
-      "requiredObjects": ["hand", "cloud", "pentacle", "garden", "arch", "path", "mountain"],
+      "requiredObjects": [
+        "hand",
+        "cloud",
+        "pentacle",
+        "garden",
+        "arch",
+        "path",
+        "mountain"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -2959,6 +3362,7 @@
       "lightingFamily": "pentacles-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/pentacles-ace-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -2991,7 +3395,14 @@
         "rolling waves",
         "tall red hat"
       ],
-      "requiredObjects": ["figure", "two pentacles", "infinity ribbon", "ships", "waves", "hat"],
+      "requiredObjects": [
+        "figure",
+        "two pentacles",
+        "infinity ribbon",
+        "ships",
+        "waves",
+        "hat"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3002,6 +3413,7 @@
       "lightingFamily": "pentacles-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/pentacles-two-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -3034,7 +3446,13 @@
         "bench",
         "plan or document"
       ],
-      "requiredObjects": ["three figures", "three pentacles", "cathedral", "bench", "document"],
+      "requiredObjects": [
+        "three figures",
+        "three pentacles",
+        "cathedral",
+        "bench",
+        "document"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3045,6 +3463,7 @@
       "lightingFamily": "pentacles-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/pentacles-three-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -3077,7 +3496,13 @@
         "seated figure",
         "city behind"
       ],
-      "requiredObjects": ["figure", "crown", "four pentacles", "seat", "city"],
+      "requiredObjects": [
+        "figure",
+        "crown",
+        "four pentacles",
+        "seat",
+        "city"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3088,6 +3513,7 @@
       "lightingFamily": "pentacles-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/pentacles-four-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -3137,6 +3563,7 @@
       "lightingFamily": "pentacles-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/pentacles-five-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -3169,7 +3596,14 @@
         "coins being distributed",
         "town setting"
       ],
-      "requiredObjects": ["merchant", "two recipients", "scales", "six pentacles", "coins", "town"],
+      "requiredObjects": [
+        "merchant",
+        "two recipients",
+        "scales",
+        "six pentacles",
+        "coins",
+        "town"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3180,6 +3614,7 @@
       "lightingFamily": "pentacles-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/pentacles-six-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -3212,7 +3647,13 @@
         "worked soil",
         "patient posture"
       ],
-      "requiredObjects": ["farmer", "hoe", "seven pentacles", "vine", "soil"],
+      "requiredObjects": [
+        "farmer",
+        "hoe",
+        "seven pentacles",
+        "vine",
+        "soil"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3223,6 +3664,7 @@
       "lightingFamily": "pentacles-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/pentacles-seven-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -3254,7 +3696,13 @@
         "work bench",
         "distant town"
       ],
-      "requiredObjects": ["craftsperson", "tools", "eight pentacles", "bench", "town"],
+      "requiredObjects": [
+        "craftsperson",
+        "tools",
+        "eight pentacles",
+        "bench",
+        "town"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3265,6 +3713,7 @@
       "lightingFamily": "pentacles-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/pentacles-eight-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -3297,7 +3746,14 @@
         "snail",
         "estate"
       ],
-      "requiredObjects": ["woman", "nine pentacles", "grapes", "falcon", "snail", "estate"],
+      "requiredObjects": [
+        "woman",
+        "nine pentacles",
+        "grapes",
+        "falcon",
+        "snail",
+        "estate"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3308,6 +3764,7 @@
       "lightingFamily": "pentacles-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/pentacles-nine-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -3359,6 +3816,7 @@
       "lightingFamily": "pentacles-cinematic",
       "depthFamily": "narrative-depth",
       "outputPath": "premium-production/candidates/pentacles-ten-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -3391,7 +3849,13 @@
         "plowed field",
         "distant mountains"
       ],
-      "requiredObjects": ["page", "pentacle", "field", "flowers", "mountains"],
+      "requiredObjects": [
+        "page",
+        "pentacle",
+        "field",
+        "flowers",
+        "mountains"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3402,6 +3866,7 @@
       "lightingFamily": "pentacles-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/pentacles-page-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -3434,7 +3899,14 @@
         "oak leaves",
         "distant hills"
       ],
-      "requiredObjects": ["knight", "armor", "dark horse", "pentacle", "fields", "hills"],
+      "requiredObjects": [
+        "knight",
+        "armor",
+        "dark horse",
+        "pentacle",
+        "fields",
+        "hills"
+      ],
       "forbiddenChanges": [
         "Do not change the canonical subject count, poses, gestures, or spatial hierarchy.",
         "Do not add, remove, duplicate, mirror, or relocate divinatory symbols or suit objects.",
@@ -3445,6 +3917,7 @@
       "lightingFamily": "pentacles-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/pentacles-knight-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -3497,6 +3970,7 @@
       "lightingFamily": "pentacles-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/pentacles-queen-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     },
     {
@@ -3550,6 +4024,7 @@
       "lightingFamily": "pentacles-cinematic",
       "depthFamily": "court-depth",
       "outputPath": "premium-production/candidates/pentacles-king-v1.jpg",
+      "isGoldenMaster": false,
       "version": 1
     }
   ]

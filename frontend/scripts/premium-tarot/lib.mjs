@@ -9,9 +9,15 @@ export const frontendRoot = resolve(import.meta.dirname, '..', '..');
 export const productionRoot = resolve(frontendRoot, 'premium-production');
 export const manifestPath = resolve(productionRoot, 'production-manifest.json');
 export const styleLockPath = resolve(productionRoot, 'style-lock.json');
+export const goldenStyleLockPath = resolve(productionRoot, 'style-lock-v2.json');
 export const rubricPath = resolve(productionRoot, 'review-rubric.json');
+export const goldenMasterRoot = resolve(productionRoot, 'golden-master');
+export const goldenRubricPath = resolve(goldenMasterRoot, 'rubric.json');
+export const goldenHandoffPath = resolve(goldenMasterRoot, 'the-fool-generation.txt');
+export const goldenReferencePath = resolve(goldenMasterRoot, 'reference.json');
 export const promptsRoot = resolve(productionRoot, 'prompts');
 export const generatedRoot = resolve(productionRoot, 'generated');
+export const goldenRuntimePreviewPath = resolve(generatedRoot, 'golden-master-runtime-preview.jpg');
 
 export const productionStatuses = [
   'pending',
@@ -25,6 +31,7 @@ export const productionStatuses = [
 ];
 export const reviewStatuses = ['not-reviewed', 'needs-review', 'approved', 'rejected'];
 export const releaseModes = ['classic', 'premium-preview', 'premium-complete'];
+export const goldenMasterStatuses = ['not-started', 'candidate', 'review', 'approved', 'rejected'];
 
 export async function readJson(path) {
   return JSON.parse(await readFile(path, 'utf8'));
@@ -45,8 +52,10 @@ export async function readProductionManifest() {
   return readJson(manifestPath);
 }
 
-export async function readStyleLock() {
-  return readJson(styleLockPath);
+export async function readStyleLock(version = PRODUCTION_VERSIONS.style) {
+  if (version === PRODUCTION_VERSIONS.style) return readJson(styleLockPath);
+  if (version === PRODUCTION_VERSIONS.goldenStyle) return readJson(goldenStyleLockPath);
+  throw new Error(`Unknown premium Tarot style version: ${version}`);
 }
 
 export function resolveFrontendPath(path) {
@@ -95,6 +104,15 @@ export async function validateProductionManifest(manifest, { checkFiles = true }
   if (duplicates.length) failures.push(`Duplicate card IDs: ${duplicates.join(', ')}.`);
   if (JSON.stringify(manifest.pilotCardIds) !== JSON.stringify(PILOT_CARD_IDS))
     failures.push('Pilot batch IDs differ from the locked eight-card batch.');
+  const goldenMasters = cards.filter((card) => card.isGoldenMaster === true);
+  if (
+    manifest.goldenMasterCardId !== 'major-fool' ||
+    manifest.goldenMasterVersion !== PRODUCTION_VERSIONS.goldenMaster ||
+    goldenMasters.length !== 1 ||
+    goldenMasters[0]?.cardId !== 'major-fool'
+  ) {
+    failures.push('Exactly one Golden Master must exist and it must be major-fool.');
+  }
 
   for (const card of cards) {
     const prefix = card.cardId || '<missing-id>';
@@ -120,6 +138,61 @@ export async function validateProductionManifest(manifest, { checkFiles = true }
       failures.push(`${prefix}: invalid reviewStatus.`);
     if (!Number.isInteger(card.version) || card.version < 1)
       failures.push(`${prefix}: invalid version.`);
+    if (card.cardId !== 'major-fool' && card.isGoldenMaster !== false)
+      failures.push(`${prefix}: only major-fool may be the Golden Master.`);
+    if (card.isGoldenMaster) {
+      if (!goldenMasterStatuses.includes(card.goldenMasterStatus))
+        failures.push(`${prefix}: invalid goldenMasterStatus.`);
+      if (!reviewStatuses.includes(card.goldenMasterReviewStatus))
+        failures.push(`${prefix}: invalid goldenMasterReviewStatus.`);
+      if (
+        card.goldenMasterVersion !== PRODUCTION_VERSIONS.goldenMaster ||
+        card.goldenMasterCandidateVersion !== card.version ||
+        card.goldenMasterStyleVersion !== PRODUCTION_VERSIONS.goldenStyle ||
+        card.styleVersion !== PRODUCTION_VERSIONS.goldenStyle
+      ) {
+        failures.push(`${prefix}: invalid Golden Master version or style lock.`);
+      }
+      if (card.goldenMasterStatus === 'approved') {
+        if (
+          card.goldenMasterReviewStatus !== 'approved' ||
+          !card.goldenMasterApprovedBy ||
+          !card.goldenMasterApprovalNotes ||
+          card.goldenMasterReferenceChecksum !== card.checksum
+        ) {
+          failures.push(`${prefix}: approved Golden Master lacks human provenance.`);
+        }
+        if (checkFiles && !existsSync(goldenReferencePath))
+          failures.push(`${prefix}: approved Golden Master reference record is missing.`);
+      }
+      if (
+        ['review', 'approved'].includes(card.goldenMasterStatus) &&
+        (!Number.isInteger(card.candidateMetadata?.width) ||
+          !Number.isInteger(card.candidateMetadata?.height) ||
+          !Number.isFinite(card.candidateMetadata?.fileSizeBytes) ||
+          !card.candidateMetadata?.aspectRatio ||
+          !card.candidateMetadata?.colorProfile ||
+          !card.candidateMetadata?.generationDate)
+      ) {
+        failures.push(`${prefix}: Golden Master candidate metadata is incomplete.`);
+      }
+      const preparation = card.candidateMetadata?.preparation;
+      if (
+        preparation &&
+        (preparation.pipelineVersion !== PRODUCTION_VERSIONS.preparation ||
+          !Number.isInteger(preparation.sourceWidth) ||
+          !Number.isInteger(preparation.sourceHeight) ||
+          !Number.isInteger(preparation.preparedWidth) ||
+          !Number.isInteger(preparation.preparedHeight) ||
+          typeof preparation.nativeResolutionEligible !== 'boolean' ||
+          preparation.preparedResolutionEligible !== true ||
+          !preparation.sourceModifiedAt ||
+          !preparation.sourceChecksum ||
+          !preparation.preparedChecksum)
+      ) {
+        failures.push(`${prefix}: Golden Master preparation provenance is incomplete.`);
+      }
+    }
     if (card.arcana === 'minor' && (!card.suit || !card.rank))
       failures.push(`${prefix}: Minor Arcana requires suit and rank.`);
     if (!nonEmptyStrings(card.symbolismChecklist))
@@ -217,6 +290,18 @@ export function promptFileName(cardId) {
 export function buildPromptHandoff(card, style, rubric) {
   const prompt = buildMasterPrompt(card, style);
   return `---\ncardId: ${card.cardId}\ncanonicalName: ${card.canonicalName}\npromptId: ${card.promptId}\nstyleVersion: ${card.styleVersion}\npromptVersion: ${PRODUCTION_VERSIONS.prompts}\nartworkVersion: ${PRODUCTION_VERSIONS.artwork}\neditionId: ${PRODUCTION_VERSIONS.edition}\ncanonicalOrientation: upright\n---\n\n# Final generation prompt\n\n${prompt}\n\n# Negative constraints\n\n${style.globalNegativeConstraints.map((item) => `- ${item}`).join('\n')}\n${card.forbiddenChanges.map((item) => `- ${item}`).join('\n')}\n\n# Symbolism checklist\n\n${card.symbolismChecklist.map((item) => `- [ ] ${item}`).join('\n')}\n\n# Review checklist\n\n${rubric.requiredPasses.map((item) => `- [ ] ${item}`).join('\n')}\n\nScores use the ${rubric.scale.minimum}–${rubric.scale.maximum} rubric in \`premium-production/review-rubric.json\`; approval requires at least ${rubric.scale.approvalMinimumPerCategory} in every category plus explicit human approval.\n`;
+}
+
+export function buildGoldenGenerationHandoff(card, style) {
+  const prompt = buildMasterPrompt(card, style)
+    .split('\n\n')
+    .filter(
+      (section) => !section.startsWith('OUTPUT:') && !section.startsWith('NEGATIVE CONSTRAINTS:'),
+    )
+    .join('\n\n');
+  const negativePrompt = [...style.globalNegativeConstraints, ...card.forbiddenChanges].join('; ');
+  const output = style.outputContract;
+  return `FINAL PROMPT\n\n${prompt}\n\nNEGATIVE PROMPT\n\n${negativePrompt}\n\nOUTPUT REQUIREMENTS\n\nPortrait ${output.masterRatio}; minimum ${output.masterMinimumWidth}×${output.masterMinimumHeight}; ${output.colorSpace}; physically upright pixels; illustration only; no transparent edges; no baked card frame; no title; no numeral; no watermark; no UI.\n`;
 }
 
 export async function assertRegularFile(path) {

@@ -29,6 +29,8 @@ await writeJsonAtomic(manifestPath, {
   styleVersion: PRODUCTION_VERSIONS.style,
   promptVersion: PRODUCTION_VERSIONS.prompts,
   reviewVersion: PRODUCTION_VERSIONS.review,
+  goldenMasterCardId: 'major-fool',
+  goldenMasterVersion: PRODUCTION_VERSIONS.goldenMaster,
   releaseMode: 'classic',
   allowedReleaseModes: ['classic', 'premium-preview', 'premium-complete'],
   releaseThreshold: {

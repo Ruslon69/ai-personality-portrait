@@ -12,7 +12,9 @@ import { runTarotRegressionGate } from '../determinism/tarot';
 import { QUALITY_BASELINE } from '../fixtures/baseline';
 import { runPrivacyGate } from '../privacy';
 import { runTarotArtworkGate } from '../regression/tarot-artwork';
+import { runTarotGoldenMasterGate } from '../regression/tarot-golden-master';
 import { runTarotPremiumProductionGate } from '../regression/tarot-premium-production';
+import { runTarotPreparationGate } from '../regression/tarot-preparation';
 import { runTarotRevealGate } from '../regression/tarot-reveal';
 import { existingSuiteRunners, runPresentationAdapterGate } from '../runners/existing-suites';
 import { runLocalizationGate } from '../runners/localization';
@@ -67,6 +69,32 @@ function runBaselineGate() {
 }
 
 export const qualityGateRegistry: readonly QualityGateDefinition[] = [
+  {
+    affectedModules: ['premium-production', 'scripts/premium-tarot'],
+    description:
+      'Deterministic 7:12 preparation, provenance, Golden process chaining, and runtime isolation.',
+    group: 'tarot',
+    id: 'tarot-premium-preparation',
+    required: true,
+    runner: ({ rootDir }) => runTarotPreparationGate(rootDir),
+    severity: 'error',
+    tags: ['regression', 'fast', 'full'],
+    timeout: 45_000,
+    title: 'Premium Artwork Preparation',
+  },
+  {
+    affectedModules: ['assets/tarot', 'tarot/components/TarotCardView'],
+    description:
+      'Single-card Golden Master state, style v2, human approval, classic fallback, and development preview isolation.',
+    group: 'tarot',
+    id: 'tarot-golden-master',
+    required: true,
+    runner: ({ rootDir }) => runTarotGoldenMasterGate(rootDir),
+    severity: 'error',
+    tags: ['regression', 'fast', 'full'],
+    timeout: 15_000,
+    title: 'Golden Master',
+  },
   {
     affectedModules: ['expert-interpretation'],
     description: 'Fixtures, provider contract, confidence, versioning, and serialization.',

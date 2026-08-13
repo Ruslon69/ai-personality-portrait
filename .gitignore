@@ -18,6 +18,7 @@ frontend/reports/
 frontend/premium-production/candidates/
 frontend/premium-production/generated/
 frontend/premium-production/previews/
+frontend/premium-production/prepared/
 frontend/premium-production/source/
 .release/*.summary.json
 *.tsbuildinfo

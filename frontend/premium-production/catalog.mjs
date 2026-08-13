@@ -12,7 +12,11 @@ export const PILOT_CARD_IDS = [
 export const PRODUCTION_VERSIONS = {
   artwork: 'premium-tarot-art-v1',
   edition: 'premium-rws-remastered',
+  goldenMaster: 'premium-tarot-golden-master-v1',
+  goldenReview: 'premium-tarot-golden-review-v1',
+  goldenStyle: 'premium-tarot-style-v2',
   prompts: 'premium-tarot-prompts-v1',
+  preparation: 'premium-tarot-preparation-v1',
   review: 'premium-tarot-review-v1',
   style: 'premium-tarot-style-v1',
 };
@@ -1265,6 +1269,26 @@ function createEntry({
 }) {
   const referenceAsset = referencePath(id, number, suit);
   const rank = suit ? rankNames[number - 1] : undefined;
+  const isGoldenMaster = id === 'major-fool';
+  const goldenMasterComposition = {
+    background:
+      'Distant mountains recede through clear high-altitude haze beneath a bright sun and expansive blue sky.',
+    emotionalTone:
+      'Luminous, adventurous, optimistic, free, slightly dangerous, elevated, and alive',
+    foreground:
+      'The small white dog, white rose and hand relationship where natural, and tactile cliff-edge detail establish the nearest plane.',
+    framing:
+      'Portrait 7:12 illustration-only composition with open sky, breathable edges, and safe placement for every primary symbol; no typography or frame.',
+    mainSubject:
+      'A naturally proportioned young traveler moves with confident openness and curiosity at a high cliff edge, subtly unaware of the danger',
+    midground:
+      'The traveler occupies a distinct subject plane while the path, cliff terrain, and supporting landscape overlap into the distance.',
+    poseAndComposition:
+      'Preserve the recognizable symbolic relationship and narrative role while allowing naturalistic pose refinement, cinematic depth, perspective, and lighting.',
+    referenceAsset,
+    referenceRule:
+      'Use the normalized RWS card only as a semantic identity reference; do not reconstruct its pixels or rigidly trace its pose.',
+  };
   return {
     arcana,
     canonicalName,
@@ -1274,19 +1298,38 @@ function createEntry({
     reviewStatus: 'not-reviewed',
     sourceReferenceId: `rws-public-domain-v1:${id}`,
     promptId: `${PRODUCTION_VERSIONS.prompts}:${id}`,
-    styleVersion: PRODUCTION_VERSIONS.style,
-    compositionReference: compositionReference(description, tone, referenceAsset, arcana),
+    styleVersion: isGoldenMaster ? PRODUCTION_VERSIONS.goldenStyle : PRODUCTION_VERSIONS.style,
+    compositionReference: isGoldenMaster
+      ? goldenMasterComposition
+      : compositionReference(description, tone, referenceAsset, arcana),
     symbolismChecklist: symbols,
     requiredObjects: objects,
-    forbiddenChanges: [
-      ...commonForbiddenChanges,
-      `Do not weaken or replace the card-specific emotional identity: ${tone}.`,
-    ],
+    forbiddenChanges: isGoldenMaster
+      ? [
+          'Do not remove, duplicate, mirror, or make ambiguous any of the six primary symbols.',
+          'Do not rigidly trace or reconstruct the classic scan; preserve semantic identity while refining pose and perspective naturally.',
+          'Do not bake a card frame, title, numeral, watermark, logo, or other text into the illustration.',
+          'Do not replace luminous optimism and slight danger with generic dark-fantasy gloom.',
+        ]
+      : [
+          ...commonForbiddenChanges,
+          `Do not weaken or replace the card-specific emotional identity: ${tone}.`,
+        ],
     paletteFamily: suit ?? 'major',
     lightingFamily: suit ? `${suit}-cinematic` : 'major-symbolic',
     depthFamily:
       arcana === 'major' ? 'ceremonial-depth' : number >= 11 ? 'court-depth' : 'narrative-depth',
     outputPath: `premium-production/candidates/${id}-v1.jpg`,
+    isGoldenMaster,
+    ...(isGoldenMaster
+      ? {
+          goldenMasterStatus: 'not-started',
+          goldenMasterVersion: PRODUCTION_VERSIONS.goldenMaster,
+          goldenMasterCandidateVersion: 1,
+          goldenMasterStyleVersion: PRODUCTION_VERSIONS.goldenStyle,
+          goldenMasterReviewStatus: 'not-reviewed',
+        }
+      : {}),
     version: 1,
   };
 }

@@ -1,0 +1,72 @@
+{
+  "version": "premium-tarot-style-v2",
+  "status": "golden-master-candidate",
+  "supersedesForGoldenMaster": "premium-tarot-style-v1",
+  "sourceGuide": "src/assets/tarot/PREMIUM_ARTWORK_STYLE_GUIDE.md",
+  "medium": "Museum-quality hand-painted digital oil and gouache realism with controlled brush texture, natural surface variation, and subtly stylized dimensional depth.",
+  "matureTone": "Elegant, mystical, luminous, tactile, timeless, and emotionally specific; mature visual storytelling without generic fantasy spectacle or an obvious AI-generated look.",
+  "realismLevel": "Anatomically credible painted realism with individual natural faces, believable hands and feet, weighted posture, and subtle expression; never photographic, plastic, waxen, mannequin-like, or idealized into a generic beauty face.",
+  "materialRendering": [
+    "believable fabric weight with woven textile texture and construction-aware folds",
+    "realistic worn leather with controlled edge response",
+    "weathered grain-bearing wood",
+    "cold porous stone with natural fractures and mineral variation",
+    "living vegetation with specific structure rather than decorative noise",
+    "natural dog fur responding coherently to light and movement",
+    "believable skin with painterly variation and subsurface warmth",
+    "controlled aged-metal response only where metal is compositionally present"
+  ],
+  "lighting": "Restrained cinematic illumination motivated by the scene, with natural bounce, readable shadow detail, atmospheric separation, and subtle antique-gold highlights; no HDR, theatrical bloom, or synthetic orange-and-teal grading.",
+  "contrast": "Rich but controlled value structure with legible anatomy and symbols, protected highlights, open shadow color, and no oversaturation.",
+  "depth": "Strong foreground, subject, midground, background, atmosphere, and sky separation using perspective, overlap, occlusion, value, edge control, scale, and atmospheric light; never simulate depth by indiscriminate blur.",
+  "collectibleQuality": "Expensive collectible-card illustration quality comes from composition, tactile materials, focal hierarchy, painterly finish, and restrained luminous accents; the application alone supplies the physical shell and frame.",
+  "framing": "Portrait 7:12 illustration-only artwork with compositionally useful breathing room and safe edges around every identity anchor. No title, numeral, border, frame, transparent edge, watermark, or UI.",
+  "paletteFamilies": {
+    "major": "Parchment neutrals, muted natural reds, soft living greens, clear mineral blue, natural earth, restrained antique-gold light, and card-specific symbolic accents.",
+    "wands": "Warm earth, ochre, amber, restrained ember, natural foliage, and believable firelight.",
+    "cups": "Mineral blue, muted teal, pearl, silver, natural water reflections, and gentle warm skin tones.",
+    "swords": "Cool neutral, steel, blue-grey, storm light, and small natural warm counterpoints.",
+    "pentacles": "Olive, umber, moss, parchment, soil, stone, textile, and restrained old gold."
+  },
+  "lightingFamilies": {
+    "major-symbolic": "Card-specific natural or ceremonial light with restrained gold response and lucid atmosphere; The Fool uses warm high-altitude sunlight and an open bright sky rather than dark-fantasy gloom.",
+    "wands-cinematic": "Warm scene-motivated light with grounded earthen bounce and readable silhouettes.",
+    "cups-cinematic": "Cool ambient water light with pearl highlights and natural warm focal skin light.",
+    "swords-cinematic": "Cool directional sky or storm light with controlled metal response and readable values.",
+    "pentacles-cinematic": "Natural golden-hour or soft overcast light revealing earth, stone, vegetation, textile, and aged metal."
+  },
+  "depthFamilies": {
+    "ceremonial-depth": "Six readable planes—foreground, main subject, midground, background, atmosphere, and sky—organized through perspective and light while keeping symbolic hierarchy immediate.",
+    "court-depth": "Portrait-led staging with tactile nearby emblems, spatially separated throne or mount, and specific environment.",
+    "narrative-depth": "Readable near-field action, distinct figure and object planes, and specific architecture or landscape."
+  },
+  "globalNegativeConstraints": [
+    "no text inside artwork",
+    "no card title or Roman numeral",
+    "no baked card frame, border, UI, logo or watermark",
+    "no anime, manga, cartoon proportions or childish fantasy",
+    "no cyberpunk, science-fiction technology, purple fantasy glow or hyper-neon palette",
+    "no generic AI fantasy scene replacing the recognizable Tarot identity",
+    "no modern clothing or technology unless explicitly canonical",
+    "no excessive particles, rarity effects, explosions, bloom or magical spectacle",
+    "no plastic skin, wax face, mannequin anatomy or generic AI beauty face",
+    "no extra limbs, malformed hands or feet, duplicated characters or fused objects",
+    "no missing, added, duplicated, mirrored or unreadable primary symbols",
+    "no random zodiac, alchemical or occult symbols not required by the card",
+    "no generic fantasy armor unless symbolically appropriate",
+    "no cropped mandatory subject, object, gesture, terrain, horizon or celestial element",
+    "no oversaturation, HDR treatment, synthetic orange-and-teal grading or crushed shadow detail",
+    "no indiscriminate background blur used to fake dimensional depth",
+    "no overly glossy, airbrushed or uniformly smooth material rendering"
+  ],
+  "outputContract": {
+    "canonicalOrientation": "upright",
+    "colorSpace": "sRGB",
+    "masterMinimumHeight": 2400,
+    "masterMinimumWidth": 1400,
+    "masterRatio": "7:12",
+    "metadataPolicy": "Strip unnecessary metadata from processed review and runtime files.",
+    "runtimeFormat": "jpeg",
+    "runtimePolicy": "Keep the proven JPEG workflow until alternative-format processing, quality, and browser support are explicitly validated."
+  }
+}

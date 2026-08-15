@@ -1,0 +1,33 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "major-empress",
+  "artworkVersion": 1,
+  "candidateChecksum": "fa782edcf29a15bb665467c822b04d18418fb2da6b324bfec4ed807f0dfad9ea",
+  "styleVersion": "premium-tarot-style-v1",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  }
+}

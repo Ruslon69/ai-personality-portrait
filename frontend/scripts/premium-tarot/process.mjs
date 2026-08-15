@@ -27,10 +27,20 @@ if (!cardId || !sourcePath || extras.length || !isAbsolute(sourcePath)) {
       ],
       { stdio: 'inherit' },
     );
-    const reviewScript = cardId === 'major-fool' ? 'golden-review.mjs' : 'contact-sheet.mjs';
-    execFileSync(process.execPath, [resolve(import.meta.dirname, reviewScript)], {
-      stdio: 'inherit',
-    });
+    if (cardId === 'major-fool') {
+      execFileSync(process.execPath, [resolve(import.meta.dirname, 'golden-review.mjs')], {
+        stdio: 'inherit',
+      });
+    } else {
+      execFileSync(process.execPath, [resolve(import.meta.dirname, 'contact-sheet.mjs')], {
+        stdio: 'inherit',
+      });
+      execFileSync(
+        process.execPath,
+        [resolve(import.meta.dirname, 'candidate-review.mjs'), cardId],
+        { stdio: 'inherit' },
+      );
+    }
   } catch (error) {
     process.stderr.write(`Premium artwork process failed: ${error.message}\n`);
     process.exitCode = 1;

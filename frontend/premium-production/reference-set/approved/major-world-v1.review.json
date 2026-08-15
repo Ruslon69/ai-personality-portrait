@@ -1,0 +1,33 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "major-world",
+  "artworkVersion": 1,
+  "candidateChecksum": "158fdf283bb410df6ea768bf030eb57ad7e16e3d4280ae20d19e8022e8755489",
+  "styleVersion": "premium-tarot-style-v1",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  }
+}

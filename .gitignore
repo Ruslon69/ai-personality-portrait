@@ -21,6 +21,10 @@ frontend/premium-production/previews/
 frontend/premium-production/prepared/
 frontend/premium-production/reviews/
 frontend/premium-production/source/
+frontend/premium-production/.production-lock/
+frontend/premium-production/.production-lock.stale-*/
+frontend/premium-production/.release-transaction.json
+frontend/src/assets/tarot/cards/.premium-rws-remastered-staging/
 .release/*.summary.json
 *.tsbuildinfo
 

@@ -27,14 +27,44 @@ import {
   rubricPath,
   validateProductionManifest,
 } from './lib.mjs';
+import {
+  readReferenceCoverage,
+  readReferenceSet,
+  readSourceNumberMap,
+  validateReferenceProduction,
+} from './mass-production.mjs';
+import {
+  canonicalIdentityPassIds,
+  readCanonicalIdentityManifest,
+  validateCanonicalApprovalProvenance,
+  validateCanonicalIdentityManifest,
+} from './canonical-identity.mjs';
+import { validateActiveApprovalProvenance } from './approval-provenance.mjs';
+import { validatePremiumReleaseRecords } from './release-integrity.mjs';
 
-const [manifest, rubric, goldenReference, pilotMatrix] = await Promise.all([
-  readProductionManifest(),
-  readJson(rubricPath),
-  readJson(goldenReferencePath),
-  readJson(pilotDirectionPath),
-]);
+const [manifest, rubric, goldenReference, pilotMatrix, canonicalIdentityManifest] =
+  await Promise.all([
+    readProductionManifest(),
+    readJson(rubricPath),
+    readJson(goldenReferencePath),
+    readJson(pilotDirectionPath),
+    readCanonicalIdentityManifest(),
+  ]);
 const failures = await validateProductionManifest(manifest);
+const [referenceSet, referenceCoverage, sourceMap] = await Promise.all([
+  readReferenceSet(),
+  readReferenceCoverage(),
+  readSourceNumberMap(),
+]);
+failures.push(
+  ...(await validateReferenceProduction(manifest, referenceSet, referenceCoverage, sourceMap)),
+  ...validateCanonicalIdentityManifest(canonicalIdentityManifest, manifest, sourceMap),
+  ...(await validateCanonicalApprovalProvenance(manifest, canonicalIdentityManifest)),
+  ...(await validateActiveApprovalProvenance(manifest, canonicalIdentityManifest)),
+);
+if (JSON.stringify(rubric.canonicalIdentityPasses) !== JSON.stringify(canonicalIdentityPassIds)) {
+  failures.push('Review rubric canonical identity passes differ from the locked QA contract.');
+}
 const propagatedPilotIds = PILOT_CARD_IDS.filter((cardId) => cardId !== 'major-fool');
 const golden = manifest.cards.find((card) => card.cardId === 'major-fool');
 const expectedGoldenChecksum = '8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f';
@@ -154,14 +184,8 @@ for (const cardId of PILOT_CARD_IDS) {
       failures.push(`${cardId}: pilot generation handoff is missing or non-deterministic.`);
     }
     if (
-      card.productionStatus !== 'prompt-ready-v2' ||
-      card.reviewStatus !== 'not-reviewed' ||
       card.styleVersion !== PRODUCTION_VERSIONS.goldenStyle ||
-      JSON.stringify(card.goldenMasterLineage) !== JSON.stringify(expectedLineage) ||
-      card.checksum ||
-      card.candidateMetadata ||
-      card.reviewPath ||
-      card.sourcePath
+      JSON.stringify(card.goldenMasterLineage) !== JSON.stringify(expectedLineage)
     ) {
       failures.push(`${cardId}: propagated pilot state or Golden Master lineage is invalid.`);
     }
@@ -264,14 +288,27 @@ for (const direction of pilotMatrix.cards) {
   }
 }
 
-const nonPilotCards = manifest.cards.filter((card) => !PILOT_CARD_IDS.includes(card.cardId));
+const plannedReferenceIds = new Set(
+  referenceSet.cards.filter((card) => card.role === 'reference-target').map((card) => card.cardId),
+);
 if (
-  nonPilotCards.length !== 70 ||
-  nonPilotCards.some(
-    (card) => card.productionStatus !== 'pending' || card.reviewStatus !== 'not-reviewed',
-  )
+  [...plannedReferenceIds].some((cardId) => {
+    const card = manifest.cards.find((candidate) => candidate.cardId === cardId);
+    const allowedTargetStates = new Map([
+      ['prompt-ready-v2', 'not-reviewed'],
+      ['generated', 'not-reviewed'],
+      ['processing', 'not-reviewed'],
+      ['review', 'needs-review'],
+      ['rejected', 'rejected'],
+    ]);
+    return (
+      allowedTargetStates.get(card.productionStatus) !== card.reviewStatus ||
+      card.styleVersion !== PRODUCTION_VERSIONS.goldenStyle ||
+      card.promptId !== `${PRODUCTION_VERSIONS.referenceTargets}:${cardId}`
+    );
+  })
 ) {
-  failures.push('The 70 non-pilot cards must remain pending and not reviewed.');
+  failures.push('Planned reference targets must remain unapproved with valid v2 lineage.');
 }
 
 const rightsSource = await readFile(
@@ -312,6 +349,10 @@ if (
   (release.mode !== 'premium-complete' || release.records.length !== 78)
 ) {
   failures.push('premium-complete requires exactly 78 runtime release records.');
+}
+
+if (release.mode === 'premium-complete') {
+  failures.push(...validatePremiumReleaseRecords(release.records, productionIds));
 }
 
 if (manifest.releaseMode === 'premium-complete') {

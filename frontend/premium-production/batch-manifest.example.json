@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "premium-tarot-batch-v1",
+  "sourceDirectory": "/absolute/path/to/numeric-images",
+  "entries": [
+    { "sourceNumber": 16, "cardId": "major-empress" },
+    { "sourceNumber": 17, "cardId": "major-emperor" }
+  ]
+}

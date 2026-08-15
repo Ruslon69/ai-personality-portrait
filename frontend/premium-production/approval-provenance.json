@@ -1,0 +1,248 @@
+{
+  "schemaVersion": "premium-tarot-approval-provenance-v1",
+  "purpose": "Explicit immutable binding for legitimate approvals completed before strict bound-review-v1 enforcement.",
+  "records": [
+    {
+      "cardId": "major-magician",
+      "artworkVersion": 2,
+      "candidateChecksum": "3fbdf69669ab18a13252802b9a2ceb52ee43db0951f688731cffe32387af07dc",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/reference-set/approved/major-magician-v2.review.json",
+      "reviewArtifactChecksum": "a6686193d9ef973e612fb73bd6ac7fa34d51db3b203c0c7c00ff241eaface52b",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "major-high-priestess",
+      "artworkVersion": 1,
+      "candidateChecksum": "ffa371426fefbf8f7ffc4f63db8b4c017e653ff7d44f2fa2b23ca8cf72062d22",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/reference-set/approved/major-high-priestess-v1.review.json",
+      "reviewArtifactChecksum": "3bd6112722563f5d12762319abe2285ca9de8d3d10c380137408a1cb1d3c70ff",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "major-empress",
+      "artworkVersion": 2,
+      "candidateChecksum": "198a6e8f91b105f907a116da2ee95577d1a68f502d79ae8e97e31164bfc3b5ac",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/approved/major-empress-v2.review.json",
+      "reviewArtifactChecksum": "2dc157dbed69a9c26b39cc73c31ca7adbadb3eec3fa31c365a6f22a54f39be14",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "major-emperor",
+      "artworkVersion": 2,
+      "candidateChecksum": "63cc0b2cc6f423cc9c3dac588049264e383b4ee9b5e20082076cbd59ccfa310f",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/approved/major-emperor-v2.review.json",
+      "reviewArtifactChecksum": "30abc61c54317abcef1878c3e531044886d6080123dd7bb05ef11c418abc29d8",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "major-hierophant",
+      "artworkVersion": 2,
+      "candidateChecksum": "167ca1d14bafb7b443ae392c5dda0463a75eb6907b12de1398d64028b66c9f2b",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/approved/major-hierophant-v2.review.json",
+      "reviewArtifactChecksum": "3252deeaab53a48f031f0ae422495becf0fa43cc3b68c2d31cf487ac4dde8403",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": false
+    },
+    {
+      "cardId": "major-lovers",
+      "artworkVersion": 1,
+      "candidateChecksum": "031f558363f6a674ffa475dad90570f38c25d39952bf76f7f802018a028e056c",
+      "styleVersion": "premium-tarot-style-v1",
+      "reviewPath": "premium-production/reference-set/approved/major-lovers-v1.review.json",
+      "reviewArtifactChecksum": "2b18c323ab0244b001489520b98d8791ed8be683e47d0d3bc1f3ce2e9ed0183a",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "major-chariot",
+      "artworkVersion": 1,
+      "candidateChecksum": "7b8934f7573e93e24eee4883b4a356c1e364687c88327dd0901b9d7fd6190246",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/approved/major-chariot-v1.review.json",
+      "reviewArtifactChecksum": "af8a62f0ee5460d258f411cf69123f69057a0c0d4f7215baf6c38df4927664fc",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": false
+    },
+    {
+      "cardId": "major-strength",
+      "artworkVersion": 1,
+      "candidateChecksum": "a255835421dd733ca5579d84ac5d309e4c62bcdcd1097a15940bb6faa1c3280e",
+      "styleVersion": "premium-tarot-style-v1",
+      "reviewPath": "premium-production/reference-set/approved/major-strength-v1.review.json",
+      "reviewArtifactChecksum": "a74a316ed6f3f8ac2afae266fdd11b98739f80cdf01f80907b9f3f8e4fd01187",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "major-hermit",
+      "artworkVersion": 1,
+      "candidateChecksum": "96cb0e3a8bee2e8679ccf88bf4127543a29e9114acb9c1f05a789cde75bee0cc",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/reference-set/approved/major-hermit-v1.review.json",
+      "reviewArtifactChecksum": "49701630c72a88ed20aca2b61886094f949ea30cebc6c40979dce7568a8c3f41",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "major-wheel",
+      "artworkVersion": 1,
+      "candidateChecksum": "a1d3eb8f5c87eed1993c26d98855917961470b75f25b08bba32be65c287dbbd8",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/reference-set/approved/major-wheel-v1.review.json",
+      "reviewArtifactChecksum": "861c996ae722ae6ca03a70bf52c01252505d3342b5ad4ee4c42031712889144c",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "major-justice",
+      "artworkVersion": 1,
+      "candidateChecksum": "4697a47413e0429c20188a8766865a6da849905f3180eed75784012282759530",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/approved/major-justice-v1.review.json",
+      "reviewArtifactChecksum": "20fd16a013784122a60fa23d63958e7b162a3b98bdb59e553c9d599ebb85c4be",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": false
+    },
+    {
+      "cardId": "major-hanged-man",
+      "artworkVersion": 1,
+      "candidateChecksum": "48c9eac647f110dffec07362e5e4202478ea048939c3ff72155ae74436145fb4",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/approved/major-hanged-man-v1.review.json",
+      "reviewArtifactChecksum": "fb4c1e6a4d27a03d1c72614b35981739ddb56f02a546fe360b27c367459a78a9",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": false
+    },
+    {
+      "cardId": "major-death",
+      "artworkVersion": 1,
+      "candidateChecksum": "b09575929403fa05355f361a5c0053f35628cb6584a7fcedbbe5289e9ca04b53",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/reference-set/approved/major-death-v1.review.json",
+      "reviewArtifactChecksum": "cfbc9c5f8ece81e4fcf0cc52a8b1293e92f14a2aa4a843c488cacba18dd8975d",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "major-temperance",
+      "artworkVersion": 1,
+      "candidateChecksum": "258fad35db6d5ee2dbb201cc65c21c55313c15fa930409b7238f6f1c5ab29ac6",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/approved/major-temperance-v1.review.json",
+      "reviewArtifactChecksum": "62eba2faf44cd96f4c1a15b3558eff8fce30a828b889e6bd5a25d1e9a364dc5d",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": false
+    },
+    {
+      "cardId": "major-devil",
+      "artworkVersion": 1,
+      "candidateChecksum": "0e250d902d302ede94224e6a230589c15bba0789a86e6614f316f26a688799ea",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/approved/major-devil-v1.review.json",
+      "reviewArtifactChecksum": "96da374cac5aeacc2a9f0b2e79454847d8aff495d8f528873f0e3653552a07b9",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": false
+    },
+    {
+      "cardId": "major-tower",
+      "artworkVersion": 1,
+      "candidateChecksum": "681c7c76a159b9b5c8dd1074f6b401fd112213b0a822e91dcbc65504be797c21",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/reference-set/approved/major-tower-v1.review.json",
+      "reviewArtifactChecksum": "338646b859f12dad6c09a63cde5806440ff3366dc39daecca59b2a1b1880f6fd",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "major-star",
+      "artworkVersion": 1,
+      "candidateChecksum": "75812b73699e59dd4cdf355b58efed4d804602fe13a98a6e2b440e3bb50c03b1",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/reference-set/approved/major-star-v1.review.json",
+      "reviewArtifactChecksum": "5d3c3074e0fb87fc7aa6325c18baba1a61694b4e019670b49ec73f3209c001d9",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "major-moon",
+      "artworkVersion": 1,
+      "candidateChecksum": "e10c70aee3bc4e35586b753297091d4909cb017df9f2538fff9be3b078ba50c3",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/reference-set/approved/major-moon-v1.review.json",
+      "reviewArtifactChecksum": "8950a04f58d49f8c045b1a87308c70b2003980a93ea4f19b3b8c45797d764929",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "major-sun",
+      "artworkVersion": 1,
+      "candidateChecksum": "6475eb809988b5c08ef9ff898e5eec86ceb4d368afed3b3510a1ee64785538b3",
+      "styleVersion": "premium-tarot-style-v1",
+      "reviewPath": "premium-production/reference-set/approved/major-sun-v1.review.json",
+      "reviewArtifactChecksum": "11955c0588fe4bd875efed85783a8e86cf2df53c4962a132e48896512cb64adf",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "major-world",
+      "artworkVersion": 1,
+      "candidateChecksum": "158fdf283bb410df6ea768bf030eb57ad7e16e3d4280ae20d19e8022e8755489",
+      "styleVersion": "premium-tarot-style-v1",
+      "reviewPath": "premium-production/reference-set/approved/major-world-v1.review.json",
+      "reviewArtifactChecksum": "e8d8a3835e664396a05a9b15741fcf8c74d2ba06df0c4d8930efe8552a0ee868",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "cups-ace",
+      "artworkVersion": 1,
+      "candidateChecksum": "da5a6322ad70305696edda7dd8d4e795e7fd5e6e6ed23a4762045b876fe7c1d7",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/reference-set/approved/cups-ace-v1.review.json",
+      "reviewArtifactChecksum": "afd9b22bf33a3ababbbd049e5118e68c39ca24759042e4a3debe7a4f6a2b2ade",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    },
+    {
+      "cardId": "swords-three",
+      "artworkVersion": 1,
+      "candidateChecksum": "ea801c182c9ae60d8e36b36a999bda95868b67f4554cefe6e83c09c674cc8b7c",
+      "styleVersion": "premium-tarot-style-v2",
+      "reviewPath": "premium-production/reference-set/approved/swords-three-v1.review.json",
+      "reviewArtifactChecksum": "16226a74eeb49f49273125713aca0c3ceed280cc7c2b8d66a1828ce289e8675c",
+      "reviewVersion": "premium-tarot-review-v1",
+      "reviewer": "Ruslan",
+      "canonicalIdentityGrandfathered": true
+    }
+  ]
+}

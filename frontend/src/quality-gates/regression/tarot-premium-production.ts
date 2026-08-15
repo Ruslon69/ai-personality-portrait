@@ -26,6 +26,7 @@ const productionStatuses = [
   'processing',
   'review',
   'approved',
+  'replacement-required',
   'rejected',
   'integrated',
 ];
@@ -72,6 +73,9 @@ type PremiumProductionCard = {
     goldenMasterChecksum: string;
     goldenMasterReferenceVersion: string;
   };
+  productionStyleLineage?: {
+    styleVersion: string;
+  };
   isGoldenMaster: boolean;
   outputPath: string;
   productionStatus: string;
@@ -102,6 +106,15 @@ export function runTarotPremiumProductionGate(rootDir: string) {
   const pilotMatrix = JSON.parse(
     readFileSync(resolve(productionRoot, 'pilot-art-direction.json'), 'utf8'),
   );
+  const referenceSet = JSON.parse(
+    readFileSync(resolve(productionRoot, 'reference-set/manifest.json'), 'utf8'),
+  );
+  const referenceCoverage = JSON.parse(
+    readFileSync(resolve(productionRoot, 'reference-set/coverage-matrix.json'), 'utf8'),
+  );
+  const sourceNumberMap = JSON.parse(
+    readFileSync(resolve(productionRoot, 'source-number-map.json'), 'utf8'),
+  );
   const visualBible = readFileSync(
     resolve(productionRoot, 'GOLDEN_MASTER_VISUAL_LANGUAGE.md'),
     'utf8',
@@ -117,6 +130,66 @@ export function runTarotPremiumProductionGate(rootDir: string) {
     execFileSync(
       process.execPath,
       [resolve(rootDir, 'scripts/premium-tarot/test-production-state.mjs'), '--json'],
+      { encoding: 'utf8' },
+    )
+      .trim()
+      .split('\n')
+      .at(-1) ?? '{}',
+  );
+  const candidateVersioningResult = JSON.parse(
+    execFileSync(
+      process.execPath,
+      [resolve(rootDir, 'scripts/premium-tarot/test-candidate-versioning.mjs'), '--json'],
+      { encoding: 'utf8' },
+    )
+      .trim()
+      .split('\n')
+      .at(-1) ?? '{}',
+  );
+  const reviewWorkflowResult = JSON.parse(
+    execFileSync(
+      process.execPath,
+      [resolve(rootDir, 'scripts/premium-tarot/test-review-workflow.mjs'), '--json'],
+      { encoding: 'utf8' },
+    )
+      .trim()
+      .split('\n')
+      .at(-1) ?? '{}',
+  );
+  const referenceProductionResult = JSON.parse(
+    execFileSync(
+      process.execPath,
+      [resolve(rootDir, 'scripts/premium-tarot/test-reference-production.mjs'), '--json'],
+      { encoding: 'utf8' },
+    )
+      .trim()
+      .split('\n')
+      .at(-1) ?? '{}',
+  );
+  const supersedeResult = JSON.parse(
+    execFileSync(
+      process.execPath,
+      [resolve(rootDir, 'scripts/premium-tarot/test-supersede.mjs'), '--json'],
+      { encoding: 'utf8' },
+    )
+      .trim()
+      .split('\n')
+      .at(-1) ?? '{}',
+  );
+  const canonicalIdentityResult = JSON.parse(
+    execFileSync(
+      process.execPath,
+      [resolve(rootDir, 'scripts/premium-tarot/test-canonical-identity.mjs'), '--json'],
+      { encoding: 'utf8' },
+    )
+      .trim()
+      .split('\n')
+      .at(-1) ?? '{}',
+  );
+  const productionIntegrityResult = JSON.parse(
+    execFileSync(
+      process.execPath,
+      [resolve(rootDir, 'scripts/premium-tarot/test-production-integrity.mjs'), '--json'],
       { encoding: 'utf8' },
     )
       .trim()
@@ -176,6 +249,52 @@ export function runTarotPremiumProductionGate(rootDir: string) {
     message: 'Lifecycle regression fixtures must enforce prompt, review, and approved boundaries.',
   });
   assertions.assert(
+    candidateVersioningResult.passed === true && candidateVersioningResult.assertions >= 9,
+    {
+      actual: candidateVersioningResult,
+      code: 'premium-production-candidate-versioning-regressions',
+      message:
+        'Candidate versioning must preserve history, idempotency, and atomic failure safety.',
+    },
+  );
+  assertions.assert(reviewWorkflowResult.passed === true && reviewWorkflowResult.assertions >= 8, {
+    actual: reviewWorkflowResult,
+    code: 'premium-production-review-workflow-regressions',
+    message: 'Candidate review pages must load and save exact versioned review records.',
+  });
+  assertions.assert(
+    referenceProductionResult.passed === true && referenceProductionResult.assertions >= 12,
+    {
+      actual: referenceProductionResult,
+      code: 'premium-production-reference-regressions',
+      message:
+        'Reference membership, queue, batch idempotency, history, and release safety must pass.',
+    },
+  );
+  assertions.assert(supersedeResult.passed === true && supersedeResult.assertions >= 11, {
+    actual: supersedeResult,
+    code: 'premium-production-supersede-regressions',
+    message:
+      'Approved replacements must preserve immutable history, version safely, and retain classic release safety.',
+  });
+  assertions.assert(
+    canonicalIdentityResult.passed === true && canonicalIdentityResult.assertions >= 19,
+    {
+      actual: canonicalIdentityResult,
+      code: 'premium-production-canonical-identity-regressions',
+      message:
+        'Production numbering and canonical Tarot identity must remain independently locked.',
+    },
+  );
+  assertions.assert(
+    productionIntegrityResult.passed === true && productionIntegrityResult.assertions >= 16,
+    {
+      actual: productionIntegrityResult,
+      code: 'premium-production-integrity-hardening',
+      message: 'Premium production integrity, release recovery, and writer locking must pass.',
+    },
+  );
+  assertions.assert(
     manifest.releaseThreshold?.approved === 78 &&
       manifest.releaseThreshold?.canonicalIds === 78 &&
       manifest.releaseThreshold?.rejectedActive === 0 &&
@@ -191,6 +310,15 @@ export function runTarotPremiumProductionGate(rootDir: string) {
 
   cards.forEach((card) => {
     const composition = card.compositionReference;
+    const referenceMetadata = referenceSet.cards.find(
+      (entry: { cardId: string; role: string; styleVersion: string }) =>
+        entry.cardId === card.cardId,
+    );
+    const referenceV2Target =
+      referenceMetadata &&
+      !pilotIds.includes(card.cardId) &&
+      referenceMetadata.styleVersion === 'premium-tarot-style-v2';
+    const fullProductionV2 = card.productionStyleLineage?.styleVersion === 'premium-tarot-style-v2';
     assertions.assert(
       Boolean(card.canonicalName) &&
         ['major', 'minor'].includes(card.arcana) &&
@@ -200,9 +328,15 @@ export function runTarotPremiumProductionGate(rootDir: string) {
         card.promptId ===
           (pilotIds.includes(card.cardId) && !card.isGoldenMaster
             ? `premium-tarot-pilot-prompts-v2:${card.cardId}`
-            : `premium-tarot-prompts-v1:${card.cardId}`) &&
+            : referenceV2Target
+              ? `premium-tarot-reference-targets-v2:${card.cardId}`
+              : fullProductionV2
+                ? `premium-tarot-full-production-v2:${card.cardId}`
+                : `premium-tarot-prompts-v1:${card.cardId}`) &&
         card.styleVersion ===
-          (pilotIds.includes(card.cardId) ? 'premium-tarot-style-v2' : 'premium-tarot-style-v1') &&
+          (pilotIds.includes(card.cardId) || referenceV2Target || fullProductionV2
+            ? 'premium-tarot-style-v2'
+            : 'premium-tarot-style-v1') &&
         Number.isInteger(card.version),
       {
         code: `premium-production-record-${card.cardId}`,
@@ -318,28 +452,46 @@ export function runTarotPremiumProductionGate(rootDir: string) {
     propagatedCards.length === 7 &&
       propagatedCards.every(
         (card) =>
-          card.productionStatus === 'prompt-ready-v2' &&
-          card.reviewStatus === 'not-reviewed' &&
           card.styleVersion === 'premium-tarot-style-v2' &&
-          JSON.stringify(card.goldenMasterLineage) === JSON.stringify(expectedLineage) &&
-          !card.checksum &&
-          !card.reviewPath,
+          JSON.stringify(card.goldenMasterLineage) === JSON.stringify(expectedLineage),
       ),
     {
       code: 'premium-production-pilot-lineage-state',
-      message: 'Seven propagated pilots require approved Fool lineage without false artwork state.',
+      message: 'Seven propagated pilots require approved Fool lineage through lifecycle changes.',
+    },
+  );
+  const allReferenceIds = new Set(
+    referenceSet.cards.map((card: { cardId: string }) => card.cardId),
+  );
+  assertions.assert(
+    cards
+      .filter((card) => allReferenceIds.has(card.cardId))
+      .every((card) => card.productionStatus === 'approved' && card.reviewStatus === 'approved') &&
+      allReferenceIds.size === 15,
+    {
+      code: 'premium-production-reference-target-state',
+      message: 'The complete reference set must retain all fifteen human approvals.',
     },
   );
   assertions.assert(
-    cards.filter((card) => !pilotIds.includes(card.cardId)).length === 70 &&
-      cards
-        .filter((card) => !pilotIds.includes(card.cardId))
-        .every(
-          (card) => card.productionStatus === 'pending' && card.reviewStatus === 'not-reviewed',
-        ),
+    referenceSet.cards.length === 15 &&
+      new Set(referenceSet.cards.map((card: { cardId: string }) => card.cardId)).size === 15 &&
+      referenceSet.cards.filter((card: { role: string }) => card.role === 'golden-master')
+        .length === 1 &&
+      referenceCoverage.cards.length === 15 &&
+      sourceNumberMap.schemaVersion === 'premium-tarot-locked-production-sequence-v1' &&
+      sourceNumberMap.records.length === 78 &&
+      new Set(
+        sourceNumberMap.records.map((item: { sequenceNumber: number }) => item.sequenceNumber),
+      ).size === 78 &&
+      new Set(sourceNumberMap.records.map((item: { cardId: string }) => item.cardId)).size === 78 &&
+      new Set(
+        sourceNumberMap.records.map((item: { sourceFilename: string }) => item.sourceFilename),
+      ).size === 78,
     {
-      code: 'premium-production-nonpilot-state',
-      message: 'The other 70 cards must remain pending and unreviewed.',
+      code: 'premium-production-reference-model',
+      message:
+        'The completed reference model and locked 78-card production sequence must be unique.',
     },
   );
 

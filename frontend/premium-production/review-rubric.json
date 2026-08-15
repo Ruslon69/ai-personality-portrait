@@ -29,7 +29,16 @@
     "canonicalOrientationUpright",
     "reviewerExplicitApproval"
   ],
+  "canonicalIdentityPasses": [
+    "canonicalTitleCorrect",
+    "canonicalNumeralOrRankCorrect",
+    "noProductionSequenceAsTarotNumber",
+    "cardIdentityImmediatelyRecognizable"
+  ],
   "rejectionCategories": [
+    "canonical-identity",
+    "canonical-number",
+    "canonical-title",
     "missing-symbol",
     "weak-recognizability",
     "wrong-composition",

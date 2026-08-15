@@ -42,6 +42,8 @@ jobs:
         run: npm run build
       - name: Quality gates
         run: npm run quality -- --report=reports/quality-gates.json
+      - name: Premium Tarot tracked-state validation
+        run: npm run tarot:premium:validate
       - name: Production dependency audit
         run: npm audit --omit=dev
       - name: Upload quality report

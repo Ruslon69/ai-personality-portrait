@@ -9,6 +9,7 @@ import {
   resolveFrontendPath,
   validateProductionManifest,
 } from './lib.mjs';
+import { readReferenceSet } from './mass-production.mjs';
 
 const results = [];
 const clone = (value) => JSON.parse(JSON.stringify(value));
@@ -18,6 +19,7 @@ function check(condition, name) {
 }
 
 const manifest = await readProductionManifest();
+const referenceSet = await readReferenceSet();
 const failures = await validateProductionManifest(manifest);
 check(failures.length === 0, 'tracked approved production state validates');
 
@@ -30,18 +32,30 @@ check(
   'approved Golden Master requires tracked artwork and review files',
 );
 
-const promptCard = findProductionCard(manifest, 'major-magician');
+const promptManifest = clone(manifest);
+const promptCard = findProductionCard(promptManifest, 'major-high-priestess');
+Object.assign(promptCard, {
+  productionStatus: 'prompt-ready-v2',
+  reviewStatus: 'not-reviewed',
+  checksum: undefined,
+  candidateMetadata: undefined,
+  outputPath: 'premium-production/candidates/fixture-prompt.jpg',
+  previewPath: undefined,
+  reviewPath: undefined,
+  sourcePath: undefined,
+  approvedBy: undefined,
+  approvalNotes: undefined,
+});
 check(
   promptCard.productionStatus === 'prompt-ready-v2' &&
     promptCard.reviewStatus === 'not-reviewed' &&
     !promptCard.checksum &&
-    !promptCard.reviewPath &&
-    !existsSync(resolveFrontendPath(promptCard.outputPath)),
+    !promptCard.reviewPath,
   'prompt-ready card does not require generated artwork',
 );
 
-const invalidPromptManifest = clone(manifest);
-findProductionCard(invalidPromptManifest, 'major-magician').checksum = 'not-generated';
+const invalidPromptManifest = clone(promptManifest);
+findProductionCard(invalidPromptManifest, 'major-high-priestess').checksum = 'not-generated';
 const invalidPromptFailures = await validateProductionManifest(invalidPromptManifest, {
   checkFiles: false,
 });
@@ -69,16 +83,18 @@ const propagated = manifest.cards.filter(
 check(
   propagated.length === 7 &&
     propagated.every(
-      (card) => card.productionStatus === 'prompt-ready-v2' && card.reviewStatus === 'not-reviewed',
+      (card) =>
+        card.styleVersion === 'premium-tarot-style-v2' &&
+        card.promptId === `premium-tarot-pilot-prompts-v2:${card.cardId}`,
     ),
-  'seven propagated pilots retain prompt-only lifecycle state',
+  'seven propagated pilots retain Golden Master prompt lineage through lifecycle changes',
 );
 check(
-  manifest.cards.filter((card) => !manifest.pilotCardIds.includes(card.cardId)).length === 70 &&
-    manifest.cards
-      .filter((card) => !manifest.pilotCardIds.includes(card.cardId))
-      .every((card) => card.productionStatus === 'pending' && card.reviewStatus === 'not-reviewed'),
-  'remaining seventy cards retain pending lifecycle state',
+  referenceSet.cards.every((entry) => {
+    const card = findProductionCard(manifest, entry.cardId);
+    return card.productionStatus === 'approved' && card.reviewStatus === 'approved';
+  }),
+  'completed reference set retains all fifteen human approvals',
 );
 check(manifest.releaseMode === 'classic', 'classic release remains active');
 

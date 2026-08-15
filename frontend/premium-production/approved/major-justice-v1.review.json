@@ -1,0 +1,51 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "major-justice",
+  "artworkVersion": 1,
+  "candidateChecksum": "4697a47413e0429c20188a8766865a6da849905f3180eed75784012282759530",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "major-justice",
+    "productionSequenceNumber": 20,
+    "externalSourceFilename": "20.png",
+    "arcana": "major",
+    "canonicalDisplayTitle": "JUSTICE",
+    "canonicalDisplayValue": "XI",
+    "suit": null,
+    "rank": null,
+    "expectedArcanaIdentity": "Major Arcana XI",
+    "checks": {
+      "canonicalTitleCorrect": true,
+      "canonicalNumeralOrRankCorrect": true,
+      "noProductionSequenceAsTarotNumber": true,
+      "cardIdentityImmediatelyRecognizable": true
+    }
+  },
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  }
+}

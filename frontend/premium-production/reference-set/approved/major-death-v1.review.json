@@ -1,0 +1,33 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "major-death",
+  "artworkVersion": 1,
+  "candidateChecksum": "b09575929403fa05355f361a5c0053f35628cb6584a7fcedbbe5289e9ca04b53",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "major-hierophant",
+  "artworkVersion": 2,
+  "candidateChecksum": "167ca1d14bafb7b443ae392c5dda0463a75eb6907b12de1398d64028b66c9f2b",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "major-hierophant",
+    "productionSequenceNumber": 18,
+    "externalSourceFilename": "18.png",
+    "arcana": "major",
+    "canonicalDisplayTitle": "THE HIEROPHANT",
+    "canonicalDisplayValue": "V",
+    "suit": null,
+    "rank": null,
+    "expectedArcanaIdentity": "Major Arcana V",
+    "checks": {
+      "canonicalTitleCorrect": true,
+      "canonicalNumeralOrRankCorrect": true,
+      "noProductionSequenceAsTarotNumber": true,
+      "cardIdentityImmediatelyRecognizable": true
+    }
+  },
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  }
+}

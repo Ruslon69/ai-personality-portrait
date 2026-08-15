@@ -1,0 +1,33 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "major-hermit",
+  "artworkVersion": 1,
+  "candidateChecksum": "96cb0e3a8bee2e8679ccf88bf4127543a29e9114acb9c1f05a789cde75bee0cc",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  }
+}

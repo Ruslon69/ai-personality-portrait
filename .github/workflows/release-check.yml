@@ -68,6 +68,7 @@ jobs:
         run: |
           npm run build
           npm run quality -- --report=reports/quality-gates.json
+          npm run tarot:premium:validate
           npm audit --omit=dev
       - name: Backend checks
         working-directory: backend

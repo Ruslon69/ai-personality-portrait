@@ -1,0 +1,33 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "major-emperor",
+  "artworkVersion": 1,
+  "candidateChecksum": "991c87fec028166dfab4a95ac605bf9c92866270fe25059ded35a4b535bc6a8a",
+  "styleVersion": "premium-tarot-style-v1",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  }
+}

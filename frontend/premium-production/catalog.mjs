@@ -18,6 +18,8 @@ export const PRODUCTION_VERSIONS = {
   prompts: 'premium-tarot-prompts-v1',
   preparation: 'premium-tarot-preparation-v1',
   pilotPrompts: 'premium-tarot-pilot-prompts-v2',
+  referenceSet: 'premium-tarot-reference-set-v1',
+  referenceTargets: 'premium-tarot-reference-targets-v2',
   review: 'premium-tarot-review-v1',
   style: 'premium-tarot-style-v1',
 };

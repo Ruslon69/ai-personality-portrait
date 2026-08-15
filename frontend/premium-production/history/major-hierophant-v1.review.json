@@ -1,0 +1,33 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "major-hierophant",
+  "artworkVersion": 1,
+  "candidateChecksum": "103e3e9b1afb4d8e1b6e87bc9e053d98aa6d0667702917301acea87b9afade2d",
+  "styleVersion": "premium-tarot-style-v1",
+  "reviewer": "",
+  "notes": "",
+  "scores": {
+    "recognizability": null,
+    "symbolismCoverage": null,
+    "composition": null,
+    "visualDepth": null,
+    "lighting": null,
+    "materialQuality": null,
+    "anatomy": null,
+    "styleConsistency": null,
+    "colorConsistency": null,
+    "premiumFeel": null,
+    "cardShellCompatibility": null
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": false,
+    "noForbiddenContent": false,
+    "canonicalIdentityObvious": false,
+    "styleMatchesPilotSet": false,
+    "cropSafeAtSevenByTwelve": false,
+    "noBakedText": false,
+    "noBakedFrame": false,
+    "canonicalOrientationUpright": false,
+    "reviewerExplicitApproval": false
+  }
+}

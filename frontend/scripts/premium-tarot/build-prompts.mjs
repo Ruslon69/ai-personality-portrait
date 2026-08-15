@@ -22,13 +22,30 @@ import {
   readStyleLock,
   rubricPath,
 } from './lib.mjs';
+import {
+  canonicalIdentityForCard,
+  assertCanonicalPromptMetadata,
+  canonicalPromptMetadata,
+  readCanonicalIdentityManifest,
+  validateCanonicalIdentityManifest,
+} from './canonical-identity.mjs';
+import { readSourceNumberMap } from './mass-production.mjs';
 
-const [manifest, rubric, goldenReference, pilotMatrix] = await Promise.all([
-  readProductionManifest(),
-  readJson(rubricPath),
-  readJson(goldenReferencePath),
-  readJson(pilotDirectionPath),
-]);
+const [manifest, rubric, goldenReference, pilotMatrix, sourceMap, canonicalIdentityManifest] =
+  await Promise.all([
+    readProductionManifest(),
+    readJson(rubricPath),
+    readJson(goldenReferencePath),
+    readJson(pilotDirectionPath),
+    readSourceNumberMap(),
+    readCanonicalIdentityManifest(),
+  ]);
+const identityFailures = validateCanonicalIdentityManifest(
+  canonicalIdentityManifest,
+  manifest,
+  sourceMap,
+);
+if (identityFailures.length) throw new Error(identityFailures.join('\n'));
 await Promise.all([
   mkdir(promptsRoot, { recursive: true }),
   mkdir(pilotGenerationRoot, { recursive: true }),
@@ -52,6 +69,14 @@ const lineage = {
 const expectedFiles = PILOT_CARD_IDS.map(promptFileName).sort();
 for (const cardId of PILOT_CARD_IDS) {
   const card = findProductionCard(manifest, cardId);
+  const identity = canonicalIdentityForCard(canonicalIdentityManifest, cardId);
+  const promptMetadata = assertCanonicalPromptMetadata(canonicalPromptMetadata(identity), identity);
+  if (
+    promptMetadata.cardId !== card.cardId ||
+    promptMetadata.canonicalDisplayTitle !== card.canonicalName.toUpperCase()
+  ) {
+    throw new Error(`${cardId}: prompt metadata differs from canonical Tarot identity.`);
+  }
   const style = await readStyleLock(card.styleVersion);
   if (card.isGoldenMaster) {
     const expectedPrompt = buildPromptHandoff(card, style, rubric);

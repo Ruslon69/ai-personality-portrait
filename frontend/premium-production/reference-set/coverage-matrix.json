@@ -1,0 +1,210 @@
+{
+  "schemaVersion": "premium-tarot-reference-coverage-v1",
+  "dimensions": [
+    "male-figures",
+    "female-figures",
+    "elderly-figures",
+    "multiple-figures",
+    "children",
+    "animals",
+    "horses",
+    "lion-or-large-animal",
+    "architectural-scenes",
+    "landscape-scenes",
+    "water",
+    "night",
+    "daylight",
+    "storm",
+    "fire",
+    "celestial-elements",
+    "symbolic-object-only",
+    "portrait-or-figure-led",
+    "wide-environmental",
+    "high-action",
+    "quiet-contemplative",
+    "major-arcana-complexity",
+    "minor-arcana-symbolic-simplicity"
+  ],
+  "cards": [
+    {
+      "cardId": "major-fool",
+      "covers": [
+        "male-figures",
+        "animals",
+        "landscape-scenes",
+        "daylight",
+        "celestial-elements",
+        "portrait-or-figure-led",
+        "wide-environmental",
+        "major-arcana-complexity"
+      ]
+    },
+    {
+      "cardId": "major-magician",
+      "covers": [
+        "male-figures",
+        "landscape-scenes",
+        "daylight",
+        "portrait-or-figure-led",
+        "major-arcana-complexity"
+      ]
+    },
+    {
+      "cardId": "major-high-priestess",
+      "covers": [
+        "female-figures",
+        "architectural-scenes",
+        "night",
+        "celestial-elements",
+        "portrait-or-figure-led",
+        "quiet-contemplative",
+        "major-arcana-complexity"
+      ]
+    },
+    {
+      "cardId": "major-death",
+      "covers": [
+        "multiple-figures",
+        "children",
+        "animals",
+        "horses",
+        "architectural-scenes",
+        "landscape-scenes",
+        "water",
+        "daylight",
+        "portrait-or-figure-led",
+        "wide-environmental",
+        "high-action",
+        "major-arcana-complexity"
+      ]
+    },
+    {
+      "cardId": "major-tower",
+      "covers": [
+        "multiple-figures",
+        "architectural-scenes",
+        "storm",
+        "fire",
+        "celestial-elements",
+        "wide-environmental",
+        "high-action",
+        "major-arcana-complexity"
+      ]
+    },
+    {
+      "cardId": "major-star",
+      "covers": [
+        "female-figures",
+        "landscape-scenes",
+        "water",
+        "night",
+        "celestial-elements",
+        "portrait-or-figure-led",
+        "wide-environmental",
+        "quiet-contemplative",
+        "major-arcana-complexity"
+      ]
+    },
+    {
+      "cardId": "swords-three",
+      "covers": ["storm", "symbolic-object-only", "minor-arcana-symbolic-simplicity"]
+    },
+    {
+      "cardId": "cups-ace",
+      "covers": ["water", "daylight", "symbolic-object-only", "minor-arcana-symbolic-simplicity"]
+    },
+    {
+      "cardId": "major-sun",
+      "covers": [
+        "children",
+        "animals",
+        "horses",
+        "landscape-scenes",
+        "daylight",
+        "celestial-elements",
+        "portrait-or-figure-led",
+        "major-arcana-complexity"
+      ]
+    },
+    {
+      "cardId": "major-moon",
+      "covers": [
+        "animals",
+        "architectural-scenes",
+        "landscape-scenes",
+        "water",
+        "night",
+        "celestial-elements",
+        "wide-environmental",
+        "quiet-contemplative",
+        "major-arcana-complexity"
+      ]
+    },
+    {
+      "cardId": "major-world",
+      "covers": [
+        "female-figures",
+        "animals",
+        "lion-or-large-animal",
+        "landscape-scenes",
+        "water",
+        "daylight",
+        "celestial-elements",
+        "portrait-or-figure-led",
+        "wide-environmental",
+        "major-arcana-complexity"
+      ]
+    },
+    {
+      "cardId": "major-lovers",
+      "covers": [
+        "male-figures",
+        "female-figures",
+        "multiple-figures",
+        "landscape-scenes",
+        "daylight",
+        "fire",
+        "celestial-elements",
+        "portrait-or-figure-led",
+        "major-arcana-complexity"
+      ]
+    },
+    {
+      "cardId": "major-strength",
+      "covers": [
+        "female-figures",
+        "animals",
+        "lion-or-large-animal",
+        "landscape-scenes",
+        "daylight",
+        "portrait-or-figure-led",
+        "quiet-contemplative",
+        "major-arcana-complexity"
+      ]
+    },
+    {
+      "cardId": "major-hermit",
+      "covers": [
+        "male-figures",
+        "elderly-figures",
+        "landscape-scenes",
+        "night",
+        "celestial-elements",
+        "portrait-or-figure-led",
+        "quiet-contemplative",
+        "major-arcana-complexity"
+      ]
+    },
+    {
+      "cardId": "major-wheel",
+      "covers": [
+        "animals",
+        "lion-or-large-animal",
+        "celestial-elements",
+        "symbolic-object-only",
+        "wide-environmental",
+        "major-arcana-complexity"
+      ]
+    }
+  ]
+}

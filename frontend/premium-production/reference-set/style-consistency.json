@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "premium-tarot-reference-style-contract-v1",
+  "derivedFromApprovedReferenceSet": true,
+  "referenceSetStatus": "complete",
+  "approvedReferenceCount": 15,
+  "productionStyleVersion": "premium-tarot-style-v2",
+  "appliesToSequence": { "from": 16, "through": 78 },
+  "invariants": {
+    "shellLanguage": [
+      "ornate antique-gold collectible frame language",
+      "readable numeral plaque",
+      "readable title plaque",
+      "consistent card-shell proportions"
+    ],
+    "artworkLanguage": [
+      "premium hand-painted oil and gouache realism",
+      "natural anatomy, faces, and hands",
+      "tactile material-specific rendering",
+      "controlled cinematic lighting with readable shadows",
+      "atmospheric depth and clear focal hierarchy",
+      "controlled saturation",
+      "canonical Tarot recognizability",
+      "physical upright orientation",
+      "portrait 7:12 artwork"
+    ]
+  },
+  "mustVaryByCard": [
+    "mood",
+    "palette",
+    "weather",
+    "time of day",
+    "composition",
+    "camera distance",
+    "architecture",
+    "environmental scale",
+    "figure count",
+    "lighting temperature"
+  ],
+  "antiSamenessRule": "Consistency comes from craftsmanship, anatomy, materials, depth, symbolic clarity, and painterly finish. Reject same-scene, same-lighting, or same-composition substitutions with different symbols."
+}

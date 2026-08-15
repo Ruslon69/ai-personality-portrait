@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premium Tarot Candidate Review</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+        background: #080a0f;
+        color: #eee8dc;
+        --gold: #d0ab68;
+        --line: #ffffff18;
+        --panel: #111722;
+        --muted: #aaa294;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: radial-gradient(circle at 50% -15%, #293147, #0a0e16 36%, #07090d 76%);
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      .shell {
+        width: min(1480px, 100%);
+        margin: auto;
+        padding: 24px;
+      }
+      header,
+      .toolbar,
+      .actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      h1,
+      h2 {
+        font-family: Georgia, serif;
+        font-weight: 500;
+      }
+      h1 {
+        margin: 5px 0;
+        font-size: clamp(28px, 4vw, 46px);
+      }
+      h2 {
+        margin: 0 0 14px;
+        color: #dec28d;
+      }
+      .eyebrow,
+      .label {
+        color: var(--gold);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .muted,
+      .status {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .toolbar,
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #101621ed;
+        box-shadow: 0 18px 55px #0008;
+      }
+      .toolbar {
+        position: sticky;
+        z-index: 5;
+        top: 0;
+        margin: 18px 0;
+        padding: 12px 14px;
+        backdrop-filter: blur(16px);
+      }
+      select,
+      textarea,
+      input[type='text'] {
+        border: 1px solid #ffffff22;
+        border-radius: 8px;
+        background: #090d14;
+        color: inherit;
+        padding: 9px 10px;
+      }
+      .artGrid,
+      .reviewGrid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .reviewGrid {
+        grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.6fr);
+        margin-top: 16px;
+        align-items: start;
+      }
+      .panel {
+        padding: 18px;
+      }
+      figure {
+        margin: 0;
+      }
+      figure img {
+        display: block;
+        width: min(100%, 430px);
+        max-height: 680px;
+        margin: auto;
+        aspect-ratio: 7 / 12;
+        object-fit: contain;
+        background: #07090d;
+        box-shadow: 0 24px 70px #000b;
+      }
+      figcaption {
+        margin-top: 10px;
+        color: var(--muted);
+        text-align: center;
+        font-size: 12px;
+      }
+      .scoreList,
+      .passList,
+      .identityPassList,
+      .symbolList {
+        display: grid;
+        gap: 9px;
+      }
+      .scoreRow {
+        display: grid;
+        grid-template-columns: minmax(160px, 1fr) auto;
+        align-items: center;
+        gap: 12px;
+        padding-bottom: 9px;
+        border-bottom: 1px solid var(--line);
+      }
+      .scoreButtons {
+        display: flex;
+        gap: 4px;
+      }
+      .scoreButtons label {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border: 1px solid #ffffff20;
+        border-radius: 7px;
+        cursor: pointer;
+      }
+      .scoreButtons input {
+        position: absolute;
+        opacity: 0;
+      }
+      .scoreButtons label:has(input:checked) {
+        border-color: var(--gold);
+        background: #382d1c;
+      }
+      .passRow,
+      .identityPassRow,
+      .symbolRow {
+        display: flex;
+        gap: 9px;
+        align-items: flex-start;
+        color: #d6d0c5;
+      }
+      .field {
+        display: grid;
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+      textarea,
+      input[type='text'] {
+        width: 100%;
+      }
+      textarea {
+        min-height: 130px;
+        resize: vertical;
+      }
+      button {
+        min-height: 40px;
+        border: 1px solid var(--gold);
+        border-radius: 8px;
+        background: #372b19;
+        padding: 8px 14px;
+        color: #f0d39b;
+        cursor: pointer;
+      }
+      button:disabled {
+        cursor: wait;
+        opacity: 0.55;
+      }
+      code {
+        color: #d9bd87;
+        overflow-wrap: anywhere;
+      }
+      .message[data-state='success'] {
+        color: #b9dba9;
+      }
+      .message[data-state='error'] {
+        color: #e7a7a2;
+      }
+      .identityPanel {
+        margin-bottom: 16px;
+        border-color: #d0ab6866;
+      }
+      .identityGrid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px 22px;
+        margin: 16px 0;
+      }
+      .identityGrid div {
+        display: grid;
+        gap: 3px;
+      }
+      .identityGrid strong {
+        color: #f2dfba;
+      }
+      .identityWarning {
+        margin: 14px 0;
+        border-left: 3px solid var(--gold);
+        padding: 9px 12px;
+        background: #d0ab680d;
+        color: #e4cfaa;
+      }
+      @media (max-width: 850px) {
+        .shell {
+          padding: 14px;
+        }
+        .artGrid,
+        .reviewGrid {
+          grid-template-columns: 1fr;
+        }
+        .identityGrid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header>
+        <div>
+          <div class="eyebrow">Premium Tarot production · local review</div>
+          <h1 id="title"></h1>
+          <div class="muted" id="identity"></div>
+        </div>
+        <div class="status" id="candidateStatus"></div>
+      </header>
+
+      <nav class="toolbar">
+        <label
+          >Attempt
+          <select id="attemptSelect"></select
+        ></label>
+        <span class="muted">Each attempt saves only to its own versioned review JSON.</span>
+      </nav>
+
+      <section class="panel identityPanel">
+        <div class="eyebrow">Canonical identity · immutable production contract</div>
+        <h2>Expected Tarot identity</h2>
+        <div class="identityGrid">
+          <div>
+            <span class="label">Production number</span><strong id="productionNumber"></strong>
+          </div>
+          <div><span class="label">Card ID</span><strong id="canonicalCardId"></strong></div>
+          <div><span class="label">Canonical title</span><strong id="canonicalTitle"></strong></div>
+          <div>
+            <span class="label">Canonical numeral / rank</span><strong id="canonicalValue"></strong>
+          </div>
+          <div><span class="label">Suit</span><strong id="canonicalSuit"></strong></div>
+          <div>
+            <span class="label">Expected identity</span><strong id="expectedIdentity"></strong>
+          </div>
+        </div>
+        <p class="identityWarning" id="identityWarning"></p>
+        <div class="label">Mandatory human identity checks</div>
+        <div class="identityPassList" id="identityPassList"></div>
+      </section>
+
+      <section class="artGrid">
+        <article class="panel">
+          <h2>Classic reference</h2>
+          <figure><img id="classicImage" alt="Classic Rider–Waite reference" /></figure>
+        </article>
+        <article class="panel">
+          <h2>Premium candidate</h2>
+          <figure><img id="candidateImage" alt="Premium Tarot candidate" /></figure>
+        </article>
+      </section>
+
+      <section class="reviewGrid">
+        <article class="panel">
+          <div class="label">Human assessment</div>
+          <h2>Scores</h2>
+          <div class="scoreList" id="scoreList"></div>
+        </article>
+        <div class="panel">
+          <div class="field">
+            <label for="reviewer">Reviewer</label><input id="reviewer" type="text" />
+          </div>
+          <div class="field">
+            <label for="notes">Review notes</label><textarea id="notes"></textarea>
+          </div>
+          <div class="label">Required approval checks</div>
+          <div class="passList" id="passList"></div>
+          <div class="label" style="margin-top: 18px">Symbolism reference</div>
+          <div class="symbolList" id="symbolList"></div>
+          <div class="actions" style="margin-top: 18px">
+            <button id="saveReview" type="button">Save review</button>
+            <span class="message" id="message"></span>
+          </div>
+          <p class="muted">After completion run: <code id="approvalCommand"></code></p>
+        </div>
+      </section>
+    </main>
+
+    <script id="studioData" type="application/json">
+      __CANDIDATE_REVIEW_STUDIO_DATA__
+    </script>
+    <script>
+      const data = JSON.parse(document.getElementById('studioData').textContent);
+      let review;
+      const humanize = (value) =>
+        value.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (letter) => letter.toUpperCase());
+      const escapeMarkup = (value) =>
+        String(value ?? '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#039;');
+
+      function showMessage(message, state = '') {
+        const element = document.getElementById('message');
+        element.textContent = message;
+        element.dataset.state = state;
+      }
+
+      function render() {
+        document.getElementById('reviewer').value = review.reviewer || '';
+        document.getElementById('notes').value = review.notes || '';
+        document.getElementById('scoreList').innerHTML = Object.entries(review.scores)
+          .map(([category, value]) => {
+            const controls = [1, 2, 3, 4, 5]
+              .map(
+                (score) =>
+                  `<label>${score}<input type="radio" name="score-${escapeMarkup(category)}" value="${score}" ${value === score ? 'checked' : ''}></label>`,
+              )
+              .join('');
+            return `<div class="scoreRow" data-score="${escapeMarkup(category)}"><span>${escapeMarkup(humanize(category))}</span><div class="scoreButtons">${controls}</div></div>`;
+          })
+          .join('');
+        document.getElementById('passList').innerHTML = Object.entries(review.requiredPasses)
+          .map(
+            ([key, checked]) =>
+              `<label class="passRow"><input type="checkbox" data-pass="${escapeMarkup(key)}" ${checked ? 'checked' : ''}><span>${escapeMarkup(humanize(key))}</span></label>`,
+          )
+          .join('');
+        const canonicalReview = review.canonicalIdentity || data.canonicalIdentityReview;
+        document.getElementById('identityPassList').innerHTML = Object.entries(
+          canonicalReview.checks,
+        )
+          .map(
+            ([key, checked]) =>
+              `<label class="identityPassRow"><input type="checkbox" data-canonical-pass="${escapeMarkup(key)}" ${checked ? 'checked' : ''}><span>${escapeMarkup(humanize(key))}</span></label>`,
+          )
+          .join('');
+      }
+
+      function collect() {
+        review.reviewer = document.getElementById('reviewer').value.trim();
+        review.notes = document.getElementById('notes').value.trim();
+        for (const row of document.querySelectorAll('[data-score]')) {
+          const selected = row.querySelector('input:checked');
+          review.scores[row.dataset.score] = selected ? Number(selected.value) : null;
+        }
+        for (const element of document.querySelectorAll('[data-pass]')) {
+          review.requiredPasses[element.dataset.pass] = element.checked;
+        }
+        review.canonicalIdentity = JSON.parse(JSON.stringify(data.canonicalIdentityReview));
+        for (const element of document.querySelectorAll('[data-canonical-pass]')) {
+          review.canonicalIdentity.checks[element.dataset.canonicalPass] = element.checked;
+        }
+        return review;
+      }
+
+      async function loadReview() {
+        const response = await fetch(data.reviewApi, { headers: { Accept: 'application/json' } });
+        if (!response.ok) throw new Error(await response.text());
+        review = await response.json();
+        render();
+        if (data.readOnly) {
+          document
+            .querySelectorAll(
+              '#reviewer, #notes, [data-score] input, [data-pass], [data-canonical-pass]',
+            )
+            .forEach((control) => {
+              control.disabled = true;
+            });
+          document.getElementById('saveReview').disabled = true;
+          showMessage('Immutable approved/superseded review history.', 'success');
+        }
+      }
+
+      async function saveReview() {
+        const button = document.getElementById('saveReview');
+        button.disabled = true;
+        showMessage('Saving…');
+        try {
+          const response = await fetch(data.reviewApi, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Premium-Review-CSRF': '__PREMIUM_REVIEW_CSRF__',
+            },
+            body: JSON.stringify(collect()),
+          });
+          if (!response.ok) throw new Error(await response.text());
+          review = await response.json();
+          render();
+          showMessage('Review JSON saved.', 'success');
+        } catch (error) {
+          showMessage(error.message || 'Review save failed.', 'error');
+        } finally {
+          button.disabled = data.readOnly;
+        }
+      }
+
+      document.getElementById('title').textContent =
+        `${data.card.canonicalName} · Candidate v${data.attempt.version}`;
+      document.getElementById('identity').textContent =
+        `${data.card.cardId} · ${data.attempt.styleVersion}`;
+      document.getElementById('candidateStatus').textContent =
+        `${data.attempt.productionStatus} / ${data.attempt.reviewStatus}`;
+      document.getElementById('productionNumber').textContent =
+        `#${data.card.canonicalIdentity.productionSequenceNumber} · ${data.card.canonicalIdentity.externalSourceFilename}`;
+      document.getElementById('canonicalCardId').textContent = data.card.cardId;
+      document.getElementById('canonicalTitle').textContent =
+        data.card.canonicalIdentity.canonicalDisplayTitle;
+      document.getElementById('canonicalValue').textContent =
+        data.canonicalIdentityReview.canonicalDisplayValue;
+      document.getElementById('canonicalSuit').textContent =
+        data.card.canonicalIdentity.suit || 'Major Arcana';
+      document.getElementById('expectedIdentity').textContent =
+        data.canonicalIdentityReview.expectedArcanaIdentity;
+      document.getElementById('identityWarning').textContent =
+        `Production #${data.card.canonicalIdentity.productionSequenceNumber} controls workflow only. It is not the Tarot numeral/rank ${data.canonicalIdentityReview.canonicalDisplayValue}.`;
+      document.getElementById('classicImage').src = data.classicUrl;
+      document.getElementById('candidateImage').src = data.candidateUrl;
+      document.getElementById('approvalCommand').textContent = data.approvalCommand;
+      document.getElementById('attemptSelect').innerHTML = data.attempts
+        .map(
+          (attempt) =>
+            `<option value="${escapeMarkup(attempt.href)}" ${attempt.version === data.attempt.version ? 'selected' : ''}>v${attempt.version} · ${escapeMarkup(attempt.productionStatus)} / ${escapeMarkup(attempt.reviewStatus)}</option>`,
+        )
+        .join('');
+      document.getElementById('symbolList').innerHTML = data.card.symbolismChecklist
+        .map((symbol) => `<div class="symbolRow">• <span>${escapeMarkup(symbol)}</span></div>`)
+        .join('');
+      document.getElementById('attemptSelect').addEventListener('change', (event) => {
+        window.location.assign(event.target.value);
+      });
+      document.getElementById('saveReview').addEventListener('click', saveReview);
+      loadReview().catch((error) => showMessage(error.message, 'error'));
+    </script>
+  </body>
+</html>

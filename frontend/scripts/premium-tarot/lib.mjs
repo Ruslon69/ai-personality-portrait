@@ -1,7 +1,8 @@
 import { createHash } from 'node:crypto';
-import { existsSync } from 'node:fs';
-import { readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
+import { constants, existsSync } from 'node:fs';
+import { copyFile, readFile, readdir, rename, rm, stat, writeFile } from 'node:fs/promises';
 import { relative, resolve, sep } from 'node:path';
+import { format as formatWithPrettier } from 'prettier';
 
 import { PILOT_CARD_IDS, PRODUCTION_VERSIONS } from '../../premium-production/catalog.mjs';
 
@@ -20,6 +21,7 @@ export const promptsRoot = resolve(productionRoot, 'prompts');
 export const pilotDirectionPath = resolve(productionRoot, 'pilot-art-direction.json');
 export const pilotGenerationRoot = resolve(productionRoot, 'pilot-generation');
 export const generatedRoot = resolve(productionRoot, 'generated');
+export const durableHistoryRoot = resolve(productionRoot, 'history');
 export const goldenRuntimePreviewPath = resolve(generatedRoot, 'golden-master-runtime-preview.jpg');
 
 export function goldenApprovedArtworkPath(version) {
@@ -38,6 +40,7 @@ export const productionStatuses = [
   'processing',
   'review',
   'approved',
+  'replacement-required',
   'rejected',
   'integrated',
 ];
@@ -52,9 +55,13 @@ export async function readJson(path) {
 
 export async function writeJsonAtomic(path, value) {
   const temporaryPath = `${path}.tmp`;
+  const serialized = await formatWithPrettier(JSON.stringify(value), {
+    parser: 'json',
+    printWidth: 100,
+  });
   await rm(temporaryPath, { force: true });
   try {
-    await writeFile(temporaryPath, `${JSON.stringify(value, null, 2)}\n`, { flag: 'wx' });
+    await writeFile(temporaryPath, serialized, { flag: 'wx' });
     await rename(temporaryPath, path);
   } finally {
     await rm(temporaryPath, { force: true });
@@ -88,6 +95,254 @@ export async function sha256(path) {
   return createHash('sha256')
     .update(await readFile(path))
     .digest('hex');
+}
+
+async function sha256OrderedFiles(paths) {
+  const hash = createHash('sha256');
+  for (const path of paths) hash.update(await readFile(path));
+  return hash.digest('hex');
+}
+
+function isCandidateLifecycleState(status) {
+  return [
+    'generated',
+    'processing',
+    'review',
+    'approved',
+    'superseded',
+    'rejected',
+    'integrated',
+  ].includes(status);
+}
+
+export function snapshotCandidateAttempt(card) {
+  if (!isCandidateLifecycleState(card.productionStatus)) return undefined;
+  return {
+    version: card.version,
+    productionStatus: card.productionStatus,
+    reviewStatus: card.reviewStatus,
+    styleVersion: card.styleVersion,
+    checksum: card.checksum,
+    sourcePath: card.sourcePath,
+    outputPath: card.outputPath,
+    previewPath: card.previewPath,
+    reviewPath: card.reviewPath,
+    reviewArtifactChecksum: card.reviewArtifactChecksum,
+    finalPath: card.finalPath,
+    candidateMetadata: card.candidateMetadata,
+    sourceProvenance: card.sourceProvenance,
+    approvedBy: card.approvedBy,
+    approvedAt: card.approvedAt,
+    approvalNotes: card.approvalNotes,
+    canonicalIdentityContractVersion: card.canonicalIdentityContractVersion,
+    canonicalIdentityReviewed: card.canonicalIdentityReviewed,
+    rejectionReason: card.rejectionReason,
+  };
+}
+
+const durableProductionPrefixes = [
+  'premium-production/approved/',
+  'premium-production/golden-master/approved/',
+  'premium-production/history/',
+  'premium-production/reference-set/approved/',
+  'premium-production/reference-set/attempts/',
+];
+
+export function isDurableProductionArtifactPath(path) {
+  return (
+    typeof path === 'string' && durableProductionPrefixes.some((prefix) => path.startsWith(prefix))
+  );
+}
+
+function candidateSourceProvenance(card) {
+  return {
+    kind: 'candidate-artwork-equivalent-v1',
+    originalInputChecksum:
+      card.candidateMetadata?.inputChecksum ??
+      card.candidateMetadata?.preparation?.preparedChecksum ??
+      card.checksum,
+    generatedSourceChecksum:
+      card.candidateMetadata?.preparation?.sourceChecksum ??
+      card.candidateMetadata?.inputChecksum ??
+      card.checksum,
+  };
+}
+
+export async function planDurableCandidateHistory(card) {
+  const history = [...(card.candidateHistory ?? [])];
+  const current = snapshotCandidateAttempt(card);
+  if (!current || history.some((attempt) => attempt.version === current.version)) {
+    return { entries: [], history };
+  }
+  const artworkDestination = resolve(durableHistoryRoot, `${card.cardId}-v${current.version}.jpg`);
+  const reviewDestination = resolve(
+    durableHistoryRoot,
+    `${card.cardId}-v${current.version}.review.json`,
+  );
+  const durableArtworkPath = isDurableProductionArtifactPath(current.outputPath)
+    ? resolveFrontendPath(current.outputPath)
+    : artworkDestination;
+  const durableReviewPath = isDurableProductionArtifactPath(current.reviewPath)
+    ? resolveFrontendPath(current.reviewPath)
+    : reviewDestination;
+  const attempt = {
+    ...current,
+    outputPath: toFrontendPath(durableArtworkPath),
+    reviewPath: toFrontendPath(durableReviewPath),
+    reviewArtifactChecksum: await sha256(resolveFrontendPath(current.reviewPath)),
+    sourcePath: toFrontendPath(durableArtworkPath),
+    sourceProvenance: candidateSourceProvenance(card),
+  };
+  history.push(attempt);
+  history.sort((left, right) => left.version - right.version);
+  const entries = [];
+  if (resolveFrontendPath(current.outputPath) !== durableArtworkPath) {
+    entries.push({
+      source: resolveFrontendPath(current.outputPath),
+      destination: durableArtworkPath,
+    });
+  }
+  if (resolveFrontendPath(current.reviewPath) !== durableReviewPath) {
+    entries.push({
+      source: resolveFrontendPath(current.reviewPath),
+      destination: durableReviewPath,
+    });
+  }
+  return { entries, history };
+}
+
+function attemptChecksums(attempt) {
+  return new Set(
+    [
+      attempt.sourceChecksum,
+      attempt.inputChecksum,
+      attempt.candidateMetadata?.inputChecksum,
+      attempt.candidateMetadata?.preparation?.sourceChecksum,
+      attempt.candidateMetadata?.preparation?.preparedChecksum,
+    ].filter(Boolean),
+  );
+}
+
+export function manifestCandidateAttempts(card) {
+  const attempts = [...(card.candidateHistory ?? [])];
+  for (const attempt of card.goldenMasterHistory ?? []) {
+    attempts.push({
+      ...attempt,
+      version: attempt.version ?? attempt.candidateVersion,
+      productionStatus: attempt.productionStatus ?? attempt.status,
+    });
+  }
+  const current = snapshotCandidateAttempt(card);
+  if (current) attempts.push(current);
+  return attempts;
+}
+
+export function planCandidateImport(
+  card,
+  { filesystemAttempts = [], inputChecksum, sourceChecksum = inputChecksum },
+) {
+  const manifestAttempts = manifestCandidateAttempts(card);
+  const attempts = [...manifestAttempts, ...filesystemAttempts].filter((attempt) =>
+    Number.isInteger(attempt.version),
+  );
+  const duplicate = attempts.find((attempt) => {
+    const checksums = attemptChecksums(attempt);
+    return checksums.has(inputChecksum) || checksums.has(sourceChecksum);
+  });
+  if (duplicate) {
+    const fromManifest = manifestAttempts.includes(duplicate);
+    return {
+      mode: fromManifest ? 'reuse' : 'recover',
+      version: duplicate.version,
+      attempt: duplicate,
+      fromManifest,
+    };
+  }
+  const highestVersion = attempts.reduce(
+    (highest, attempt) => Math.max(highest, attempt.version),
+    0,
+  );
+  return { mode: 'create', version: highestVersion + 1 };
+}
+
+async function directoryEntries(path) {
+  try {
+    return await readdir(path, { withFileTypes: true });
+  } catch (error) {
+    if (error.code === 'ENOENT') return [];
+    throw error;
+  }
+}
+
+export async function discoverCandidateFileAttempts(cardId) {
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(cardId)) {
+    throw new Error(`Invalid card ID: ${cardId}`);
+  }
+  const attempts = new Map();
+  const record = (version, field, path) => {
+    const attempt = attempts.get(version) ?? { version };
+    attempt[field] = toFrontendPath(path);
+    attempts.set(version, attempt);
+  };
+  const sourceDirectory = resolve(productionRoot, 'source', cardId);
+  const escapedCardId = cardId.replaceAll('-', '\\-');
+  const sourcePattern = new RegExp(`^${escapedCardId}-v(\\d+)\\.(?:jpe?g|png|webp|avif)$`, 'i');
+  for (const entry of await directoryEntries(sourceDirectory)) {
+    const match = entry.isFile() ? sourcePattern.exec(entry.name) : undefined;
+    if (!match) continue;
+    const version = Number(match[1]);
+    const path = resolve(sourceDirectory, entry.name);
+    record(version, 'sourcePath', path);
+    attempts.get(version).inputChecksum = await sha256(path);
+  }
+  const artifactDirectories = [
+    ['outputPath', resolve(productionRoot, 'candidates'), 'jpg'],
+    ['previewPath', resolve(productionRoot, 'previews'), 'jpg'],
+    ['reviewPath', resolve(productionRoot, 'reviews'), 'json'],
+    ['outputPath', resolve(productionRoot, 'reference-set', 'attempts'), 'jpg'],
+    ['reviewPath', resolve(productionRoot, 'reference-set', 'attempts'), 'review.json'],
+    ['outputPath', resolve(productionRoot, 'reference-set', 'approved'), 'jpg'],
+    ['reviewPath', resolve(productionRoot, 'reference-set', 'approved'), 'review.json'],
+    ['outputPath', resolve(productionRoot, 'approved'), 'jpg'],
+    ['reviewPath', resolve(productionRoot, 'approved'), 'review.json'],
+  ];
+  for (const [field, directory, extension] of artifactDirectories) {
+    const escapedExtension = extension.replaceAll('.', '\\.');
+    const pattern = new RegExp(`^${escapedCardId}-v(\\d+)\\.${escapedExtension}$`, 'i');
+    for (const entry of await directoryEntries(directory)) {
+      const match = entry.isFile() ? pattern.exec(entry.name) : undefined;
+      if (match) record(Number(match[1]), field, resolve(directory, entry.name));
+    }
+  }
+  return [...attempts.values()].sort((left, right) => left.version - right.version);
+}
+
+export function appendCurrentCandidateToHistory(card) {
+  const current = snapshotCandidateAttempt(card);
+  if (!current) return [...(card.candidateHistory ?? [])];
+  const history = [...(card.candidateHistory ?? [])];
+  if (!history.some((attempt) => attempt.version === current.version)) history.push(current);
+  return history.sort((left, right) => left.version - right.version);
+}
+
+export async function publishCandidateArtifacts(entries, commit) {
+  const created = [];
+  try {
+    for (const { source, destination } of entries) {
+      try {
+        await copyFile(source, destination, constants.COPYFILE_EXCL);
+        created.push(destination);
+      } catch (error) {
+        if (error.code !== 'EEXIST' || (await sha256(source)) !== (await sha256(destination))) {
+          throw error;
+        }
+      }
+    }
+    await commit();
+  } catch (error) {
+    await Promise.all(created.map((path) => rm(path, { force: true })));
+    throw error;
+  }
 }
 
 function nonEmptyStrings(values) {
@@ -151,6 +406,154 @@ export async function validateProductionManifest(manifest, { checkFiles = true }
       failures.push(`${prefix}: invalid reviewStatus.`);
     if (!Number.isInteger(card.version) || card.version < 1)
       failures.push(`${prefix}: invalid version.`);
+    const candidateHistory = card.candidateHistory ?? [];
+    if (!Array.isArray(candidateHistory)) {
+      failures.push(`${prefix}: candidateHistory must be an array.`);
+    } else {
+      const historyVersions = candidateHistory.map((attempt) => attempt.version);
+      if (new Set(historyVersions).size !== historyVersions.length) {
+        failures.push(`${prefix}: candidateHistory contains duplicate versions.`);
+      }
+      for (const attempt of candidateHistory) {
+        const sourceArtifactsValid =
+          Array.isArray(attempt.sourceArtifacts) &&
+          attempt.sourceArtifacts.length > 0 &&
+          attempt.sourceArtifacts.every(
+            (artifact, index) =>
+              artifact.index === index + 1 &&
+              typeof artifact.path === 'string' &&
+              artifact.path.trim() &&
+              typeof artifact.checksum === 'string' &&
+              artifact.checksum.trim() &&
+              Number.isInteger(artifact.sizeBytes) &&
+              artifact.sizeBytes > 0,
+          ) &&
+          new Set(attempt.sourceArtifacts.map((artifact) => artifact.path)).size ===
+            attempt.sourceArtifacts.length;
+        if (
+          !Number.isInteger(attempt.version) ||
+          attempt.version < 1 ||
+          attempt.version >= card.version
+        ) {
+          failures.push(`${prefix}: candidateHistory contains an invalid version.`);
+          continue;
+        }
+        const durablePaths = [attempt.outputPath, attempt.reviewPath];
+        if (attempt.productionStatus !== 'superseded') {
+          durablePaths.push(attempt.sourcePath);
+        } else {
+          durablePaths.push(...(attempt.sourceArtifacts ?? []).map((artifact) => artifact.path));
+        }
+        if (
+          !isCandidateLifecycleState(attempt.productionStatus) ||
+          !reviewStatuses.includes(attempt.reviewStatus) ||
+          !attempt.checksum ||
+          !attempt.outputPath ||
+          !attempt.reviewPath ||
+          (attempt.productionStatus !== 'superseded' && !attempt.sourcePath)
+        ) {
+          failures.push(`${prefix}: candidateHistory v${attempt.version} is incomplete.`);
+        }
+        if (durablePaths.some((path) => path && !isDurableProductionArtifactPath(path))) {
+          failures.push(`${prefix}: candidateHistory v${attempt.version} uses ephemeral paths.`);
+        }
+        if (
+          attempt.productionStatus === 'superseded' &&
+          (attempt.reviewStatus !== 'approved' ||
+            !attempt.approvedBy ||
+            !attempt.approvalNotes ||
+            !attempt.approvalTimestamp ||
+            !attempt.supersededAt ||
+            !attempt.supersedeReason?.category ||
+            !attempt.supersedeReason?.notes ||
+            !attempt.sourceArtifactChecksum ||
+            !attempt.reviewArtifactChecksum ||
+            !['raw-chunks-v1', 'approved-artwork-equivalent-v1'].includes(
+              attempt.sourceArtifactFormat,
+            ) ||
+            !sourceArtifactsValid)
+        ) {
+          failures.push(`${prefix}: superseded history v${attempt.version} lacks provenance.`);
+        }
+        if (
+          checkFiles &&
+          [
+            attempt.outputPath,
+            attempt.reviewPath,
+            ...(attempt.productionStatus === 'superseded'
+              ? sourceArtifactsValid
+                ? attempt.sourceArtifacts.map((artifact) => artifact.path)
+                : ['__invalid-source-artifacts__']
+              : []),
+          ].some((path) => path && !existsSync(resolveFrontendPath(path)))
+        ) {
+          failures.push(`${prefix}: candidateHistory v${attempt.version} artifact is missing.`);
+        } else if (
+          checkFiles &&
+          attempt.productionStatus === 'superseded' &&
+          attempt.outputPath &&
+          sourceArtifactsValid &&
+          attempt.reviewPath
+        ) {
+          const sourceArtifactPaths = attempt.sourceArtifacts.map((artifact) =>
+            resolveFrontendPath(artifact.path),
+          );
+          const [artworkChecksum, sourceChecksum, reviewChecksum, historicalReview, partDetails] =
+            await Promise.all([
+              sha256(resolveFrontendPath(attempt.outputPath)),
+              sha256OrderedFiles(sourceArtifactPaths),
+              sha256(resolveFrontendPath(attempt.reviewPath)),
+              readJson(resolveFrontendPath(attempt.reviewPath)),
+              Promise.all(
+                sourceArtifactPaths.map(async (path) => ({
+                  checksum: await sha256(path),
+                  sizeBytes: (await stat(path)).size,
+                })),
+              ),
+            ]);
+          const invalidParts = attempt.sourceArtifacts.some(
+            (artifact, index) =>
+              artifact.index !== index + 1 ||
+              artifact.checksum !== partDetails[index]?.checksum ||
+              artifact.sizeBytes !== partDetails[index]?.sizeBytes,
+          );
+          const equivalentInvalid =
+            attempt.sourceArtifactFormat === 'approved-artwork-equivalent-v1' &&
+            (attempt.sourceArtifacts.length !== 1 ||
+              attempt.sourceArtifacts[0].path !== attempt.outputPath ||
+              attempt.sourceArtifactChecksum !== attempt.checksum ||
+              attempt.sourcePath !== attempt.outputPath);
+          if (
+            artworkChecksum !== attempt.checksum ||
+            sourceChecksum !== attempt.sourceArtifactChecksum ||
+            reviewChecksum !== attempt.reviewArtifactChecksum ||
+            invalidParts ||
+            equivalentInvalid ||
+            historicalReview.cardId !== card.cardId ||
+            historicalReview.artworkVersion !== attempt.version ||
+            historicalReview.candidateChecksum !== attempt.checksum ||
+            historicalReview.reviewer !== attempt.approvedBy
+          ) {
+            failures.push(`${prefix}: superseded history v${attempt.version} was mutated.`);
+          }
+        } else if (checkFiles && attempt.outputPath && attempt.reviewPath) {
+          const [artworkChecksum, reviewChecksum, historicalReview] = await Promise.all([
+            sha256(resolveFrontendPath(attempt.outputPath)),
+            sha256(resolveFrontendPath(attempt.reviewPath)),
+            readJson(resolveFrontendPath(attempt.reviewPath)),
+          ]);
+          if (
+            artworkChecksum !== attempt.checksum ||
+            reviewChecksum !== attempt.reviewArtifactChecksum ||
+            historicalReview.cardId !== card.cardId ||
+            historicalReview.artworkVersion !== attempt.version ||
+            historicalReview.candidateChecksum !== attempt.checksum
+          ) {
+            failures.push(`${prefix}: candidateHistory v${attempt.version} was mutated.`);
+          }
+        }
+      }
+    }
     const isPromptState = ['prompt-ready', 'prompt-ready-v2'].includes(card.productionStatus);
     if (
       (card.productionStatus === 'pending' || isPromptState) &&
@@ -178,6 +581,19 @@ export async function validateProductionManifest(manifest, { checkFiles = true }
         lineage?.goldenMasterChecksum !== goldenMasters[0]?.checksum
       ) {
         failures.push(`${prefix}: Golden Master pilot lineage is incomplete or stale.`);
+      }
+    }
+    if (card.promptId === `premium-tarot-full-production-v2:${card.cardId}`) {
+      const lineage = card.productionStyleLineage;
+      if (
+        card.styleVersion !== PRODUCTION_VERSIONS.goldenStyle ||
+        lineage?.styleVersion !== PRODUCTION_VERSIONS.goldenStyle ||
+        lineage?.goldenMasterCardId !== 'major-fool' ||
+        lineage?.approvedReferenceCount !== 15 ||
+        lineage?.referenceSetStatus !== 'complete' ||
+        lineage?.visualLanguageBible !== 'premium-production/GOLDEN_MASTER_VISUAL_LANGUAGE.md'
+      ) {
+        failures.push(`${prefix}: full-production v2 style lineage is incomplete or stale.`);
       }
     }
     if (card.cardId !== 'major-fool' && card.isGoldenMaster !== false)
@@ -269,6 +685,15 @@ export async function validateProductionManifest(manifest, { checkFiles = true }
         failures.push(`${prefix}: approved asset lacks checksum/outputPath.`);
       if (!card.reviewPath || !card.approvedBy || !card.approvalNotes)
         failures.push(`${prefix}: approved asset lacks explicit human approval provenance.`);
+      if (
+        card.sourcePath !== card.outputPath ||
+        (!card.candidateMetadata?.inputChecksum &&
+          !card.candidateMetadata?.preparation?.preparedChecksum)
+      ) {
+        failures.push(
+          `${prefix}: approved source provenance lacks a durable immutable equivalent.`,
+        );
+      }
       if (checkFiles && card.outputPath && !existsSync(resolveFrontendPath(card.outputPath)))
         failures.push(`${prefix}: approved output file is missing.`);
       if (checkFiles && card.reviewPath && !existsSync(resolveFrontendPath(card.reviewPath)))
@@ -289,6 +714,30 @@ export async function validateProductionManifest(manifest, { checkFiles = true }
       }
       if (checkFiles && card.reviewPath && !existsSync(resolveFrontendPath(card.reviewPath))) {
         failures.push(`${prefix}: review record is missing.`);
+      }
+    }
+    if (card.productionStatus === 'replacement-required') {
+      const latestSuperseded = [...candidateHistory]
+        .reverse()
+        .find((attempt) => attempt.productionStatus === 'superseded');
+      if (
+        card.reviewStatus !== 'not-reviewed' ||
+        !card.replacementReason?.category ||
+        !card.replacementReason?.notes ||
+        !card.replacementRequiredAt ||
+        !latestSuperseded ||
+        latestSuperseded.version !== card.version - 1 ||
+        card.checksum ||
+        card.candidateMetadata ||
+        card.reviewPath ||
+        card.sourcePath ||
+        card.approvedBy ||
+        card.approvalNotes ||
+        card.approvedAt
+      ) {
+        failures.push(
+          `${prefix}: replacement-required state is incomplete or still active-approved.`,
+        );
       }
     }
     if (card.productionStatus === 'integrated') {

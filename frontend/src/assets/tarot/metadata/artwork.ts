@@ -95,12 +95,6 @@ const premiumFaceAssets = import.meta.glob('../cards/premium-rws-remastered/**/*
   import: 'default',
   query: '?url',
 }) as Readonly<Record<string, string>>;
-const premiumReleaseRecords = new Map(
-  premiumRelease.mode === 'premium-complete' && premiumRelease.records.length === 78
-    ? premiumRelease.records.map((record) => [record.cardId, record] as const)
-    : [],
-);
-
 const majorArtworkSlugs = [
   'fool',
   'magician',
@@ -142,6 +136,22 @@ const minorRanks = [
   'king',
 ] as const;
 const minorSuits = ['wands', 'cups', 'swords', 'pentacles'] as const;
+const canonicalArtworkIds = [
+  ...majorArtworkSlugs.map((slug) => `major-${slug}`),
+  ...minorSuits.flatMap((suit) => minorRanks.map((rank) => `${suit}-${rank}`)),
+];
+const premiumRecordIds = premiumRelease.records.map((record) => record.cardId);
+const premiumReleaseIsAtomic =
+  premiumRelease.mode === 'premium-complete' &&
+  premiumRelease.records.length === 78 &&
+  new Set(premiumRecordIds).size === 78 &&
+  canonicalArtworkIds.every((cardId) => premiumRecordIds.includes(cardId)) &&
+  premiumRecordIds.every((cardId) => canonicalArtworkIds.includes(cardId));
+const premiumReleaseRecords = new Map(
+  premiumReleaseIsAtomic
+    ? premiumRelease.records.map((record) => [record.cardId, record] as const)
+    : [],
+);
 export const tarotArtworkPalettes: Readonly<Record<TarotArtworkFamily, TarotArtworkPalette>> = {
   major: {
     accentTone: '#9b793e',

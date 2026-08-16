@@ -156,20 +156,29 @@ const progressOutput = execFileSync(
 const nextCard = nextProductionCard(
   buildProductionQueue(productionManifest, referenceSet, sourceMap),
 );
-const nextIdentity = canonicalIdentityForCard(identityManifest, nextCard.cardId);
-const nextValue = canonicalDisplayValue(nextIdentity);
-check(
-  nextOutput.includes(
-    `canonical Tarot ${nextIdentity.arcana === 'major' ? 'numeral' : 'rank'}: ${nextValue}`,
-  ) && nextOutput.includes(`canonical title: ${nextIdentity.canonicalDisplayTitle}`),
-  'next command exposes canonical identity',
-);
-check(
-  progressOutput.includes(
-    `canonical Tarot ${nextIdentity.arcana === 'major' ? 'numeral' : 'rank'}: ${nextValue}`,
-  ) && progressOutput.includes(`canonical title: ${nextIdentity.canonicalDisplayTitle}`),
-  'progress command exposes canonical identity',
-);
+if (nextCard) {
+  const nextIdentity = canonicalIdentityForCard(identityManifest, nextCard.cardId);
+  const nextValue = canonicalDisplayValue(nextIdentity);
+  check(
+    nextOutput.includes(
+      `canonical Tarot ${nextIdentity.arcana === 'major' ? 'numeral' : 'rank'}: ${nextValue}`,
+    ) && nextOutput.includes(`canonical title: ${nextIdentity.canonicalDisplayTitle}`),
+    'next command exposes canonical identity',
+  );
+  check(
+    progressOutput.includes(
+      `canonical Tarot ${nextIdentity.arcana === 'major' ? 'numeral' : 'rank'}: ${nextValue}`,
+    ) && progressOutput.includes(`canonical title: ${nextIdentity.canonicalDisplayTitle}`),
+    'progress command exposes canonical identity',
+  );
+} else {
+  check(
+    nextOutput.includes('All 78 premium Tarot cards are approved') &&
+      progressOutput.includes('Approved: 78 / 78') &&
+      progressOutput.includes('Remaining: 0'),
+    'next and progress commands expose the completed production state',
+  );
+}
 
 const hierophant = identity('major-hierophant');
 const review = {
@@ -227,11 +236,15 @@ const runtimeRelease = await readJson(
   resolve(frontendRoot, 'src/assets/tarot/metadata/premium-release-manifest.json'),
 );
 check(
-  productionManifest.releaseMode === 'classic' &&
-    productionManifest.releaseThreshold.approved === 78 &&
-    runtimeRelease.mode === 'classic' &&
-    runtimeRelease.records.length === 0,
-  'runtime release remains classic and atomically locked to 78 approvals',
+  productionManifest.releaseThreshold.approved === 78 &&
+    ((productionManifest.releaseMode === 'classic' &&
+      runtimeRelease.mode === 'classic' &&
+      runtimeRelease.records.length === 0) ||
+      (productionManifest.releaseMode === 'premium-complete' &&
+        runtimeRelease.mode === 'premium-complete' &&
+        runtimeRelease.records.length === 78 &&
+        productionManifest.cards.every((card) => card.productionStatus === 'integrated'))),
+  'runtime release remains atomically locked to 78 active approvals',
 );
 
 const summary = { assertions: results.length, passed: true };

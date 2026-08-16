@@ -9,7 +9,7 @@ import {
   resolveFrontendPath,
   validateProductionManifest,
 } from './lib.mjs';
-import { readReferenceSet } from './mass-production.mjs';
+import { isActiveApprovedCard, readReferenceSet } from './mass-production.mjs';
 
 const results = [];
 const clone = (value) => JSON.parse(JSON.stringify(value));
@@ -25,8 +25,7 @@ check(failures.length === 0, 'tracked approved production state validates');
 
 const fool = findProductionCard(manifest, 'major-fool');
 check(
-  fool.productionStatus === 'approved' &&
-    fool.reviewStatus === 'approved' &&
+  isActiveApprovedCard(fool) &&
     existsSync(resolveFrontendPath(fool.outputPath)) &&
     existsSync(resolveFrontendPath(fool.reviewPath)),
   'approved Golden Master requires tracked artwork and review files',
@@ -92,11 +91,16 @@ check(
 check(
   referenceSet.cards.every((entry) => {
     const card = findProductionCard(manifest, entry.cardId);
-    return card.productionStatus === 'approved' && card.reviewStatus === 'approved';
+    return isActiveApprovedCard(card);
   }),
   'completed reference set retains all fifteen human approvals',
 );
-check(manifest.releaseMode === 'classic', 'classic release remains active');
+check(
+  manifest.releaseMode === 'classic' ||
+    (manifest.releaseMode === 'premium-complete' &&
+      manifest.cards.every((card) => card.productionStatus === 'integrated')),
+  'runtime release remains atomic across classic and premium-complete states',
+);
 
 const summary = { assertions: results.length, passed: true };
 process.stdout.write(

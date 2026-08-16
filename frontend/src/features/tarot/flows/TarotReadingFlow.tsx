@@ -217,7 +217,7 @@ export function TarotReadingFlow({
         currentPosition ?? ''
       }. ${copy.cardBack}.`;
   return (
-    <div className={styles.flowPage}>
+    <div className={styles.flowPage} data-reading-step={step}>
       <Container size="wide">
         <div className={styles.flowHeader}>
           <div>
@@ -235,7 +235,7 @@ export function TarotReadingFlow({
             ))}
           </div>
         </div>
-        <Surface className={styles.flowSurface} elevation="low">
+        <Surface className={styles.flowSurface} data-reading-step={step} elevation="low">
           {step === 'context' ? (
             <Stack gap="lg">
               <Typography as="h1" variant="heading-lg">
@@ -471,11 +471,13 @@ export function TarotReadingFlow({
             </Stack>
           ) : null}
           {step === 'reveal' ? (
-            <Stack gap="lg">
-              <Typography as="h1" variant="heading-lg">
-                {copy.revealTitle}
-              </Typography>
-              <Typography>{copy.revealLead}</Typography>
+            <Stack className={styles.revealFlow} gap="lg">
+              <div className={styles.revealIntro}>
+                <Typography as="h1" variant="heading-lg">
+                  {copy.revealTitle}
+                </Typography>
+                <Typography>{copy.revealLead}</Typography>
+              </div>
               <div
                 className={styles.revealExperience}
                 data-phase={revealState.card}
@@ -511,13 +513,6 @@ export function TarotReadingFlow({
                   })}
                 </div>
                 <div className={styles.revealStage}>
-                  <div className={styles.revealProgress} ref={revealHeadingRef} tabIndex={-1}>
-                    <span>
-                      {copy.position} {Math.min(revealState.currentIndex + 1, selections.length)} /{' '}
-                      {selections.length}
-                    </span>
-                    <strong>{currentPosition}</strong>
-                  </div>
                   <span aria-hidden="true" className={styles.revealLight} />
                   <TarotCardView
                     ariaLabel={activeCardAnnouncement}
@@ -532,49 +527,58 @@ export function TarotReadingFlow({
                     theme={state.deckTheme}
                     variant="revealing"
                   />
-                  {isRevealActive(revealState) && !prefersReducedMotion ? (
-                    <Button
-                      className={styles.skipReveal}
-                      onClick={() => dispatchReveal({ type: 'skip' })}
-                      prominence="quiet"
-                    >
-                      {copy.skipAnimation}
-                    </Button>
-                  ) : null}
-                  <div aria-live="polite" className={styles.revealInterpretation}>
-                    {currentCardVisible && !isRevealActive(revealState) ? (
-                      <>
-                        <Typography as="h2" variant="heading-md">
-                          {currentCard?.name[locale]}
-                        </Typography>
-                        <span className={styles.revealOrientation}>
-                          {currentSelection?.orientation === 'reversed'
-                            ? copy.reversed
-                            : copy.upright}
-                        </span>
-                        <Typography>
-                          {currentSelection?.orientation === 'reversed'
-                            ? currentCard?.reversed[locale]
-                            : currentCard?.upright[locale]}
-                        </Typography>
-                      </>
+                  <div className={styles.revealDetails}>
+                    <div className={styles.revealProgress} ref={revealHeadingRef} tabIndex={-1}>
+                      <span>
+                        {copy.position} {Math.min(revealState.currentIndex + 1, selections.length)}{' '}
+                        / {selections.length}
+                      </span>
+                      <strong>{currentPosition}</strong>
+                    </div>
+                    {isRevealActive(revealState) && !prefersReducedMotion ? (
+                      <Button
+                        className={styles.skipReveal}
+                        onClick={() => dispatchReveal({ type: 'skip' })}
+                        prominence="quiet"
+                      >
+                        {copy.skipAnimation}
+                      </Button>
+                    ) : null}
+                    <div aria-live="polite" className={styles.revealInterpretation}>
+                      {currentCardVisible && !isRevealActive(revealState) ? (
+                        <>
+                          <Typography as="h2" variant="heading-md">
+                            {currentCard?.name[locale]}
+                          </Typography>
+                          <span className={styles.revealOrientation}>
+                            {currentSelection?.orientation === 'reversed'
+                              ? copy.reversed
+                              : copy.upright}
+                          </span>
+                          <Typography>
+                            {currentSelection?.orientation === 'reversed'
+                              ? currentCard?.reversed[locale]
+                              : currentCard?.upright[locale]}
+                          </Typography>
+                        </>
+                      ) : null}
+                    </div>
+                    {revealCta ? (
+                      <Button
+                        className={styles.revealCta}
+                        onClick={handleRevealAction}
+                        prominence="primary"
+                        size="large"
+                      >
+                        {revealCta === 'open'
+                          ? copy.openCard
+                          : revealCta === 'finish'
+                            ? copy.seeReading
+                            : copy.openNext}{' '}
+                        <span aria-hidden="true">→</span>
+                      </Button>
                     ) : null}
                   </div>
-                  {revealCta ? (
-                    <Button
-                      className={styles.revealCta}
-                      onClick={handleRevealAction}
-                      prominence="primary"
-                      size="large"
-                    >
-                      {revealCta === 'open'
-                        ? copy.openCard
-                        : revealCta === 'finish'
-                          ? copy.seeReading
-                          : copy.openNext}{' '}
-                      <span aria-hidden="true">→</span>
-                    </Button>
-                  ) : null}
                 </div>
               </div>
             </Stack>

@@ -251,20 +251,30 @@ export function runTarotGoldenMasterGate(rootDir: string) {
       message: 'An approved Golden Master requires explicit human provenance and reference record.',
     },
   );
-  assertions.assert(
+  const releaseIsClassic =
     release.mode === 'classic' &&
-      release.records.length === 0 &&
-      manifest.releaseMode === 'classic',
+    release.records.length === 0 &&
+    manifest.releaseMode === 'classic';
+  const releaseRecordIds = release.records.map((record: { cardId: string }) => record.cardId);
+  const releaseIsComplete =
+    release.mode === 'premium-complete' &&
+    release.records.length === 78 &&
+    new Set(releaseRecordIds).size === 78 &&
+    manifest.releaseMode === 'premium-complete';
+  assertions.assert(releaseIsClassic || releaseIsComplete, {
+    code: 'golden-master-classic-fallback',
+    message:
+      'A Golden Master must never activate a partial deck; runtime is either classic or atomically complete.',
+  });
+  const activeFool = getTarotArtwork('major-fool');
+  assertions.assert(
+    activeFool.editionId ===
+      (releaseIsComplete ? 'premium-rws-remastered' : 'rws-archival-classic'),
     {
-      code: 'golden-master-classic-fallback',
-      message: 'A Golden Master candidate or approval must never activate a partial premium deck.',
+      code: 'golden-master-provider-fallback',
+      message: 'The Fool provider must match the atomically selected runtime edition.',
     },
   );
-  const classicFool = getTarotArtwork('major-fool');
-  assertions.assert(classicFool.editionId === 'rws-archival-classic', {
-    code: 'golden-master-provider-fallback',
-    message: 'Production artwork resolution must remain on the classic Fool.',
-  });
 
   const importSource = readFileSync(resolve(rootDir, 'scripts/premium-tarot/import.mjs'), 'utf8');
   const previewSource = readFileSync(

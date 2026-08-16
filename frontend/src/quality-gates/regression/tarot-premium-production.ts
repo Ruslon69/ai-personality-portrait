@@ -62,6 +62,11 @@ type PremiumProductionCard = {
   approvedBy?: string;
   arcana: string;
   canonicalName: string;
+  candidateHistory?: Array<{
+    checksum: string;
+    productionStatus: string;
+    version: number;
+  }>;
   cardId: string;
   checksum?: string;
   compositionReference: Record<string, string>;
@@ -124,6 +129,10 @@ export function runTarotPremiumProductionGate(rootDir: string) {
       resolve(rootDir, 'src/assets/tarot/metadata/premium-release-manifest.json'),
       'utf8',
     ),
+  );
+  const artworkProviderSource = readFileSync(
+    resolve(rootDir, 'src/assets/tarot/metadata/artwork.ts'),
+    'utf8',
   );
   const cards = manifest.cards as PremiumProductionCard[];
   const lifecycleResult = JSON.parse(
@@ -224,7 +233,7 @@ export function runTarotPremiumProductionGate(rootDir: string) {
     : undefined;
   assertions.assert(
     golden?.isGoldenMaster === true &&
-      golden.productionStatus === 'approved' &&
+      ['approved', 'integrated'].includes(golden.productionStatus) &&
       golden.reviewStatus === 'approved' &&
       golden.styleVersion === 'premium-tarot-style-v2' &&
       golden.checksum === goldenReference.checksum &&
@@ -466,8 +475,11 @@ export function runTarotPremiumProductionGate(rootDir: string) {
   assertions.assert(
     cards
       .filter((card) => allReferenceIds.has(card.cardId))
-      .every((card) => card.productionStatus === 'approved' && card.reviewStatus === 'approved') &&
-      allReferenceIds.size === 15,
+      .every(
+        (card) =>
+          ['approved', 'integrated'].includes(card.productionStatus) &&
+          card.reviewStatus === 'approved',
+      ) && allReferenceIds.size === 15,
     {
       code: 'premium-production-reference-target-state',
       message: 'The complete reference set must retain all fifteen human approvals.',
@@ -644,6 +656,58 @@ export function runTarotPremiumProductionGate(rootDir: string) {
       code: 'premium-production-edition-selection',
       message:
         'Artwork selection must preserve explicit classic fallback and atomic premium release.',
+    },
+  );
+  const releaseRecords = new Map(
+    release.records.map((record: { cardId: string }) => [record.cardId, record]),
+  );
+  const resolvedRuntimeArtwork = canonicalIds.map((cardId) => getTarotArtwork(cardId));
+  assertions.assert(
+    !completeReleaseSafe ||
+      (resolvedRuntimeArtwork.length === 78 &&
+        resolvedRuntimeArtwork.every(
+          (artwork) =>
+            artwork.editionId === 'premium-rws-remastered' &&
+            artwork.quality === 'premium' &&
+            artwork.sourceKind === 'ai-painting' &&
+            Boolean(artwork.faceAsset),
+        )),
+    {
+      code: 'premium-runtime-all-card-resolution',
+      message:
+        'A valid premium-complete release must resolve Premium face artwork for all 78 canonical IDs without classic fallback.',
+    },
+  );
+  assertions.assert(
+    !completeReleaseSafe ||
+      cards.every((card) => {
+        const record = releaseRecords.get(card.cardId) as
+          { artworkVersion: string; assetPath: string; checksum: string } | undefined;
+        return (
+          record?.artworkVersion === `premium-tarot-art-v${card.version}` &&
+          record.checksum === card.checksum &&
+          record.assetPath === `../cards/premium-rws-remastered/${card.cardId}.jpg` &&
+          !(card.candidateHistory ?? []).some(
+            (attempt) =>
+              attempt.productionStatus === 'superseded' && attempt.checksum === record.checksum,
+          )
+        );
+      }),
+    {
+      code: 'premium-runtime-active-version-only',
+      message:
+        'Runtime release records must bind each current active artwork version and exclude superseded Ace or other historical checksums.',
+    },
+  );
+  assertions.assert(
+    artworkProviderSource.includes('premiumReleaseIsAtomic') &&
+      artworkProviderSource.includes('premiumRelease.records.length === 78') &&
+      artworkProviderSource.includes('new Set(premiumRecordIds).size === 78') &&
+      artworkProviderSource.includes('premiumReleaseIsAtomic\n    ? premiumRelease.records.map'),
+    {
+      code: 'premium-runtime-invalid-release-fallback',
+      message:
+        'An invalid or partial Premium runtime manifest must expose no Premium records and safely retain classic artwork fallback.',
     },
   );
 

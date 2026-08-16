@@ -1,0 +1,61 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "cups-two",
+  "artworkVersion": 1,
+  "candidateChecksum": "6bbdecbc60fce3dce79b7bd825dc0d6dc21effb6f26fdb00ca7f4a0db8ed9e23",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "cups-two",
+    "productionSequenceNumber": 39,
+    "externalSourceFilename": "39.png",
+    "arcana": "minor",
+    "canonicalDisplayTitle": "TWO OF CUPS",
+    "canonicalDisplayValue": "II",
+    "suit": "cups",
+    "rank": "two",
+    "expectedArcanaIdentity": "Minor Arcana · cups · II",
+    "checks": {
+      "canonicalTitleCorrect": true,
+      "canonicalNumeralOrRankCorrect": true,
+      "noProductionSequenceAsTarotNumber": true,
+      "cardIdentityImmediatelyRecognizable": true
+    }
+  },
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  },
+  "decision": "approved",
+  "approvedAt": "2026-08-15T20:52:18.218Z",
+  "approvalBinding": {
+    "contractVersion": "premium-tarot-bound-review-v1",
+    "cardId": "cups-two",
+    "artworkVersion": 1,
+    "candidateChecksum": "6bbdecbc60fce3dce79b7bd825dc0d6dc21effb6f26fdb00ca7f4a0db8ed9e23",
+    "styleVersion": "premium-tarot-style-v2",
+    "reviewVersion": "premium-tarot-review-v1"
+  }
+}

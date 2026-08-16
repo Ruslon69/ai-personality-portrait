@@ -1,0 +1,61 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "cups-ace",
+  "artworkVersion": 2,
+  "candidateChecksum": "bc4f99430817605a517ed773e6fee1d20f76be4a7c5377cd3e6732385d8a03a5",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "cups-ace",
+    "productionSequenceNumber": 8,
+    "externalSourceFilename": "8.png",
+    "arcana": "minor",
+    "canonicalDisplayTitle": "ACE OF CUPS",
+    "canonicalDisplayValue": "I",
+    "suit": "cups",
+    "rank": "ace",
+    "expectedArcanaIdentity": "Minor Arcana · cups · I",
+    "checks": {
+      "canonicalTitleCorrect": true,
+      "canonicalNumeralOrRankCorrect": true,
+      "noProductionSequenceAsTarotNumber": true,
+      "cardIdentityImmediatelyRecognizable": true
+    }
+  },
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  },
+  "decision": "approved",
+  "approvedAt": "2026-08-16T09:43:27.938Z",
+  "approvalBinding": {
+    "contractVersion": "premium-tarot-bound-review-v1",
+    "cardId": "cups-ace",
+    "artworkVersion": 2,
+    "candidateChecksum": "bc4f99430817605a517ed773e6fee1d20f76be4a7c5377cd3e6732385d8a03a5",
+    "styleVersion": "premium-tarot-style-v2",
+    "reviewVersion": "premium-tarot-review-v1"
+  }
+}

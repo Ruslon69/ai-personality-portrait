@@ -69,7 +69,7 @@ const propagatedPilotIds = PILOT_CARD_IDS.filter((cardId) => cardId !== 'major-f
 const golden = manifest.cards.find((card) => card.cardId === 'major-fool');
 const expectedGoldenChecksum = '8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f';
 if (
-  golden?.productionStatus !== 'approved' ||
+  !['approved', 'integrated'].includes(golden?.productionStatus) ||
   golden.reviewStatus !== 'approved' ||
   golden.goldenMasterStatus !== 'approved' ||
   golden.goldenMasterReviewStatus !== 'approved' ||

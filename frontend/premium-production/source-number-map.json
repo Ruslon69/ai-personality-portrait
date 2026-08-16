@@ -275,10 +275,10 @@
       "canonicalName": "Judgement",
       "arcana": "major",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "24.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 25,
@@ -288,10 +288,10 @@
       "suit": "wands",
       "rank": "ace",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "25.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 26,
@@ -301,10 +301,10 @@
       "suit": "wands",
       "rank": "two",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "26.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 27,
@@ -314,10 +314,10 @@
       "suit": "wands",
       "rank": "three",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "27.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 28,
@@ -327,10 +327,10 @@
       "suit": "wands",
       "rank": "four",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "28.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 29,
@@ -340,10 +340,10 @@
       "suit": "wands",
       "rank": "five",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "29.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 30,
@@ -353,10 +353,10 @@
       "suit": "wands",
       "rank": "six",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "30.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 31,
@@ -366,10 +366,10 @@
       "suit": "wands",
       "rank": "seven",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "31.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 32,
@@ -379,10 +379,10 @@
       "suit": "wands",
       "rank": "eight",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "32.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 33,
@@ -392,10 +392,10 @@
       "suit": "wands",
       "rank": "nine",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "33.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 34,
@@ -405,10 +405,10 @@
       "suit": "wands",
       "rank": "ten",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "34.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 35,
@@ -418,10 +418,10 @@
       "suit": "wands",
       "rank": "page",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "35.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 36,
@@ -431,10 +431,10 @@
       "suit": "wands",
       "rank": "knight",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "36.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 37,
@@ -444,10 +444,10 @@
       "suit": "wands",
       "rank": "queen",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "37.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 38,
@@ -457,10 +457,10 @@
       "suit": "wands",
       "rank": "king",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "38.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 39,
@@ -470,10 +470,10 @@
       "suit": "cups",
       "rank": "two",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "39.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 40,
@@ -483,10 +483,10 @@
       "suit": "cups",
       "rank": "three",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "40.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 41,
@@ -496,10 +496,10 @@
       "suit": "cups",
       "rank": "four",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "41.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 42,
@@ -509,10 +509,10 @@
       "suit": "cups",
       "rank": "five",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "42.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 43,
@@ -522,10 +522,10 @@
       "suit": "cups",
       "rank": "six",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "43.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 44,
@@ -535,10 +535,10 @@
       "suit": "cups",
       "rank": "seven",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "44.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 45,
@@ -548,10 +548,10 @@
       "suit": "cups",
       "rank": "eight",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "45.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 46,
@@ -561,10 +561,10 @@
       "suit": "cups",
       "rank": "nine",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "46.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 47,
@@ -574,10 +574,10 @@
       "suit": "cups",
       "rank": "ten",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "47.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 48,
@@ -587,10 +587,10 @@
       "suit": "cups",
       "rank": "page",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "48.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 49,
@@ -600,10 +600,10 @@
       "suit": "cups",
       "rank": "knight",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "49.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 50,
@@ -613,10 +613,10 @@
       "suit": "cups",
       "rank": "queen",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "50.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 51,
@@ -626,10 +626,10 @@
       "suit": "cups",
       "rank": "king",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "51.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 52,
@@ -639,10 +639,10 @@
       "suit": "swords",
       "rank": "ace",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "52.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 53,
@@ -652,10 +652,10 @@
       "suit": "swords",
       "rank": "two",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "53.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 54,
@@ -665,10 +665,10 @@
       "suit": "swords",
       "rank": "four",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "54.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 55,
@@ -678,10 +678,10 @@
       "suit": "swords",
       "rank": "five",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "55.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 56,
@@ -691,10 +691,10 @@
       "suit": "swords",
       "rank": "six",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "56.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 57,
@@ -704,10 +704,10 @@
       "suit": "swords",
       "rank": "seven",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "57.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 58,
@@ -717,10 +717,10 @@
       "suit": "swords",
       "rank": "eight",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "58.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 59,
@@ -730,10 +730,10 @@
       "suit": "swords",
       "rank": "nine",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "59.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 60,
@@ -743,10 +743,10 @@
       "suit": "swords",
       "rank": "ten",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "60.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 61,
@@ -756,10 +756,10 @@
       "suit": "swords",
       "rank": "page",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "61.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 62,
@@ -769,10 +769,10 @@
       "suit": "swords",
       "rank": "knight",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "62.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 63,
@@ -782,10 +782,10 @@
       "suit": "swords",
       "rank": "queen",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "63.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 64,
@@ -795,10 +795,10 @@
       "suit": "swords",
       "rank": "king",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "64.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 65,
@@ -808,10 +808,10 @@
       "suit": "pentacles",
       "rank": "ace",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "65.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 66,
@@ -821,10 +821,10 @@
       "suit": "pentacles",
       "rank": "two",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "66.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 67,
@@ -834,10 +834,10 @@
       "suit": "pentacles",
       "rank": "three",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "67.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 68,
@@ -847,10 +847,10 @@
       "suit": "pentacles",
       "rank": "four",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "68.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 69,
@@ -860,10 +860,10 @@
       "suit": "pentacles",
       "rank": "five",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "69.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 70,
@@ -873,10 +873,10 @@
       "suit": "pentacles",
       "rank": "six",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "70.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 71,
@@ -886,10 +886,10 @@
       "suit": "pentacles",
       "rank": "seven",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "71.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 72,
@@ -899,10 +899,10 @@
       "suit": "pentacles",
       "rank": "eight",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "72.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 73,
@@ -912,10 +912,10 @@
       "suit": "pentacles",
       "rank": "nine",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "73.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 74,
@@ -925,10 +925,10 @@
       "suit": "pentacles",
       "rank": "ten",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "74.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 75,
@@ -938,10 +938,10 @@
       "suit": "pentacles",
       "rank": "page",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "75.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 76,
@@ -951,10 +951,10 @@
       "suit": "pentacles",
       "rank": "knight",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "76.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 77,
@@ -964,10 +964,10 @@
       "suit": "pentacles",
       "rank": "queen",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "77.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     },
     {
       "sequenceNumber": 78,
@@ -977,10 +977,10 @@
       "suit": "pentacles",
       "rank": "king",
       "referenceRole": "production-card",
-      "approvedState": "not-approved",
+      "approvedState": "approved",
       "sourceFilename": "78.png",
-      "sourceState": "reserved",
-      "promptReadiness": "style-contract-ready"
+      "sourceState": "processed",
+      "promptReadiness": "approved-candidate"
     }
   ]
 }

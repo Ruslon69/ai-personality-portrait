@@ -1,0 +1,61 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "swords-page",
+  "artworkVersion": 1,
+  "candidateChecksum": "801d9cecf2b4d5884df1aae235d4ecbb6ad2ea9f05764601c9eacb8c7bedaa3e",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "swords-page",
+    "productionSequenceNumber": 61,
+    "externalSourceFilename": "61.png",
+    "arcana": "minor",
+    "canonicalDisplayTitle": "PAGE OF SWORDS",
+    "canonicalDisplayValue": "PAGE",
+    "suit": "swords",
+    "rank": "page",
+    "expectedArcanaIdentity": "Minor Arcana · swords · PAGE",
+    "checks": {
+      "canonicalTitleCorrect": true,
+      "canonicalNumeralOrRankCorrect": true,
+      "noProductionSequenceAsTarotNumber": true,
+      "cardIdentityImmediatelyRecognizable": true
+    }
+  },
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  },
+  "decision": "approved",
+  "approvedAt": "2026-08-16T08:18:00.379Z",
+  "approvalBinding": {
+    "contractVersion": "premium-tarot-bound-review-v1",
+    "cardId": "swords-page",
+    "artworkVersion": 1,
+    "candidateChecksum": "801d9cecf2b4d5884df1aae235d4ecbb6ad2ea9f05764601c9eacb8c7bedaa3e",
+    "styleVersion": "premium-tarot-style-v2",
+    "reviewVersion": "premium-tarot-review-v1"
+  }
+}

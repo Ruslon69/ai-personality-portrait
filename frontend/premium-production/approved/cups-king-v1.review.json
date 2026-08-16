@@ -1,0 +1,61 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "cups-king",
+  "artworkVersion": 1,
+  "candidateChecksum": "2cf949119705a443b76010e15704efa83dd2abd5e19801362bf0906640b348cc",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "cups-king",
+    "productionSequenceNumber": 51,
+    "externalSourceFilename": "51.png",
+    "arcana": "minor",
+    "canonicalDisplayTitle": "KING OF CUPS",
+    "canonicalDisplayValue": "KING",
+    "suit": "cups",
+    "rank": "king",
+    "expectedArcanaIdentity": "Minor Arcana · cups · KING",
+    "checks": {
+      "canonicalTitleCorrect": true,
+      "canonicalNumeralOrRankCorrect": true,
+      "noProductionSequenceAsTarotNumber": true,
+      "cardIdentityImmediatelyRecognizable": true
+    }
+  },
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  },
+  "decision": "approved",
+  "approvedAt": "2026-08-15T22:10:04.480Z",
+  "approvalBinding": {
+    "contractVersion": "premium-tarot-bound-review-v1",
+    "cardId": "cups-king",
+    "artworkVersion": 1,
+    "candidateChecksum": "2cf949119705a443b76010e15704efa83dd2abd5e19801362bf0906640b348cc",
+    "styleVersion": "premium-tarot-style-v2",
+    "reviewVersion": "premium-tarot-review-v1"
+  }
+}

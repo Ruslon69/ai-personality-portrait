@@ -1,0 +1,61 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "pentacles-three",
+  "artworkVersion": 1,
+  "candidateChecksum": "09c2fa9b6cd8826224340233309694d38e70f09f7945fadda615698a05b189fe",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "pentacles-three",
+    "productionSequenceNumber": 67,
+    "externalSourceFilename": "67.png",
+    "arcana": "minor",
+    "canonicalDisplayTitle": "THREE OF PENTACLES",
+    "canonicalDisplayValue": "III",
+    "suit": "pentacles",
+    "rank": "three",
+    "expectedArcanaIdentity": "Minor Arcana · pentacles · III",
+    "checks": {
+      "canonicalTitleCorrect": true,
+      "canonicalNumeralOrRankCorrect": true,
+      "noProductionSequenceAsTarotNumber": true,
+      "cardIdentityImmediatelyRecognizable": true
+    }
+  },
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  },
+  "decision": "approved",
+  "approvedAt": "2026-08-16T10:01:32.242Z",
+  "approvalBinding": {
+    "contractVersion": "premium-tarot-bound-review-v1",
+    "cardId": "pentacles-three",
+    "artworkVersion": 1,
+    "candidateChecksum": "09c2fa9b6cd8826224340233309694d38e70f09f7945fadda615698a05b189fe",
+    "styleVersion": "premium-tarot-style-v2",
+    "reviewVersion": "premium-tarot-review-v1"
+  }
+}

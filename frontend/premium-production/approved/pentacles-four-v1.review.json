@@ -1,0 +1,61 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "pentacles-four",
+  "artworkVersion": 1,
+  "candidateChecksum": "df7b7be07ac03bcb766dbdfb91a14d0db22ca9c6a6a9781f05271df16e3ed87f",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "pentacles-four",
+    "productionSequenceNumber": 68,
+    "externalSourceFilename": "68.png",
+    "arcana": "minor",
+    "canonicalDisplayTitle": "FOUR OF PENTACLES",
+    "canonicalDisplayValue": "IV",
+    "suit": "pentacles",
+    "rank": "four",
+    "expectedArcanaIdentity": "Minor Arcana · pentacles · IV",
+    "checks": {
+      "canonicalTitleCorrect": true,
+      "canonicalNumeralOrRankCorrect": true,
+      "noProductionSequenceAsTarotNumber": true,
+      "cardIdentityImmediatelyRecognizable": true
+    }
+  },
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  },
+  "decision": "approved",
+  "approvedAt": "2026-08-16T10:05:03.216Z",
+  "approvalBinding": {
+    "contractVersion": "premium-tarot-bound-review-v1",
+    "cardId": "pentacles-four",
+    "artworkVersion": 1,
+    "candidateChecksum": "df7b7be07ac03bcb766dbdfb91a14d0db22ca9c6a6a9781f05271df16e3ed87f",
+    "styleVersion": "premium-tarot-style-v2",
+    "reviewVersion": "premium-tarot-review-v1"
+  }
+}

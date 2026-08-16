@@ -216,6 +216,14 @@ export function nextProductionCard(queue) {
   );
 }
 
+export function isActiveApprovedCard(card) {
+  return (
+    Boolean(card) &&
+    ['approved', 'integrated'].includes(card.productionStatus) &&
+    card.reviewStatus === 'approved'
+  );
+}
+
 export function referenceReadiness(manifest, referenceSet) {
   const production = new Map(manifest.cards.map((card) => [card.cardId, card]));
   const approved = referenceSet.cards.filter((entry) => {
@@ -231,8 +239,7 @@ export function referenceReadiness(manifest, referenceSet) {
 
 export function approvedReferenceAttempt(card, entry) {
   if (!card || !entry || entry.approvedArtworkVersion === null || !entry.checksum) return undefined;
-  const active =
-    card.productionStatus === 'approved' && card.reviewStatus === 'approved' ? card : undefined;
+  const active = isActiveApprovedCard(card) ? card : undefined;
   const historical = (card.candidateHistory ?? []).filter(
     (attempt) => attempt.productionStatus === 'superseded' && attempt.reviewStatus === 'approved',
   );
@@ -401,10 +408,7 @@ export async function validateReferenceProduction(
         (item.suit ?? null) !== (card?.suit ?? null) ||
         (item.rank ?? null) !== (card?.rank ?? null) ||
         item.referenceRole !== (reference?.role ?? 'production-card') ||
-        item.approvedState !==
-          (card?.productionStatus === 'approved' && card.reviewStatus === 'approved'
-            ? 'approved'
-            : 'not-approved') ||
+        item.approvedState !== (isActiveApprovedCard(card) ? 'approved' : 'not-approved') ||
         !['reserved', 'processed'].includes(item.sourceState) ||
         item.promptReadiness !==
           (item.approvedState === 'approved'

@@ -1,0 +1,61 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "pentacles-five",
+  "artworkVersion": 1,
+  "candidateChecksum": "1e558a7d39cdb5a378f7a84c2eb501e9ab66033cb73a1f99311ca8f8dea82c3c",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "pentacles-five",
+    "productionSequenceNumber": 69,
+    "externalSourceFilename": "69.png",
+    "arcana": "minor",
+    "canonicalDisplayTitle": "FIVE OF PENTACLES",
+    "canonicalDisplayValue": "V",
+    "suit": "pentacles",
+    "rank": "five",
+    "expectedArcanaIdentity": "Minor Arcana · pentacles · V",
+    "checks": {
+      "canonicalTitleCorrect": true,
+      "canonicalNumeralOrRankCorrect": true,
+      "noProductionSequenceAsTarotNumber": true,
+      "cardIdentityImmediatelyRecognizable": true
+    }
+  },
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  },
+  "decision": "approved",
+  "approvedAt": "2026-08-16T10:10:09.969Z",
+  "approvalBinding": {
+    "contractVersion": "premium-tarot-bound-review-v1",
+    "cardId": "pentacles-five",
+    "artworkVersion": 1,
+    "candidateChecksum": "1e558a7d39cdb5a378f7a84c2eb501e9ab66033cb73a1f99311ca8f8dea82c3c",
+    "styleVersion": "premium-tarot-style-v2",
+    "reviewVersion": "premium-tarot-review-v1"
+  }
+}

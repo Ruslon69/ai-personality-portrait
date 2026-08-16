@@ -168,6 +168,9 @@ const validReleaseRecords = canonicalIds.map((cardId) => ({
 }));
 check(
   validatePremiumReleaseRecords(validReleaseRecords, canonicalIds).length === 0 &&
+    validatePremiumReleaseRecords(validReleaseRecords.slice(0, 77), canonicalIds).some((failure) =>
+      failure.includes('78 records'),
+    ) &&
     validatePremiumReleaseRecords(
       [...validReleaseRecords.slice(0, 77), validReleaseRecords[0]],
       canonicalIds,

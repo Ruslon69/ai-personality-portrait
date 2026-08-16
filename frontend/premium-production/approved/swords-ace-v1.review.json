@@ -1,0 +1,61 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "swords-ace",
+  "artworkVersion": 1,
+  "candidateChecksum": "948d187516013bc9ff4a30554ab32cb8e2630f9554f81cd1742eee4b30eb5c05",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "swords-ace",
+    "productionSequenceNumber": 52,
+    "externalSourceFilename": "52.png",
+    "arcana": "minor",
+    "canonicalDisplayTitle": "ACE OF SWORDS",
+    "canonicalDisplayValue": "I",
+    "suit": "swords",
+    "rank": "ace",
+    "expectedArcanaIdentity": "Minor Arcana · swords · I",
+    "checks": {
+      "canonicalTitleCorrect": true,
+      "canonicalNumeralOrRankCorrect": true,
+      "noProductionSequenceAsTarotNumber": true,
+      "cardIdentityImmediatelyRecognizable": true
+    }
+  },
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  },
+  "decision": "approved",
+  "approvedAt": "2026-08-15T22:16:23.744Z",
+  "approvalBinding": {
+    "contractVersion": "premium-tarot-bound-review-v1",
+    "cardId": "swords-ace",
+    "artworkVersion": 1,
+    "candidateChecksum": "948d187516013bc9ff4a30554ab32cb8e2630f9554f81cd1742eee4b30eb5c05",
+    "styleVersion": "premium-tarot-style-v2",
+    "reviewVersion": "premium-tarot-review-v1"
+  }
+}

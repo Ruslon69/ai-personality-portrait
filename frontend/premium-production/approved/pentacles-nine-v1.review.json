@@ -1,0 +1,61 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "pentacles-nine",
+  "artworkVersion": 1,
+  "candidateChecksum": "59f0c0c93577d74683f5f09f2231b3177233c41ed5fae01f7795c88e8b54f0be",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "pentacles-nine",
+    "productionSequenceNumber": 73,
+    "externalSourceFilename": "73.png",
+    "arcana": "minor",
+    "canonicalDisplayTitle": "NINE OF PENTACLES",
+    "canonicalDisplayValue": "IX",
+    "suit": "pentacles",
+    "rank": "nine",
+    "expectedArcanaIdentity": "Minor Arcana · pentacles · IX",
+    "checks": {
+      "canonicalTitleCorrect": true,
+      "canonicalNumeralOrRankCorrect": true,
+      "noProductionSequenceAsTarotNumber": true,
+      "cardIdentityImmediatelyRecognizable": true
+    }
+  },
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  },
+  "decision": "approved",
+  "approvedAt": "2026-08-16T11:16:57.226Z",
+  "approvalBinding": {
+    "contractVersion": "premium-tarot-bound-review-v1",
+    "cardId": "pentacles-nine",
+    "artworkVersion": 1,
+    "candidateChecksum": "59f0c0c93577d74683f5f09f2231b3177233c41ed5fae01f7795c88e8b54f0be",
+    "styleVersion": "premium-tarot-style-v2",
+    "reviewVersion": "premium-tarot-review-v1"
+  }
+}

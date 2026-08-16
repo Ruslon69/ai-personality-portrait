@@ -1,0 +1,61 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "cups-six",
+  "artworkVersion": 1,
+  "candidateChecksum": "1bf2ccdf4e654cac0ccdc45536ab56234b41e8dceaaf790a0c9accf69eb26ca9",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "cups-six",
+    "productionSequenceNumber": 43,
+    "externalSourceFilename": "43.png",
+    "arcana": "minor",
+    "canonicalDisplayTitle": "SIX OF CUPS",
+    "canonicalDisplayValue": "VI",
+    "suit": "cups",
+    "rank": "six",
+    "expectedArcanaIdentity": "Minor Arcana · cups · VI",
+    "checks": {
+      "canonicalTitleCorrect": true,
+      "canonicalNumeralOrRankCorrect": true,
+      "noProductionSequenceAsTarotNumber": true,
+      "cardIdentityImmediatelyRecognizable": true
+    }
+  },
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  },
+  "decision": "approved",
+  "approvedAt": "2026-08-15T21:12:15.269Z",
+  "approvalBinding": {
+    "contractVersion": "premium-tarot-bound-review-v1",
+    "cardId": "cups-six",
+    "artworkVersion": 1,
+    "candidateChecksum": "1bf2ccdf4e654cac0ccdc45536ab56234b41e8dceaaf790a0c9accf69eb26ca9",
+    "styleVersion": "premium-tarot-style-v2",
+    "reviewVersion": "premium-tarot-review-v1"
+  }
+}

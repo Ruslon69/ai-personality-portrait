@@ -54,7 +54,13 @@ export function bundleViolations(assets: readonly BundleAsset[]) {
   const storageMarkerAssets = javascript.filter((asset) =>
     asset.content.includes('app:product-storage-v2'),
   );
-  if (storageMarkerAssets.length !== 1 || !storageMarkerAssets[0]?.path.startsWith('assets/index-'))
+  const entryDocument = assets.find((asset) => asset.path === 'index.html')?.content ?? '';
+  const storageRuntimePath = storageMarkerAssets[0]?.path;
+  const storageRuntimeIsInitial =
+    storageRuntimePath?.startsWith('assets/index-') ||
+    (storageRuntimePath !== undefined &&
+      entryDocument.includes(`rel="modulepreload" crossorigin href="/${storageRuntimePath}"`));
+  if (storageMarkerAssets.length !== 1 || !storageRuntimeIsInitial)
     violations.push('product-storage-browser-adapter-boundary');
   return violations;
 }

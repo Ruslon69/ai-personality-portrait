@@ -40,3 +40,9 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+@media (min-width: 68.75rem) {
+  .body[data-compact-sidebar='true'] {
+    grid-template-columns: 13rem minmax(0, 1fr);
+  }
+}

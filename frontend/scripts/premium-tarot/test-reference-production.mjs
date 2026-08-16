@@ -273,7 +273,6 @@ check(
     versionFixture.version === 2,
   'new batch candidates preserve previous candidate versions',
 );
-check(manifest.releaseMode === 'classic', 'runtime release remains classic');
 check(
   manifest.releaseThreshold.approved === 78 &&
     manifest.releaseThreshold.nonApprovedReviewRecords === 0,
@@ -286,8 +285,13 @@ const runtimeRelease = JSON.parse(
   ),
 );
 check(
-  runtimeRelease.mode === 'classic' && runtimeRelease.records.length === 0,
-  'reference approvals do not partially activate premium runtime assets',
+  (manifest.releaseMode === 'classic' &&
+    runtimeRelease.mode === 'classic' &&
+    runtimeRelease.records.length === 0) ||
+    (manifest.releaseMode === 'premium-complete' &&
+      runtimeRelease.mode === 'premium-complete' &&
+      runtimeRelease.records.length === 78),
+  'reference approvals preserve atomic classic or complete Premium runtime assets',
 );
 
 const summary = { assertions: results.length, passed: true };

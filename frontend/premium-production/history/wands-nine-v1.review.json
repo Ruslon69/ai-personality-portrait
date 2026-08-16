@@ -1,0 +1,51 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "wands-nine",
+  "artworkVersion": 1,
+  "candidateChecksum": "6505e80c02fd9e40ae135538930bc1cb56e6726bb75dc8ecfd9646a8e6a869db",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "wands-nine",
+    "productionSequenceNumber": 33,
+    "externalSourceFilename": "33.png",
+    "arcana": "minor",
+    "canonicalDisplayTitle": "NINE OF WANDS",
+    "canonicalDisplayValue": "IX",
+    "suit": "wands",
+    "rank": "nine",
+    "expectedArcanaIdentity": "Minor Arcana · wands · IX",
+    "checks": {
+      "canonicalTitleCorrect": false,
+      "canonicalNumeralOrRankCorrect": false,
+      "noProductionSequenceAsTarotNumber": false,
+      "cardIdentityImmediatelyRecognizable": false
+    }
+  },
+  "scores": {
+    "recognizability": null,
+    "symbolismCoverage": null,
+    "composition": null,
+    "visualDepth": null,
+    "lighting": null,
+    "materialQuality": null,
+    "anatomy": null,
+    "styleConsistency": null,
+    "colorConsistency": null,
+    "premiumFeel": null,
+    "cardShellCompatibility": null
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": false,
+    "noForbiddenContent": false,
+    "canonicalIdentityObvious": false,
+    "styleMatchesPilotSet": false,
+    "cropSafeAtSevenByTwelve": false,
+    "noBakedText": false,
+    "noBakedFrame": false,
+    "canonicalOrientationUpright": false,
+    "reviewerExplicitApproval": false
+  }
+}

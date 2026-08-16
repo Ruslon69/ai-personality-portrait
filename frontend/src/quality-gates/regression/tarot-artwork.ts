@@ -83,9 +83,9 @@ export function runTarotArtworkGate(rootDir: string) {
   const manifestIds = rwsPublicDomainManifest.map((record) => record.cardId).sort();
   const localPaths = rwsPublicDomainManifest.map((record) => record.localAssetPath);
   const checksums = rwsPublicDomainManifest.map((record) => record.checksum);
-  const builtArtworkNames = new Set(
-    builtArtworkFiles.map((path) => path.replace(/ \d+(?=\.jpg$)/u, '')),
-  );
+  const premiumReleaseActive = getTarotArtwork('major-fool').quality === 'premium';
+  const expectedBuiltArtworkCount =
+    QUALITY_BASELINE.tarotCardCount * (premiumReleaseActive ? 2 : 1);
   const duplicateChecksums = duplicates(checksums);
   const orientationIds = rwsOrientationManifest.reviewRecords.map((record) => record.cardId).sort();
 
@@ -107,11 +107,12 @@ export function runTarotArtworkGate(rootDir: string) {
     expected: QUALITY_BASELINE.tarotCardCount,
     message: 'The local RWS runtime collection must contain exactly 78 JPEG assets.',
   });
-  assertions.assert(builtArtworkNames.size === QUALITY_BASELINE.tarotCardCount, {
-    actual: builtArtworkNames.size,
+  assertions.assert(builtArtworkFiles.length === expectedBuiltArtworkCount, {
+    actual: builtArtworkFiles.length,
     code: 'rws-built-file-coverage',
-    expected: QUALITY_BASELINE.tarotCardCount,
-    message: 'Vite must emit the 78 unique card faces as external image assets.',
+    expected: expectedBuiltArtworkCount,
+    message:
+      'Vite must emit one complete active deck and retain the complete classic fallback deck.',
   });
   const builtIndexPath = resolve(distRoot, 'index.html');
   const builtIndex = existsSync(builtIndexPath) ? readFileSync(builtIndexPath, 'utf8') : '';
@@ -278,7 +279,9 @@ export function runTarotArtworkGate(rootDir: string) {
         message: `${record.cardId} dimensions differ from the rights manifest.`,
       },
     );
-    const artwork = getTarotArtwork(record.cardId, RWS_CLASSIC_DECK_ID);
+    const artwork = getTarotArtwork(record.cardId, RWS_CLASSIC_DECK_ID, {
+      quality: 'standard',
+    });
     assertions.assert(
       Boolean(artwork.faceAsset) &&
         !artwork.isFallback &&
@@ -472,6 +475,20 @@ export function runTarotArtworkGate(rootDir: string) {
     resolve(rootDir, 'src/features/tarot/components/TarotCardView.tsx'),
     'utf8',
   );
+  const readingFlowSource = readFileSync(
+    resolve(rootDir, 'src/features/tarot/flows/TarotReadingFlow.tsx'),
+    'utf8',
+  );
+  const resultSource = readFileSync(
+    resolve(rootDir, 'src/features/tarot/components/TarotResult.tsx'),
+    'utf8',
+  );
+  const layoutSource = readFileSync(resolve(rootDir, 'src/app/layout/Layout.tsx'), 'utf8');
+  const layoutCss = readFileSync(resolve(rootDir, 'src/app/layout/Layout.module.css'), 'utf8');
+  const readingEngineSource = readFileSync(
+    resolve(rootDir, 'src/features/tarot/lib/reading-engine.ts'),
+    'utf8',
+  );
   assertions.assert(
     cardViewSource.includes('visibleArtworkLayers?.map') &&
       cardViewSource.includes('data-artwork-provider') &&
@@ -514,6 +531,43 @@ export function runTarotArtworkGate(rootDir: string) {
     resolve(rootDir, 'src/features/tarot/components/Tarot.module.css'),
     'utf8',
   );
+  const cardInnerRule = cardBackCss.match(/\.tarotCardInner\s*\{(?<body>[^}]*)\}/u)?.groups?.body;
+  const cardFacesRule = cardBackCss.match(/\.cardBackFace,\s*\.cardFrontFace\s*\{(?<body>[^}]*)\}/u)
+    ?.groups?.body;
+  const revealedCardRule = cardBackCss.match(
+    /\.tarotCardButton\[data-revealed\]\s+\.tarotCardInner\s*\{(?<body>[^}]*)\}/u,
+  )?.groups?.body;
+  assertions.assert(
+    Boolean(cardInnerRule?.includes('-webkit-transform-style: preserve-3d')) &&
+      Boolean(cardInnerRule?.includes('transform-style: preserve-3d')) &&
+      !cardInnerRule?.includes('filter:'),
+    {
+      code: 'tarot-flip-preserve-3d-context',
+      message:
+        'The flip container must preserve its 3D faces without a grouping filter that flattens them.',
+    },
+  );
+  assertions.assert(
+    Boolean(cardFacesRule?.includes('-webkit-backface-visibility: hidden')) &&
+      Boolean(cardFacesRule?.includes('backface-visibility: hidden')) &&
+      cardBackCss.includes('.cardBackFace {\n  transform: rotateY(0deg);') &&
+      cardBackCss.includes('.cardFrontFace {\n  transform: rotateY(180deg);') &&
+      Boolean(revealedCardRule?.includes('transform: rotateY(180deg)')),
+    {
+      code: 'tarot-flip-face-visibility-contract',
+      message:
+        'Hidden cards must show the zero-degree back and revealed cards must expose the opposite front face across WebKit and standard engines.',
+    },
+  );
+  assertions.assert(
+    cardViewSource.includes('src={layer.asset}') &&
+      cardBackCss.includes('transform: rotate(var(--artwork-reading-rotation, 0deg))'),
+    {
+      code: 'tarot-flip-artwork-binding-and-orientation',
+      message:
+        'The visible front must bind the provider artwork while reading orientation remains isolated from the Y-axis flip.',
+    },
+  );
   (['cosmic-minimal', 'solar-lines', 'midnight-geometry', 'deep-water'] as const).forEach((theme) =>
     assertions.assert(
       cardBackSource.includes(`theme === '${theme}'`) &&
@@ -537,6 +591,75 @@ export function runTarotArtworkGate(rootDir: string) {
     {
       code: 'tarot-card-back-shared-renderer',
       message: 'Every face-down card surface must use the shared original back renderer.',
+    },
+  );
+  assertions.assert(
+    readingFlowSource.includes('data-reading-step={step}') &&
+      readingFlowSource.includes('className={styles.revealFlow}') &&
+      cardBackCss.includes('@media (min-width: 68.75rem)') &&
+      cardBackCss.includes('block-size: calc(100dvh - 6.75rem)'),
+    {
+      code: 'tarot-reading-desktop-viewport-shell',
+      message:
+        'Desktop reveal must use a step-scoped, viewport-bounded shell without constraining mobile.',
+    },
+  );
+  assertions.assert(
+    readingFlowSource.includes('className={styles.revealDetails}') &&
+      cardBackCss.includes("grid-template-areas: 'card details'") &&
+      cardBackCss.includes('grid-area: details') &&
+      cardBackCss.includes('align-content: center'),
+    {
+      code: 'tarot-reading-desktop-active-layout',
+      message:
+        'The desktop active card, interpretation, progress, and CTA must share one two-column stage.',
+    },
+  );
+  assertions.assert(
+    cardBackCss.includes('clamp(10.5rem, calc((100dvh - 34.5rem) * 7 / 12), 13.75rem)') &&
+      cardBackCss.includes('--tarot-card-ratio: 7 / 12') &&
+      cardBackCss.includes('clamp(4.25rem, 5vw, 5rem)') &&
+      cardBackCss.includes(".revealSequence[data-count='6']") &&
+      cardBackCss.includes('grid-template-columns: repeat(6, minmax(0, 1fr))') &&
+      cardBackCss.includes('text-wrap: balance') &&
+      cardBackCss.includes('overflow-x: auto'),
+    {
+      code: 'tarot-reading-responsive-card-sizing',
+      message:
+        'The active card must retain its aspect ratio while the compact spread safely contains narrow widths.',
+    },
+  );
+  assertions.assert(
+    resultSource.includes('className={styles.resultOpening}') &&
+      cardBackCss.includes('grid-template-columns: minmax(15rem, 0.38fr) minmax(0, 0.62fr)') &&
+      cardBackCss.includes('min-block-size: calc(100dvh - 4rem)') &&
+      cardBackCss.includes('--tarot-card-width: clamp(15rem, 18vw, 18rem)'),
+    {
+      code: 'tarot-result-desktop-viewport-hero',
+      message:
+        'The desktop result must keep its leading card and complete conclusion together in a viewport-aware two-column hero.',
+    },
+  );
+  assertions.assert(
+    cardBackCss.includes(".resultCopy h1[data-variant='display']") &&
+      cardBackCss.includes('max-inline-size: min(100%, 18ch)') &&
+      cardBackCss.includes('font-size: clamp(2rem, 4vw, 3.375rem)') &&
+      readingEngineSource.includes('Сейчас важнее заметить ${noticedTheme}, чем торопить ответ.'),
+    {
+      code: 'tarot-result-russian-headline-presentation',
+      message:
+        'Long Russian conclusions must wrap naturally at compact editorial scale and preserve correct punctuation.',
+    },
+  );
+  assertions.assert(
+    layoutSource.includes('data-compact-sidebar={hasCompactSidebar || undefined}') &&
+      layoutSource.includes('currentPath === ROUTES.tarotResult') &&
+      layoutCss.includes(".body[data-compact-sidebar='true']") &&
+      layoutCss.includes('grid-template-columns: 13rem minmax(0, 1fr)'),
+    {
+      code: 'tarot-result-compact-sidebar',
+      message:
+        'The result route must preserve desktop navigation while returning enough width to the conclusion hero.',
     },
   );
 

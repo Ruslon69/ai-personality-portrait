@@ -1,6 +1,475 @@
 {
   "editionId": "premium-rws-remastered",
-  "mode": "classic",
-  "records": [],
+  "mode": "premium-complete",
+  "records": [
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-fool.jpg",
+      "cardId": "major-fool",
+      "checksum": "8cccbb26fd91a70df31c3f2c0c5705d11a0ec4b8ca15a5383130864534e7aa9f"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v2",
+      "assetPath": "../cards/premium-rws-remastered/major-magician.jpg",
+      "cardId": "major-magician",
+      "checksum": "3fbdf69669ab18a13252802b9a2ceb52ee43db0951f688731cffe32387af07dc"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-high-priestess.jpg",
+      "cardId": "major-high-priestess",
+      "checksum": "ffa371426fefbf8f7ffc4f63db8b4c017e653ff7d44f2fa2b23ca8cf72062d22"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v2",
+      "assetPath": "../cards/premium-rws-remastered/major-empress.jpg",
+      "cardId": "major-empress",
+      "checksum": "198a6e8f91b105f907a116da2ee95577d1a68f502d79ae8e97e31164bfc3b5ac"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v2",
+      "assetPath": "../cards/premium-rws-remastered/major-emperor.jpg",
+      "cardId": "major-emperor",
+      "checksum": "63cc0b2cc6f423cc9c3dac588049264e383b4ee9b5e20082076cbd59ccfa310f"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v2",
+      "assetPath": "../cards/premium-rws-remastered/major-hierophant.jpg",
+      "cardId": "major-hierophant",
+      "checksum": "167ca1d14bafb7b443ae392c5dda0463a75eb6907b12de1398d64028b66c9f2b"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-lovers.jpg",
+      "cardId": "major-lovers",
+      "checksum": "031f558363f6a674ffa475dad90570f38c25d39952bf76f7f802018a028e056c"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-chariot.jpg",
+      "cardId": "major-chariot",
+      "checksum": "7b8934f7573e93e24eee4883b4a356c1e364687c88327dd0901b9d7fd6190246"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-strength.jpg",
+      "cardId": "major-strength",
+      "checksum": "a255835421dd733ca5579d84ac5d309e4c62bcdcd1097a15940bb6faa1c3280e"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-hermit.jpg",
+      "cardId": "major-hermit",
+      "checksum": "96cb0e3a8bee2e8679ccf88bf4127543a29e9114acb9c1f05a789cde75bee0cc"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-wheel.jpg",
+      "cardId": "major-wheel",
+      "checksum": "a1d3eb8f5c87eed1993c26d98855917961470b75f25b08bba32be65c287dbbd8"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-justice.jpg",
+      "cardId": "major-justice",
+      "checksum": "4697a47413e0429c20188a8766865a6da849905f3180eed75784012282759530"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-hanged-man.jpg",
+      "cardId": "major-hanged-man",
+      "checksum": "48c9eac647f110dffec07362e5e4202478ea048939c3ff72155ae74436145fb4"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-death.jpg",
+      "cardId": "major-death",
+      "checksum": "b09575929403fa05355f361a5c0053f35628cb6584a7fcedbbe5289e9ca04b53"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-temperance.jpg",
+      "cardId": "major-temperance",
+      "checksum": "258fad35db6d5ee2dbb201cc65c21c55313c15fa930409b7238f6f1c5ab29ac6"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-devil.jpg",
+      "cardId": "major-devil",
+      "checksum": "0e250d902d302ede94224e6a230589c15bba0789a86e6614f316f26a688799ea"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-tower.jpg",
+      "cardId": "major-tower",
+      "checksum": "681c7c76a159b9b5c8dd1074f6b401fd112213b0a822e91dcbc65504be797c21"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-star.jpg",
+      "cardId": "major-star",
+      "checksum": "75812b73699e59dd4cdf355b58efed4d804602fe13a98a6e2b440e3bb50c03b1"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-moon.jpg",
+      "cardId": "major-moon",
+      "checksum": "e10c70aee3bc4e35586b753297091d4909cb017df9f2538fff9be3b078ba50c3"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-sun.jpg",
+      "cardId": "major-sun",
+      "checksum": "6475eb809988b5c08ef9ff898e5eec86ceb4d368afed3b3510a1ee64785538b3"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-judgement.jpg",
+      "cardId": "major-judgement",
+      "checksum": "f21509556241a8c9f46394ba4729a5f2c7acd54d90181efb03ec0501abc6b065"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/major-world.jpg",
+      "cardId": "major-world",
+      "checksum": "158fdf283bb410df6ea768bf030eb57ad7e16e3d4280ae20d19e8022e8755489"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v3",
+      "assetPath": "../cards/premium-rws-remastered/wands-ace.jpg",
+      "cardId": "wands-ace",
+      "checksum": "c90acb1714e79adc174f23acb22aefaf81c42f6778eed10245f6c52651f4e152"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/wands-two.jpg",
+      "cardId": "wands-two",
+      "checksum": "fd58c3ad03f0732fe433b542916dc355add3c950e21650cc36bc55b8d8efee5d"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/wands-three.jpg",
+      "cardId": "wands-three",
+      "checksum": "21235a7669358a95725c227cc0a4ffc0a8adf77200d34e47bdb6f56851764123"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/wands-four.jpg",
+      "cardId": "wands-four",
+      "checksum": "404e41d7f145dbfbbfc2889f8cc2fd0394d2983635c92bee4f936bbc172ddc3e"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/wands-five.jpg",
+      "cardId": "wands-five",
+      "checksum": "61d7624a35414f59b4ae95901b775091e62eed7c8776085e1b2b7eb04e24a2fa"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/wands-six.jpg",
+      "cardId": "wands-six",
+      "checksum": "778cdbcaca31c3e2d0b93be2106cc261ad80f0958f73ee5e71a46073d53cbe2d"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/wands-seven.jpg",
+      "cardId": "wands-seven",
+      "checksum": "c0f74faa97346079f6eccf5f2eaacc189e884feda883e11a884749ed7cf6a477"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/wands-eight.jpg",
+      "cardId": "wands-eight",
+      "checksum": "ed11cb9d8a8e076865dae9f09e21eeee4fdcc22004088155d66c9e95d626bcaf"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v2",
+      "assetPath": "../cards/premium-rws-remastered/wands-nine.jpg",
+      "cardId": "wands-nine",
+      "checksum": "37b28746933618d0b857feb14348b92dba2c5444761b86d6add55356ee5437ea"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/wands-ten.jpg",
+      "cardId": "wands-ten",
+      "checksum": "bf7cba048508839ceae4880c50b4e989a440f91359b16927966e09be10dd026e"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/wands-page.jpg",
+      "cardId": "wands-page",
+      "checksum": "f3418c66665c37a371fb48fe07adf86c31035cd215391230004da134714cb53f"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/wands-knight.jpg",
+      "cardId": "wands-knight",
+      "checksum": "4a69ebdedab18035e76db6148de5359266e952a5c92cf477331cceb7d32b680d"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/wands-queen.jpg",
+      "cardId": "wands-queen",
+      "checksum": "a90499f2085467d88975626c21c8535bbc4dc0747cac5d70fd7a8d5e82e0db00"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/wands-king.jpg",
+      "cardId": "wands-king",
+      "checksum": "aabfc3b10fd973897a903c29b305d7fbeb385c7e9efdaf83fc463568443a1f3b"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v2",
+      "assetPath": "../cards/premium-rws-remastered/cups-ace.jpg",
+      "cardId": "cups-ace",
+      "checksum": "bc4f99430817605a517ed773e6fee1d20f76be4a7c5377cd3e6732385d8a03a5"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/cups-two.jpg",
+      "cardId": "cups-two",
+      "checksum": "6bbdecbc60fce3dce79b7bd825dc0d6dc21effb6f26fdb00ca7f4a0db8ed9e23"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/cups-three.jpg",
+      "cardId": "cups-three",
+      "checksum": "58158915a161fe0c02ff412f73bdfdaa0e8bd940fb1a7823d15300af75c4b64e"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/cups-four.jpg",
+      "cardId": "cups-four",
+      "checksum": "364760ceb90f2db3ad19272a75dfe437455eb54a6584a366f9f1bf9c1acedab5"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/cups-five.jpg",
+      "cardId": "cups-five",
+      "checksum": "14e9d6627af2759862faadef503e61b5f0bb5bcb6dfe6abded9dddc3ed39d425"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/cups-six.jpg",
+      "cardId": "cups-six",
+      "checksum": "1bf2ccdf4e654cac0ccdc45536ab56234b41e8dceaaf790a0c9accf69eb26ca9"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/cups-seven.jpg",
+      "cardId": "cups-seven",
+      "checksum": "69951b3d59d06c756135374daf51e6be5d8159b02ff72e75ae70c8c901c73d55"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/cups-eight.jpg",
+      "cardId": "cups-eight",
+      "checksum": "953ffa1e67010a811e8eda9f909fad64841515e180b69aa9b654066ba240449f"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/cups-nine.jpg",
+      "cardId": "cups-nine",
+      "checksum": "471ab813c92a828de0eeec01959b24cf14da000805708ef3d2827b14289b8939"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/cups-ten.jpg",
+      "cardId": "cups-ten",
+      "checksum": "1505738d8e2deeb4e74832348200f8af6179ebff11fd88ce550578fab3e18ced"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/cups-page.jpg",
+      "cardId": "cups-page",
+      "checksum": "1040a3977503bcd0c9f30b7b22b4b47df772a4e3056c29f1299acb494713cf0a"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/cups-knight.jpg",
+      "cardId": "cups-knight",
+      "checksum": "754a2774280a814ca78001d869c0af8a8bbda812bcac9579921c584478bce133"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/cups-queen.jpg",
+      "cardId": "cups-queen",
+      "checksum": "c7d947592874438fad221307c886c5e32c6a08c7316a6089dae04592c9b26647"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/cups-king.jpg",
+      "cardId": "cups-king",
+      "checksum": "2cf949119705a443b76010e15704efa83dd2abd5e19801362bf0906640b348cc"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v2",
+      "assetPath": "../cards/premium-rws-remastered/swords-ace.jpg",
+      "cardId": "swords-ace",
+      "checksum": "b0aee4fc269bb9183446ff1c5ebe8a57e2222d8ae4cd6c00b7861149e3642856"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/swords-two.jpg",
+      "cardId": "swords-two",
+      "checksum": "a18938ba7c0d160ac64fd49acdfe527eb3db4dca6862553b4a703aa10e94c6f3"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/swords-three.jpg",
+      "cardId": "swords-three",
+      "checksum": "ea801c182c9ae60d8e36b36a999bda95868b67f4554cefe6e83c09c674cc8b7c"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/swords-four.jpg",
+      "cardId": "swords-four",
+      "checksum": "6b50848293fd757295253512437cd8dfe14f0ad6b85d2196a76a482d0a2fc5ec"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/swords-five.jpg",
+      "cardId": "swords-five",
+      "checksum": "07fb9c07a8e467ff42687bec5c5bfdeab42032554622e1819ed6f887f0ddbd4c"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/swords-six.jpg",
+      "cardId": "swords-six",
+      "checksum": "69bdc5b31209b9f9f781ea4cccbfc121aa032f313661d4b65e62daebe352327e"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/swords-seven.jpg",
+      "cardId": "swords-seven",
+      "checksum": "013384c91d9635605e57830a9f72e950b1ccab4b1a3afc38a7461562517639b0"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/swords-eight.jpg",
+      "cardId": "swords-eight",
+      "checksum": "e50f72f5aa3a027d2737590682d522ffdbc21aa2f681d1e0ab8c3a3d2e0b3dc9"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/swords-nine.jpg",
+      "cardId": "swords-nine",
+      "checksum": "9fada3083f252d1c95ec90f95963bf422fe386edb78e0c8c5132e9779361e840"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/swords-ten.jpg",
+      "cardId": "swords-ten",
+      "checksum": "f6581b32624f1ef25eded9886157f30772c990bf0c47dd4cc99896b23c58d666"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/swords-page.jpg",
+      "cardId": "swords-page",
+      "checksum": "801d9cecf2b4d5884df1aae235d4ecbb6ad2ea9f05764601c9eacb8c7bedaa3e"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/swords-knight.jpg",
+      "cardId": "swords-knight",
+      "checksum": "6e66e3c777da1cd92219ed98e6bbf0c2139028522681ca58bee8240e78060dbe"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/swords-queen.jpg",
+      "cardId": "swords-queen",
+      "checksum": "edf23d41e2638a79128c6348f51a5bea3fe9b68afd7c2bd1c9ce6014b5b74ad0"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/swords-king.jpg",
+      "cardId": "swords-king",
+      "checksum": "73581dba6520f653bcd332e0067563cf9af7b2c85655769395d3a1f351074d42"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/pentacles-ace.jpg",
+      "cardId": "pentacles-ace",
+      "checksum": "5f07f761f4e8243e95fe0e88733f331bcb03235f7ed34f0f0343d4959bc2016e"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/pentacles-two.jpg",
+      "cardId": "pentacles-two",
+      "checksum": "46e18c196a81e0512d825283d548483a88b6aa1116396b2dfa9feb0806a6be33"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/pentacles-three.jpg",
+      "cardId": "pentacles-three",
+      "checksum": "09c2fa9b6cd8826224340233309694d38e70f09f7945fadda615698a05b189fe"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/pentacles-four.jpg",
+      "cardId": "pentacles-four",
+      "checksum": "df7b7be07ac03bcb766dbdfb91a14d0db22ca9c6a6a9781f05271df16e3ed87f"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/pentacles-five.jpg",
+      "cardId": "pentacles-five",
+      "checksum": "1e558a7d39cdb5a378f7a84c2eb501e9ab66033cb73a1f99311ca8f8dea82c3c"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/pentacles-six.jpg",
+      "cardId": "pentacles-six",
+      "checksum": "b2d3503c1d69ac597873a3a997c8728d74244456c857e362aa8749d8a7c70ae7"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/pentacles-seven.jpg",
+      "cardId": "pentacles-seven",
+      "checksum": "40dd48ee9577e6bd7213990d2a46f5b878e53dd4235235253af7023e737e4a86"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/pentacles-eight.jpg",
+      "cardId": "pentacles-eight",
+      "checksum": "17a8aa5dfdbbe844d4ce0125810d862b91d8c8e0bdad88c124ccde6b953b155b"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/pentacles-nine.jpg",
+      "cardId": "pentacles-nine",
+      "checksum": "59f0c0c93577d74683f5f09f2231b3177233c41ed5fae01f7795c88e8b54f0be"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/pentacles-ten.jpg",
+      "cardId": "pentacles-ten",
+      "checksum": "7312d30a182201f2014b18792cd3687d4e23db9de55f97d0b2ebcb695c597e06"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/pentacles-page.jpg",
+      "cardId": "pentacles-page",
+      "checksum": "7be64bbf24db6fb7ab76f67e91569bd1276600db2a4102c313f82b41eedbe4c3"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/pentacles-knight.jpg",
+      "cardId": "pentacles-knight",
+      "checksum": "7f1d3dac7a77cd70695193d1bdd02e7d52d1922c888d9bb0dd7bf8a6ddf58f2c"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/pentacles-queen.jpg",
+      "cardId": "pentacles-queen",
+      "checksum": "7dc503b87c708926cf19124b291b8bdc8da2ca7ff9fb5191b6b69d7ec0842a09"
+    },
+    {
+      "artworkVersion": "premium-tarot-art-v1",
+      "assetPath": "../cards/premium-rws-remastered/pentacles-king.jpg",
+      "cardId": "pentacles-king",
+      "checksum": "6e6729856c2ebb7a8329efed9cf56dbd5aa0a7b3d2d83183688379d570beab23"
+    }
+  ],
   "version": "premium-tarot-art-v1"
 }

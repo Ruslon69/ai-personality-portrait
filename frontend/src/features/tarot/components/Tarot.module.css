@@ -53,7 +53,7 @@
 }
 
 .resultHero {
-  padding-block: clamp(var(--space-5), 4vw, var(--space-8));
+  padding-block: clamp(var(--space-4), 2.5dvh, var(--space-6));
 }
 
 .heroGrid {
@@ -63,7 +63,7 @@
 }
 
 .heroGrid h1,
-.resultCopy h1 {
+.resultCopy h1[data-variant='display'] {
   max-inline-size: 14ch;
   text-wrap: balance;
 }
@@ -848,14 +848,12 @@
   block-size: var(--tarot-card-height);
   aspect-ratio: var(--tarot-card-ratio);
   margin-inline: auto;
-  filter: drop-shadow(var(--tarot-card-shadow));
+  -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  transition:
-    transform var(--tarot-card-flip-duration) var(--transition-easing-reveal),
-    filter var(--motion-return-duration);
+  transition: transform var(--tarot-card-flip-duration) var(--transition-easing-reveal);
 }
 .tarotCardButton[data-selected] .tarotCardInner {
-  filter: drop-shadow(var(--tarot-shadow-active));
+  --tarot-card-shadow: var(--tarot-shadow-active);
 }
 .tarotCardButton[data-revealed] .tarotCardInner {
   transform: rotateY(180deg);
@@ -912,7 +910,12 @@
     inset 0 -0.24rem 0.38rem color-mix(in srgb, var(--color-text) 20%, transparent),
     inset 0 0 0 0.3rem color-mix(in srgb, var(--color-marketing-border) 38%, transparent);
   overflow: hidden;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  transition: box-shadow var(--motion-return-duration);
+}
+.cardBackFace {
+  transform: rotateY(0deg);
 }
 .cardBackDesign {
   position: absolute;
@@ -1087,6 +1090,7 @@
     color-mix(in srgb, var(--artwork-frame-tone) 42%, var(--artwork-dominant-tone))
   );
   box-shadow:
+    var(--tarot-card-shadow),
     0 1.35rem 2.6rem color-mix(in srgb, var(--artwork-frame-tone) 24%, transparent),
     0 0.25rem 0.6rem color-mix(in srgb, var(--color-text) 18%, transparent),
     inset 0 0.08rem 0 color-mix(in srgb, var(--artwork-light-tone) 88%, transparent),
@@ -1246,6 +1250,7 @@
 .tarotCardButton:is([data-variant='compact'], [data-variant='history'])
   .cardFrontFace[data-has-artwork] {
   box-shadow:
+    var(--tarot-card-shadow),
     0 0.55rem 1rem color-mix(in srgb, var(--artwork-frame-tone) 18%, transparent),
     inset 0 0 0 0.12rem color-mix(in srgb, var(--artwork-frame-tone) 45%, transparent);
 }
@@ -1414,6 +1419,10 @@
   color: #eee7d7;
   overflow: hidden;
 }
+.revealIntro {
+  display: grid;
+  gap: var(--space-4);
+}
 .revealSequence {
   display: flex;
   min-inline-size: 0;
@@ -1459,6 +1468,9 @@
   grid-template-columns: minmax(0, 1fr);
   place-items: center;
   gap: var(--space-4);
+}
+.revealDetails {
+  display: contents;
 }
 .revealProgress {
   display: grid;
@@ -1644,9 +1656,9 @@
   min-inline-size: 0;
   max-inline-size: 100%;
 }
-.resultCopy h1 {
-  max-inline-size: min(100%, 14ch);
-  font-size: clamp(2.2rem, 3.75vw, 3.75rem);
+.resultCopy h1[data-variant='display'] {
+  max-inline-size: min(100%, 18ch);
+  font-size: clamp(2rem, 4vw, 3.375rem);
   line-height: 1.02;
   overflow-wrap: break-word;
   word-break: normal;
@@ -1951,7 +1963,7 @@
       rotateY(-2.5deg) scale(1.012);
   }
   .tarotCardButton[data-revealed]:not([data-reveal-status='revealing']):hover .tarotCardInner {
-    filter: drop-shadow(var(--tarot-shadow-hover));
+    --tarot-card-shadow: var(--tarot-shadow-hover);
     transform: rotateY(180deg) rotateZ(-0.25deg);
   }
   .tarotCardButton[data-revealed]:not([data-reveal-status='revealing']):hover .cardArtworkLayer {
@@ -2059,19 +2071,227 @@
   }
 }
 
-@media (min-width: 80rem) {
+@media (min-width: 68.75rem) {
+  .resultHero {
+    display: grid;
+    box-sizing: border-box;
+    min-block-size: calc(100dvh - 4rem);
+    align-items: center;
+  }
+
+  .resultHero > div {
+    inline-size: 100%;
+  }
+
+  .resultHeroSurface {
+    padding: clamp(var(--space-5), 2.4vw, var(--space-7));
+  }
+
   .resultOpening {
-    grid-template-columns: minmax(16rem, 0.72fr) minmax(0, 1fr);
+    grid-template-columns: minmax(15rem, 0.38fr) minmax(0, 0.62fr);
+    gap: clamp(var(--space-5), 3vw, var(--space-7));
+  }
+
+  .heroCardStage {
+    min-block-size: 0;
   }
 
   .heroCardStage .tarotCardButton {
-    --tarot-card-width: clamp(11rem, 18vw, 15rem);
+    --tarot-card-width: clamp(15rem, 18vw, 18rem);
+  }
+
+  .resultCopy[data-gap='lg'] {
+    gap: clamp(0.75rem, 1.8dvh, 1.25rem);
   }
 }
 
 @media (min-width: 72rem) {
   .spreadCollection {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 68.75rem) {
+  .flowPage[data-reading-step='reveal'] {
+    min-block-size: 0;
+    block-size: calc(100dvh - 6.75rem);
+    padding-block: clamp(0.5rem, 1.4dvh, 0.75rem);
+  }
+
+  .flowPage[data-reading-step='reveal'] > div {
+    display: grid;
+    min-block-size: 0;
+    block-size: 100%;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .flowPage[data-reading-step='reveal'] .flowHeader {
+    align-items: center;
+    gap: var(--space-3);
+    margin-block-end: var(--space-2);
+  }
+
+  .flowPage[data-reading-step='reveal'] .flowHeader > div {
+    display: flex;
+    min-inline-size: 0;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .flowPage[data-reading-step='reveal'] .flowLocation {
+    display: flex;
+    align-items: baseline;
+    margin: 0;
+    gap: var(--space-2);
+  }
+
+  .flowPage[data-reading-step='reveal'] .flowLocation span {
+    font-size: var(--font-size-md);
+  }
+
+  .flowPage[data-reading-step='reveal'] .flowLocation small {
+    display: none;
+  }
+
+  .flowPage[data-reading-step='reveal'] .flowNodes {
+    gap: var(--space-1);
+  }
+
+  .flowPage[data-reading-step='reveal'] .flowNodes i {
+    inline-size: 0.5rem;
+  }
+
+  .flowSurface[data-reading-step='reveal'] {
+    display: grid;
+    inline-size: 100%;
+    min-block-size: 0;
+    block-size: 100%;
+    grid-template-rows: minmax(0, 1fr) auto;
+    padding: clamp(var(--space-3), 2dvh, var(--space-5));
+  }
+
+  .revealFlow {
+    display: grid;
+    min-block-size: 0;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    gap: 0 !important;
+  }
+
+  .revealIntro {
+    position: absolute;
+    overflow: hidden;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    border: 0;
+    margin: -1px;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .revealExperience {
+    inline-size: auto;
+    max-inline-size: none;
+    block-size: 100%;
+    margin-inline: 0;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: clamp(0.75rem, 1.8dvh, 1.25rem);
+    padding: clamp(var(--space-3), 2dvh, var(--space-5));
+  }
+
+  .revealSequence {
+    padding-block-end: clamp(var(--space-2), 1.5dvh, var(--space-3));
+  }
+
+  .revealSequence[data-count='6'] {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: clamp(0.75rem, 1.25vw, 1.25rem);
+    overflow-x: visible;
+  }
+
+  .revealSequence .tarotCardButton {
+    --tarot-card-width: clamp(4.25rem, 5vw, 5rem);
+    inline-size: 100%;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    justify-items: center;
+  }
+
+  .revealSequence .tarotCardButton > .tarotCardInner {
+    inline-size: var(--tarot-card-width);
+  }
+
+  .revealSequence .cardPosition {
+    inline-size: 100%;
+    max-inline-size: 100%;
+    min-block-size: 2.6em;
+    font-size: var(--font-size-xs);
+    line-height: 1.2;
+    overflow-wrap: normal;
+    text-wrap: balance;
+    white-space: normal;
+  }
+
+  .revealStage {
+    grid-template-areas: 'card details';
+    grid-template-columns: minmax(12rem, 0.82fr) minmax(18rem, 1.18fr);
+    grid-template-rows: minmax(0, 1fr);
+    align-items: center;
+    column-gap: clamp(var(--space-5), 4vw, var(--space-8));
+    row-gap: 0;
+  }
+
+  .revealStage > .tarotCardButton {
+    --tarot-card-width: clamp(10.5rem, calc((100dvh - 34.5rem) * 7 / 12), 13.75rem);
+    grid-area: card;
+    align-self: center;
+    justify-self: center;
+  }
+
+  .revealDetails {
+    display: grid;
+    min-inline-size: 0;
+    grid-area: details;
+    align-content: center;
+    justify-items: start;
+    gap: clamp(0.75rem, 1.8dvh, 1.125rem);
+  }
+
+  .revealDetails .revealProgress {
+    grid-area: auto;
+    justify-items: start;
+    text-align: start;
+  }
+
+  .revealLight {
+    grid-area: card;
+    inline-size: min(24rem, 100%);
+    justify-self: center;
+  }
+
+  .revealDetails .skipReveal {
+    grid-area: auto;
+    justify-self: start;
+  }
+
+  .revealDetails .revealInterpretation {
+    grid-area: auto;
+    min-block-size: 0;
+    align-content: center;
+    text-align: start;
+  }
+
+  .revealDetails .revealCta {
+    grid-area: auto;
+    justify-self: start;
+  }
+
+  .flowSurface[data-reading-step='reveal'] .flowActions {
+    min-block-size: 2.5rem;
+    padding-block-start: var(--space-2);
+    margin-block-start: var(--space-2);
   }
 }
 
@@ -2209,7 +2429,7 @@
   .heroGrid h1 {
     font-size: clamp(2.25rem, 12vw, 3.5rem);
   }
-  .resultCopy h1 {
+  .resultCopy h1[data-variant='display'] {
     font-size: clamp(2rem, 10vw, 3rem);
   }
   .flowActions {

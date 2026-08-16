@@ -1,5 +1,5 @@
 import type { PersonalityProfile } from '@entities/personality-profile';
-import { tarotCardById } from '@features/tarot';
+import { tarotCardById } from '@features/tarot/data';
 import type { JourneyReadingRecord, JourneyState } from '@features/journey';
 
 import type {

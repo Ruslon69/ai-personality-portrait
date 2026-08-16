@@ -8,7 +8,7 @@ import {
   normalizeJourneyMemoryEntries,
 } from '@features/journey-memory/normalization';
 import type { JourneyState } from '@features/journey/types';
-import { enrichTarotReadingWithContinuity } from '@features/tarot';
+import { enrichTarotReadingWithContinuity } from '@features/tarot/lib';
 
 import type { JourneyMemoryStorageSection } from '../types';
 

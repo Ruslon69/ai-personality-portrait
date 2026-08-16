@@ -1,0 +1,61 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "wands-six",
+  "artworkVersion": 1,
+  "candidateChecksum": "778cdbcaca31c3e2d0b93be2106cc261ad80f0958f73ee5e71a46073d53cbe2d",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "wands-six",
+    "productionSequenceNumber": 30,
+    "externalSourceFilename": "30.png",
+    "arcana": "minor",
+    "canonicalDisplayTitle": "SIX OF WANDS",
+    "canonicalDisplayValue": "VI",
+    "suit": "wands",
+    "rank": "six",
+    "expectedArcanaIdentity": "Minor Arcana · wands · VI",
+    "checks": {
+      "canonicalTitleCorrect": true,
+      "canonicalNumeralOrRankCorrect": true,
+      "noProductionSequenceAsTarotNumber": true,
+      "cardIdentityImmediatelyRecognizable": true
+    }
+  },
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  },
+  "decision": "approved",
+  "approvedAt": "2026-08-15T19:19:48.930Z",
+  "approvalBinding": {
+    "contractVersion": "premium-tarot-bound-review-v1",
+    "cardId": "wands-six",
+    "artworkVersion": 1,
+    "candidateChecksum": "778cdbcaca31c3e2d0b93be2106cc261ad80f0958f73ee5e71a46073d53cbe2d",
+    "styleVersion": "premium-tarot-style-v2",
+    "reviewVersion": "premium-tarot-review-v1"
+  }
+}

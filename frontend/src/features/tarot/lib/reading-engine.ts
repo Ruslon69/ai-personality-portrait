@@ -159,9 +159,11 @@ export function createTarotReading(
       `${context.seed}:${selections.map((item) => item.cardId).join(':')}:${focusAnswer(context)}:${context.interests.join(':')}`,
     ) % 4;
   const theme = leading.baseThemes[locale][0] ?? leading.name[locale];
+  const noticedTheme =
+    locale === 'ru' && theme === 'структура и границы' ? 'структуру и границы' : theme;
   const headlines = {
     ru: [
-      `Сейчас важнее заметить ${theme}, чем торопить ответ`,
+      `Сейчас важнее заметить ${noticedTheme}, чем торопить ответ.`,
       `Расклад предлагает проверить ${theme} на практике`,
       `В центре периода — ${theme} и один ясный шаг`,
       `Карты соединяют ${theme} с вашим текущим выбором`,

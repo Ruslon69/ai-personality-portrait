@@ -250,11 +250,14 @@ const runtimeRelease = await readJson(
   resolve('src/assets/tarot/metadata/premium-release-manifest.json'),
 );
 check(
-  manifest.releaseMode === 'classic' &&
-    manifest.releaseThreshold.approved === 78 &&
-    runtimeRelease.mode === 'classic' &&
-    runtimeRelease.records.length === 0,
-  'runtime remains classic with atomic 78-card activation',
+  manifest.releaseThreshold.approved === 78 &&
+    ((manifest.releaseMode === 'classic' &&
+      runtimeRelease.mode === 'classic' &&
+      runtimeRelease.records.length === 0) ||
+      (manifest.releaseMode === 'premium-complete' &&
+        runtimeRelease.mode === 'premium-complete' &&
+        runtimeRelease.records.length === 78)),
+  'runtime remains atomic across classic and 78-card Premium activation',
 );
 
 const summary = { assertions: results.length, passed: true };

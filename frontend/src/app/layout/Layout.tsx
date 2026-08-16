@@ -23,6 +23,7 @@ export function Layout({ children }: LayoutProps) {
     currentPath === ROUTES.tarotReading ||
     currentPath === ROUTES.numerology ||
     currentPath === ROUTES.numerologyProfile;
+  const hasCompactSidebar = currentPath === ROUTES.tarotResult;
 
   const closeSidebar = useCallback(() => {
     setSidebarOpen(false);
@@ -40,7 +41,11 @@ export function Layout({ children }: LayoutProps) {
         onMenuToggle={() => setSidebarOpen((isOpen) => !isOpen)}
         variant={isMarketing ? 'marketing' : 'application'}
       />
-      <div className={styles.body} data-marketing={isMarketing || undefined}>
+      <div
+        className={styles.body}
+        data-compact-sidebar={hasCompactSidebar || undefined}
+        data-marketing={isMarketing || undefined}
+      >
         {!isMarketing ? (
           <Sidebar
             isDrawer={!isDesktop}

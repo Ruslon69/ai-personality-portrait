@@ -1,0 +1,61 @@
+{
+  "reviewVersion": "premium-tarot-review-v1",
+  "cardId": "pentacles-eight",
+  "artworkVersion": 1,
+  "candidateChecksum": "17a8aa5dfdbbe844d4ce0125810d862b91d8c8e0bdad88c124ccde6b953b155b",
+  "styleVersion": "premium-tarot-style-v2",
+  "reviewer": "Ruslan",
+  "notes": "",
+  "canonicalIdentity": {
+    "schemaVersion": "premium-tarot-canonical-identity-v1",
+    "cardId": "pentacles-eight",
+    "productionSequenceNumber": 72,
+    "externalSourceFilename": "72.png",
+    "arcana": "minor",
+    "canonicalDisplayTitle": "EIGHT OF PENTACLES",
+    "canonicalDisplayValue": "VIII",
+    "suit": "pentacles",
+    "rank": "eight",
+    "expectedArcanaIdentity": "Minor Arcana · pentacles · VIII",
+    "checks": {
+      "canonicalTitleCorrect": true,
+      "canonicalNumeralOrRankCorrect": true,
+      "noProductionSequenceAsTarotNumber": true,
+      "cardIdentityImmediatelyRecognizable": true
+    }
+  },
+  "scores": {
+    "recognizability": 5,
+    "symbolismCoverage": 5,
+    "composition": 5,
+    "visualDepth": 5,
+    "lighting": 5,
+    "materialQuality": 5,
+    "anatomy": 5,
+    "styleConsistency": 5,
+    "colorConsistency": 5,
+    "premiumFeel": 5,
+    "cardShellCompatibility": 5
+  },
+  "requiredPasses": {
+    "allRequiredSymbolsPresent": true,
+    "noForbiddenContent": true,
+    "canonicalIdentityObvious": true,
+    "styleMatchesPilotSet": true,
+    "cropSafeAtSevenByTwelve": true,
+    "noBakedText": true,
+    "noBakedFrame": true,
+    "canonicalOrientationUpright": true,
+    "reviewerExplicitApproval": true
+  },
+  "decision": "approved",
+  "approvedAt": "2026-08-16T11:11:02.673Z",
+  "approvalBinding": {
+    "contractVersion": "premium-tarot-bound-review-v1",
+    "cardId": "pentacles-eight",
+    "artworkVersion": 1,
+    "candidateChecksum": "17a8aa5dfdbbe844d4ce0125810d862b91d8c8e0bdad88c124ccde6b953b155b",
+    "styleVersion": "premium-tarot-style-v2",
+    "reviewVersion": "premium-tarot-review-v1"
+  }
+}

@@ -9,7 +9,13 @@ import {
   createAutomaticSelections,
   createManualSelections,
 } from '../../features/tarot/lib/selection-engine';
+import {
+  createActiveCardInterpretation,
+  interpretationWordCount,
+  russianCardName,
+} from '../../features/tarot/lib/interpretation-copy';
 import { createTarotReading } from '../../features/tarot/lib/reading-engine';
+import { russianTarotInterpretationProfiles } from '../../features/tarot/lib/russian-interpretation-profiles';
 import type { TarotCard, TarotReadingContext } from '../../features/tarot/types';
 import { QualityAssertions } from '../assertions';
 import { negativeQualityFixtures } from '../fixtures/negative-fixtures';
@@ -107,6 +113,13 @@ export function runTarotRegressionGate() {
       );
     });
   });
+  assertions.assert(
+    cards.every((card) => Boolean(russianTarotInterpretationProfiles[card.id])),
+    {
+      code: 'tarot-russian-card-specific-coverage',
+      message: 'Every Tarot card must have a card-specific Russian interpretation profile.',
+    },
+  );
   assertions.assert(tarotSpreads.length === QUALITY_BASELINE.spreadCount, {
     actual: tarotSpreads.length,
     code: 'tarot-spread-count',
@@ -222,6 +235,208 @@ export function runTarotRegressionGate() {
     {
       code: 'deck-theme-affected-meaning',
       message: 'Deck theme changed semantic reading content.',
+    },
+  );
+  const monthSpread = tarotSpreads.find((item) => item.id === 'month');
+  if (!monthSpread) throw new Error('Month spread is required for interpretation quality gates.');
+  const star = cards.find((card) => card.id === 'major-star');
+  const devil = cards.find((card) => card.id === 'major-devil');
+  const eightOfCups = cards.find((card) => card.id === 'cups-eight');
+  if (!star || !devil || !eightOfCups)
+    throw new Error('Canonical interpretation fixtures are missing from the Tarot deck.');
+  const starTheme = createActiveCardInterpretation({
+    card: star,
+    index: 0,
+    locale: 'ru',
+    orientation: 'upright',
+    position: monthSpread.positions[0]!,
+  });
+  const starWork = createActiveCardInterpretation({
+    card: star,
+    index: 0,
+    locale: 'ru',
+    orientation: 'upright',
+    position: monthSpread.positions[2]!,
+  });
+  assertions.assert(starTheme !== starWork && /задач|рабоч|результат/iu.test(starWork), {
+    code: 'tarot-interpretation-position-awareness',
+    message: 'Changing the spread position must materially change the interpretation context.',
+  });
+  const starReversed = createActiveCardInterpretation({
+    card: star,
+    index: 0,
+    locale: 'ru',
+    orientation: 'reversed',
+    position: monthSpread.positions[0]!,
+  });
+  assertions.assert(
+    starTheme !== starReversed &&
+      starTheme.includes('надежда') &&
+      starReversed.includes('разочарования'),
+    {
+      code: 'tarot-interpretation-orientation-distinction',
+      message: 'Upright and reversed readings must express materially different card meanings.',
+    },
+  );
+  assertions.assert(
+    createActiveCardInterpretation({
+      card: devil,
+      index: 0,
+      locale: 'ru',
+      orientation: 'upright',
+      position: monthSpread.positions[0]!,
+    }).includes('привязанность') &&
+      createActiveCardInterpretation({
+        card: eightOfCups,
+        index: 0,
+        locale: 'ru',
+        orientation: 'upright',
+        position: monthSpread.positions[0]!,
+      }).includes('эмоционально недостаточной ситуации'),
+    {
+      code: 'tarot-card-specific-semantic-identity',
+      message: 'Canonical card-specific themes must remain visible in active interpretations.',
+    },
+  );
+  const activeInterpretations = cards.flatMap((card, cardIndex) =>
+    (['upright', 'reversed'] as const).map((orientation) =>
+      createActiveCardInterpretation({
+        card,
+        index: cardIndex,
+        locale: 'ru',
+        orientation,
+        position: monthSpread.positions[cardIndex % monthSpread.positions.length]!,
+      }),
+    ),
+  );
+  assertions.assert(
+    activeInterpretations.every((value) => {
+      const words = interpretationWordCount(value);
+      return words > 0 && words <= 52;
+    }),
+    {
+      code: 'tarot-active-interpretation-length',
+      message: 'Active Russian card interpretations must stay concise and no longer than 52 words.',
+    },
+  );
+  assertions.assert(
+    activeInterpretations.every(
+      (value) =>
+        !value.startsWith('Эта карта') &&
+        !value.includes('Карта предлагает рассмотреть') &&
+        !value.includes('может указывать на'),
+    ),
+    {
+      code: 'tarot-interpretation-generic-phrasing',
+      message: 'Active interpretations must not fall back to the old repetitive templates.',
+    },
+  );
+  const monthSelections = createAutomaticSelections(cards, monthSpread, 'quality-month-seed');
+  const monthReading = createTarotReading(
+    {
+      ...context,
+      period: 'month',
+      seed: 'quality-month-seed',
+      spreadId: monthSpread.id,
+    },
+    monthSelections,
+    timestamp,
+  );
+  const oldConcatenation = monthSelections
+    .map((selection) => cards.find((card) => card.id === selection.cardId)?.name.ru)
+    .filter(Boolean)
+    .join(', ');
+  assertions.assert(
+    !monthReading.summary.includes(oldConcatenation) &&
+      monthReading.summary.includes('снова и снова звучит') &&
+      !monthReading.summary.includes('Доминирующий мотив') &&
+      !monthReading.summary.includes('Напряжение проходит') &&
+      !monthReading.summary.includes('Сильная возможность') &&
+      interpretationWordCount(monthReading.summary) >= 120 &&
+      interpretationWordCount(monthReading.summary) <= 180,
+    {
+      code: 'tarot-reading-synthesis-not-concatenation',
+      message: 'The final reading must synthesize pattern, opportunity, risk and direction.',
+    },
+  );
+  const unsafeClaims =
+    /обязательно произойдёт|точно произойдёт|вы получите деньги|партн[её]р изменяет/iu;
+  assertions.assert(
+    [...activeInterpretations, monthReading.summary].every((value) => !unsafeClaims.test(value)),
+    {
+      code: 'tarot-deterministic-future-claims',
+      message: 'Built-in interpretation templates must not make deterministic future claims.',
+    },
+  );
+  const roboticPhrases =
+    /В позиции|связывает позицию|Практический смысл этой позиции|наблюдаемыми обстоятельствами|конструктивный смысл карты|контекстный рисунок|практический фокус|Сейчас важнее увидеть|Начните с простого|Можно начать с простого|В делах поможет/iu;
+  assertions.assert(
+    [
+      ...activeInterpretations,
+      ...monthReading.interpretations.map((item) => item.connections),
+      monthReading.summary,
+    ].every((value) => !roboticPhrases.test(value)),
+    {
+      code: 'tarot-human-russian-copy',
+      message: 'Russian Tarot copy must not expose mechanical interpretation templates.',
+    },
+  );
+  assertions.assert(russianCardName(eightOfCups) === 'Восьмёрка Кубков', {
+    code: 'tarot-natural-russian-card-name',
+    message: 'Russian prose must use natural card names instead of UI rank separators.',
+  });
+  assertions.assert(
+    monthReading.interpretations.every(
+      (interpretation) => !interpretation.connections.includes(' · '),
+    ),
+    {
+      code: 'tarot-prose-card-name-format',
+      message: 'Natural-language Tarot prose must not leak the UI rank separator.',
+    },
+  );
+  assertions.assert(
+    monthReading.interpretations.every(
+      (interpretation) => interpretationWordCount(interpretation.meaningInPosition) > 0,
+    ),
+    {
+      code: 'tarot-static-fallback-meaningful',
+      message:
+        'Local fallback interpretations must remain meaningful without an external provider.',
+    },
+  );
+  const corpusPositions = [
+    ...new Map(
+      tarotSpreads
+        .flatMap((spreadItem) => spreadItem.positions)
+        .map((position) => [position.id, position] as const),
+    ).values(),
+  ];
+  const corpus = cards.flatMap((card, cardIndex) =>
+    corpusPositions.flatMap((position, positionIndex) =>
+      (['upright', 'reversed'] as const).map((orientation) =>
+        createActiveCardInterpretation({
+          card,
+          index: positionIndex + cardIndex,
+          locale: 'ru',
+          orientation,
+          position,
+        }),
+      ),
+    ),
+  );
+  const openerSignatures = corpus.map((value) =>
+    value.split(/[.!?]/u)[0]?.trim().toLocaleLowerCase().split(/\s+/u).slice(0, 4).join(' '),
+  );
+  const openerCounts = new Map<string, number>();
+  openerSignatures.forEach((signature) => {
+    if (signature) openerCounts.set(signature, (openerCounts.get(signature) ?? 0) + 1);
+  });
+  assertions.assert(
+    new Set(openerSignatures).size >= Math.ceil(corpus.length * 0.05) &&
+      Math.max(...openerCounts.values()) <= Math.ceil(corpus.length * 0.08),
+    {
+      code: 'tarot-interpretation-corpus-repetition',
+      message: 'The full card/position/orientation corpus must not reuse one opener excessively.',
     },
   );
   getTarotArtwork(first.selections[0]?.cardId ?? 'major-fool');

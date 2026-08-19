@@ -9,6 +9,14 @@ export {
 } from './expert-interpretation-adapter';
 export type { TarotAuthorPresentation } from './expert-interpretation-adapter';
 export {
+  createActiveCardInterpretation,
+  createCardConnection,
+  createCardPracticalFocus,
+  createReadingSynthesis,
+  interpretationWordCount,
+  russianCardName,
+} from './interpretation-copy';
+export {
   createAutomaticSelections,
   createManualCandidates,
   createManualSelections,

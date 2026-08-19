@@ -1402,6 +1402,7 @@
 
 .revealExperience {
   position: relative;
+  box-sizing: border-box;
   display: grid;
   min-inline-size: 0;
   max-inline-size: 72rem;
@@ -1619,6 +1620,9 @@
     var(--page-hero-background);
   overflow: hidden;
 }
+.resultSummary {
+  white-space: pre-line;
+}
 .resultOpening {
   display: grid;
   min-inline-size: 0;
@@ -1754,6 +1758,7 @@
   min-inline-size: 0;
   grid-template-columns: minmax(0, 1fr) auto;
   padding: clamp(var(--space-5), 5vw, var(--space-8));
+  padding-inline-end: clamp(5rem, 7vw, 7rem);
   border: 0.0625rem solid var(--color-marketing-border-strong);
   border-radius: var(--tarot-surface-radius);
   background:
@@ -1764,14 +1769,21 @@
   overflow: hidden;
 }
 .featuredIndex {
-  position: absolute;
-  inset: var(--space-4) var(--space-5) auto auto;
   color: color-mix(in srgb, var(--color-marketing-accent) 35%, transparent);
-  font-size: clamp(3rem, 8vw, 7rem);
+  font-size: clamp(4rem, 6vw, 5.5rem);
   font-weight: var(--font-weight-semibold);
-  line-height: 1;
+  line-height: 0.9;
 }
-.featuredInterpretation > div {
+.featuredDecoration {
+  position: absolute;
+  z-index: 1;
+  inset: var(--space-4) var(--space-5) auto auto;
+  display: grid;
+  justify-items: center;
+  gap: clamp(0.25rem, 0.6vw, 0.5rem);
+  pointer-events: none;
+}
+.featuredInterpretationCopy {
   position: relative;
   z-index: 2;
   display: grid;
@@ -1779,11 +1791,16 @@
   gap: var(--space-3);
 }
 .featuredGlyph {
-  position: relative;
-  z-index: 2;
-  align-self: end;
+  display: grid;
+  inline-size: clamp(2.75rem, 4vw, 3.625rem);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 0.0625rem solid color-mix(in srgb, var(--color-marketing-accent-warm) 58%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-marketing-surface) 82%, transparent);
   color: var(--color-marketing-accent-warm);
-  font-size: clamp(3rem, 7vw, 6rem);
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  line-height: 1;
 }
 .mainInterpretationDetails {
   display: grid;
@@ -2163,11 +2180,12 @@
 
   .flowSurface[data-reading-step='reveal'] {
     display: grid;
+    box-sizing: border-box;
     inline-size: 100%;
     min-block-size: 0;
     block-size: 100%;
     grid-template-rows: minmax(0, 1fr) auto;
-    padding: clamp(var(--space-3), 2dvh, var(--space-5));
+    padding: clamp(var(--space-2), 1.2dvh, var(--space-3));
   }
 
   .revealFlow {
@@ -2195,13 +2213,14 @@
     max-inline-size: none;
     block-size: 100%;
     margin-inline: 0;
-    grid-template-rows: auto minmax(0, 1fr);
-    gap: clamp(0.75rem, 1.8dvh, 1.25rem);
-    padding: clamp(var(--space-3), 2dvh, var(--space-5));
+    grid-template-rows: auto minmax(min-content, 1fr);
+    min-block-size: 0;
+    gap: clamp(0.5rem, 1dvh, 0.75rem);
+    padding: clamp(var(--space-2), 1.2dvh, var(--space-3));
   }
 
   .revealSequence {
-    padding-block-end: clamp(var(--space-2), 1.5dvh, var(--space-3));
+    padding-block-end: clamp(var(--space-1), 1dvh, var(--space-2));
   }
 
   .revealSequence[data-count='6'] {
@@ -2235,16 +2254,18 @@
   }
 
   .revealStage {
+    min-block-size: 0;
+    box-sizing: border-box;
     grid-template-areas: 'card details';
     grid-template-columns: minmax(12rem, 0.82fr) minmax(18rem, 1.18fr);
-    grid-template-rows: minmax(0, 1fr);
-    align-items: center;
+    grid-template-rows: minmax(min-content, 1fr);
+    align-items: stretch;
     column-gap: clamp(var(--space-5), 4vw, var(--space-8));
     row-gap: 0;
   }
 
   .revealStage > .tarotCardButton {
-    --tarot-card-width: clamp(10.5rem, calc((100dvh - 34.5rem) * 7 / 12), 13.75rem);
+    --tarot-card-width: clamp(10rem, calc((100dvh - 34.5rem) * 7 / 12), 13.25rem);
     grid-area: card;
     align-self: center;
     justify-self: center;
@@ -2252,11 +2273,14 @@
 
   .revealDetails {
     display: grid;
+    box-sizing: border-box;
     min-inline-size: 0;
+    min-block-size: 0;
     grid-area: details;
-    align-content: center;
+    align-content: start;
     justify-items: start;
-    gap: clamp(0.75rem, 1.8dvh, 1.125rem);
+    gap: clamp(0.5rem, 1dvh, 0.75rem);
+    padding-block: clamp(0.15rem, 0.8dvh, 0.5rem) clamp(1rem, 2.4dvh, 1.5rem);
   }
 
   .revealDetails .revealProgress {
@@ -2279,8 +2303,13 @@
   .revealDetails .revealInterpretation {
     grid-area: auto;
     min-block-size: 0;
+    gap: clamp(0.45rem, 1.2dvh, 0.75rem);
     align-content: center;
     text-align: start;
+  }
+
+  .revealDetails .revealInterpretation > p {
+    line-height: 1.42;
   }
 
   .revealDetails .revealCta {

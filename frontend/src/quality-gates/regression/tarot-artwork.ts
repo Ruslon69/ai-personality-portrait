@@ -489,6 +489,10 @@ export function runTarotArtworkGate(rootDir: string) {
     resolve(rootDir, 'src/features/tarot/lib/reading-engine.ts'),
     'utf8',
   );
+  const interpretationCopySource = readFileSync(
+    resolve(rootDir, 'src/features/tarot/lib/interpretation-copy.ts'),
+    'utf8',
+  );
   assertions.assert(
     cardViewSource.includes('visibleArtworkLayers?.map') &&
       cardViewSource.includes('data-artwork-provider') &&
@@ -608,7 +612,13 @@ export function runTarotArtworkGate(rootDir: string) {
     readingFlowSource.includes('className={styles.revealDetails}') &&
       cardBackCss.includes("grid-template-areas: 'card details'") &&
       cardBackCss.includes('grid-area: details') &&
-      cardBackCss.includes('align-content: center'),
+      cardBackCss.includes('align-items: stretch') &&
+      cardBackCss.includes('align-content: start') &&
+      cardBackCss.includes('grid-template-rows: auto minmax(min-content, 1fr)') &&
+      cardBackCss.includes('grid-template-rows: minmax(min-content, 1fr)') &&
+      cardBackCss.includes(
+        'padding-block: clamp(0.15rem, 0.8dvh, 0.5rem) clamp(1rem, 2.4dvh, 1.5rem)',
+      ),
     {
       code: 'tarot-reading-desktop-active-layout',
       message:
@@ -616,7 +626,18 @@ export function runTarotArtworkGate(rootDir: string) {
     },
   );
   assertions.assert(
-    cardBackCss.includes('clamp(10.5rem, calc((100dvh - 34.5rem) * 7 / 12), 13.75rem)') &&
+    readingFlowSource.includes('createActiveCardInterpretation({') &&
+      readingFlowSource.includes('<Typography>{currentInterpretation}</Typography>') &&
+      resultSource.includes('className={styles.resultSummary}') &&
+      resultSource.includes('{reading.summary}'),
+    {
+      code: 'tarot-reading-position-aware-copy-binding',
+      message:
+        'Reveal and result views must render the position-aware card copy and synthesized reading.',
+    },
+  );
+  assertions.assert(
+    cardBackCss.includes('clamp(10rem, calc((100dvh - 34.5rem) * 7 / 12), 13.25rem)') &&
       cardBackCss.includes('--tarot-card-ratio: 7 / 12') &&
       cardBackCss.includes('clamp(4.25rem, 5vw, 5rem)') &&
       cardBackCss.includes(".revealSequence[data-count='6']") &&
@@ -644,11 +665,26 @@ export function runTarotArtworkGate(rootDir: string) {
     cardBackCss.includes(".resultCopy h1[data-variant='display']") &&
       cardBackCss.includes('max-inline-size: min(100%, 18ch)') &&
       cardBackCss.includes('font-size: clamp(2rem, 4vw, 3.375rem)') &&
-      readingEngineSource.includes('Сейчас важнее заметить ${noticedTheme}, чем торопить ответ.'),
+      readingEngineSource.includes('headline: synthesis.headline') &&
+      interpretationCopySource.includes('headline: `В центре — ${domainLabel}`') &&
+      cardBackCss.includes('.featuredDecoration') &&
+      cardBackCss.includes('font-size: clamp(4rem, 6vw, 5.5rem)') &&
+      cardBackCss.includes('inline-size: clamp(2.75rem, 4vw, 3.625rem)'),
     {
       code: 'tarot-result-russian-headline-presentation',
       message:
-        'Long Russian conclusions must wrap naturally at compact editorial scale and preserve correct punctuation.',
+        'Russian synthesis headlines must stay compact and wrap naturally at the editorial scale.',
+    },
+  );
+  assertions.assert(
+    cardBackCss.includes(".flowSurface[data-reading-step='reveal']") &&
+      cardBackCss.includes('box-sizing: border-box') &&
+      cardBackCss.includes('overflow: hidden') &&
+      cardBackCss.includes('min-block-size: 0') &&
+      cardBackCss.includes('.revealDetails .revealInterpretation > p'),
+    {
+      code: 'tarot-reading-details-contained',
+      message: 'Desktop reveal details and CTA must remain contained inside the viewport panel.',
     },
   );
   assertions.assert(

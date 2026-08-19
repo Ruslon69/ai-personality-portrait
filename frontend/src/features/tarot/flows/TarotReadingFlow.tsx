@@ -17,6 +17,7 @@ import {
 } from '../data';
 import { useTarotSession } from '../hooks';
 import {
+  createActiveCardInterpretation,
   createAutomaticSelections,
   createManualCandidates,
   createManualSelections,
@@ -206,7 +207,19 @@ export function TarotReadingFlow({
             : true;
   const currentSelection = selections[revealState.currentIndex];
   const currentCard = tarotCardById.get(currentSelection?.cardId ?? '');
-  const currentPosition = spread.positions[revealState.currentIndex]?.label[locale];
+  const currentSpreadPosition = spread.positions[revealState.currentIndex];
+  const currentPosition = currentSpreadPosition?.label[locale];
+  const currentInterpretation =
+    currentCard && currentSelection && currentSpreadPosition
+      ? createActiveCardInterpretation({
+          card: currentCard,
+          index: revealState.currentIndex,
+          locale,
+          orientation: currentSelection.orientation,
+          position: currentSpreadPosition,
+          ...(spread.topic ? { topic: spread.topic } : {}),
+        })
+      : '';
   const currentCardVisible = isCurrentCardVisible(revealState);
   const revealCta = getRevealCta(revealState);
   const activeCardAnnouncement = currentCardVisible
@@ -555,11 +568,7 @@ export function TarotReadingFlow({
                               ? copy.reversed
                               : copy.upright}
                           </span>
-                          <Typography>
-                            {currentSelection?.orientation === 'reversed'
-                              ? currentCard?.reversed[locale]
-                              : currentCard?.upright[locale]}
-                          </Typography>
+                          <Typography>{currentInterpretation}</Typography>
                         </>
                       ) : null}
                     </div>

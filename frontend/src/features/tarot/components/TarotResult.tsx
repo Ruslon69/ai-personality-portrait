@@ -123,13 +123,16 @@ export function TarotResult({
               <Typography as="h2" id="pattern-title" variant="heading-lg">
                 {copy.pattern}
               </Typography>
-              <Typography variant="lead">{reading.practicalFocus}</Typography>
+              <Typography className={styles.resultSummary} variant="lead">
+                {reading.summary}
+              </Typography>
             </div>
             <article className={styles.featuredInterpretation}>
-              <span aria-hidden="true" className={styles.featuredIndex}>
-                01
-              </span>
-              <div>
+              <div aria-hidden="true" className={styles.featuredDecoration}>
+                <span className={styles.featuredIndex}>01</span>
+                <span className={styles.featuredGlyph}>{leading.visual.glyph}</span>
+              </div>
+              <div className={styles.featuredInterpretationCopy}>
                 <Typography as="p" variant="eyebrow">
                   {copy.leadingCard}
                 </Typography>
@@ -140,9 +143,6 @@ export function TarotResult({
                   {reading.interpretations[0]?.meaningInPosition}
                 </Typography>
               </div>
-              <span aria-hidden="true" className={styles.featuredGlyph}>
-                {leading.visual.glyph}
-              </span>
             </article>
             {reading.interpretations[0] ? (
               <div className={styles.mainInterpretationDetails}>

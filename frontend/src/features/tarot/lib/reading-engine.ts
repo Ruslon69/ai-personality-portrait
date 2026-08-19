@@ -12,6 +12,13 @@ import {
   createExpertInterpretationBundleForTarot,
   createReadingEngineLineage,
 } from './expert-interpretation-adapter';
+import {
+  createActiveCardInterpretation,
+  createCardConnection,
+  createCardPracticalFocus,
+  createReadingSynthesis,
+  russianCardName,
+} from './interpretation-copy';
 import { stableHash } from './seeded-shuffle';
 
 function focusAnswer(context: TarotReadingContext) {
@@ -55,20 +62,6 @@ const contextLabels: Record<Locale, Record<string, string>> = {
   },
 };
 
-function topicMeaning(card: TarotCard, context: TarotReadingContext) {
-  if (context.topic === 'love') return card.relationship[context.locale];
-  if (context.topic === 'work') return card.work[context.locale];
-  if (context.topic === 'money') return card.money[context.locale];
-  if (context.topic === 'decision') return card.personalGrowth[context.locale];
-  return card.upright[context.locale];
-}
-
-function cardMeaning(card: TarotCard, selection: TarotCardSelection, context: TarotReadingContext) {
-  return selection.orientation === 'reversed'
-    ? card.reversed[context.locale]
-    : topicMeaning(card, context);
-}
-
 function createInterpretation(
   selection: TarotCardSelection,
   index: number,
@@ -83,6 +76,7 @@ function createInterpretation(
     selections[index === selections.length - 1 ? Math.max(0, index - 1) : index + 1]?.cardId ?? '',
   );
   if (!card) throw new Error(`Unknown tarot card: ${selection.cardId}`);
+  if (!position) throw new Error(`Unknown tarot position: ${selection.positionId}`);
   const focus =
     contextLabels[locale][focusAnswer(context)] ??
     (locale === 'en'
@@ -90,19 +84,24 @@ function createInterpretation(
       : locale === 'uk'
         ? 'ваш поточний контекст'
         : 'ваш текущий контекст');
-  const positionLabel = position?.label[locale] ?? selection.positionId;
-  const meaning = cardMeaning(card, selection, context);
-  const connections = neighbour
-    ? locale === 'en'
-      ? `${card.name.en} and ${neighbour.name.en} connect ${card.baseThemes.en[0]} with ${neighbour.baseThemes.en[0]}.`
-      : locale === 'uk'
-        ? `${card.name.uk} і ${neighbour.name.uk} поєднують ${card.baseThemes.uk[0]} з темою «${neighbour.baseThemes.uk[0]}».`
-        : `${card.name.ru} и ${neighbour.name.ru} связывают ${card.baseThemes.ru[0]} с темой «${neighbour.baseThemes.ru[0]}».`
-    : locale === 'en'
-      ? 'This single card becomes the central symbolic lens.'
-      : locale === 'uk'
-        ? 'Ця карта стає центральною символічною лінзою.'
-        : 'Эта карта становится центральной символической линзой.';
+  const positionLabel = position.label[locale];
+  const naturalCardName = locale === 'ru' ? russianCardName(card) : card.name[locale];
+  const meaning = createActiveCardInterpretation({
+    card,
+    index,
+    locale,
+    orientation: selection.orientation,
+    position,
+    ...(context.topic ? { topic: context.topic } : {}),
+  });
+  const connections = createCardConnection({
+    card,
+    index,
+    locale,
+    ...(neighbour ? { neighbour } : {}),
+    orientation: selection.orientation,
+    position,
+  });
   return {
     id: `${context.spreadId}:${selection.positionId}:${card.id}`,
     cardId: card.id,
@@ -112,24 +111,24 @@ function createInterpretation(
     meaningInPosition: meaning,
     contextLink:
       locale === 'en'
-        ? `In relation to ${focus}, this card suggests examining ${card.baseThemes.en[0]}.`
+        ? `For ${focus}, “${positionLabel}” makes ${card.name.en} a question about what you can actually notice, not a prediction.`
         : locale === 'uk'
-          ? `У зв’язку з темою «${focus}» карта пропонує розглянути ${card.baseThemes.uk[0]}.`
-          : `В связи с темой «${focus}» карта предлагает рассмотреть ${card.baseThemes.ru[0]}.`,
+          ? `У контексті «${focus}» карта ${card.name.uk} допомагає побачити, що відбувається насправді, а не вгадувати майбутнє.`
+          : `Эта карта помогает посмотреть на происходящее трезво: что уже подтверждается фактами, а что пока держится на ожиданиях?`,
     connections,
     numerologyLink:
       locale === 'en'
         ? `Life-path ${context.numerology.lifePath.value} and personal year ${context.numerology.personalYear.value} add themes of ${context.numerology.personalYear.strengths[0]}; they do not change the card’s meaning.`
         : locale === 'uk'
           ? `Шлях ${context.numerology.lifePath.value} і персональний рік ${context.numerology.personalYear.value} додають тему «${context.numerology.personalYear.strengths[0]}», але не змінюють значення карти.`
-          : `Путь ${context.numerology.lifePath.value} и персональный год ${context.numerology.personalYear.value} добавляют тему «${context.numerology.personalYear.strengths[0]}», но не меняют значение карты.`,
-    practicalTheme: card.advice[locale],
+          : `Числовой период здесь лишь усиливает тему ${context.numerology.personalYear.strengths[0]}; основной смысл всё равно задаёт сама карта.`,
+    practicalTheme: createCardPracticalFocus(card, locale),
     reflectionQuestion:
       locale === 'en'
-        ? `Where could ${card.baseThemes.en[0]} be observed rather than assumed?`
+        ? `What in “${positionLabel}” supports the constructive meaning of ${card.name.en}, and what contradicts it?`
         : locale === 'uk'
-          ? `Де можна спостерігати «${card.baseThemes.uk[0]}», а не лише припускати?`
-          : `Где можно наблюдать «${card.baseThemes.ru[0]}», а не только предполагать?`,
+          ? `Що в позиції «${positionLabel}» підтверджує конструктивний зміст карти ${card.name.uk}, а що йому суперечить?`
+          : `Что здесь подтверждает смысл карты ${naturalCardName}, а что ему противоречит?`,
     uncertainty:
       locale === 'en'
         ? 'This is one possible symbolic reading, not a guaranteed event or instruction.'
@@ -154,36 +153,15 @@ export function createTarotReading(
     .filter(Boolean) as TarotCard[];
   const leading = cards[0];
   if (!leading) throw new Error('Reading requires at least one card');
-  const variant =
-    stableHash(
-      `${context.seed}:${selections.map((item) => item.cardId).join(':')}:${focusAnswer(context)}:${context.interests.join(':')}`,
-    ) % 4;
-  const theme = leading.baseThemes[locale][0] ?? leading.name[locale];
-  const noticedTheme =
-    locale === 'ru' && theme === 'структура и границы' ? 'структуру и границы' : theme;
-  const headlines = {
-    ru: [
-      `Сейчас важнее заметить ${noticedTheme}, чем торопить ответ.`,
-      `Расклад предлагает проверить ${theme} на практике`,
-      `В центре периода — ${theme} и один ясный шаг`,
-      `Карты соединяют ${theme} с вашим текущим выбором`,
-    ],
-    en: [
-      `Notice ${theme} before rushing the answer`,
-      `The reading asks you to test ${theme} in practice`,
-      `This period centres on ${theme} and one clear step`,
-      `The cards connect ${theme} with your current choice`,
-    ],
-    uk: [
-      `Зараз важливіше помітити ${theme}, ніж квапити відповідь`,
-      `Розклад пропонує перевірити ${theme} на практиці`,
-      `У центрі періоду — ${theme} й один ясний крок`,
-      `Карти поєднують ${theme} з вашим поточним вибором`,
-    ],
-  }[locale];
   const interpretations = selections.map((selection, index) =>
     createInterpretation(selection, index, selections, context),
   );
+  const synthesis = createReadingSynthesis({
+    cards,
+    locale,
+    positions: spread.positions,
+    selections,
+  });
   const id = `tarot-${stableHash(JSON.stringify({ context, selections })).toString(36)}`;
   const expert = createExpertInterpretationBundleForTarot(context, selections, createdAt, {
     currentReadingId: id,
@@ -195,14 +173,9 @@ export function createTarotReading(
     selections,
     createdAt,
     leadingCardId: leading.id,
-    headline: headlines[variant] ?? headlines[0],
-    summary:
-      locale === 'en'
-        ? `${spread.title.en} links ${cards.map((card) => card.name.en).join(', ')} into one contextual pattern.`
-        : locale === 'uk'
-          ? `${spread.title.uk} поєднує ${cards.map((card) => card.name.uk).join(', ')} в один контекстний малюнок.`
-          : `${spread.title.ru} связывает ${cards.map((card) => card.name.ru).join(', ')} в один контекстный рисунок.`,
-    practicalFocus: interpretations[0]?.practicalTheme ?? leading.advice[locale],
+    headline: synthesis.headline,
+    summary: synthesis.summary,
+    practicalFocus: synthesis.practicalFocus,
     interpretations,
     crossSystemReasoning: expert.reasoning,
     expertInterpretation: expert.result,

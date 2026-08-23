@@ -10,9 +10,11 @@ import styles from './Tarot.module.css';
 
 export function TarotLanding({
   locale,
+  onOpenHistory,
   onStart,
 }: {
   locale: Locale;
+  onOpenHistory: () => void;
   onStart: (spread: TarotSpread) => void;
 }) {
   const copy = tarotCopy[locale];
@@ -34,19 +36,24 @@ export function TarotLanding({
               <Typography className={styles.lead} variant="lead">
                 {copy.heroLead}
               </Typography>
-              <Button
-                onClick={() => {
-                  selectionRef.current?.scrollIntoView({
-                    behavior: prefersReducedMotion ? 'auto' : 'smooth',
-                    block: 'start',
-                  });
-                  selectionRef.current?.focus({ preventScroll: true });
-                }}
-                prominence="primary"
-                size="large"
-              >
-                {copy.primary} <span aria-hidden="true">→</span>
-              </Button>
+              <div className={styles.heroActions}>
+                <Button
+                  onClick={() => {
+                    selectionRef.current?.scrollIntoView({
+                      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+                      block: 'start',
+                    });
+                    selectionRef.current?.focus({ preventScroll: true });
+                  }}
+                  prominence="primary"
+                  size="large"
+                >
+                  {copy.primary} <span aria-hidden="true">→</span>
+                </Button>
+                <Button onClick={onOpenHistory} prominence="quiet">
+                  {copy.history}
+                </Button>
+              </div>
               <Typography className={styles.disclaimer}>{copy.reflectionNote}</Typography>
             </Stack>
             <div aria-hidden="true" className={styles.heroCards}>

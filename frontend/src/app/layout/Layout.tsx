@@ -23,7 +23,8 @@ export function Layout({ children }: LayoutProps) {
     currentPath === ROUTES.tarotReading ||
     currentPath === ROUTES.numerology ||
     currentPath === ROUTES.numerologyProfile;
-  const hasCompactSidebar = currentPath === ROUTES.tarotResult;
+  const hasCompactSidebar =
+    currentPath === ROUTES.tarotResult || currentPath === ROUTES.tarotHistory;
 
   const closeSidebar = useCallback(() => {
     setSidebarOpen(false);

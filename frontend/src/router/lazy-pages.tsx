@@ -42,6 +42,9 @@ export const NotFoundPage = lazy(() =>
 export const TarotPage = lazy(() =>
   import('@pages/tarot').then((module) => ({ default: module.TarotPage })),
 );
+export const TarotHistoryPage = lazy(() =>
+  import('@pages/tarot').then((module) => ({ default: module.TarotHistoryPage })),
+);
 export const TarotReadingPage = lazy(() =>
   import('@pages/tarot').then((module) => ({ default: module.TarotReadingPage })),
 );

@@ -84,7 +84,48 @@ function validateReadingRecords(value: unknown, errors: ProductStorageValidation
         `$.data.tarotReadings.data.${index}.savedAt`,
         'Saved timestamp must be ISO-compatible.',
       );
+    if (item.snapshot !== undefined)
+      validateTarotHistorySnapshot(
+        item.snapshot,
+        item.reading,
+        `$.data.tarotReadings.data.${index}.snapshot`,
+        errors,
+      );
   });
+}
+
+function validateTarotHistorySnapshot(
+  value: unknown,
+  reading: Record<string, unknown>,
+  path: string,
+  errors: ProductStorageValidationError[],
+) {
+  const context = isRecord(reading.context) ? reading.context : null;
+  if (
+    !isRecord(value) ||
+    value.schemaVersion !== 'tarot-history-record-v1' ||
+    value.readingId !== reading.id ||
+    value.createdAt !== reading.createdAt ||
+    value.spreadId !== reading.spreadId ||
+    value.finalSynthesis !== reading.summary ||
+    typeof value.spreadTitle !== 'string' ||
+    typeof value.resultHeadline !== 'string' ||
+    typeof value.seed !== 'string' ||
+    value.seed !== context?.seed ||
+    value.locale !== context?.locale ||
+    !Array.isArray(value.motifs) ||
+    value.motifs.length > 3 ||
+    !value.motifs.every((motif) => typeof motif === 'string') ||
+    !Array.isArray(value.selections) ||
+    JSON.stringify(value.selections) !== JSON.stringify(reading.selections)
+  )
+    error(
+      errors,
+      'tarotReadings',
+      'invalid-history-snapshot',
+      path,
+      'History snapshot must be bound to the exact immutable reading.',
+    );
 }
 
 function validateTarotReadingValue(

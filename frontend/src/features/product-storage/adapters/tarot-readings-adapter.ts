@@ -12,6 +12,7 @@ export function tarotReadingsFromJourney(state: JourneyState): TarotReadingsStat
     bookmarked: record.favorite,
     reading: record.reading,
     savedAt: record.savedAt,
+    snapshot: record.snapshot,
   }));
 }
 
@@ -32,7 +33,13 @@ export const tarotReadingsStorageAdapter: ProductStorageAdapter<
       const existing = records.get(record.reading.id);
       records.set(
         record.reading.id,
-        existing ? { ...existing, bookmarked: existing.bookmarked || record.bookmarked } : record,
+        existing
+          ? {
+              ...existing,
+              bookmarked: existing.bookmarked || record.bookmarked,
+              snapshot: existing.snapshot ?? record.snapshot,
+            }
+          : record,
       );
     });
     return [...records.values()].sort((left, right) => right.savedAt.localeCompare(left.savedAt));

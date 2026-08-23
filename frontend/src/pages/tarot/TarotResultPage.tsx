@@ -1,3 +1,4 @@
+import { historySnapshotForRecord, useJourney } from '@features/journey';
 import { TarotResult, useTarotSession } from '@features/tarot';
 import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
@@ -7,8 +8,9 @@ import { Button, Container, Stack, Typography } from '@shared/ui';
 export function TarotResultPage() {
   const { locale } = useI18n();
   const { navigate } = useRouter();
-  const { actions, state } = useTarotSession();
-  if (!state.reading)
+  const { state: journeyState } = useJourney();
+  const { actions, state: sessionState } = useTarotSession();
+  if (!sessionState.reading)
     return (
       <Container size="default">
         <Stack align="start" gap="lg">
@@ -29,15 +31,26 @@ export function TarotResultPage() {
         </Stack>
       </Container>
     );
+  const savedRecord = journeyState.readings.find(
+    (record) => record.reading.id === sessionState.reading?.id,
+  );
+  const savedSnapshot = savedRecord ? historySnapshotForRecord(savedRecord) : null;
   return (
     <TarotResult
+      isSaved={Boolean(savedRecord)}
       locale={locale}
       onContinueJourney={() => navigate(ROUTES.profile)}
+      onOpenHistory={() => navigate(ROUTES.tarotHistory)}
       onRestart={() => {
         actions.reset();
         navigate(ROUTES.tarot);
       }}
-      reading={state.reading}
+      reading={sessionState.reading}
+      savedPresentation={
+        savedSnapshot
+          ? { headline: savedSnapshot.resultHeadline, motifs: savedSnapshot.motifs }
+          : undefined
+      }
     />
   );
 }

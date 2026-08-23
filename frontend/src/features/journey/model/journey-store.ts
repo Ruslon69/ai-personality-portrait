@@ -7,6 +7,11 @@ import type { TarotReading } from '@features/tarot';
 import { enrichTarotReadingWithContinuity } from '@features/tarot';
 import { buildJourneyMemorySnapshot, journeyStateToMemorySources } from '@features/journey-memory';
 
+import {
+  addTarotHistoryRecord,
+  normalizeTarotHistoryRecords,
+  removeTarotHistoryRecord,
+} from '../lib/tarot-history';
 import type { JourneyDailyCard, JourneyState } from '../types';
 
 function createIdentity() {
@@ -22,7 +27,9 @@ const defaultState: JourneyState = {
 
 function readState(): JourneyState {
   const saved = readJourneyStateFromProductStorage();
-  return saved ?? { ...defaultState, identity: createIdentity() };
+  return saved
+    ? { ...saved, readings: normalizeTarotHistoryRecords(saved.readings) }
+    : { ...defaultState, identity: createIdentity() };
 }
 
 export const journeyStore = createStore(readState());
@@ -50,21 +57,33 @@ export const journeyActions = {
   },
   recordReading(reading: TarotReading) {
     const state = journeyStore.getState();
+    const existing = state.readings.find((item) => item.reading.id === reading.id);
+    if (existing) return existing.reading;
     const previousSnapshot = buildJourneyMemorySnapshot({
       generatedAt: reading.createdAt,
       locale: reading.context.locale,
       sources: journeyStateToMemorySources(state),
     });
     const completedReading = enrichTarotReadingWithContinuity(reading, previousSnapshot);
-    const existing = state.readings.find((item) => item.reading.id === reading.id);
-    const record = {
-      favorite: existing?.favorite ?? false,
-      reading: completedReading,
-      savedAt: existing?.savedAt ?? new Date().toISOString(),
-    };
+    const update = addTarotHistoryRecord(
+      state.readings,
+      completedReading,
+      new Date().toISOString(),
+    );
+    journeyStore.setState({ readings: update.records });
+    return update.record.reading;
+  },
+  deleteReading(readingId: string) {
+    const state = journeyStore.getState();
+    if (!state.readings.some((record) => record.reading.id === readingId)) return;
     journeyStore.setState({
-      readings: [record, ...state.readings.filter((item) => item.reading.id !== reading.id)],
+      readings: removeTarotHistoryRecord(state.readings, readingId),
     });
+  },
+  clearReadings() {
+    const state = journeyStore.getState();
+    if (state.readings.length === 0) return;
+    journeyStore.setState({ readings: [] });
   },
   toggleFavorite(readingId: string) {
     const state = journeyStore.getState();

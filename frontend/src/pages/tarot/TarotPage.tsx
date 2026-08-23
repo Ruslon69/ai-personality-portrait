@@ -10,6 +10,7 @@ export function TarotPage() {
   return (
     <TarotLanding
       locale={locale}
+      onOpenHistory={() => navigate(ROUTES.tarotHistory)}
       onStart={(spread) => {
         actions.chooseSpread(spread.id);
         navigate(ROUTES.tarotReading);

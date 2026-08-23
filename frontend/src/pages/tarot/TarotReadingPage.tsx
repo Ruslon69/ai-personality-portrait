@@ -1,5 +1,5 @@
 import { journeyActions } from '@features/journey';
-import { TarotReadingFlow } from '@features/tarot';
+import { tarotSessionActions, TarotReadingFlow } from '@features/tarot';
 import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
 import { useI18n } from '@shared/i18n';
@@ -12,7 +12,8 @@ export function TarotReadingPage() {
       locale={locale}
       onBack={() => navigate(ROUTES.tarot)}
       onComplete={(reading) => {
-        journeyActions.recordReading(reading);
+        const savedReading = journeyActions.recordReading(reading);
+        tarotSessionActions.saveReading(savedReading);
         navigate(ROUTES.tarotResult);
       }}
     />

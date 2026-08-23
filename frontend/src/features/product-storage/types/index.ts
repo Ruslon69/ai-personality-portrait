@@ -1,6 +1,6 @@
 import type { DraftPortrait, PersonalityProfile } from '@entities/personality-profile';
 import type { JourneyMemorySnapshot } from '@features/journey-memory';
-import type { JourneyState } from '@features/journey';
+import type { JourneyState, TarotHistorySnapshot } from '@features/journey';
 import type { AdvancedNumerologyProfile, NumerologyProfile } from '@features/numerology';
 import type {
   TarotCardSelection,
@@ -59,7 +59,12 @@ export type TarotSessionStorageSection = {
 };
 
 export type TarotReadingsStorageSection = {
-  data: readonly { bookmarked: boolean; reading: TarotReading; savedAt: string }[];
+  data: readonly {
+    bookmarked: boolean;
+    reading: TarotReading;
+    savedAt: string;
+    snapshot?: TarotHistorySnapshot;
+  }[];
   schemaVersion: 'tarot-storage-v1';
 };
 

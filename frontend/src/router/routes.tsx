@@ -17,6 +17,7 @@ import {
   ResultPreviewPage,
   SettingsPage,
   TarotPage,
+  TarotHistoryPage,
   TarotReadingPage,
   TarotResultPage,
   VoicePage,
@@ -26,6 +27,7 @@ import type { AppRoute } from './RouterProvider.types';
 export const appRoutes: readonly AppRoute[] = [
   { component: HomePage, path: ROUTES.home },
   { component: TarotPage, path: ROUTES.tarot },
+  { component: TarotHistoryPage, path: ROUTES.tarotHistory },
   { component: TarotReadingPage, path: ROUTES.tarotReading },
   { component: TarotResultPage, path: ROUTES.tarotResult },
   { component: NumerologyPage, path: ROUTES.numerology },

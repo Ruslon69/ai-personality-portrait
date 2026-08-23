@@ -483,6 +483,19 @@ export function runTarotArtworkGate(rootDir: string) {
     resolve(rootDir, 'src/features/tarot/components/TarotResult.tsx'),
     'utf8',
   );
+  const historySource = readFileSync(
+    resolve(rootDir, 'src/features/journey/components/TarotHistory.tsx'),
+    'utf8',
+  );
+  const historyPageSource = readFileSync(
+    resolve(rootDir, 'src/pages/tarot/TarotHistoryPage.tsx'),
+    'utf8',
+  );
+  const readingPageSource = readFileSync(
+    resolve(rootDir, 'src/pages/tarot/TarotReadingPage.tsx'),
+    'utf8',
+  );
+  const routeSource = readFileSync(resolve(rootDir, 'src/router/routes.tsx'), 'utf8');
   const layoutSource = readFileSync(resolve(rootDir, 'src/app/layout/Layout.tsx'), 'utf8');
   const layoutCss = readFileSync(resolve(rootDir, 'src/app/layout/Layout.module.css'), 'utf8');
   const readingEngineSource = readFileSync(
@@ -491,6 +504,10 @@ export function runTarotArtworkGate(rootDir: string) {
   );
   const interpretationCopySource = readFileSync(
     resolve(rootDir, 'src/features/tarot/lib/interpretation-copy.ts'),
+    'utf8',
+  );
+  const resultPresentationSource = readFileSync(
+    resolve(rootDir, 'src/features/tarot/lib/tarot-result-presentation.ts'),
     'utf8',
   );
   assertions.assert(
@@ -628,8 +645,9 @@ export function runTarotArtworkGate(rootDir: string) {
   assertions.assert(
     readingFlowSource.includes('createActiveCardInterpretation({') &&
       readingFlowSource.includes('<Typography>{currentInterpretation}</Typography>') &&
-      resultSource.includes('className={styles.resultSummary}') &&
-      resultSource.includes('{reading.summary}'),
+      resultSource.includes('{heroPresentation.heroSummary}') &&
+      resultSource.includes('heroPresentation.pattern.repeated') &&
+      resultSource.includes('reading.interpretations.map'),
     {
       code: 'tarot-reading-position-aware-copy-binding',
       message:
@@ -652,6 +670,8 @@ export function runTarotArtworkGate(rootDir: string) {
   );
   assertions.assert(
     resultSource.includes('className={styles.resultOpening}') &&
+      resultSource.includes('variant="leading"') &&
+      resultSource.includes('isRevealed') &&
       cardBackCss.includes('grid-template-columns: minmax(15rem, 0.38fr) minmax(0, 0.62fr)') &&
       cardBackCss.includes('min-block-size: calc(100dvh - 4rem)') &&
       cardBackCss.includes('--tarot-card-width: clamp(15rem, 18vw, 18rem)'),
@@ -667,13 +687,44 @@ export function runTarotArtworkGate(rootDir: string) {
       cardBackCss.includes('font-size: clamp(2rem, 4vw, 3.375rem)') &&
       readingEngineSource.includes('headline: synthesis.headline') &&
       interpretationCopySource.includes('headline: `В центре — ${domainLabel}`') &&
-      cardBackCss.includes('.featuredDecoration') &&
-      cardBackCss.includes('font-size: clamp(4rem, 6vw, 5.5rem)') &&
-      cardBackCss.includes('inline-size: clamp(2.75rem, 4vw, 3.625rem)'),
+      resultSource.includes('heroPresentation.headline') &&
+      resultSource.includes('heroPresentation.motifs') &&
+      cardBackCss.includes('.resultSupportingLine') &&
+      cardBackCss.includes('.resultSignals'),
     {
       code: 'tarot-result-russian-headline-presentation',
       message:
         'Russian synthesis headlines must stay compact and wrap naturally at the editorial scale.',
+    },
+  );
+  assertions.assert(
+    resultSource.includes('useState<string | null>(null)') &&
+      resultSource.includes('aria-label={`${isOpen ? copy.showLess : copy.showMore}:') &&
+      resultSource.includes('aria-controls={detailId}') &&
+      resultSource.includes('aria-expanded={isOpen}') &&
+      resultSource.includes('aria-labelledby={triggerId}') &&
+      resultSource.includes('role="region"') &&
+      resultSource.includes('isOpen ? (') &&
+      resultSource.includes('variant="history"'),
+    {
+      code: 'tarot-result-accessible-card-details',
+      message:
+        'Result details must default to collapsed, retain Premium thumbnails and expose accessible accordion state.',
+    },
+  );
+  assertions.assert(
+    resultSource.includes('className={styles.resultSecondaryContext}') &&
+      resultSource.includes('{heroPresentation.secondaryContext}') &&
+      resultSource.includes('heroPresentation.motifs.length') &&
+      resultPresentationSource.includes('.slice(0, 4)') &&
+      cardBackCss.includes('.resultPatternGrid') &&
+      cardBackCss.includes('.resultDirection') &&
+      cardBackCss.includes('.resultDetails') &&
+      cardBackCss.includes('grid-template-columns: 1fr'),
+    {
+      code: 'tarot-result-progressive-hierarchy',
+      message:
+        'Result motifs, pattern, practical direction, collapsible details and secondary numerology must remain hierarchically separated and mobile-safe.',
     },
   );
   assertions.assert(
@@ -685,6 +736,33 @@ export function runTarotArtworkGate(rootDir: string) {
     {
       code: 'tarot-reading-details-contained',
       message: 'Desktop reveal details and CTA must remain contained inside the viewport panel.',
+    },
+  );
+  assertions.assert(
+    readingPageSource.includes('journeyActions.recordReading(reading)') &&
+      readingPageSource.includes('tarotSessionActions.saveReading(savedReading)') &&
+      historyPageSource.includes('tarotSessionActions.saveReading(record.reading)') &&
+      historyPageSource.includes('navigate(ROUTES.tarotResult)') &&
+      !historyPageSource.includes('createTarotReading'),
+    {
+      code: 'tarot-history-reopens-snapshot',
+      message:
+        'Completed readings must save once and history detail must reuse the stored result without randomization.',
+    },
+  );
+  assertions.assert(
+    routeSource.includes('{ component: TarotHistoryPage, path: ROUTES.tarotHistory }') &&
+      historySource.includes('variant="history"') &&
+      historySource.includes('isRevealed') &&
+      historySource.includes('actions.deleteReading') &&
+      historySource.includes('actions.clearReadings') &&
+      historySource.includes('records.length ? (') &&
+      resultSource.includes('onOpenHistory') &&
+      resultSource.includes('copy.savedReading'),
+    {
+      code: 'tarot-history-ui-contract',
+      message:
+        'Tarot history must provide Premium thumbnails, empty state, safe deletion, result reuse and result-page access.',
     },
   );
   assertions.assert(

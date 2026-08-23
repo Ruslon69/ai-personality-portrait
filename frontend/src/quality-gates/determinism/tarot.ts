@@ -1,6 +1,14 @@
 import { createNumerologyProfile } from '../../features/numerology/lib/numerology-engine';
 import { RWS_CLASSIC_DECK_ID, getTarotArtwork, tarotArtworkManifest } from '../../assets/tarot';
 import {
+  addTarotHistoryRecord,
+  createTarotHistorySnapshot,
+  normalizeTarotHistoryRecords,
+  removeTarotHistoryRecord,
+  TAROT_HISTORY_LIMIT,
+} from '../../features/journey/lib/tarot-history';
+import { validateProductStorageSection } from '../../features/product-storage/validation';
+import {
   isManualCardSelectionComplete,
   toggleManualCardSelection,
 } from '../../features/tarot/components/manual-selection-state';
@@ -16,6 +24,10 @@ import {
 } from '../../features/tarot/lib/interpretation-copy';
 import { createTarotReading } from '../../features/tarot/lib/reading-engine';
 import { russianTarotInterpretationProfiles } from '../../features/tarot/lib/russian-interpretation-profiles';
+import {
+  countPresentationWords,
+  createTarotResultHeroPresentation,
+} from '../../features/tarot/lib/tarot-result-presentation';
 import type { TarotCard, TarotReadingContext } from '../../features/tarot/types';
 import { QualityAssertions } from '../assertions';
 import { negativeQualityFixtures } from '../fixtures/negative-fixtures';
@@ -357,6 +369,142 @@ export function runTarotRegressionGate() {
     {
       code: 'tarot-reading-synthesis-not-concatenation',
       message: 'The final reading must synthesize pattern, opportunity, risk and direction.',
+    },
+  );
+  const resultPresentation = createTarotResultHeroPresentation(monthReading);
+  assertions.assert(
+    countPresentationWords(resultPresentation.headline) >= 6 &&
+      countPresentationWords(resultPresentation.headline) <= 12,
+    {
+      code: 'tarot-result-headline-length',
+      message: 'The Russian result headline must stay within the concise 6–12 word range.',
+    },
+  );
+  assertions.assert(
+    countPresentationWords(resultPresentation.heroSummary) >= 60 &&
+      countPresentationWords(resultPresentation.heroSummary) <= 100 &&
+      !resultPresentation.heroSummary.includes(oldConcatenation),
+    {
+      code: 'tarot-result-hero-summary',
+      message: 'The result hero must contain a bounded synthesis instead of a card-name dump.',
+    },
+  );
+  assertions.assert(
+    resultPresentation.motifs.length > 0 &&
+      resultPresentation.motifs.length <= 4 &&
+      Object.values(resultPresentation.pattern).every((value) => value.trim().length > 0) &&
+      Boolean(resultPresentation.reflectionQuestion.trim()),
+    {
+      code: 'tarot-result-hierarchy-content',
+      message: 'The result hierarchy must expose concise motifs, pattern signals and reflection.',
+    },
+  );
+  const historyReading = {
+    ...monthReading,
+    id: 'tarot-history-quality-reading',
+    selections: monthReading.selections.map((selection, index) =>
+      index === 0 ? { ...selection, orientation: 'reversed' as const } : selection,
+    ),
+  };
+  const firstHistoryWrite = addTarotHistoryRecord([], historyReading, timestamp);
+  const repeatedHistoryWrite = addTarotHistoryRecord(
+    firstHistoryWrite.records,
+    { ...historyReading },
+    '2026-08-06T12:00:00.000Z',
+  );
+  const historySnapshot = firstHistoryWrite.record.snapshot;
+  assertions.assert(
+    firstHistoryWrite.inserted &&
+      !repeatedHistoryWrite.inserted &&
+      repeatedHistoryWrite.records === firstHistoryWrite.records &&
+      repeatedHistoryWrite.record === firstHistoryWrite.record,
+    {
+      code: 'tarot-history-idempotent-save',
+      message: 'A completed Tarot reading must be saved exactly once by stable reading ID.',
+    },
+  );
+  assertions.assert(
+    historySnapshot?.schemaVersion === 'tarot-history-record-v1' &&
+      historySnapshot.readingId === historyReading.id &&
+      historySnapshot.seed === historyReading.context.seed &&
+      historySnapshot.finalSynthesis === historyReading.summary &&
+      JSON.stringify(historySnapshot.selections) === JSON.stringify(historyReading.selections) &&
+      historySnapshot.selections[0]?.orientation === 'reversed',
+    {
+      code: 'tarot-history-immutable-snapshot',
+      message:
+        'History must preserve the exact seed, cards, order, positions, orientations and synthesis.',
+    },
+  );
+  const historySection = {
+    data: [
+      {
+        bookmarked: false,
+        reading: historyReading,
+        savedAt: timestamp,
+        snapshot: historySnapshot,
+      },
+    ],
+    schemaVersion: 'tarot-storage-v1' as const,
+  };
+  assertions.assert(
+    validateProductStorageSection('tarotReadings', historySection).length === 0 &&
+      validateProductStorageSection('tarotReadings', {
+        ...historySection,
+        data: [
+          {
+            ...historySection.data[0],
+            snapshot: historySnapshot
+              ? { ...historySnapshot, readingId: 'different-reading' }
+              : historySnapshot,
+          },
+        ],
+      }).some((item) => item.code === 'invalid-history-snapshot'),
+    {
+      code: 'tarot-history-storage-binding',
+      message: 'Storage must reject a history snapshot bound to another reading.',
+    },
+  );
+  const normalizedHistory = normalizeTarotHistoryRecords([
+    { invalid: true },
+    firstHistoryWrite.record,
+  ]);
+  assertions.assert(
+    normalizedHistory.length === 1 && normalizedHistory[0]?.reading.id === historyReading.id,
+    {
+      code: 'tarot-history-malformed-entry',
+      message: 'Malformed history records must be ignored without hiding valid readings.',
+    },
+  );
+  const retentionCandidates = Array.from({ length: TAROT_HISTORY_LIMIT + 1 }, (_, index) => {
+    const reading = { ...monthReading, id: `tarot-history-retention-${index}` };
+    return {
+      favorite: false,
+      reading,
+      savedAt: new Date(Date.UTC(2026, 0, index + 1)).toISOString(),
+      snapshot: createTarotHistorySnapshot(reading),
+    };
+  });
+  const retainedHistory = normalizeTarotHistoryRecords(retentionCandidates);
+  assertions.assert(
+    retainedHistory.length === TAROT_HISTORY_LIMIT &&
+      retainedHistory[0]?.reading.id === `tarot-history-retention-${TAROT_HISTORY_LIMIT}` &&
+      !retainedHistory.some((record) => record.reading.id === 'tarot-history-retention-0'),
+    {
+      code: 'tarot-history-retention-cap',
+      message: 'History must retain the newest 75 readings and remove the oldest overflow.',
+    },
+  );
+  assertions.assert(
+    removeTarotHistoryRecord(
+      [firstHistoryWrite.record, retentionCandidates[0]!],
+      historyReading.id,
+    ).every((record) => record.reading.id !== historyReading.id) &&
+      getTarotArtwork(historySnapshot?.selections[0]?.cardId ?? 'major-fool').quality === 'premium',
+    {
+      code: 'tarot-history-delete-and-artwork-resolution',
+      message:
+        'History deletion must target only the selected reading and saved card IDs must resolve Premium artwork.',
     },
   );
   const unsafeClaims =

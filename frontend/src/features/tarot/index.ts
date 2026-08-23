@@ -1,5 +1,5 @@
 export { TarotCardView, TarotLanding, TarotResult } from './components';
-export { standardTarotDeck, tarotCardById, tarotSpreads } from './data';
+export { standardTarotDeck, tarotCardById, tarotSpreadById, tarotSpreads } from './data';
 export { TarotReadingFlow } from './flows';
 export { useTarotSession } from './hooks';
 export {
@@ -8,6 +8,7 @@ export {
   createManualCandidates,
   createManualSelections,
   createTarotReading,
+  createTarotResultHeroPresentation,
   enrichTarotReadingWithContinuity,
   seededShuffle,
   stableHash,

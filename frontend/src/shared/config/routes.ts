@@ -16,6 +16,7 @@ export const ROUTES = Object.freeze({
   profileHistory: '/profile/history',
   settings: '/settings',
   tarot: '/tarot',
+  tarotHistory: '/tarot/history',
   tarotReading: '/tarot/reading',
   tarotResult: '/tarot/result',
 } as const);

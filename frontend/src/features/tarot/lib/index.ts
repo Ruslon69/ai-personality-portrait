@@ -28,6 +28,13 @@ export {
   createTarotResultCopyPresentation,
   createTarotResultHeroPresentation,
 } from './tarot-result-presentation';
+export {
+  DEFAULT_TAROT_PREFERENCES,
+  isTarotHistoryLimit,
+  normalizeTarotPreferences,
+  TAROT_HISTORY_LIMIT_OPTIONS,
+} from './tarot-preferences';
+export type { TarotHistoryLimit, TarotPreferences } from './tarot-preferences';
 export type {
   TarotResultCopyInput,
   TarotResultHeroPresentation,

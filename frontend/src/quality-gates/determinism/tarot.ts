@@ -28,6 +28,11 @@ import {
   countPresentationWords,
   createTarotResultHeroPresentation,
 } from '../../features/tarot/lib/tarot-result-presentation';
+import {
+  DEFAULT_TAROT_PREFERENCES,
+  normalizeTarotPreferences,
+  TAROT_HISTORY_LIMIT_OPTIONS,
+} from '../../features/tarot/lib/tarot-preferences';
 import type { TarotCard, TarotReadingContext } from '../../features/tarot/types';
 import { QualityAssertions } from '../assertions';
 import { negativeQualityFixtures } from '../fixtures/negative-fixtures';
@@ -179,13 +184,63 @@ export function runTarotRegressionGate() {
       message: 'Identical seed and spread did not produce identical selections.',
     },
   );
+  const uprightOnly = createAutomaticSelections(cards, spread, 'quality-seed', false);
+  assertions.assert(
+    uprightOnly.every((selection) => selection.orientation === 'upright') &&
+      JSON.stringify(uprightOnly.map((selection) => selection.cardId)) ===
+        JSON.stringify(automatic.map((selection) => selection.cardId)),
+    {
+      code: 'tarot-preferences-upright-only-selection',
+      message:
+        'Disabling reversed cards must keep deterministic card selection unchanged and only force new orientations upright.',
+    },
+  );
   const manualIds = automatic.map((selection) => selection.cardId).reverse();
   const manual = createManualSelections(manualIds, spread, 'manual-quality-seed');
+  const uprightManual = createManualSelections(manualIds, spread, 'manual-quality-seed', false);
   assertions.assert(
-    manual.every((selection, index) => selection.cardId === manualIds[index]),
+    manual.every((selection, index) => selection.cardId === manualIds[index]) &&
+      uprightManual.every(
+        (selection, index) =>
+          selection.cardId === manualIds[index] && selection.orientation === 'upright',
+      ),
     {
       code: 'manual-selection-order',
       message: 'Manual selection did not preserve the chosen card order.',
+    },
+  );
+  const defaultPreferences = normalizeTarotPreferences(null);
+  const repairedPreferences = normalizeTarotPreferences({
+    allowReversedCards: 'invalid',
+    confirmNewReading: false,
+    historyLimit: 999,
+    revealAnimations: false,
+  });
+  assertions.assert(
+    JSON.stringify(defaultPreferences) === JSON.stringify(DEFAULT_TAROT_PREFERENCES) &&
+      repairedPreferences.allowReversedCards &&
+      !repairedPreferences.confirmNewReading &&
+      repairedPreferences.historyLimit === 75 &&
+      !repairedPreferences.revealAnimations &&
+      JSON.stringify(TAROT_HISTORY_LIMIT_OPTIONS) === JSON.stringify([25, 50, 75, 100]),
+    {
+      code: 'tarot-preferences-defaults-and-repair',
+      message: 'Tarot preferences must use stable defaults and repair malformed fields safely.',
+    },
+  );
+  const validPreferencesSection = {
+    data: { tarot: defaultPreferences },
+    schemaVersion: 'preferences-storage-v1' as const,
+  };
+  assertions.assert(
+    validateProductStorageSection('preferences', validPreferencesSection).length === 0 &&
+      validateProductStorageSection('preferences', {
+        ...validPreferencesSection,
+        data: { tarot: { ...defaultPreferences, historyLimit: 40 } },
+      }).some((item) => item.code === 'invalid-tarot-history-limit'),
+    {
+      code: 'tarot-preferences-storage-validation',
+      message: 'ProductStorage must accept valid Tarot preferences and reject unsupported limits.',
     },
   );
   ([1, 3, 5, 6] as const).forEach((requiredCount) => {
@@ -486,6 +541,7 @@ export function runTarotRegressionGate() {
     };
   });
   const retainedHistory = normalizeTarotHistoryRecords(retentionCandidates);
+  const retainedAtTwentyFive = normalizeTarotHistoryRecords(retentionCandidates, 25);
   assertions.assert(
     retainedHistory.length === TAROT_HISTORY_LIMIT &&
       retainedHistory[0]?.reading.id === `tarot-history-retention-${TAROT_HISTORY_LIMIT}` &&
@@ -493,6 +549,17 @@ export function runTarotRegressionGate() {
     {
       code: 'tarot-history-retention-cap',
       message: 'History must retain the newest 75 readings and remove the oldest overflow.',
+    },
+  );
+  assertions.assert(
+    retainedAtTwentyFive.length === 25 &&
+      retainedAtTwentyFive[0]?.reading.id === `tarot-history-retention-${TAROT_HISTORY_LIMIT}` &&
+      retainedAtTwentyFive.at(-1)?.reading.id === 'tarot-history-retention-51' &&
+      historySnapshot?.selections[0]?.orientation === 'reversed',
+    {
+      code: 'tarot-history-preference-retention',
+      message:
+        'A lower history preference must remove only oldest overflow without changing saved orientations.',
     },
   );
   assertions.assert(

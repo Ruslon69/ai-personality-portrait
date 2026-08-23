@@ -71,6 +71,13 @@
   gap: var(--space-3);
 }
 
+.readingConfirmActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
 .heroGrid h1,
 .resultCopy h1[data-variant='display'] {
   max-inline-size: 14ch;
@@ -2470,6 +2477,10 @@
   .heroActions > *,
   .resultHeroActions,
   .resultHeroActions > * {
+    inline-size: 100%;
+  }
+  .readingConfirmActions,
+  .readingConfirmActions > * {
     inline-size: 100%;
   }
   .interpretationTitle {

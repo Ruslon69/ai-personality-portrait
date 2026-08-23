@@ -15,7 +15,11 @@ export class InMemoryProductStorageLegacyBridge implements ProductStorageLegacyB
       local?: Readonly<Record<string, string>>;
       session?: Readonly<Record<string, string>>;
     } = {},
-    private readonly failure: { journey?: boolean; numerology?: boolean } = {},
+    private readonly failure: {
+      journey?: boolean;
+      numerology?: boolean;
+      preferences?: boolean;
+    } = {},
     private readonly operationLog?: string[],
   ) {
     Object.entries(initial.local ?? {}).forEach(([key, value]) => this.local.set(key, value));
@@ -41,6 +45,14 @@ export class InMemoryProductStorageLegacyBridge implements ProductStorageLegacyB
     this.operationLog?.push('legacy:numerology');
     if (this.failure.numerology) return this.failed('Legacy Numerology write failed.');
     this.session.set(LEGACY_STORAGE_KEYS.numerologyBirthDate[0], value);
+    return this.success();
+  }
+
+  writePreferences(value: Parameters<ProductStorageLegacyBridge['writePreferences']>[0]) {
+    this.operations.push('legacy:preferences');
+    this.operationLog?.push('legacy:preferences');
+    if (this.failure.preferences) return this.failed('Legacy preferences write failed.');
+    this.local.set(LEGACY_STORAGE_KEYS.tarotPreferences[0], JSON.stringify(value));
     return this.success();
   }
 

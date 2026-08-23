@@ -1,7 +1,7 @@
-export { TarotCardView, TarotLanding, TarotResult } from './components';
+export { TarotCardView, TarotLanding, TarotPreferencesSection, TarotResult } from './components';
 export { standardTarotDeck, tarotCardById, tarotSpreadById, tarotSpreads } from './data';
 export { TarotReadingFlow } from './flows';
-export { useTarotSession } from './hooks';
+export { useTarotPreferences, useTarotSession } from './hooks';
 export {
   createAutomaticSelections,
   createExpertInterpretationBundleForTarot,
@@ -12,6 +12,16 @@ export {
   enrichTarotReadingWithContinuity,
   seededShuffle,
   stableHash,
+  DEFAULT_TAROT_PREFERENCES,
+  isTarotHistoryLimit,
+  normalizeTarotPreferences,
+  TAROT_HISTORY_LIMIT_OPTIONS,
 } from './lib';
-export { tarotSessionActions, tarotSessionStore } from './model';
+export type { TarotHistoryLimit, TarotPreferences } from './lib';
+export {
+  tarotPreferencesActions,
+  tarotPreferencesStore,
+  tarotSessionActions,
+  tarotSessionStore,
+} from './model';
 export type * from './types';

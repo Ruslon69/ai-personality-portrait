@@ -7,7 +7,7 @@ import {
   tarotReadingsStorageAdapter,
   tarotSessionStorageAdapter,
 } from '../adapters';
-import { PRODUCT_STORAGE_KEYS } from '../constants';
+import { LEGACY_STORAGE_KEYS, PRODUCT_STORAGE_KEYS } from '../constants';
 import { buildProductStorageExport } from '../export-import';
 import {
   BrowserProductStorageRepository,
@@ -254,6 +254,25 @@ function runBootstrap(assert: Assert) {
   assert(
     fallbackWrite.status === 'legacy-only' && fallbackWrite.legacyWritten,
     'Disabled activation did not preserve legacy-only writes.',
+  );
+  const fallbackPreferences = disabled.service.updateSection('preferences', {
+    data: {
+      tarot: {
+        allowReversedCards: false,
+        confirmNewReading: true,
+        historyLimit: 50,
+        revealAnimations: false,
+      },
+    },
+    schemaVersion: 'preferences-storage-v1',
+  });
+  const persistedPreferences =
+    disabledLegacy.snapshot().local[LEGACY_STORAGE_KEYS.tarotPreferences[0]];
+  assert(
+    fallbackPreferences.status === 'legacy-only' &&
+      fallbackPreferences.legacyWritten &&
+      JSON.parse(persistedPreferences ?? '{}').tarot?.historyLimit === 50,
+    'Disabled activation did not preserve Tarot preferences through ProductStorage fallback.',
   );
   assert(
     resolveProductStorageFeatureFlag({ environment: 'development' }).enabled,

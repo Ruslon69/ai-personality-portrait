@@ -30,7 +30,17 @@ export type ProductStorageSection =
   | 'tarotSession';
 
 export type PreferencesStorageSection = {
-  data: { deckTheme?: TarotDeckTheme; locale?: Locale; theme?: 'dark' | 'light' | 'system' };
+  data: {
+    deckTheme?: TarotDeckTheme;
+    locale?: Locale;
+    tarot?: {
+      allowReversedCards: boolean;
+      confirmNewReading: boolean;
+      historyLimit: 25 | 50 | 75 | 100;
+      revealAnimations: boolean;
+    };
+    theme?: 'dark' | 'light' | 'system';
+  };
   schemaVersion: 'preferences-storage-v1';
 };
 
@@ -48,6 +58,7 @@ export type TarotSessionStorageSection = {
     answers: readonly TarotPsychologyAnswer[];
     birthDate: string;
     deckTheme: TarotDeckTheme;
+    inProgress?: boolean;
     reading: TarotReading | null;
     reshuffled: boolean;
     seed: string;
@@ -346,6 +357,7 @@ export interface ProductStorageLegacyBridge {
   readValues(keys: readonly string[]): Readonly<Record<string, string | null>>;
   writeJourney(state: JourneyState): ProductStorageLegacyWriteResult;
   writeNumerologyBirthDate(value: string): ProductStorageLegacyWriteResult;
+  writePreferences(value: PreferencesStorageSection['data']): ProductStorageLegacyWriteResult;
 }
 
 export type ProductStorageSectionWriteStatus =

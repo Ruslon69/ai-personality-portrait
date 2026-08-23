@@ -17,6 +17,7 @@ type TarotSessionState = {
   answers: readonly TarotPsychologyAnswer[];
   birthDate: string;
   deckTheme: TarotDeckTheme;
+  inProgress: boolean;
   reading: TarotReading | null;
   reshuffled: boolean;
   seed: string;
@@ -50,6 +51,7 @@ const defaultState: TarotSessionState = {
   answers: [],
   birthDate: '',
   deckTheme: readTheme(),
+  inProgress: false,
   reading: null,
   reshuffled: false,
   seed: readSeed(),
@@ -64,7 +66,13 @@ function readState(): TarotSessionState {
     const saved = JSON.parse(
       window.sessionStorage.getItem(STATE_KEY) ?? '',
     ) as Partial<TarotSessionState>;
-    return { ...defaultState, ...saved, deckTheme: readTheme(), seed: saved.seed ?? readSeed() };
+    return {
+      ...defaultState,
+      ...saved,
+      deckTheme: readTheme(),
+      inProgress: saved.inProgress === true,
+      seed: saved.seed ?? readSeed(),
+    };
   } catch {
     return defaultState;
   }
@@ -82,13 +90,20 @@ if (typeof window !== 'undefined') {
 
 export const tarotSessionActions = {
   chooseSpread(spreadId: string) {
-    tarotSessionStore.setState({ reading: null, reshuffled: false, selections: [], spreadId });
+    tarotSessionStore.setState({
+      inProgress: true,
+      reading: null,
+      reshuffled: false,
+      selections: [],
+      spreadId,
+    });
   },
   reset() {
     const seed = typeof window === 'undefined' ? initialState.seed : createSeed();
     if (typeof window !== 'undefined') window.sessionStorage.setItem(SESSION_KEY, seed);
     tarotSessionStore.setState({
       ...initialState,
+      inProgress: false,
       reading: null,
       reshuffled: false,
       seed,
@@ -96,16 +111,16 @@ export const tarotSessionActions = {
     });
   },
   saveAnswers(answers: readonly TarotPsychologyAnswer[]) {
-    tarotSessionStore.setState({ answers });
+    tarotSessionStore.setState({ answers, inProgress: true });
   },
   saveBirthDate(birthDate: string) {
-    tarotSessionStore.setState({ birthDate });
+    tarotSessionStore.setState({ birthDate, inProgress: true });
   },
   saveReading(reading: TarotReading) {
-    tarotSessionStore.setState({ reading });
+    tarotSessionStore.setState({ inProgress: false, reading });
   },
   saveSelections(selections: readonly TarotCardSelection[]) {
-    tarotSessionStore.setState({ selections });
+    tarotSessionStore.setState({ inProgress: true, selections });
   },
   setDeckTheme(deckTheme: TarotDeckTheme) {
     tarotSessionStore.setState({ deckTheme });

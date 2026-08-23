@@ -69,7 +69,17 @@ export function createFullStorageFixtureEnvelope(): ProductStorageEnvelope {
         schemaVersion: 'numerology-storage-v1',
       },
       preferences: {
-        data: { deckTheme: 'cosmic-minimal', locale: 'ru', theme: 'dark' },
+        data: {
+          deckTheme: 'cosmic-minimal',
+          locale: 'ru',
+          tarot: {
+            allowReversedCards: true,
+            confirmNewReading: true,
+            historyLimit: 75,
+            revealAnimations: true,
+          },
+          theme: 'dark',
+        },
         schemaVersion: 'preferences-storage-v1',
       },
       tarotReadings: {

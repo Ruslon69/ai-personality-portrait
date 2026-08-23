@@ -15,7 +15,7 @@ import {
   tarotCopy,
   tarotSpreadById,
 } from '../data';
-import { useTarotSession } from '../hooks';
+import { useTarotPreferences, useTarotSession } from '../hooks';
 import {
   createActiveCardInterpretation,
   createAutomaticSelections,
@@ -63,6 +63,7 @@ export function TarotReadingFlow({
   onComplete: (reading: ReturnType<typeof createTarotReading>) => void;
 }) {
   const { actions, state } = useTarotSession();
+  const { preferences } = useTarotPreferences();
   const { draft } = useDraftPortraitState();
   const copy = tarotCopy[locale];
   const spread = tarotSpreadById.get(state.spreadId) ?? tarotSpreadById.get('day')!;
@@ -79,6 +80,7 @@ export function TarotReadingFlow({
   const revealHeadingRef = useRef<HTMLDivElement>(null);
   const previousRevealIndexRef = useRef(0);
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
+  const instantReveal = prefersReducedMotion || !preferences.revealAnimations;
   const step = steps[stepIndex]!;
   const stepTitle =
     step === 'context'
@@ -107,9 +109,22 @@ export function TarotReadingFlow({
   const selections = useMemo<readonly TarotCardSelection[]>(() => {
     if (step === 'reveal' && state.selections.length) return state.selections;
     return state.selectionMode === 'automatic'
-      ? createAutomaticSelections(standardTarotDeck.cards, spread, state.seed)
-      : createManualSelections(manualIds, spread, state.seed);
-  }, [manualIds, spread, state.seed, state.selectionMode, state.selections, step]);
+      ? createAutomaticSelections(
+          standardTarotDeck.cards,
+          spread,
+          state.seed,
+          preferences.allowReversedCards,
+        )
+      : createManualSelections(manualIds, spread, state.seed, preferences.allowReversedCards);
+  }, [
+    manualIds,
+    preferences.allowReversedCards,
+    spread,
+    state.seed,
+    state.selectionMode,
+    state.selections,
+    step,
+  ]);
 
   useEffect(() => {
     const plan = getRevealTimerPlan(revealState);
@@ -121,10 +136,10 @@ export function TarotReadingFlow({
   }, [revealState]);
 
   useEffect(() => {
-    if (prefersReducedMotion && isRevealActive(revealState)) {
+    if (instantReveal && isRevealActive(revealState)) {
       dispatchReveal({ type: 'reduced-motion' });
     }
-  }, [prefersReducedMotion, revealState]);
+  }, [instantReveal, revealState]);
 
   useEffect(() => {
     if (step !== 'reveal' || revealState.currentIndex === previousRevealIndexRef.current) return;
@@ -183,7 +198,7 @@ export function TarotReadingFlow({
 
   function handleRevealAction() {
     if (revealState.sequence === 'waiting') {
-      dispatchReveal({ reducedMotion: prefersReducedMotion, type: 'start' });
+      dispatchReveal({ reducedMotion: instantReveal, type: 'start' });
       return;
     }
     if (revealState.sequence === 'all-complete') {
@@ -191,7 +206,7 @@ export function TarotReadingFlow({
       return;
     }
     if (revealState.sequence === 'waiting-for-next') {
-      dispatchReveal({ reducedMotion: prefersReducedMotion, type: 'next-card' });
+      dispatchReveal({ reducedMotion: instantReveal, type: 'next-card' });
     }
   }
   const canContinue =
@@ -507,6 +522,7 @@ export function TarotReadingFlow({
                     return (
                       <TarotCardView
                         index={index}
+                        instantReveal={revealState.instant}
                         isRevealed={isPositionFaceUp(revealState, index)}
                         isSelected={index === revealState.currentIndex}
                         key={selection.cardId}
@@ -548,7 +564,7 @@ export function TarotReadingFlow({
                       </span>
                       <strong>{currentPosition}</strong>
                     </div>
-                    {isRevealActive(revealState) && !prefersReducedMotion ? (
+                    {isRevealActive(revealState) && !instantReveal ? (
                       <Button
                         className={styles.skipReveal}
                         onClick={() => dispatchReveal({ type: 'skip' })}

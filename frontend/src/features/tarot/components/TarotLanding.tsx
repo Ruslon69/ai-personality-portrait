@@ -2,26 +2,42 @@ import { useRef, useState } from 'react';
 
 import { useMediaQuery } from '@hooks';
 import type { Locale } from '@shared/i18n';
-import { Badge, Button, Container, Stack, Surface, Typography } from '@shared/ui';
+import { Badge, Button, Container, Modal, Stack, Surface, Typography } from '@shared/ui';
 
-import { tarotCopy, tarotSpreads } from '../data';
+import { tarotCopy, tarotPreferencesCopy, tarotSpreads } from '../data';
 import type { TarotSpread } from '../types';
 import styles from './Tarot.module.css';
 
 export function TarotLanding({
+  confirmNewReading,
+  hasUnfinishedReading,
   locale,
   onOpenHistory,
+  onOpenSettings,
   onStart,
 }: {
+  confirmNewReading: boolean;
+  hasUnfinishedReading: boolean;
   locale: Locale;
   onOpenHistory: () => void;
+  onOpenSettings: () => void;
   onStart: (spread: TarotSpread) => void;
 }) {
   const copy = tarotCopy[locale];
+  const preferencesCopy = tarotPreferencesCopy[locale];
   const [selectedSpread, setSelectedSpread] = useState<TarotSpread>(tarotSpreads[0]!);
+  const [pendingSpread, setPendingSpread] = useState<TarotSpread | null>(null);
   const selectionRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
   const durationBySize: Record<number, number> = { 1: 2, 4: 6, 5: 7, 6: 9 };
+
+  function requestStart(spread: TarotSpread) {
+    if (confirmNewReading && hasUnfinishedReading) {
+      setPendingSpread(spread);
+      return;
+    }
+    onStart(spread);
+  }
 
   return (
     <div className={styles.page}>
@@ -52,6 +68,9 @@ export function TarotLanding({
                 </Button>
                 <Button onClick={onOpenHistory} prominence="quiet">
                   {copy.history}
+                </Button>
+                <Button onClick={onOpenSettings} prominence="quiet">
+                  {copy.settings}
                 </Button>
               </div>
               <Typography className={styles.disclaimer}>{copy.reflectionNote}</Typography>
@@ -127,7 +146,11 @@ export function TarotLanding({
                 <strong>{selectedSpread.title[locale]}</strong>
                 <Typography>{selectedSpread.description[locale]}</Typography>
               </div>
-              <Button onClick={() => onStart(selectedSpread)} prominence="primary" size="large">
+              <Button
+                onClick={() => requestStart(selectedSpread)}
+                prominence="primary"
+                size="large"
+              >
                 {copy.continueWith.replace('{title}', selectedSpread.title[locale])}{' '}
                 <span aria-hidden="true">→</span>
               </Button>
@@ -139,6 +162,36 @@ export function TarotLanding({
           </Stack>
         </Container>
       </section>
+      <Modal
+        label={preferencesCopy.newReadingTitle}
+        onClose={() => setPendingSpread(null)}
+        open={pendingSpread !== null}
+      >
+        <Stack gap="lg">
+          <Stack gap="sm">
+            <Typography as="h2" variant="heading-md">
+              {preferencesCopy.newReadingTitle}
+            </Typography>
+            <Typography>{preferencesCopy.newReadingDescription}</Typography>
+          </Stack>
+          <div className={styles.readingConfirmActions}>
+            <Button autoFocus onClick={() => setPendingSpread(null)}>
+              {preferencesCopy.newReadingCancel}
+            </Button>
+            <Button
+              onClick={() => {
+                if (!pendingSpread) return;
+                const spread = pendingSpread;
+                setPendingSpread(null);
+                onStart(spread);
+              }}
+              prominence="primary"
+            >
+              {preferencesCopy.newReadingConfirm}
+            </Button>
+          </div>
+        </Stack>
+      </Modal>
     </div>
   );
 }

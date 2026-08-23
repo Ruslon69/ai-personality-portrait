@@ -414,6 +414,11 @@ function runDeletion(assert: Assert) {
       partial.envelope.data.tarotReadings === envelope.data.tarotReadings,
     'Independent section update changed unrelated data.',
   );
+  assert(
+    partial.status === 'success' &&
+      partial.envelope.data.preferences?.data.tarot?.historyLimit === 75,
+    'Independent preference update discarded persisted Tarot preferences.',
+  );
   const one = createProductStorageDeletionPlan('numerology');
   const withoutNumber = applyProductStorageDeletionPlan(envelope, one, '2026-08-04T11:00:00.000Z');
   assert(!withoutNumber.data.numerology, 'Numerology deletion plan did not remove its section.');

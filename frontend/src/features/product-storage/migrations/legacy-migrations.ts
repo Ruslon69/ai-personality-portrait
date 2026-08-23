@@ -12,6 +12,7 @@ import type {
   ProductStorageMigrationResult,
   ProductStorageSection,
   ProductStorageValidationError,
+  PreferencesStorageSection,
   TarotReadingsStorageSection,
 } from '../types';
 import { isRecord } from '../utils';
@@ -54,6 +55,26 @@ function safeParse(
     return null;
   }
   return parsed.value;
+}
+
+function migrateLegacyTarotPreferences(
+  value: unknown,
+): PreferencesStorageSection['data']['tarot'] | undefined {
+  if (!isRecord(value) || !isRecord(value.tarot)) return undefined;
+  const tarot = value.tarot;
+  if (
+    typeof tarot.allowReversedCards !== 'boolean' ||
+    typeof tarot.confirmNewReading !== 'boolean' ||
+    typeof tarot.revealAnimations !== 'boolean' ||
+    ![25, 50, 75, 100].includes(Number(tarot.historyLimit))
+  )
+    return undefined;
+  return {
+    allowReversedCards: tarot.allowReversedCards,
+    confirmNewReading: tarot.confirmNewReading,
+    historyLimit: tarot.historyLimit as 25 | 50 | 75 | 100,
+    revealAnimations: tarot.revealAnimations,
+  };
 }
 
 export function migrateLegacyJourney(value: unknown) {
@@ -220,6 +241,9 @@ export function migrateLegacyStorage(input: LegacyStorageInput): ProductStorageM
   const theme = first(input.values, LEGACY_STORAGE_KEYS.theme);
   const localeRaw = first(input.values, LEGACY_STORAGE_KEYS.locale);
   const deckTheme = first(input.values, LEGACY_STORAGE_KEYS.tarotDeckTheme);
+  const tarotPreferences = migrateLegacyTarotPreferences(
+    safeParse(first(input.values, LEGACY_STORAGE_KEYS.tarotPreferences), 'preferences', warnings),
+  );
   const birthDate = first(input.values, LEGACY_STORAGE_KEYS.numerologyBirthDate) ?? '';
   const locale =
     localeRaw === 'en' || localeRaw === 'ru' || localeRaw === 'uk' ? localeRaw : input.locale;
@@ -234,6 +258,7 @@ export function migrateLegacyStorage(input: LegacyStorageInput): ProductStorageM
     data: {
       ...(validDeckTheme ? { deckTheme: validDeckTheme } : {}),
       locale,
+      ...(tarotPreferences ? { tarot: tarotPreferences } : {}),
       ...(theme === 'dark' || theme === 'light' || theme === 'system' ? { theme } : {}),
     },
     schemaVersion: 'preferences-storage-v1' as const,

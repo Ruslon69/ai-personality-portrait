@@ -495,6 +495,26 @@ export function runTarotArtworkGate(rootDir: string) {
     resolve(rootDir, 'src/pages/tarot/TarotReadingPage.tsx'),
     'utf8',
   );
+  const tarotLandingSource = readFileSync(
+    resolve(rootDir, 'src/features/tarot/components/TarotLanding.tsx'),
+    'utf8',
+  );
+  const tarotPreferencesSource = readFileSync(
+    resolve(rootDir, 'src/features/tarot/components/TarotPreferencesSection.tsx'),
+    'utf8',
+  );
+  const tarotSessionSource = readFileSync(
+    resolve(rootDir, 'src/features/tarot/model/tarot-session.ts'),
+    'utf8',
+  );
+  const journeyStoreSource = readFileSync(
+    resolve(rootDir, 'src/features/journey/model/journey-store.ts'),
+    'utf8',
+  );
+  const settingsPageSource = readFileSync(
+    resolve(rootDir, 'src/pages/settings/SettingsPage.tsx'),
+    'utf8',
+  );
   const routeSource = readFileSync(resolve(rootDir, 'src/router/routes.tsx'), 'utf8');
   const layoutSource = readFileSync(resolve(rootDir, 'src/app/layout/Layout.tsx'), 'utf8');
   const layoutCss = readFileSync(resolve(rootDir, 'src/app/layout/Layout.module.css'), 'utf8');
@@ -763,6 +783,44 @@ export function runTarotArtworkGate(rootDir: string) {
       code: 'tarot-history-ui-contract',
       message:
         'Tarot history must provide Premium thumbnails, empty state, safe deletion, result reuse and result-page access.',
+    },
+  );
+  assertions.assert(
+    readingFlowSource.includes('preferences.allowReversedCards') &&
+      readingFlowSource.includes('!preferences.revealAnimations') &&
+      readingFlowSource.includes('instantReveal={revealState.instant}') &&
+      readingFlowSource.includes('reducedMotion: instantReveal'),
+    {
+      code: 'tarot-preferences-reading-behavior',
+      message:
+        'New-reading orientation and reveal timing must respect persistent Tarot preferences without changing the selection seed.',
+    },
+  );
+  assertions.assert(
+    tarotPreferencesSource.includes('type="checkbox"') &&
+      tarotPreferencesSource.includes('<select') &&
+      tarotPreferencesSource.includes('<output aria-label={copy.language}') &&
+      tarotPreferencesSource.includes('<Modal') &&
+      tarotPreferencesSource.includes('aria-live="polite"') &&
+      settingsPageSource.includes('<TarotPreferencesSection') &&
+      settingsPageSource.includes('onHistoryLimitChange={journeyActions.setHistoryLimit}'),
+    {
+      code: 'tarot-preferences-accessible-settings',
+      message:
+        'Tarot settings must reuse the existing Settings architecture with labelled native controls, status announcements and confirmed reset.',
+    },
+  );
+  assertions.assert(
+    tarotLandingSource.includes('confirmNewReading && hasUnfinishedReading') &&
+      tarotLandingSource.includes('newReadingDescription') &&
+      tarotSessionSource.includes('inProgress: true') &&
+      tarotSessionSource.includes('inProgress: false') &&
+      journeyStoreSource.includes('currentHistoryLimit()') &&
+      journeyStoreSource.includes('state.readings.length <= limit'),
+    {
+      code: 'tarot-preferences-history-and-reset-safety',
+      message:
+        'Unfinished readings must receive optional confirmation and retention changes must only trim necessary oldest history records.',
     },
   );
   assertions.assert(

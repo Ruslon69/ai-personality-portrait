@@ -389,6 +389,11 @@ export class ProductStorageService {
       written = written || legacy.ok;
       if (!legacy.ok) errors.push(legacy.error ?? 'legacy-numerology-write-failed');
     }
+    if (patches.preferences) {
+      const legacy = this.options.legacy.writePreferences(patches.preferences.data);
+      written = written || legacy.ok;
+      if (!legacy.ok) errors.push(legacy.error ?? 'legacy-preferences-write-failed');
+    }
     return { errors, written };
   }
 

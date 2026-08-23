@@ -419,6 +419,14 @@ function validateTarotSession(value: unknown, errors: ProductStorageValidationEr
       '$.data.tarotSession.data',
       'Tarot session has an invalid shape.',
     );
+  if (isRecord(value) && value.inProgress !== undefined && typeof value.inProgress !== 'boolean')
+    error(
+      errors,
+      'tarotSession',
+      'invalid-tarot-session-progress',
+      '$.data.tarotSession.data.inProgress',
+      'Tarot session progress marker must be a boolean.',
+    );
 }
 
 function validateNumerology(value: unknown, errors: ProductStorageValidationError[]) {
@@ -522,6 +530,50 @@ function validatePreferences(value: unknown, errors: ProductStorageValidationErr
       '$.data.preferences.data.theme',
       'Unsupported theme.',
     );
+  if (value.tarot !== undefined) {
+    if (!isRecord(value.tarot)) {
+      error(
+        errors,
+        'preferences',
+        'invalid-tarot-preferences',
+        '$.data.preferences.data.tarot',
+        'Tarot preferences must be an object.',
+      );
+      return;
+    }
+    if (typeof value.tarot.allowReversedCards !== 'boolean')
+      error(
+        errors,
+        'preferences',
+        'invalid-tarot-reversed-preference',
+        '$.data.preferences.data.tarot.allowReversedCards',
+        'Tarot reversed-card preference must be a boolean.',
+      );
+    if (typeof value.tarot.revealAnimations !== 'boolean')
+      error(
+        errors,
+        'preferences',
+        'invalid-tarot-animation-preference',
+        '$.data.preferences.data.tarot.revealAnimations',
+        'Tarot reveal-animation preference must be a boolean.',
+      );
+    if (typeof value.tarot.confirmNewReading !== 'boolean')
+      error(
+        errors,
+        'preferences',
+        'invalid-tarot-confirmation-preference',
+        '$.data.preferences.data.tarot.confirmNewReading',
+        'Tarot new-reading confirmation preference must be a boolean.',
+      );
+    if (![25, 50, 75, 100].includes(Number(value.tarot.historyLimit)))
+      error(
+        errors,
+        'preferences',
+        'invalid-tarot-history-limit',
+        '$.data.preferences.data.tarot.historyLimit',
+        'Tarot history limit must be 25, 50, 75, or 100.',
+      );
+  }
 }
 
 const prohibitedPersistentKeys = [

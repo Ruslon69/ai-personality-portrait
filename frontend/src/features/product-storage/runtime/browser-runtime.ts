@@ -8,6 +8,7 @@ import { LEGACY_STORAGE_KEYS } from '../constants';
 import { createBrowserProductStorageRepository } from '../repositories';
 import { ProductStorageService } from '../service';
 import type { ProductStorageEventTarget } from '../types';
+import type { PreferencesStorageSection } from '../types';
 import { createProductStorageDiagnosticSink } from './diagnostics';
 import { resolveProductStorageFeatureFlag } from './feature-flag';
 
@@ -126,6 +127,37 @@ export function persistNumerologyProfileToProductStorage(profile: NumerologyProf
   return runtime.updateSection('numerology', {
     data: { birthDate: profile.birthDate, profile },
     schemaVersion: 'numerology-storage-v1',
+  });
+}
+
+export function readPreferencesFromProductStorage(): PreferencesStorageSection['data'] {
+  const runtime = getProductStorageService();
+  initializeProductStorageRuntime();
+  const current = runtime.getSection('preferences')?.data;
+  const raw = runtime.readLegacyValues(LEGACY_STORAGE_KEYS.tarotPreferences)[
+    LEGACY_STORAGE_KEYS.tarotPreferences[0]
+  ];
+  let legacy: PreferencesStorageSection['data'] = {};
+  try {
+    const parsed = raw ? (JSON.parse(raw) as unknown) : null;
+    if (parsed && typeof parsed === 'object') legacy = parsed as PreferencesStorageSection['data'];
+  } catch {
+    legacy = {};
+  }
+  return {
+    ...legacy,
+    ...current,
+    ...(current?.tarot ? { tarot: current.tarot } : legacy.tarot ? { tarot: legacy.tarot } : {}),
+  };
+}
+
+export function persistPreferencesToProductStorage(preferences: PreferencesStorageSection['data']) {
+  const runtime = getProductStorageService();
+  initializeProductStorageRuntime();
+  const current = runtime.getSection('preferences');
+  return runtime.updateSection('preferences', {
+    data: { ...current?.data, ...preferences },
+    schemaVersion: 'preferences-storage-v1',
   });
 }
 

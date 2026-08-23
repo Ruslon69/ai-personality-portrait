@@ -86,7 +86,14 @@ export function historySnapshotForRecord(record: JourneyReadingRecord): TarotHis
     : createTarotHistorySnapshot(record.reading);
 }
 
-export function normalizeTarotHistoryRecords(value: unknown): readonly JourneyReadingRecord[] {
+function safeHistoryLimit(limit: number) {
+  return [25, 50, 75, 100].includes(limit) ? limit : TAROT_HISTORY_LIMIT;
+}
+
+export function normalizeTarotHistoryRecords(
+  value: unknown,
+  limit = TAROT_HISTORY_LIMIT,
+): readonly JourneyReadingRecord[] {
   if (!Array.isArray(value)) return [];
   const records = value.flatMap((candidate) => {
     if (!candidate || typeof candidate !== 'object') return [];
@@ -119,13 +126,14 @@ export function normalizeTarotHistoryRecords(value: unknown): readonly JourneyRe
     .forEach((record) => {
       if (!unique.has(record.reading.id)) unique.set(record.reading.id, record);
     });
-  return [...unique.values()].slice(0, TAROT_HISTORY_LIMIT);
+  return [...unique.values()].slice(0, safeHistoryLimit(limit));
 }
 
 export function addTarotHistoryRecord(
   records: readonly JourneyReadingRecord[],
   reading: TarotReading,
   savedAt: string,
+  limit = TAROT_HISTORY_LIMIT,
 ): {
   inserted: boolean;
   record: JourneyReadingRecord;
@@ -139,7 +147,7 @@ export function addTarotHistoryRecord(
     savedAt,
     snapshot: createTarotHistorySnapshot(reading),
   };
-  const nextRecords = normalizeTarotHistoryRecords([record, ...records]);
+  const nextRecords = normalizeTarotHistoryRecords([record, ...records], limit);
   return {
     inserted: true,
     record: nextRecords.find((candidate) => candidate.reading.id === reading.id) ?? record,

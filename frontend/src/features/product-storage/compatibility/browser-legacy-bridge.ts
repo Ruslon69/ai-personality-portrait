@@ -64,6 +64,18 @@ export class BrowserProductStorageLegacyBridge implements ProductStorageLegacyBr
       return failure(error);
     }
   }
+
+  writePreferences(
+    value: Parameters<ProductStorageLegacyBridge['writePreferences']>[0],
+  ): ProductStorageLegacyWriteResult {
+    try {
+      if (!this.local) return { capability: 'unavailable', error: 'StorageUnavailable', ok: false };
+      this.local.setItem(LEGACY_STORAGE_KEYS.tarotPreferences[0], JSON.stringify(value));
+      return { capability: 'persistent', ok: true };
+    } catch (error) {
+      return failure(error);
+    }
+  }
 }
 
 export function createBrowserProductStorageLegacyBridge() {

@@ -2,6 +2,7 @@ import { createStore } from '@store';
 import {
   persistJourneyStateToProductStorage,
   readJourneyStateFromProductStorage,
+  readPreferencesFromProductStorage,
 } from '@features/product-storage/runtime/browser-runtime';
 import type { TarotReading } from '@features/tarot';
 import { enrichTarotReadingWithContinuity } from '@features/tarot';
@@ -25,10 +26,15 @@ const defaultState: JourneyState = {
   readings: [],
 };
 
+function currentHistoryLimit() {
+  const value = readPreferencesFromProductStorage().tarot?.historyLimit;
+  return value === 25 || value === 50 || value === 75 || value === 100 ? value : 75;
+}
+
 function readState(): JourneyState {
   const saved = readJourneyStateFromProductStorage();
   return saved
-    ? { ...saved, readings: normalizeTarotHistoryRecords(saved.readings) }
+    ? { ...saved, readings: normalizeTarotHistoryRecords(saved.readings, currentHistoryLimit()) }
     : { ...defaultState, identity: createIdentity() };
 }
 
@@ -69,6 +75,7 @@ export const journeyActions = {
       state.readings,
       completedReading,
       new Date().toISOString(),
+      currentHistoryLimit(),
     );
     journeyStore.setState({ readings: update.records });
     return update.record.reading;
@@ -84,6 +91,11 @@ export const journeyActions = {
     const state = journeyStore.getState();
     if (state.readings.length === 0) return;
     journeyStore.setState({ readings: [] });
+  },
+  setHistoryLimit(limit: 25 | 50 | 75 | 100) {
+    const state = journeyStore.getState();
+    if (state.readings.length <= limit) return;
+    journeyStore.setState({ readings: normalizeTarotHistoryRecords(state.readings, limit) });
   },
   toggleFavorite(readingId: string) {
     const state = journeyStore.getState();

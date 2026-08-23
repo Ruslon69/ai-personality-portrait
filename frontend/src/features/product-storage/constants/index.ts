@@ -40,6 +40,7 @@ export const LEGACY_STORAGE_KEYS = {
   locale: ['app:locale'],
   numerologyBirthDate: ['app:numerology-birth-date'],
   tarotDeckTheme: ['app:tarot-deck-theme'],
+  tarotPreferences: ['app:tarot-preferences-v1'],
   tarotSessionSeed: ['app:tarot-session-seed'],
   tarotState: ['app:tarot-reading-state'],
   theme: ['ui-theme'],

@@ -1,0 +1,143 @@
+.section {
+  padding-block: var(--page-section-padding-block);
+}
+
+.surface {
+  padding: var(--page-surface-padding);
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-accent-subtle);
+}
+
+.introduction {
+  display: grid;
+  max-inline-size: var(--content-width-reading);
+  gap: var(--space-2);
+}
+
+.muted,
+.toggleRow small,
+.selectRow small,
+.languageRow small {
+  color: var(--color-text-muted);
+}
+
+.settingsList {
+  display: grid;
+  overflow: hidden;
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.toggleRow,
+.selectRow,
+.languageRow {
+  display: grid;
+  align-items: center;
+  padding: var(--space-4);
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.toggleRow {
+  cursor: pointer;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.toggleRow + .toggleRow,
+.toggleRow + .selectRow,
+.selectRow + .languageRow {
+  border-block-start: 0.0625rem solid var(--color-border);
+}
+
+.toggleRow input {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  margin: 0;
+  accent-color: var(--color-action-primary);
+}
+
+.toggleRow input:focus-visible,
+.selectRow select:focus-visible {
+  outline: 0.1875rem solid var(--color-focus);
+  outline-offset: 0.1875rem;
+}
+
+.toggleRow span,
+.selectRow label,
+.languageRow span {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.toggleRow small,
+.selectRow small,
+.languageRow small {
+  line-height: 1.45;
+}
+
+.selectRow select {
+  min-inline-size: 6rem;
+  padding: var(--space-2) var(--space-3);
+  border: 0.0625rem solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  background: var(--color-surface);
+  font: inherit;
+}
+
+.languageRow output {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-muted);
+  background: var(--surface-accent-subtle);
+  font-weight: 700;
+}
+
+.footer,
+.dialogActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.srOnly {
+  position: absolute;
+  overflow: hidden;
+  inline-size: 0.0625rem;
+  block-size: 0.0625rem;
+  padding: 0;
+  border: 0;
+  margin: -0.0625rem;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 47.999rem) {
+  .toggleRow,
+  .selectRow,
+  .languageRow {
+    padding: var(--space-3);
+  }
+
+  .selectRow,
+  .languageRow {
+    align-items: start;
+    grid-template-columns: 1fr;
+  }
+
+  .selectRow select,
+  .languageRow output {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 29.999rem) {
+  .dialogActions,
+  .dialogActions > * {
+    inline-size: 100%;
+  }
+}

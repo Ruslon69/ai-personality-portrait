@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 
 import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
 
@@ -29,6 +29,7 @@ type UserSettingsProps = {
   dataActions: readonly SettingsAction[];
   initialInvitations: readonly CompatibilityInvitation[];
   privacyConsents: readonly SettingsConsent[];
+  tarotPreferences: ReactNode;
 };
 
 export function UserSettings({
@@ -38,6 +39,7 @@ export function UserSettings({
   dataActions,
   initialInvitations,
   privacyConsents,
+  tarotPreferences,
 }: UserSettingsProps) {
   const {
     announcement,
@@ -59,6 +61,7 @@ export function UserSettings({
     <div className={styles.root}>
       <SettingsHero />
       <AppearanceSettingsSection onChange={changeTheme} options={appearanceOptions} value={theme} />
+      {tarotPreferences}
       <DataManagementSection actions={dataActions} onAction={runAction} />
       <PrivacySettingsSection
         consents={consents}

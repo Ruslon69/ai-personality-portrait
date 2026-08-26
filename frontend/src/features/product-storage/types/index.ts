@@ -60,6 +60,7 @@ export type TarotSessionStorageSection = {
     deckTheme: TarotDeckTheme;
     inProgress?: boolean;
     reading: TarotReading | null;
+    revealedCount?: number;
     reshuffled: boolean;
     seed: string;
     selections: readonly TarotCardSelection[];

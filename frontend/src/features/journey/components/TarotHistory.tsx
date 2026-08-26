@@ -51,9 +51,10 @@ export function TarotHistory({
       setAnnouncement(copy.removed);
     } else if (pendingAction?.kind === 'clear') {
       actions.clearReadings();
-      setAnnouncement(copy.clearDescription);
+      setAnnouncement(copy.cleared);
     }
     setPendingAction(null);
+    window.requestAnimationFrame(() => document.getElementById('saved-readings-title')?.focus());
   }
 
   const pendingTitle =
@@ -89,7 +90,7 @@ export function TarotHistory({
           {records.length ? (
             <Stack gap="lg">
               <div className={styles.listHeading}>
-                <Typography as="h2" id="saved-readings-title" variant="heading-lg">
+                <Typography as="h2" id="saved-readings-title" tabIndex={-1} variant="heading-lg">
                   {copy.saved}
                 </Typography>
                 <Button onClick={() => setPendingAction({ kind: 'clear' })} prominence="quiet">
@@ -163,7 +164,7 @@ export function TarotHistory({
           ) : (
             <div className={styles.empty}>
               <Stack align="center" gap="lg">
-                <Typography as="h2" id="saved-readings-title" variant="heading-lg">
+                <Typography as="h2" id="saved-readings-title" tabIndex={-1} variant="heading-lg">
                   {copy.emptyTitle}
                 </Typography>
                 <Typography>{copy.emptyDescription}</Typography>
@@ -198,7 +199,7 @@ export function TarotHistory({
           </Stack>
           <div className={styles.dialogActions}>
             <Button autoFocus onClick={() => setPendingAction(null)}>
-              {locale === 'en' ? 'Cancel' : locale === 'uk' ? 'Скасувати' : 'Отмена'}
+              {copy.cancel}
             </Button>
             <Button onClick={confirmAction} prominence="danger">
               {pendingAction?.kind === 'clear' ? copy.clearConfirm : copy.deleteConfirm}

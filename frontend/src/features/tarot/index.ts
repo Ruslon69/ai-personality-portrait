@@ -1,5 +1,5 @@
 export { TarotCardView, TarotLanding, TarotPreferencesSection, TarotResult } from './components';
-export { standardTarotDeck, tarotCardById, tarotSpreadById, tarotSpreads } from './data';
+export { standardTarotDeck, tarotCardById, tarotCopy, tarotSpreadById, tarotSpreads } from './data';
 export { TarotReadingFlow } from './flows';
 export { useTarotPreferences, useTarotSession } from './hooks';
 export {
@@ -15,6 +15,7 @@ export {
   DEFAULT_TAROT_PREFERENCES,
   isTarotHistoryLimit,
   normalizeTarotPreferences,
+  isRenderableTarotReading,
   TAROT_HISTORY_LIMIT_OPTIONS,
 } from './lib';
 export type { TarotHistoryLimit, TarotPreferences } from './lib';

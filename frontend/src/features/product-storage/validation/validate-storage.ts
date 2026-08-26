@@ -427,6 +427,18 @@ function validateTarotSession(value: unknown, errors: ProductStorageValidationEr
       '$.data.tarotSession.data.inProgress',
       'Tarot session progress marker must be a boolean.',
     );
+  if (
+    isRecord(value) &&
+    value.revealedCount !== undefined &&
+    (!Number.isInteger(value.revealedCount) || Number(value.revealedCount) < 0)
+  )
+    error(
+      errors,
+      'tarotSession',
+      'invalid-tarot-reveal-progress',
+      '$.data.tarotSession.data.revealedCount',
+      'Tarot reveal progress must be a non-negative integer.',
+    );
 }
 
 function validateNumerology(value: unknown, errors: ProductStorageValidationError[]) {

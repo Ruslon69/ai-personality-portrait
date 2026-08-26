@@ -10,9 +10,11 @@ import styles from './TarotPreferencesSection.module.css';
 
 export function TarotPreferencesSection({
   locale,
+  onBackToTarot,
   onHistoryLimitChange,
 }: {
   locale: Locale;
+  onBackToTarot: () => void;
   onHistoryLimitChange: (limit: TarotHistoryLimit) => void;
 }) {
   const copy = tarotPreferencesCopy[locale];
@@ -120,6 +122,9 @@ export function TarotPreferencesSection({
             </div>
 
             <div className={styles.footer}>
+              <Button onClick={onBackToTarot} prominence="secondary">
+                {copy.backToTarot}
+              </Button>
               <Button onClick={() => setResetPending(true)} prominence="quiet">
                 {copy.reset}
               </Button>

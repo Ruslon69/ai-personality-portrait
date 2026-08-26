@@ -67,21 +67,29 @@ export function TarotReadingFlow({
   const { draft } = useDraftPortraitState();
   const copy = tarotCopy[locale];
   const spread = tarotSpreadById.get(state.spreadId) ?? tarotSpreadById.get('day')!;
-  const [stepIndex, setStepIndex] = useState(0);
+  const canResumeReveal =
+    state.inProgress &&
+    state.selections.length === spread.positions.length &&
+    state.answers.length === tarotContextQuestions.length &&
+    isValidNumerologyDate(state.birthDate);
+  const [stepIndex, setStepIndex] = useState(() => (canResumeReveal ? steps.indexOf('reveal') : 0));
   const [answers, setAnswers] = useState(state.answers);
   const [date, setDate] = useState(state.birthDate);
   const [manualIds, setManualIds] = useState<readonly string[]>([]);
-  const [revealState, dispatchReveal] = useReducer(
-    revealReducer,
-    state.selections.length || spread.positions.length,
-    createRevealState,
+  const [revealState, dispatchReveal] = useReducer(revealReducer, undefined, () =>
+    createRevealState(
+      state.selections.length || spread.positions.length,
+      canResumeReveal ? state.revealedCount : 0,
+    ),
   );
   const [error, setError] = useState('');
+  const previousStepIndexRef = useRef(stepIndex);
   const revealHeadingRef = useRef<HTMLDivElement>(null);
-  const previousRevealIndexRef = useRef(0);
+  const previousRevealIndexRef = useRef(revealState.currentIndex);
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
   const instantReveal = prefersReducedMotion || !preferences.revealAnimations;
   const step = steps[stepIndex]!;
+  const activeTheme = deckThemes.find((theme) => theme.id === state.deckTheme) ?? deckThemes[0]!;
   const stepTitle =
     step === 'context'
       ? copy.contextTitle
@@ -140,6 +148,24 @@ export function TarotReadingFlow({
       dispatchReveal({ type: 'reduced-motion' });
     }
   }, [instantReveal, revealState]);
+
+  useEffect(() => {
+    if (step !== 'reveal') return;
+    const revealedCount = revealState.positions.filter(
+      (position) => position === 'revealed',
+    ).length;
+    actions.saveRevealProgress(revealedCount);
+  }, [actions, revealState.positions, step]);
+
+  useEffect(() => {
+    if (previousStepIndexRef.current === stepIndex) return;
+    previousStepIndexRef.current = stepIndex;
+    const frame = window.requestAnimationFrame(() => {
+      if (step === 'reveal') revealHeadingRef.current?.focus();
+      else document.getElementById('tarot-reading-step-title')?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [step, stepIndex]);
 
   useEffect(() => {
     if (step !== 'reveal' || revealState.currentIndex === previousRevealIndexRef.current) return;
@@ -266,7 +292,7 @@ export function TarotReadingFlow({
         <Surface className={styles.flowSurface} data-reading-step={step} elevation="low">
           {step === 'context' ? (
             <Stack gap="lg">
-              <Typography as="h1" variant="heading-lg">
+              <Typography as="h1" id="tarot-reading-step-title" tabIndex={-1} variant="heading-lg">
                 {copy.contextTitle}
               </Typography>
               <Typography>{copy.contextLead}</Typography>
@@ -305,7 +331,7 @@ export function TarotReadingFlow({
           ) : null}
           {step === 'date' ? (
             <Stack gap="lg">
-              <Typography as="h1" variant="heading-lg">
+              <Typography as="h1" id="tarot-reading-step-title" tabIndex={-1} variant="heading-lg">
                 {copy.dateTitle}
               </Typography>
               <Typography>{copy.dateLead}</Typography>
@@ -333,7 +359,7 @@ export function TarotReadingFlow({
           ) : null}
           {step === 'numerology' && numerology ? (
             <Stack gap="lg">
-              <Typography as="h1" variant="heading-lg">
+              <Typography as="h1" id="tarot-reading-step-title" tabIndex={-1} variant="heading-lg">
                 {copy.numerologyTitle}
               </Typography>
               <Typography>{copy.numerologyLead}</Typography>
@@ -356,17 +382,18 @@ export function TarotReadingFlow({
           {step === 'theme' ? (
             <div className={styles.themeExperience}>
               <Stack align="start" gap="lg">
-                <Typography as="h1" variant="heading-lg">
+                <Typography
+                  as="h1"
+                  id="tarot-reading-step-title"
+                  tabIndex={-1}
+                  variant="heading-lg"
+                >
                   {copy.chooseTheme}
                 </Typography>
                 <Typography>{copy.themeLead}</Typography>
                 <div aria-live="polite" className={styles.activeThemeCopy}>
-                  <strong>
-                    {deckThemes.find((theme) => theme.id === state.deckTheme)?.name[locale]}
-                  </strong>
-                  <Typography>
-                    {deckThemes.find((theme) => theme.id === state.deckTheme)?.description[locale]}
-                  </Typography>
+                  <strong>{activeTheme.name[locale]}</strong>
+                  <Typography>{activeTheme.description[locale]}</Typography>
                 </div>
               </Stack>
               <div aria-hidden="true" className={styles.themePreview} data-theme={state.deckTheme}>
@@ -409,7 +436,7 @@ export function TarotReadingFlow({
           ) : null}
           {step === 'mode' ? (
             <Stack gap="lg">
-              <Typography as="h1" variant="heading-lg">
+              <Typography as="h1" id="tarot-reading-step-title" tabIndex={-1} variant="heading-lg">
                 {copy.chooseMode}
               </Typography>
               <div className={styles.modeGrid}>
@@ -434,7 +461,7 @@ export function TarotReadingFlow({
           ) : null}
           {step === 'cards' ? (
             <Stack gap="lg">
-              <Typography as="h1" variant="heading-lg">
+              <Typography as="h1" id="tarot-reading-step-title" tabIndex={-1} variant="heading-lg">
                 {state.selectionMode === 'manual' ? copy.chooseCards : copy.deal}
               </Typography>
               <Typography aria-atomic="true" aria-live="polite">
@@ -501,7 +528,12 @@ export function TarotReadingFlow({
           {step === 'reveal' ? (
             <Stack className={styles.revealFlow} gap="lg">
               <div className={styles.revealIntro}>
-                <Typography as="h1" variant="heading-lg">
+                <Typography
+                  as="h1"
+                  id="tarot-reading-step-title"
+                  tabIndex={-1}
+                  variant="heading-lg"
+                >
                   {copy.revealTitle}
                 </Typography>
                 <Typography>{copy.revealLead}</Typography>

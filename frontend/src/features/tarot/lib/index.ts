@@ -34,6 +34,7 @@ export {
   normalizeTarotPreferences,
   TAROT_HISTORY_LIMIT_OPTIONS,
 } from './tarot-preferences';
+export { isRenderableTarotReading } from './tarot-reading-guard';
 export type { TarotHistoryLimit, TarotPreferences } from './tarot-preferences';
 export type {
   TarotResultCopyInput,

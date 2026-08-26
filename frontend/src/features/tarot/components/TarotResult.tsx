@@ -1,10 +1,10 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import { useMediaQuery } from '@hooks';
 import type { Locale } from '@shared/i18n';
 import { Badge, Button, Container, Stack, Surface, Typography } from '@shared/ui';
 
-import { tarotCardById, tarotCopy, tarotPackages, tarotSpreadById } from '../data';
+import { tarotCardById, tarotCopy, tarotSpreadById } from '../data';
 import { createTarotResultHeroPresentation } from '../lib';
 import type { TarotReading } from '../types';
 import { TarotCardView } from './TarotCardView';
@@ -38,14 +38,16 @@ export function TarotResult({
 }) {
   const copy = tarotCopy[locale];
   const spread = tarotSpreadById.get(reading.spreadId)!;
-  const leading = tarotCardById.get(reading.leadingCardId)!;
   const leadingSelection =
     reading.selections.find((selection) => selection.cardId === reading.leadingCardId) ??
     reading.selections[0];
   const leadingPosition = spread.positions.find(
     (position) => position.id === leadingSelection?.positionId,
   );
-  const generatedPresentation = createTarotResultHeroPresentation(reading);
+  const generatedPresentation = useMemo(
+    () => createTarotResultHeroPresentation(reading),
+    [reading],
+  );
   const heroPresentation = savedPresentation
     ? {
         ...generatedPresentation,
@@ -285,57 +287,15 @@ export function TarotResult({
               <Typography>{heroPresentation.secondaryContext}</Typography>
               <small>{copy.secondaryContextNote}</small>
             </aside>
+            <div aria-label={copy.resultActionsLabel} className={styles.resultActions} role="group">
+              <Button onClick={onContinueJourney} prominence="primary" size="large">
+                {copy.continueJourney} <span aria-hidden="true">→</span>
+              </Button>
+              <Button onClick={onRestart} prominence="secondary">
+                {copy.restart}
+              </Button>
+            </div>
           </Stack>
-        </Container>
-      </section>
-      <section className={styles.section} data-visible={readingStarted || undefined}>
-        <Container size="wide">
-          <div className={styles.boundaryGrid}>
-            <Surface className={styles.accessCard}>
-              <Badge tone="success">{copy.free}</Badge>
-              <Typography as="h2" variant="heading-md">
-                {copy.freeNote}
-              </Typography>
-              <Typography>{leading.advice[locale]}</Typography>
-            </Surface>
-            <Surface className={styles.accessCard}>
-              <Badge tone="neutral">{copy.premium}</Badge>
-              <Typography as="h2" variant="heading-md">
-                {copy.premium}
-              </Typography>
-              <Typography>{copy.premiumNote}</Typography>
-            </Surface>
-          </div>
-        </Container>
-      </section>
-      <section
-        aria-labelledby="packages-title"
-        className={styles.section}
-        data-visible={readingStarted || undefined}
-      >
-        <Container size="wide">
-          <Surface className={styles.packages}>
-            <Stack gap="lg">
-              <Typography as="h2" id="packages-title" variant="heading-lg">
-                {copy.packages}
-              </Typography>
-              <Typography>{copy.noPrices}</Typography>
-              <ul>
-                {tarotPackages[locale].map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-              <div className={styles.resultActions}>
-                <Button onClick={onContinueJourney} prominence="primary" size="large">
-                  {copy.continueJourney} <span aria-hidden="true">→</span>
-                </Button>
-                <Button onClick={onRestart} prominence="secondary">
-                  {copy.restart}
-                </Button>
-              </div>
-              <Typography className={styles.disclaimer}>{copy.reflectionNote}</Typography>
-            </Stack>
-          </Surface>
         </Container>
       </section>
     </div>

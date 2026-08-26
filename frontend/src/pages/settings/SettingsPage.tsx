@@ -9,10 +9,13 @@ import {
   privacyConsentSettings,
   UserSettings,
 } from '@features/user-settings';
+import { useRouter } from '@router/navigation';
+import { ROUTES } from '@shared/config';
 import { useI18n } from '@shared/i18n';
 
 export function SettingsPage() {
   const { locale } = useI18n();
+  const { navigate } = useRouter();
   return (
     <UserSettings
       account={demoSettingsAccount}
@@ -24,6 +27,7 @@ export function SettingsPage() {
       tarotPreferences={
         <TarotPreferencesSection
           locale={locale}
+          onBackToTarot={() => navigate(ROUTES.tarot)}
           onHistoryLimitChange={journeyActions.setHistoryLimit}
         />
       }

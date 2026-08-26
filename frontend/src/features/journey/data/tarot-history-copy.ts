@@ -3,8 +3,10 @@ import type { Locale } from '@shared/i18n';
 
 export type TarotHistoryCopy = {
   back: string;
+  cancel: string;
   cardCount: (count: number) => string;
   clear: string;
+  cleared: string;
   clearConfirm: string;
   clearDescription: string;
   clearTitle: string;
@@ -27,8 +29,22 @@ export type TarotHistoryCopy = {
 export const tarotHistoryCopy: Record<Locale, TarotHistoryCopy> = {
   ru: {
     back: 'К Таро',
-    cardCount: (count) => `${count} карт`,
+    cancel: 'Отмена',
+    cardCount: (count) => {
+      const lastTwo = count % 100;
+      const last = count % 10;
+      const noun =
+        lastTwo >= 11 && lastTwo <= 14
+          ? 'карт'
+          : last === 1
+            ? 'карта'
+            : last >= 2 && last <= 4
+              ? 'карты'
+              : 'карт';
+      return `${count} ${noun}`;
+    },
     clear: 'Очистить историю',
+    cleared: 'История раскладов очищена.',
     clearConfirm: 'Очистить историю',
     clearDescription: 'Все сохранённые расклады будут удалены из этого браузера.',
     clearTitle: 'Очистить всю историю?',
@@ -55,8 +71,10 @@ export const tarotHistoryCopy: Record<Locale, TarotHistoryCopy> = {
   },
   en: {
     back: 'Back to Tarot',
-    cardCount: (count) => `${count} cards`,
+    cancel: 'Cancel',
+    cardCount: (count) => `${count} ${count === 1 ? 'card' : 'cards'}`,
     clear: 'Clear history',
+    cleared: 'Reading history cleared.',
     clearConfirm: 'Clear history',
     clearDescription: 'All saved readings will be removed from this browser.',
     clearTitle: 'Clear all history?',
@@ -83,8 +101,22 @@ export const tarotHistoryCopy: Record<Locale, TarotHistoryCopy> = {
   },
   uk: {
     back: 'До Таро',
-    cardCount: (count) => `${count} карт`,
+    cancel: 'Скасувати',
+    cardCount: (count) => {
+      const lastTwo = count % 100;
+      const last = count % 10;
+      const noun =
+        lastTwo >= 11 && lastTwo <= 14
+          ? 'карт'
+          : last === 1
+            ? 'карта'
+            : last >= 2 && last <= 4
+              ? 'карти'
+              : 'карт';
+      return `${count} ${noun}`;
+    },
     clear: 'Очистити історію',
+    cleared: 'Історію розкладів очищено.',
     clearConfirm: 'Очистити історію',
     clearDescription: 'Усі збережені розклади буде видалено з цього браузера.',
     clearTitle: 'Очистити всю історію?',

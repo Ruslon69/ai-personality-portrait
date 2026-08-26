@@ -28,6 +28,11 @@ import {
   countPresentationWords,
   createTarotResultHeroPresentation,
 } from '../../features/tarot/lib/tarot-result-presentation';
+import { isRenderableTarotReading } from '../../features/tarot/lib/tarot-reading-guard';
+import {
+  normalizeTarotSessionState,
+  type TarotSessionState,
+} from '../../features/tarot/model/tarot-session';
 import {
   DEFAULT_TAROT_PREFERENCES,
   normalizeTarotPreferences,
@@ -241,6 +246,75 @@ export function runTarotRegressionGate() {
     {
       code: 'tarot-preferences-storage-validation',
       message: 'ProductStorage must accept valid Tarot preferences and reject unsupported limits.',
+    },
+  );
+  const validSessionSection = {
+    data: {
+      answers: [],
+      birthDate: '',
+      deckTheme: 'cosmic-minimal',
+      inProgress: true,
+      reading: null,
+      revealedCount: 0,
+      reshuffled: false,
+      seed: 'quality-session',
+      selections: [],
+      selectionMode: 'automatic',
+      spreadId: 'day',
+    },
+    schemaVersion: 'tarot-session-storage-v1' as const,
+  };
+  assertions.assert(
+    validateProductStorageSection('tarotSession', validSessionSection).length === 0 &&
+      validateProductStorageSection('tarotSession', {
+        ...validSessionSection,
+        data: { ...validSessionSection.data, revealedCount: -1 },
+      }).some((item) => item.code === 'invalid-tarot-reveal-progress'),
+    {
+      code: 'tarot-session-reveal-progress-validation',
+      message: 'Persisted reveal progress must be a safe non-negative integer.',
+    },
+  );
+  const sessionFallback: TarotSessionState = {
+    answers: [],
+    birthDate: '',
+    deckTheme: 'cosmic-minimal',
+    inProgress: false,
+    reading: null,
+    revealedCount: 0,
+    reshuffled: false,
+    seed: 'quality-fallback-seed',
+    selections: [],
+    selectionMode: 'automatic',
+    spreadId: 'day',
+  };
+  const repairedSession = normalizeTarotSessionState(
+    {
+      answers: 'corrupted',
+      birthDate: 42,
+      inProgress: true,
+      reading: { id: 'incomplete-reading' },
+      revealedCount: 999,
+      seed: '',
+      selections: { cardId: 'major-fool' },
+      selectionMode: 'future-mode',
+      spreadId: 'unknown-spread',
+    },
+    sessionFallback,
+  );
+  assertions.assert(
+    repairedSession.answers.length === 0 &&
+      repairedSession.birthDate === '' &&
+      repairedSession.inProgress &&
+      repairedSession.reading === null &&
+      repairedSession.revealedCount === 0 &&
+      repairedSession.seed === sessionFallback.seed &&
+      repairedSession.selections.length === 0 &&
+      repairedSession.selectionMode === 'automatic' &&
+      repairedSession.spreadId === sessionFallback.spreadId,
+    {
+      code: 'tarot-session-corruption-recovery',
+      message: 'Malformed or future session fields must degrade to a safe resumable state.',
     },
   );
   ([1, 3, 5, 6] as const).forEach((requiredCount) => {
@@ -457,6 +531,9 @@ export function runTarotRegressionGate() {
   const historyReading = {
     ...monthReading,
     id: 'tarot-history-quality-reading',
+    interpretations: monthReading.interpretations.map((interpretation, index) =>
+      index === 0 ? { ...interpretation, orientation: 'reversed' as const } : interpretation,
+    ),
     selections: monthReading.selections.map((selection, index) =>
       index === 0 ? { ...selection, orientation: 'reversed' as const } : selection,
     ),
@@ -520,15 +597,25 @@ export function runTarotRegressionGate() {
       message: 'Storage must reject a history snapshot bound to another reading.',
     },
   );
+  const incompleteHistoryReading = { ...historyReading, interpretations: undefined };
   const normalizedHistory = normalizeTarotHistoryRecords([
     { invalid: true },
+    {
+      favorite: false,
+      reading: incompleteHistoryReading,
+      savedAt: timestamp,
+    },
     firstHistoryWrite.record,
   ]);
   assertions.assert(
-    normalizedHistory.length === 1 && normalizedHistory[0]?.reading.id === historyReading.id,
+    isRenderableTarotReading(historyReading) &&
+      !isRenderableTarotReading(incompleteHistoryReading) &&
+      normalizedHistory.length === 1 &&
+      normalizedHistory[0]?.reading.id === historyReading.id,
     {
       code: 'tarot-history-malformed-entry',
-      message: 'Malformed history records must be ignored without hiding valid readings.',
+      message:
+        'Structurally incomplete history records must be ignored before rendering without hiding valid readings.',
     },
   );
   const retentionCandidates = Array.from({ length: TAROT_HISTORY_LIMIT + 1 }, (_, index) => {

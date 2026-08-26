@@ -1,35 +1,35 @@
 import { historySnapshotForRecord, useJourney } from '@features/journey';
-import { TarotResult, useTarotSession } from '@features/tarot';
+import { tarotCopy, TarotResult, useTarotSession } from '@features/tarot';
 import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
 import { useI18n } from '@shared/i18n';
-import { Button, Container, Stack, Typography } from '@shared/ui';
+import { Button, Container, Stack, Surface, Typography } from '@shared/ui';
+
+import styles from './TarotResultPage.module.css';
 
 export function TarotResultPage() {
   const { locale } = useI18n();
+  const copy = tarotCopy[locale];
   const { navigate } = useRouter();
   const { state: journeyState } = useJourney();
   const { actions, state: sessionState } = useTarotSession();
   if (!sessionState.reading)
     return (
-      <Container size="default">
-        <Stack align="start" gap="lg">
-          <Typography as="h1" variant="heading-lg">
-            {locale === 'en'
-              ? 'Create a reading first'
-              : locale === 'uk'
-                ? 'Спочатку створіть розклад'
-                : 'Сначала создайте расклад'}
-          </Typography>
-          <Button onClick={() => navigate(ROUTES.tarot)} prominence="primary">
-            {locale === 'en'
-              ? 'Go to Tarot'
-              : locale === 'uk'
-                ? 'Перейти до Таро'
-                : 'Перейти к Таро'}
-          </Button>
-        </Stack>
-      </Container>
+      <section aria-labelledby="tarot-result-empty-title" className={styles.emptyState}>
+        <Container size="default">
+          <Surface className={styles.emptySurface} elevation="low">
+            <Stack align="start" gap="lg">
+              <Typography as="h1" id="tarot-result-empty-title" variant="heading-lg">
+                {copy.missing}
+              </Typography>
+              <Typography className={styles.emptyDescription}>{copy.missingDescription}</Typography>
+              <Button onClick={() => navigate(ROUTES.tarot)} prominence="primary">
+                {copy.returnTarot}
+              </Button>
+            </Stack>
+          </Surface>
+        </Container>
+      </section>
     );
   const savedRecord = journeyState.readings.find(
     (record) => record.reading.id === sessionState.reading?.id,

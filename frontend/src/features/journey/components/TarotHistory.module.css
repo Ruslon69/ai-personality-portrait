@@ -54,6 +54,8 @@
   transition:
     border-color var(--motion-return-duration),
     background var(--motion-return-duration);
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 11rem;
 }
 
 .item:hover,

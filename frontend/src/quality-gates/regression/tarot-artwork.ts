@@ -479,12 +479,22 @@ export function runTarotArtworkGate(rootDir: string) {
     resolve(rootDir, 'src/features/tarot/flows/TarotReadingFlow.tsx'),
     'utf8',
   );
+  const revealMarkupStart = readingFlowSource.indexOf("{step === 'reveal' ? (");
+  const revealMarkupEnd = readingFlowSource.indexOf(
+    '<div className={styles.flowActions}',
+    revealMarkupStart,
+  );
+  const revealMarkupSource = readingFlowSource.slice(revealMarkupStart, revealMarkupEnd);
   const resultSource = readFileSync(
     resolve(rootDir, 'src/features/tarot/components/TarotResult.tsx'),
     'utf8',
   );
   const historySource = readFileSync(
     resolve(rootDir, 'src/features/journey/components/TarotHistory.tsx'),
+    'utf8',
+  );
+  const historyCss = readFileSync(
+    resolve(rootDir, 'src/features/journey/components/TarotHistory.module.css'),
     'utf8',
   );
   const historyPageSource = readFileSync(
@@ -503,6 +513,14 @@ export function runTarotArtworkGate(rootDir: string) {
     resolve(rootDir, 'src/features/tarot/components/TarotPreferencesSection.tsx'),
     'utf8',
   );
+  const tarotPreferencesCss = readFileSync(
+    resolve(rootDir, 'src/features/tarot/components/TarotPreferencesSection.module.css'),
+    'utf8',
+  );
+  const tarotCopySource = readFileSync(
+    resolve(rootDir, 'src/features/tarot/data/tarot-copy.ts'),
+    'utf8',
+  );
   const tarotSessionSource = readFileSync(
     resolve(rootDir, 'src/features/tarot/model/tarot-session.ts'),
     'utf8',
@@ -513,6 +531,10 @@ export function runTarotArtworkGate(rootDir: string) {
   );
   const settingsPageSource = readFileSync(
     resolve(rootDir, 'src/pages/settings/SettingsPage.tsx'),
+    'utf8',
+  );
+  const resultPageSource = readFileSync(
+    resolve(rootDir, 'src/pages/tarot/TarotResultPage.tsx'),
     'utf8',
   );
   const routeSource = readFileSync(resolve(rootDir, 'src/router/routes.tsx'), 'utf8');
@@ -651,7 +673,7 @@ export function runTarotArtworkGate(rootDir: string) {
       cardBackCss.includes('grid-area: details') &&
       cardBackCss.includes('align-items: stretch') &&
       cardBackCss.includes('align-content: start') &&
-      cardBackCss.includes('grid-template-rows: auto minmax(min-content, 1fr)') &&
+      cardBackCss.includes('grid-template-rows: auto minmax(0, 1fr)') &&
       cardBackCss.includes('grid-template-rows: minmax(min-content, 1fr)') &&
       cardBackCss.includes(
         'padding-block: clamp(0.15rem, 0.8dvh, 0.5rem) clamp(1rem, 2.4dvh, 1.5rem)',
@@ -675,7 +697,7 @@ export function runTarotArtworkGate(rootDir: string) {
     },
   );
   assertions.assert(
-    cardBackCss.includes('clamp(10rem, calc((100dvh - 34.5rem) * 7 / 12), 13.25rem)') &&
+    cardBackCss.includes('clamp(9.5rem, calc((100dvh - 34.5rem) * 7 / 12), 13.25rem)') &&
       cardBackCss.includes('--tarot-card-ratio: 7 / 12') &&
       cardBackCss.includes('clamp(4.25rem, 5vw, 5rem)') &&
       cardBackCss.includes(".revealSequence[data-count='6']") &&
@@ -686,6 +708,57 @@ export function runTarotArtworkGate(rootDir: string) {
       code: 'tarot-reading-responsive-card-sizing',
       message:
         'The active card must retain its aspect ratio while the compact spread safely contains narrow widths.',
+    },
+  );
+  assertions.assert(
+    cardBackCss.includes('--tarot-strip-card-width: clamp(4.25rem, 5vw, 5rem)') &&
+      cardBackCss.includes('--tarot-strip-label-height: calc(var(--font-size-xs) * 2.6)') &&
+      cardBackCss.includes('--tarot-strip-state-clearance: 0.625rem') &&
+      cardBackCss.includes('padding-block: var(--tarot-strip-state-clearance)') &&
+      cardBackCss.includes('overflow: clip') &&
+      cardBackCss.includes(".revealSequence[data-count='5'],") &&
+      cardBackCss.includes(".revealSequence[data-count='6'] {") &&
+      cardBackCss.includes('grid-template-columns: repeat(5, minmax(0, 1fr))') &&
+      cardBackCss.includes('grid-template-columns: repeat(6, minmax(0, 1fr))') &&
+      cardBackCss.includes('overflow-x: auto') &&
+      cardBackCss.includes('scroll-snap-type: inline proximity'),
+    {
+      code: 'tarot-reading-top-strip-intrinsic-containment',
+      message:
+        'Desktop five- and six-card spread strips must reserve their tallest interactive state without vertical scrolling while preserving the mobile scroller.',
+    },
+  );
+  assertions.assert(
+    revealMarkupStart >= 0 &&
+      revealMarkupEnd > revealMarkupStart &&
+      revealMarkupSource.includes('className={styles.revealSequence}') &&
+      revealMarkupSource.includes('data-count={selections.length}') &&
+      revealMarkupSource.includes('{selections.map((selection, index) => {') &&
+      !revealMarkupSource.includes('state.selectionMode') &&
+      !/\.revealSequence\[data-count='5'\]\s+\.tarotCardButton[^{]*[{][^}]*grid-area:/s.test(
+        cardBackCss,
+      ),
+    {
+      code: 'tarot-reading-selection-mode-layout-convergence',
+      message:
+        'Manual and automatic readings must converge on one five/six-card reveal strip without legacy per-card placement.',
+    },
+  );
+  assertions.assert(
+    cardBackCss.includes(".flowPage[data-reading-step='reveal'] .flowHeader") &&
+      cardBackCss.includes('margin-block-end: var(--space-1)') &&
+      cardBackCss.includes('gap: clamp(0.375rem, 0.7dvh, 0.5rem)') &&
+      cardBackCss.includes('padding: clamp(var(--space-1), 0.8dvh, var(--space-2))') &&
+      cardBackCss.includes(".flowSurface[data-reading-step='reveal'] .flowActions") &&
+      cardBackCss.includes('min-block-size: 0') &&
+      cardBackCss.includes('padding-block-start: var(--space-1)') &&
+      cardBackCss.includes('margin-block-start: var(--space-1)') &&
+      cardBackCss.includes('--tarot-strip-state-clearance: 0.625rem') &&
+      cardBackCss.includes('padding-block: var(--tarot-strip-state-clearance)'),
+    {
+      code: 'tarot-reading-combined-viewport-height-budget',
+      message:
+        'The desktop reading shell must preserve the complete top strip while assigning the remaining viewport height to an unclipped reveal stage and CTA.',
     },
   );
   assertions.assert(
@@ -761,6 +834,7 @@ export function runTarotArtworkGate(rootDir: string) {
   assertions.assert(
     readingPageSource.includes('journeyActions.recordReading(reading)') &&
       readingPageSource.includes('tarotSessionActions.saveReading(savedReading)') &&
+      readingPageSource.includes('navigate(ROUTES.tarotResult, { replace: true })') &&
       historyPageSource.includes('tarotSessionActions.saveReading(record.reading)') &&
       historyPageSource.includes('navigate(ROUTES.tarotResult)') &&
       !historyPageSource.includes('createTarotReading'),
@@ -803,7 +877,8 @@ export function runTarotArtworkGate(rootDir: string) {
       tarotPreferencesSource.includes('<Modal') &&
       tarotPreferencesSource.includes('aria-live="polite"') &&
       settingsPageSource.includes('<TarotPreferencesSection') &&
-      settingsPageSource.includes('onHistoryLimitChange={journeyActions.setHistoryLimit}'),
+      settingsPageSource.includes('onHistoryLimitChange={journeyActions.setHistoryLimit}') &&
+      settingsPageSource.includes('onBackToTarot={() => navigate(ROUTES.tarot)}'),
     {
       code: 'tarot-preferences-accessible-settings',
       message:
@@ -811,16 +886,86 @@ export function runTarotArtworkGate(rootDir: string) {
     },
   );
   assertions.assert(
+    tarotLandingSource.includes('onOpenHistory') &&
+      tarotLandingSource.includes('onOpenSettings') &&
+      resultSource.includes('onOpenHistory') &&
+      resultSource.includes('onContinueJourney') &&
+      resultSource.includes('onRestart') &&
+      historySource.includes('onBack') &&
+      historySource.includes('onCreate') &&
+      tarotPreferencesSource.includes('onBackToTarot'),
+    {
+      code: 'tarot-production-navigation-continuity',
+      message:
+        'Landing, result, history, and settings must all expose an unambiguous next or return action.',
+    },
+  );
+  assertions.assert(
+    !tarotLandingSource.includes('futureQuestion') &&
+      !resultSource.includes('tarotPackages') &&
+      !resultSource.includes('boundaryGrid') &&
+      !tarotCopySource.includes('публичный flow') &&
+      !tarotCopySource.includes('Предварительный обзор'),
+    {
+      code: 'tarot-production-copy-and-preview-cleanup',
+      message:
+        'Completed Tarot surfaces must not expose implementation language or obsolete future-format previews.',
+    },
+  );
+  assertions.assert(
+    readingFlowSource.includes('previousStepIndexRef') &&
+      readingFlowSource.includes("document.getElementById('tarot-reading-step-title')?.focus()") &&
+      readingFlowSource.includes('revealHeadingRef.current?.focus()') &&
+      readingFlowSource.includes('id="tarot-reading-step-title"') &&
+      readingFlowSource.includes('tabIndex={-1}'),
+    {
+      code: 'tarot-reading-step-focus-continuity',
+      message:
+        'Keyboard and screen-reader focus must follow in-page reading step changes without changing the reading state.',
+    },
+  );
+  assertions.assert(
+    historySource.includes('{copy.cancel}') &&
+      historySource.includes('setAnnouncement(copy.cleared)') &&
+      historySource.includes("document.getElementById('saved-readings-title')?.focus()") &&
+      historySource.includes('tabIndex={-1}') &&
+      historyCss.includes('content-visibility: auto') &&
+      tarotPreferencesCss.includes('@media (forced-colors: active)') &&
+      tarotPreferencesCss.includes('@media (prefers-reduced-motion: reduce)'),
+    {
+      code: 'tarot-history-settings-responsive-safety',
+      message:
+        'History and settings must retain localized feedback, scalable long-list rendering, forced colors, and reduced-motion support.',
+    },
+  );
+  assertions.assert(
+    resultPageSource.includes('copy.missingDescription') &&
+      resultPageSource.includes('id="tarot-result-empty-title"') &&
+      resultSource.includes('aria-label={copy.resultActionsLabel}') &&
+      !resultSource.includes('className={styles.packages}'),
+    {
+      code: 'tarot-result-empty-and-completion-states',
+      message:
+        'The result route must offer a clear recovery state and end the completed analysis with real product actions.',
+    },
+  );
+  assertions.assert(
     tarotLandingSource.includes('confirmNewReading && hasUnfinishedReading') &&
       tarotLandingSource.includes('newReadingDescription') &&
+      tarotLandingSource.includes('onResume') &&
+      tarotLandingSource.includes('copy.resumeReading') &&
       tarotSessionSource.includes('inProgress: true') &&
       tarotSessionSource.includes('inProgress: false') &&
+      tarotSessionSource.includes("readBrowserStorage('sessionStorage', STATE_KEY)") &&
+      tarotSessionSource.includes('saveRevealProgress(revealedCount: number)') &&
+      readingFlowSource.includes('canResumeReveal ? steps.indexOf') &&
+      readingFlowSource.includes('actions.saveRevealProgress(revealedCount)') &&
       journeyStoreSource.includes('currentHistoryLimit()') &&
       journeyStoreSource.includes('state.readings.length <= limit'),
     {
       code: 'tarot-preferences-history-and-reset-safety',
       message:
-        'Unfinished readings must receive optional confirmation and retention changes must only trim necessary oldest history records.',
+        'Unfinished readings must be resumable, safely persisted, optionally confirmed before replacement, and retention changes must only trim necessary oldest history records.',
     },
   );
   assertions.assert(

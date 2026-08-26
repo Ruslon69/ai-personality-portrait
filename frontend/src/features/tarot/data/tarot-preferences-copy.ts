@@ -5,6 +5,7 @@ type TarotPreferencesCopy = {
   allowReversedDescription: string;
   animations: string;
   animationsDescription: string;
+  backToTarot: string;
   cancel: string;
   confirmNewReading: string;
   confirmNewReadingDescription: string;
@@ -34,11 +35,12 @@ export const tarotPreferencesCopy: Record<Locale, TarotPreferencesCopy> = {
       'В новых раскладах некоторые карты могут выпадать перевёрнутыми. Сохранённые расклады не изменятся.',
     animations: 'Анимация раскрытия',
     animationsDescription:
-      'Показывать переворот карты и короткие переходы. Системная настройка уменьшения движения всегда имеет приоритет.',
+      'Показывать переворот карты и короткие переходы. При включённом уменьшении движения карты откроются сразу.',
+    backToTarot: 'Вернуться к Таро',
     cancel: 'Отмена',
     confirmNewReading: 'Спрашивать перед новым раскладом',
     confirmNewReadingDescription: 'Защищает незавершённый расклад от случайной замены новым.',
-    description: 'Настройте процесс чтения. Значения карт и качество выбора останутся прежними.',
+    description: 'Настройте, как проходит расклад. Значения карт останутся прежними.',
     eyebrow: 'Таро',
     historyDescription: 'Когда лимит достигнут, удаляются только самые старые расклады.',
     historyLimit: 'Хранить раскладов',
@@ -64,13 +66,13 @@ export const tarotPreferencesCopy: Record<Locale, TarotPreferencesCopy> = {
       'New readings may include reversed cards. Saved readings will not be changed.',
     animations: 'Reveal animations',
     animationsDescription:
-      'Show the card flip and brief transitions. Your system reduced-motion setting always takes priority.',
+      'Show the card flip and brief transitions. Cards open instantly when reduced motion is enabled.',
+    backToTarot: 'Back to Tarot',
     cancel: 'Cancel',
     confirmNewReading: 'Ask before starting a new reading',
     confirmNewReadingDescription:
       'Protects an unfinished reading from being replaced accidentally.',
-    description:
-      'Adjust the reading experience without changing card meanings or selection quality.',
+    description: 'Adjust how a reading unfolds without changing the meaning of the cards.',
     eyebrow: 'Tarot',
     historyDescription: 'Only the oldest readings are removed when the limit is reached.',
     historyLimit: 'Keep readings',
@@ -96,11 +98,12 @@ export const tarotPreferencesCopy: Record<Locale, TarotPreferencesCopy> = {
       'У нових розкладах деякі карти можуть випадати перевернутими. Збережені розклади не зміняться.',
     animations: 'Анімація відкриття',
     animationsDescription:
-      'Показувати переворот карти й короткі переходи. Системне налаштування зменшення руху завжди має пріоритет.',
+      'Показувати переворот карти й короткі переходи. Коли зменшення руху ввімкнено, карти відкриються одразу.',
+    backToTarot: 'Повернутися до Таро',
     cancel: 'Скасувати',
     confirmNewReading: 'Запитувати перед новим розкладом',
     confirmNewReadingDescription: 'Захищає незавершений розклад від випадкової заміни новим.',
-    description: 'Налаштуйте процес читання. Значення карт і якість вибору не зміняться.',
+    description: 'Налаштуйте, як проходить розклад. Значення карт не зміняться.',
     eyebrow: 'Таро',
     historyDescription: 'Коли ліміт вичерпано, видаляються лише найстаріші розклади.',
     historyLimit: 'Зберігати розкладів',

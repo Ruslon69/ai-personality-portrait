@@ -14,7 +14,7 @@ export function TarotReadingPage() {
       onComplete={(reading) => {
         const savedReading = journeyActions.recordReading(reading);
         tarotSessionActions.saveReading(savedReading);
-        navigate(ROUTES.tarotResult);
+        navigate(ROUTES.tarotResult, { replace: true });
       }}
     />
   );

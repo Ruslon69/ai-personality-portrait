@@ -58,8 +58,22 @@ function completedState(state: RevealState): RevealState {
   };
 }
 
-export function createRevealState(total: number): RevealState {
-  const safeTotal = Math.max(0, total);
+export function createRevealState(total: number, revealedCount = 0): RevealState {
+  const safeTotal = Math.max(0, Math.trunc(total));
+  const safeRevealedCount = Math.max(0, Math.min(Math.trunc(revealedCount), safeTotal));
+  if (safeRevealedCount > 0) {
+    const complete = safeRevealedCount === safeTotal;
+    return {
+      card: 'settled',
+      currentIndex: safeRevealedCount - 1,
+      instant: true,
+      positions: Array.from({ length: safeTotal }, (_, index) =>
+        index < safeRevealedCount ? 'revealed' : index === safeRevealedCount ? 'ready' : 'locked',
+      ),
+      sequence: complete ? 'all-complete' : 'waiting-for-next',
+      total: safeTotal,
+    };
+  }
   return {
     card: 'idle',
     currentIndex: 0,

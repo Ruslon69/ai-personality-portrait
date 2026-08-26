@@ -1,5 +1,6 @@
 import {
   createTarotResultHeroPresentation,
+  isRenderableTarotReading,
   tarotCardById,
   tarotSpreadById,
   type TarotReading,
@@ -9,33 +10,6 @@ import type { JourneyReadingRecord, TarotHistorySnapshot } from '../types';
 
 export const TAROT_HISTORY_LIMIT = 75;
 export const TAROT_HISTORY_SCHEMA_VERSION = 'tarot-history-record-v1' as const;
-
-function isTarotReading(value: unknown): value is TarotReading {
-  if (!value || typeof value !== 'object') return false;
-  const reading = value as Partial<TarotReading>;
-  return (
-    typeof reading.id === 'string' &&
-    typeof reading.createdAt === 'string' &&
-    typeof reading.spreadId === 'string' &&
-    typeof reading.headline === 'string' &&
-    typeof reading.summary === 'string' &&
-    typeof reading.leadingCardId === 'string' &&
-    Array.isArray(reading.selections) &&
-    reading.selections.length > 0 &&
-    reading.selections.every(
-      (selection) =>
-        selection &&
-        typeof selection.cardId === 'string' &&
-        typeof selection.positionId === 'string' &&
-        (selection.orientation === 'upright' || selection.orientation === 'reversed'),
-    ) &&
-    Boolean(reading.context) &&
-    typeof reading.context?.seed === 'string' &&
-    (reading.context?.locale === 'ru' ||
-      reading.context?.locale === 'en' ||
-      reading.context?.locale === 'uk')
-  );
-}
 
 export function createTarotHistorySnapshot(reading: TarotReading): TarotHistorySnapshot {
   const locale = reading.context.locale;
@@ -98,7 +72,7 @@ export function normalizeTarotHistoryRecords(
   const records = value.flatMap((candidate) => {
     if (!candidate || typeof candidate !== 'object') return [];
     const record = candidate as Partial<JourneyReadingRecord>;
-    if (!isTarotReading(record.reading)) return [];
+    if (!isRenderableTarotReading(record.reading)) return [];
     const savedAt =
       typeof record.savedAt === 'string' && !Number.isNaN(Date.parse(record.savedAt))
         ? record.savedAt

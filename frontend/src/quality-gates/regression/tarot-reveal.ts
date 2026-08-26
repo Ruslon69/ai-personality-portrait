@@ -47,6 +47,33 @@ export function runTarotRevealGate() {
     message: 'The initial state must expose the canonical open-card action.',
   });
 
+  const resumed = createRevealState(6, 3);
+  assertions.assert(
+    resumed.currentIndex === 2 &&
+      resumed.card === 'settled' &&
+      resumed.instant &&
+      resumed.sequence === 'waiting-for-next' &&
+      resumed.positions.join(',') === 'revealed,revealed,revealed,ready,locked,locked' &&
+      getRevealCta(resumed) === 'next',
+    {
+      actual: resumed.positions.join(','),
+      code: 'tarot-reveal-refresh-resume',
+      expected: 'revealed,revealed,revealed,ready,locked,locked',
+      message: 'A refreshed reading must resume after the last settled card without rerandomizing.',
+    },
+  );
+  const resumedComplete = createRevealState(6, 6);
+  assertions.assert(
+    resumedComplete.currentIndex === 5 &&
+      resumedComplete.sequence === 'all-complete' &&
+      areAllPositionsRevealed(resumedComplete) &&
+      getRevealCta(resumedComplete) === 'finish',
+    {
+      code: 'tarot-reveal-refresh-finished',
+      message: 'A refreshed completed reveal must retain all six cards and the finish action.',
+    },
+  );
+
   let single = revealReducer(createRevealState(1), { reducedMotion: false, type: 'start' });
   assertions.assert(
     single.card === 'preparing' && isRevealActive(single) && single.positions[0] === 'revealing',
@@ -221,5 +248,5 @@ export function runTarotRevealGate() {
     message: 'A stale or duplicate completion must not advance a later reveal phase.',
   });
 
-  return assertions.result({ fixtureCount: 12 });
+  return assertions.result({ fixtureCount: 14 });
 }

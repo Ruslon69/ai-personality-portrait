@@ -2,11 +2,13 @@ import { useRef, useState } from 'react';
 
 import { useMediaQuery } from '@hooks';
 import type { Locale } from '@shared/i18n';
-import { Badge, Button, Container, Modal, Stack, Surface, Typography } from '@shared/ui';
+import { Badge, Button, Container, Modal, Stack, Typography } from '@shared/ui';
 
 import { tarotCopy, tarotPreferencesCopy, tarotSpreads } from '../data';
 import type { TarotSpread } from '../types';
 import styles from './Tarot.module.css';
+
+const durationBySize: Readonly<Record<number, number>> = { 1: 2, 4: 6, 5: 7, 6: 9 };
 
 export function TarotLanding({
   confirmNewReading,
@@ -14,6 +16,7 @@ export function TarotLanding({
   locale,
   onOpenHistory,
   onOpenSettings,
+  onResume,
   onStart,
 }: {
   confirmNewReading: boolean;
@@ -21,6 +24,7 @@ export function TarotLanding({
   locale: Locale;
   onOpenHistory: () => void;
   onOpenSettings: () => void;
+  onResume: () => void;
   onStart: (spread: TarotSpread) => void;
 }) {
   const copy = tarotCopy[locale];
@@ -29,7 +33,6 @@ export function TarotLanding({
   const [pendingSpread, setPendingSpread] = useState<TarotSpread | null>(null);
   const selectionRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
-  const durationBySize: Record<number, number> = { 1: 2, 4: 6, 5: 7, 6: 9 };
 
   function requestStart(spread: TarotSpread) {
     if (confirmNewReading && hasUnfinishedReading) {
@@ -53,6 +56,11 @@ export function TarotLanding({
                 {copy.heroLead}
               </Typography>
               <div className={styles.heroActions}>
+                {hasUnfinishedReading ? (
+                  <Button onClick={onResume} prominence="primary" size="large">
+                    {copy.resumeReading} <span aria-hidden="true">→</span>
+                  </Button>
+                ) : null}
                 <Button
                   onClick={() => {
                     selectionRef.current?.scrollIntoView({
@@ -61,7 +69,7 @@ export function TarotLanding({
                     });
                     selectionRef.current?.focus({ preventScroll: true });
                   }}
-                  prominence="primary"
+                  prominence={hasUnfinishedReading ? 'secondary' : 'primary'}
                   size="large"
                 >
                   {copy.primary} <span aria-hidden="true">→</span>
@@ -144,7 +152,6 @@ export function TarotLanding({
             <div className={styles.spreadAction}>
               <div aria-live="polite">
                 <strong>{selectedSpread.title[locale]}</strong>
-                <Typography>{selectedSpread.description[locale]}</Typography>
               </div>
               <Button
                 onClick={() => requestStart(selectedSpread)}
@@ -155,10 +162,6 @@ export function TarotLanding({
                 <span aria-hidden="true">→</span>
               </Button>
             </div>
-            <Surface className={styles.futureQuestion}>
-              <strong>{copy.customFuture}</strong>
-              <span>{copy.customFutureNote}</span>
-            </Surface>
           </Stack>
         </Container>
       </section>

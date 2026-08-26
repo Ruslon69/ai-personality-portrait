@@ -2,5 +2,5 @@ export { tarotContextQuestions, type TarotContextQuestion } from './context-ques
 export { standardTarotDeck, tarotCardById, tarotSuitNames } from './deck';
 export { deckThemes } from './deck-themes';
 export { tarotSpreadById, tarotSpreads } from './spreads';
-export { tarotCopy, tarotPackages } from './tarot-copy';
+export { tarotCopy } from './tarot-copy';
 export { tarotPreferencesCopy } from './tarot-preferences-copy';

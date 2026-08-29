@@ -55,7 +55,12 @@ export function ResultReveal({ opened, onOpen, profile }: Props) {
         <Surface className={styles.surface} elevation="low">
           <div className={styles.grid}>
             <div className={styles.visual}>
-              <PortraitMark identity={profile.visualIdentity} label={copy.symbol} size="lg" />
+              <PortraitMark
+                className={styles.mark}
+                identity={profile.visualIdentity}
+                label={copy.symbol}
+                size="lg"
+              />
             </div>
             <Stack align="start" className={styles.content} gap="lg">
               <Badge tone="success">{copy.eyebrow}</Badge>

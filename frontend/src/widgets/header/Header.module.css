@@ -104,7 +104,7 @@
   }
 }
 
-@media (max-width: 47.999rem) {
+@media (max-width: 55.999rem) {
   .inner {
     padding-inline: var(--space-3);
   }
@@ -114,6 +114,10 @@
     max-inline-size: 8.5rem;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .root[data-variant='marketing'] .projectName {
+    max-inline-size: none;
   }
 
   .actionLabel {

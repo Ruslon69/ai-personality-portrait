@@ -15,6 +15,10 @@
   max-inline-size: var(--page-title-max-width);
 }
 
+.heroTitle:focus {
+  outline: none;
+}
+
 .section,
 .dangerSection {
   padding-block: var(--page-section-padding-block);

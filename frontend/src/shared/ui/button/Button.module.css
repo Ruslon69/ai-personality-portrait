@@ -118,3 +118,10 @@
     transform: none;
   }
 }
+
+@media (forced-colors: active) {
+  .root:focus-visible {
+    outline: 0.125rem solid Highlight;
+    outline-offset: 0.125rem;
+  }
+}

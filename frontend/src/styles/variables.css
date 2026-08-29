@@ -19,6 +19,11 @@
   --page-title-letter-spacing: -0.04em;
   --page-title-line-height: 1.02;
   --page-lead-size: clamp(var(--font-size-lg), 2vw, var(--font-size-xl));
+  --result-hero-title-size: clamp(2.5rem, 4.6vw, 4.5rem);
+  --result-hero-title-max-width: 23ch;
+  --result-hero-copy-width: 42rem;
+  --result-hero-gap: clamp(var(--space-5), 4vw, var(--space-8));
+  --result-hero-visual-size: clamp(10rem, 18vw, 16rem);
   --flow-content-gap: clamp(var(--space-5), 5vw, var(--space-7));
   --flow-surface-padding: clamp(var(--space-5), 5vw, var(--space-7));
   --flow-title-max-width: 18ch;

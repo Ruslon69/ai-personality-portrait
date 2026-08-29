@@ -15,19 +15,46 @@
 
 .heroGrid {
   display: grid;
+  align-items: end;
+  gap: var(--result-hero-gap);
+}
+
+.heroMain {
+  min-inline-size: 0;
+  gap: var(--space-5);
+}
+
+.resultState {
+  display: flex;
+  inline-size: 100%;
+  min-inline-size: 0;
   align-items: center;
-  gap: var(--page-hero-gap);
+  justify-content: flex-start;
+  gap: var(--space-3);
+}
+
+.mark {
+  flex: 0 0 auto;
+  max-inline-size: 4.5rem;
 }
 
 .title {
-  max-inline-size: var(--page-title-max-width);
+  --page-title-size: var(--result-hero-title-size);
+
+  max-inline-size: var(--result-hero-title-max-width);
+}
+
+.title:focus {
+  outline: none;
 }
 
 .lead {
-  max-inline-size: var(--content-width-reading);
+  max-inline-size: var(--result-hero-copy-width);
 }
 
 .heroNote {
+  inline-size: 100%;
+  max-inline-size: 32rem;
   padding: var(--page-aside-padding);
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -115,7 +142,7 @@
 
 @media (min-width: 64rem) {
   .heroGrid {
-    grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+    grid-template-columns: minmax(0, 1.35fr) minmax(17rem, 0.65fr);
   }
 }
 

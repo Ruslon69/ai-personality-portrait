@@ -19,6 +19,11 @@
   gap: var(--space-5);
 }
 
+.listHeading > button {
+  justify-content: flex-start;
+  padding-inline: 0;
+}
+
 .heroGrid h1 {
   max-inline-size: 14ch;
   text-wrap: balance;
@@ -122,6 +127,11 @@
   color: var(--color-text-muted);
 }
 
+.listHeading h2:focus,
+.empty h2:focus {
+  outline: none;
+}
+
 .dialogActions {
   justify-content: flex-end;
 }
@@ -165,6 +175,13 @@
   .thumbnail,
   .actions {
     grid-column: 1;
+  }
+}
+
+@media (max-width: 29.999rem) {
+  .dialogActions,
+  .dialogActions > * {
+    inline-size: 100%;
   }
 }
 

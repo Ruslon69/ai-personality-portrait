@@ -148,7 +148,11 @@ function ContrastSection({ profile }: { profile: PersonalityProfile }) {
   if (!profile.contrasts.length) return null;
   const copy = reportCopy[profile.locale];
   return (
-    <section aria-labelledby="contrasts-title" className={styles.section} id="contrasts">
+    <section
+      aria-labelledby="contrasts-title"
+      className={`${styles.section} ${styles.contrastSection}`}
+      id="contrasts"
+    >
       <Container size="wide">
         <SectionHeading
           eyebrow={copy.contrastEyebrow}
@@ -164,7 +168,9 @@ function ContrastSection({ profile }: { profile: PersonalityProfile }) {
             >
               <div aria-label={copy.contrastTitle} className={styles.contrastToggle} role="group">
                 <Button
+                  aria-controls={`${contrast.id}-usual-panel`}
                   aria-pressed={(activeView[contrast.id] ?? 'usual') === 'usual'}
+                  id={`${contrast.id}-usual-control`}
                   onClick={() =>
                     setActiveView((current) => ({ ...current, [contrast.id]: 'usual' }))
                   }
@@ -173,7 +179,9 @@ function ContrastSection({ profile }: { profile: PersonalityProfile }) {
                   {copy.usual}
                 </Button>
                 <Button
+                  aria-controls={`${contrast.id}-when-panel`}
                   aria-pressed={activeView[contrast.id] === 'when'}
+                  id={`${contrast.id}-when-control`}
                   onClick={() =>
                     setActiveView((current) => ({ ...current, [contrast.id]: 'when' }))
                   }
@@ -183,20 +191,32 @@ function ContrastSection({ profile }: { profile: PersonalityProfile }) {
                 </Button>
               </div>
               <div className={styles.contrastPair}>
-                <div data-panel="usual">
-                  <span>{copy.usual}</span>
+                <div
+                  aria-labelledby={`${contrast.id}-usual-control`}
+                  data-panel="usual"
+                  id={`${contrast.id}-usual-panel`}
+                >
+                  <span className={styles.contrastPanelLabel}>{copy.usual}</span>
                   <p>{contrast.usual}</p>
                 </div>
-                <div data-panel="when">
-                  <span>{copy.when}</span>
+                <div
+                  aria-labelledby={`${contrast.id}-when-control`}
+                  data-panel="when"
+                  id={`${contrast.id}-when-panel`}
+                >
+                  <span className={styles.contrastPanelLabel}>{copy.when}</span>
                   <p>{contrast.context}</p>
                 </div>
               </div>
               <div className={styles.contrastMeaning}>
-                <strong>{copy.means}</strong>
-                <p>{contrast.meaning}</p>
-                <strong>{copy.try}</strong>
-                <p>{contrast.suggestion}</p>
+                <div>
+                  <strong>{copy.means}</strong>
+                  <p>{contrast.meaning}</p>
+                </div>
+                <div>
+                  <strong>{copy.try}</strong>
+                  <p>{contrast.suggestion}</p>
+                </div>
               </div>
               <div className={styles.sourceRow}>
                 {contrast.sources.map((source) => (

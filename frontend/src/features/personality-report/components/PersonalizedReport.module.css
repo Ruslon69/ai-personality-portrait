@@ -49,6 +49,9 @@
   max-inline-size: var(--content-width-reading);
   margin-block-end: var(--space-7);
 }
+.contrastSection .sectionHeading {
+  margin-block-end: var(--space-6);
+}
 .muted {
   color: var(--color-text-muted);
   overflow-wrap: break-word;
@@ -209,6 +212,11 @@
     border-color var(--transition-duration-normal) var(--transition-easing-standard),
     background-color var(--transition-duration-normal) var(--transition-easing-standard);
 }
+.contrastCard {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  align-content: start;
+}
 .contrastCard:hover,
 .recommendation:hover,
 .interpretationCard:hover {
@@ -219,10 +227,21 @@
   gap: var(--space-3);
 }
 .contrastToggle {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-2);
-  margin-block-end: var(--space-4);
+  margin-block-end: var(--space-3);
+}
+.contrastToggle button {
+  inline-size: 100%;
+  justify-content: flex-start;
+}
+.contrastToggle button[aria-pressed='true'] {
+  border-color: color-mix(in srgb, var(--color-interactive) 42%, var(--color-border));
+  background: var(--surface-accent-subtle);
+}
+.contrastToggle button[aria-pressed='false'] {
+  color: var(--color-text-muted);
 }
 .contrastPair > div {
   transition:
@@ -235,6 +254,9 @@
   transform: scale(0.98);
 }
 .contrastPair > div {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
   padding: var(--space-4);
   border-inline-start: 0.2rem solid var(--color-interactive);
   background: var(--surface-accent-subtle);
@@ -243,15 +265,32 @@
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
 }
+.contrastPanelLabel {
+  position: absolute;
+  overflow: hidden;
+  inline-size: 0.0625rem;
+  block-size: 0.0625rem;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .contrastPair p,
 .contrastMeaning p {
-  margin-block: var(--space-2) 0;
+  max-inline-size: 42ch;
+  margin: 0;
   overflow-wrap: break-word;
 }
 .contrastMeaning {
   display: grid;
-  gap: var(--space-2);
+  align-content: start;
+  gap: var(--space-4);
   margin-block: var(--space-5);
+}
+.contrastMeaning > div {
+  display: grid;
+  gap: var(--space-2);
+  padding-block-start: var(--space-4);
+  border-block-start: 0.0625rem solid var(--color-border);
 }
 .recommendation {
   position: relative;
@@ -437,6 +476,15 @@
   }
 }
 @media (max-width: 47.99rem) {
+  .contrastPanelLabel {
+    position: static;
+    overflow: visible;
+    inline-size: auto;
+    block-size: auto;
+    clip: auto;
+    clip-path: none;
+    white-space: normal;
+  }
   .map {
     display: grid;
     min-block-size: 0;

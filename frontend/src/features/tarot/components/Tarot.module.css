@@ -141,7 +141,7 @@
   box-shadow: var(--tarot-shadow-rest);
   transform-origin: 50% 120%;
   transition:
-    transform var(--motion-connect-duration) var(--motion-easing-connect),
+    transform var(--motion-card-return-duration) var(--motion-easing-connect),
     box-shadow var(--motion-return-duration);
 }
 
@@ -216,13 +216,12 @@
   overflow: hidden;
   text-align: start;
   transition:
-    transform var(--motion-card-hover-duration) var(--motion-interaction-easing),
+    transform var(--motion-return-duration) var(--motion-interaction-easing),
     border-color var(--motion-return-duration),
     box-shadow var(--motion-card-return-duration);
 }
 
 .spreadCard:hover,
-.spreadCard:focus-visible,
 .spreadCard[data-selected] {
   border-color: var(--color-marketing-border-strong);
   box-shadow: var(--tarot-shadow-rest);
@@ -230,7 +229,7 @@
 }
 
 .spreadCard:has(.spreadRadio:focus-visible) {
-  outline: 0.1875rem solid var(--color-focus-ring);
+  outline: 0.1875rem solid var(--color-focus);
   outline-offset: 0.2rem;
 }
 
@@ -263,11 +262,10 @@
   border: 0.0625rem solid var(--tarot-line);
   border-radius: 50%;
   content: '';
-  transition: transform var(--motion-connect-duration) var(--motion-interaction-easing);
+  transition: transform var(--motion-return-duration) var(--motion-interaction-easing);
 }
 
-.spreadCard:hover .spreadIllustration::before,
-.spreadCard:focus-visible .spreadIllustration::before {
+.spreadCard:hover .spreadIllustration::before {
   transform: scale(1.08);
 }
 
@@ -279,7 +277,7 @@
   border-radius: var(--radius-md);
   background: var(--color-marketing-surface-raised);
   box-shadow: var(--shadow-low);
-  transition: transform var(--motion-card-hover-duration) var(--motion-interaction-easing);
+  transition: transform var(--motion-return-duration) var(--motion-interaction-easing);
 }
 .spreadIllustration i:first-child {
   transform: translateX(-58%) rotate(-10deg);
@@ -473,8 +471,8 @@
   gap: var(--space-3);
   cursor: pointer;
   transition:
-    border-color var(--motion-confirm-duration),
-    background var(--motion-confirm-duration),
+    border-color var(--motion-focus-duration),
+    background var(--motion-focus-duration),
     transform var(--motion-return-duration);
 }
 .optionGrid label:hover {
@@ -483,6 +481,10 @@
 .optionGrid label[data-selected] {
   border-color: var(--color-marketing-accent);
   background: var(--surface-accent-subtle);
+}
+.optionGrid label:has(input:focus-visible) {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
 }
 .optionGrid input {
   margin-block-start: 0.2rem;
@@ -616,7 +618,7 @@
   background: var(--surface-accent-subtle);
 }
 .themeChoice:has(input:focus-visible) {
-  outline: 0.1875rem solid var(--color-focus-ring);
+  outline: 0.1875rem solid var(--color-focus);
   outline-offset: 0.15rem;
 }
 .themeChoice input {
@@ -798,7 +800,7 @@
   white-space: normal !important;
   perspective: var(--tarot-card-perspective);
   transition:
-    transform var(--motion-card-hover-duration) var(--motion-interaction-easing),
+    transform var(--motion-return-duration) var(--motion-interaction-easing),
     filter var(--motion-return-duration);
 }
 .tarotCardButton[data-variant='selectable'] {
@@ -838,7 +840,7 @@
   transform: none !important;
 }
 .tarotCardButton:not([role='img']):focus-visible {
-  outline: 0.1875rem solid var(--color-focus-ring) !important;
+  outline: 0.1875rem solid var(--color-focus) !important;
   outline-offset: 0.35rem;
 }
 .tarotCardInner {
@@ -1123,8 +1125,8 @@
   pointer-events: none;
   transform: translate3d(-10%, 0, 0) rotate(-8deg);
   transition:
-    opacity var(--motion-card-hover-duration),
-    transform var(--motion-card-hover-duration) var(--motion-interaction-easing);
+    opacity var(--motion-return-duration),
+    transform var(--motion-return-duration) var(--motion-interaction-easing);
 }
 .cardFaceArtwork {
   position: absolute;
@@ -1202,7 +1204,7 @@
   opacity: var(--artwork-layer-opacity);
   object-fit: contain;
   transform: translate3d(0, 0, 0) scale(1.012);
-  transition: transform var(--motion-card-hover-duration) var(--motion-interaction-easing);
+  transition: transform var(--motion-return-duration) var(--motion-interaction-easing);
 }
 .cardArtworkEffects {
   position: absolute;
@@ -1805,6 +1807,11 @@
 .readingSection[data-visible] {
   animation: tarot-section-enter var(--motion-discover-duration) var(--motion-easing-discover) both;
 }
+.section[tabindex='-1']:focus,
+.readingSection[tabindex='-1']:focus,
+.flowSurface h1[tabindex='-1']:focus {
+  outline: none;
+}
 .interpretationList {
   display: grid;
   gap: 0;
@@ -1840,7 +1847,7 @@
   min-block-size: var(--control-min-height);
 }
 .interpretationHeader > button:focus-visible {
-  outline: 0.125rem solid var(--color-focus-ring);
+  outline: 0.125rem solid var(--color-focus);
   outline-offset: 0.125rem;
   box-shadow: none;
 }
@@ -2051,7 +2058,7 @@
   }
 }
 
-@media (min-width: 48rem) {
+@media (min-width: 56rem) {
   .heroGrid {
     grid-template-columns: minmax(0, 1.05fr) minmax(20rem, 0.95fr);
   }
@@ -2088,6 +2095,51 @@
 
   .resultCopy[data-gap='lg'] {
     gap: clamp(0.75rem, 1.8dvh, 1.25rem);
+  }
+}
+
+@media (min-width: 48rem) and (max-height: 57rem) {
+  .flowPage:not([data-reading-step='reveal']) {
+    padding-block: var(--space-4);
+  }
+
+  .flowPage:not([data-reading-step='reveal']) .flowHeader {
+    margin-block-end: var(--space-2);
+  }
+
+  .flowPage:not([data-reading-step='reveal']) .flowHeader > div,
+  .flowPage:not([data-reading-step='reveal']) .flowLocation {
+    display: flex;
+    min-inline-size: 0;
+    align-items: center;
+  }
+
+  .flowPage:not([data-reading-step='reveal']) .flowHeader > div {
+    gap: var(--space-3);
+  }
+
+  .flowPage:not([data-reading-step='reveal']) .flowLocation {
+    margin: 0;
+    gap: var(--space-2);
+  }
+
+  .flowPage:not([data-reading-step='reveal']) .flowSurface {
+    padding: var(--space-5);
+  }
+
+  .flowPage[data-reading-step='cards'] .deckShowcase[data-count='1'] {
+    padding-block: var(--space-3);
+  }
+
+  .flowPage[data-reading-step='cards']
+    .deckShowcase[data-count='1']
+    .tarotCardButton[data-variant='assigned'] {
+    --tarot-card-width: 9rem;
+  }
+
+  .flowPage:not([data-reading-step='reveal']) .flowActions {
+    padding-block-start: var(--space-3);
+    margin-block-start: var(--space-3);
   }
 }
 
@@ -2339,7 +2391,6 @@
   .spreadCollection,
   .optionGrid,
   .modeGrid,
-  .contextNumbers,
   .interpretationDetail,
   .resultDirection,
   .resultPatternGrid,
@@ -2413,6 +2464,19 @@
   .flowActions button {
     flex: 1 1 0;
   }
+  .contextNumbers {
+    gap: var(--space-2);
+  }
+  .contextNumbers span {
+    padding: var(--space-3) var(--space-2);
+  }
+  .modeGrid button {
+    min-block-size: 8rem;
+    padding: var(--space-4);
+  }
+  .deckShowcase[data-count='1'] {
+    padding-block: var(--space-3);
+  }
 }
 
 @media (max-width: 27rem) {
@@ -2420,13 +2484,16 @@
     padding: var(--space-4);
   }
   .themeGrid {
-    grid-template-columns: 1fr;
+    gap: var(--space-2);
   }
   .themeChoice {
-    grid-template-columns: 1fr;
+    padding: var(--space-3);
   }
   .themePattern {
-    inline-size: min(100%, 8rem);
+    inline-size: min(100%, 7rem);
+  }
+  .themePreview {
+    min-block-size: 16rem;
   }
   .tarotCardButton[data-variant='leading'],
   .tarotCardButton[data-variant='revealing'] {

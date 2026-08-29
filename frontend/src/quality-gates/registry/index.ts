@@ -16,6 +16,7 @@ import { runTarotGoldenMasterGate } from '../regression/tarot-golden-master';
 import { runTarotPremiumProductionGate } from '../regression/tarot-premium-production';
 import { runTarotPreparationGate } from '../regression/tarot-preparation';
 import { runTarotRevealGate } from '../regression/tarot-reveal';
+import { runVisualCompositionGate } from '../regression/visual-composition';
 import { existingSuiteRunners, runPresentationAdapterGate } from '../runners/existing-suites';
 import { runLocalizationGate } from '../runners/localization';
 import { runSerializationGate } from '../serialization';
@@ -293,6 +294,19 @@ export const qualityGateRegistry: readonly QualityGateDefinition[] = [
     tags: ['domain', 'full'],
     timeout: 15_000,
     title: 'Localization',
+  },
+  {
+    affectedModules: ['numerology/components', 'personality-report', 'result-preview'],
+    description:
+      'Shared result-hero typography, numerology composition, contrast hierarchy, and responsive stacking.',
+    group: 'regression',
+    id: 'visual-composition-regression',
+    required: true,
+    runner: ({ rootDir }) => runVisualCompositionGate(rootDir),
+    severity: 'error',
+    tags: ['regression', 'fast', 'full'],
+    timeout: 5_000,
+    title: 'Visual Composition',
   },
   {
     affectedModules: ['frontend/src'],

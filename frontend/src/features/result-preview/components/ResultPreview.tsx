@@ -91,8 +91,15 @@ export function ResultPreview({ onOpenFullResult, profile }: ResultPreviewProps)
         <Container size="wide">
           <Surface className={styles.heroSurface} elevation="low">
             <div className={styles.heroGrid}>
-              <Stack align="start" gap="lg">
-                <Badge tone="success">{copy.badge}</Badge>
+              <Stack align="start" className={styles.heroMain} gap="lg">
+                <div className={styles.resultState}>
+                  <Badge tone="success">{copy.badge}</Badge>
+                  <PortraitMark
+                    className={styles.mark}
+                    identity={profile.visualIdentity}
+                    size="sm"
+                  />
+                </div>
                 <Stack gap="sm">
                   <Typography
                     as="h1"
@@ -107,11 +114,6 @@ export function ResultPreview({ onOpenFullResult, profile }: ResultPreviewProps)
                     {profile.revealLead}
                   </Typography>
                 </Stack>
-                <PortraitMark
-                  identity={profile.visualIdentity}
-                  label={profile.revealHeadline}
-                  size="sm"
-                />
               </Stack>
 
               <Surface className={styles.heroNote} elevation="medium">

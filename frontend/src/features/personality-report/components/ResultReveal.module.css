@@ -18,26 +18,54 @@
 .grid {
   display: grid;
   align-items: center;
-  gap: var(--page-hero-gap);
+  gap: var(--result-hero-gap);
 }
 .visual {
+  position: relative;
   display: grid;
+  inline-size: min(100%, var(--result-hero-visual-size));
+  aspect-ratio: 1;
   place-items: center;
+  justify-self: center;
+  border: 0.0625rem solid color-mix(in srgb, var(--color-interactive) 38%, var(--color-border));
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-interactive) 12%, var(--color-surface)),
+    transparent 68%
+  );
   opacity: 0;
   animation: reveal-symbol var(--motion-reveal-duration) var(--motion-easing-discover) 0.08s
     forwards;
 }
+.visual::before {
+  position: absolute;
+  border: 0.0625rem dashed color-mix(in srgb, var(--color-interactive) 26%, transparent);
+  border-radius: 48%;
+  content: '';
+  inset: 12%;
+  rotate: -14deg;
+}
+.mark {
+  max-inline-size: 78%;
+}
 .content {
   min-inline-size: 0;
+  gap: var(--space-5);
 }
 .title {
-  max-inline-size: 17ch;
+  --page-title-size: var(--result-hero-title-size);
+
+  max-inline-size: var(--result-hero-title-max-width);
   text-wrap: balance;
   opacity: 0;
   transform: translateY(var(--motion-distance-md));
 }
+.title:focus {
+  outline: none;
+}
 .lead {
-  max-inline-size: 54ch;
+  max-inline-size: var(--result-hero-copy-width);
   opacity: 0;
 }
 .root[data-ready] .title {
@@ -102,9 +130,9 @@
     transform: none;
   }
 }
-@media (min-width: 48rem) {
+@media (min-width: 56rem) {
   .grid {
-    grid-template-columns: minmax(16rem, 0.82fr) minmax(0, 1.18fr);
+    grid-template-columns: minmax(11rem, 0.48fr) minmax(0, 1.52fr);
   }
   .visual {
     order: 0;
@@ -113,15 +141,26 @@
     order: 1;
   }
 }
-@media (max-width: 47.99rem) {
+@media (max-width: 55.99rem) {
   .root {
     min-block-size: 0;
   }
-  .visual :global(svg) {
-    max-inline-size: 10rem;
+  .visual {
+    max-inline-size: 9rem;
   }
   .title {
-    max-inline-size: 20ch;
+    max-inline-size: var(--result-hero-title-max-width);
+  }
+}
+@media (min-width: 56rem) and (max-height: 50rem) {
+  .root {
+    padding-block: var(--space-6);
+  }
+  .surface {
+    padding-block: var(--space-7);
+  }
+  .content {
+    gap: var(--space-4);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -134,5 +173,8 @@
     opacity: 1;
     transform: none;
     animation: none;
+  }
+  .visual::before {
+    rotate: 0deg;
   }
 }

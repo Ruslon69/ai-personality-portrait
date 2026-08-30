@@ -2,15 +2,18 @@ import type { ThemeMode } from '@app/providers/theme';
 import { Container, Stack, Surface, Typography } from '@shared/ui';
 
 import type { AppearanceOption } from '../types';
+import type { UserSettingsCopy } from '../data';
 import styles from './UserSettingsSections.module.css';
 
 type AppearanceSettingsSectionProps = {
+  copy: UserSettingsCopy['appearance'];
   onChange: (theme: ThemeMode) => void;
   options: readonly AppearanceOption[];
   value: ThemeMode;
 };
 
 export function AppearanceSettingsSection({
+  copy,
   onChange,
   options,
   value,
@@ -22,23 +25,21 @@ export function AppearanceSettingsSection({
           <Stack gap="lg">
             <Stack className={styles.sectionIntroduction} gap="sm">
               <Typography as="p" variant="eyebrow">
-                Внешний вид
+                {copy.eyebrow}
               </Typography>
               <Typography as="h2" id="appearance-settings-title" variant="heading-lg">
-                Выберите удобную тему
+                {copy.title}
               </Typography>
-              <Typography className={styles.muted}>
-                Оформление меняется сразу и остаётся синхронизировано с переключателем в Header.
-              </Typography>
+              <Typography className={styles.muted}>{copy.description}</Typography>
             </Stack>
 
             <fieldset
               aria-describedby="appearance-settings-description"
               className={styles.fieldset}
             >
-              <legend className={styles.visuallyHidden}>Тема интерфейса</legend>
+              <legend className={styles.visuallyHidden}>{copy.legend}</legend>
               <span className={styles.visuallyHidden} id="appearance-settings-description">
-                Доступны светлая, тёмная и системная темы.
+                {copy.options}
               </span>
               <div className={styles.optionGrid}>
                 {options.map((option) => (

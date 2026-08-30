@@ -833,7 +833,8 @@ export function runTarotArtworkGate(rootDir: string) {
   );
   assertions.assert(
     readingPageSource.includes('journeyActions.recordReading(reading)') &&
-      readingPageSource.includes('tarotSessionActions.saveReading(savedReading)') &&
+      readingPageSource.includes('tarotSessionActions.saveReading(result.value)') &&
+      readingPageSource.includes('if (!result.persisted)') &&
       readingPageSource.includes('navigate(ROUTES.tarotResult, { replace: true })') &&
       historyPageSource.includes('tarotSessionActions.saveReading(record.reading)') &&
       historyPageSource.includes('navigate(ROUTES.tarotResult)') &&
@@ -877,7 +878,8 @@ export function runTarotArtworkGate(rootDir: string) {
       tarotPreferencesSource.includes('<Modal') &&
       tarotPreferencesSource.includes('aria-live="polite"') &&
       settingsPageSource.includes('<TarotPreferencesSection') &&
-      settingsPageSource.includes('onHistoryLimitChange={journeyActions.setHistoryLimit}') &&
+      settingsPageSource.includes('journeyActions.setHistoryLimit(limit)') &&
+      settingsPageSource.includes('if (!result.persisted)') &&
       settingsPageSource.includes('onBackToTarot={() => navigate(ROUTES.tarot)}'),
     {
       code: 'tarot-preferences-accessible-settings',

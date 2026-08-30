@@ -1,15 +1,22 @@
 import { Container, Stack, Surface, Typography } from '@shared/ui';
 
 import type { SettingsConsent, SettingsConsentId, SettingsConsentValues } from '../types';
+import type { UserSettingsCopy } from '../data';
 import styles from './UserSettingsSections.module.css';
 
 type PrivacySettingsSectionProps = {
   consents: SettingsConsentValues;
+  copy: UserSettingsCopy['privacy'];
   items: readonly SettingsConsent[];
   onChange: (id: SettingsConsentId, enabled: boolean) => void;
 };
 
-export function PrivacySettingsSection({ consents, items, onChange }: PrivacySettingsSectionProps) {
+export function PrivacySettingsSection({
+  consents,
+  copy,
+  items,
+  onChange,
+}: PrivacySettingsSectionProps) {
   return (
     <section aria-labelledby="privacy-settings-title" className={styles.section}>
       <Container size="wide">
@@ -17,18 +24,16 @@ export function PrivacySettingsSection({ consents, items, onChange }: PrivacySet
           <Stack gap="lg">
             <Stack className={styles.sectionIntroduction} gap="sm">
               <Typography as="p" variant="eyebrow">
-                Приватность
+                {copy.eyebrow}
               </Typography>
               <Typography as="h2" id="privacy-settings-title" variant="heading-lg">
-                Каждое согласие — отдельный выбор
+                {copy.title}
               </Typography>
-              <Typography className={styles.muted}>
-                Все параметры изначально выключены и действуют только до обновления страницы.
-              </Typography>
+              <Typography className={styles.muted}>{copy.description}</Typography>
             </Stack>
 
             <fieldset className={styles.fieldset}>
-              <legend className={styles.visuallyHidden}>Отдельные согласия приватности</legend>
+              <legend className={styles.visuallyHidden}>{copy.legend}</legend>
               <div className={styles.consentList}>
                 {items.map((item) => (
                   <label className={styles.consentRow} key={item.id}>

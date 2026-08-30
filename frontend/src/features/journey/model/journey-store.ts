@@ -1,4 +1,4 @@
-import { createStore } from '@store';
+import { createStore, type Store } from '@store';
 import {
   persistJourneyStateToProductStorage,
   readJourneyStateFromProductStorage,
@@ -40,69 +40,123 @@ function readState(): JourneyState {
 
 export const journeyStore = createStore(readState());
 
-journeyStore.subscribe(() => {
-  persistJourneyStateToProductStorage(journeyStore.getState());
-});
-
-export const journeyActions = {
-  ensureDailyCard(card: JourneyDailyCard) {
-    const state = journeyStore.getState();
-    if (state.dailyCards[card.dateKey]) return;
-    journeyStore.setState({ dailyCards: { ...state.dailyCards, [card.dateKey]: card } });
-  },
-  openDailyCard(dateKey: string) {
-    const state = journeyStore.getState();
-    const card = state.dailyCards[dateKey];
-    if (!card || card.openedAt) return;
-    journeyStore.setState({
-      dailyCards: {
-        ...state.dailyCards,
-        [dateKey]: { ...card, openedAt: new Date().toISOString() },
-      },
-    });
-  },
-  recordReading(reading: TarotReading) {
-    const state = journeyStore.getState();
-    const existing = state.readings.find((item) => item.reading.id === reading.id);
-    if (existing) return existing.reading;
-    const previousSnapshot = buildJourneyMemorySnapshot({
-      generatedAt: reading.createdAt,
-      locale: reading.context.locale,
-      sources: journeyStateToMemorySources(state),
-    });
-    const completedReading = enrichTarotReadingWithContinuity(reading, previousSnapshot);
-    const update = addTarotHistoryRecord(
-      state.readings,
-      completedReading,
-      new Date().toISOString(),
-      currentHistoryLimit(),
-    );
-    journeyStore.setState({ readings: update.records });
-    return update.record.reading;
-  },
-  deleteReading(readingId: string) {
-    const state = journeyStore.getState();
-    if (!state.readings.some((record) => record.reading.id === readingId)) return;
-    journeyStore.setState({
-      readings: removeTarotHistoryRecord(state.readings, readingId),
-    });
-  },
-  clearReadings() {
-    const state = journeyStore.getState();
-    if (state.readings.length === 0) return;
-    journeyStore.setState({ readings: [] });
-  },
-  setHistoryLimit(limit: 25 | 50 | 75 | 100) {
-    const state = journeyStore.getState();
-    if (state.readings.length <= limit) return;
-    journeyStore.setState({ readings: normalizeTarotHistoryRecords(state.readings, limit) });
-  },
-  toggleFavorite(readingId: string) {
-    const state = journeyStore.getState();
-    journeyStore.setState({
-      readings: state.readings.map((item) =>
-        item.reading.id === readingId ? { ...item, favorite: !item.favorite } : item,
-      ),
-    });
-  },
+type JourneyActionDependencies = {
+  historyLimit: () => 25 | 50 | 75 | 100;
+  now: () => string;
+  persist: (state: JourneyState) => { persisted: boolean };
 };
+
+export type JourneyMutationResult<T = undefined> = {
+  changed: boolean;
+  persisted: boolean;
+  value: T;
+};
+
+export function createJourneyActions(
+  store: Store<JourneyState>,
+  dependencies: JourneyActionDependencies,
+) {
+  let lastPersistenceSucceeded = true;
+
+  function unchanged<T>(value: T): JourneyMutationResult<T> {
+    return { changed: false, persisted: lastPersistenceSucceeded, value };
+  }
+
+  function commit<T>(
+    update: Partial<JourneyState>,
+    value: T,
+    rollbackOnFailure = false,
+  ): JourneyMutationResult<T> {
+    const previous = store.getState();
+    store.setState(update);
+    const persistence = dependencies.persist(store.getState());
+    lastPersistenceSucceeded = persistence.persisted;
+    if (!persistence.persisted && rollbackOnFailure) store.setState(previous);
+    return { changed: true, persisted: persistence.persisted, value };
+  }
+
+  return {
+    ensureDailyCard(card: JourneyDailyCard) {
+      const state = store.getState();
+      if (state.dailyCards[card.dateKey]) return unchanged(undefined);
+      return commit({ dailyCards: { ...state.dailyCards, [card.dateKey]: card } }, undefined);
+    },
+    openDailyCard(dateKey: string) {
+      const state = store.getState();
+      const card = state.dailyCards[dateKey];
+      if (!card || card.openedAt) return unchanged(undefined);
+      return commit(
+        {
+          dailyCards: {
+            ...state.dailyCards,
+            [dateKey]: { ...card, openedAt: dependencies.now() },
+          },
+        },
+        undefined,
+        true,
+      );
+    },
+    recordReading(reading: TarotReading) {
+      const state = store.getState();
+      const existing = state.readings.find((item) => item.reading.id === reading.id);
+      if (existing) return unchanged(existing.reading);
+      const previousSnapshot = buildJourneyMemorySnapshot({
+        generatedAt: reading.createdAt,
+        locale: reading.context.locale,
+        sources: journeyStateToMemorySources(state),
+      });
+      const completedReading = enrichTarotReadingWithContinuity(reading, previousSnapshot);
+      const update = addTarotHistoryRecord(
+        state.readings,
+        completedReading,
+        dependencies.now(),
+        dependencies.historyLimit(),
+      );
+      return commit({ readings: update.records }, update.record.reading);
+    },
+    deleteReading(readingId: string) {
+      const state = store.getState();
+      if (!state.readings.some((record) => record.reading.id === readingId))
+        return unchanged(undefined);
+      return commit(
+        { readings: removeTarotHistoryRecord(state.readings, readingId) },
+        undefined,
+        true,
+      );
+    },
+    clearReadings() {
+      const state = store.getState();
+      if (state.readings.length === 0) return unchanged(undefined);
+      return commit({ readings: [] }, undefined, true);
+    },
+    setHistoryLimit(limit: 25 | 50 | 75 | 100) {
+      const state = store.getState();
+      if (state.readings.length <= limit) return unchanged(undefined);
+      return commit(
+        { readings: normalizeTarotHistoryRecords(state.readings, limit) },
+        undefined,
+        true,
+      );
+    },
+    toggleFavorite(readingId: string) {
+      const state = store.getState();
+      if (!state.readings.some((item) => item.reading.id === readingId))
+        return unchanged(undefined);
+      return commit(
+        {
+          readings: state.readings.map((item) =>
+            item.reading.id === readingId ? { ...item, favorite: !item.favorite } : item,
+          ),
+        },
+        undefined,
+        true,
+      );
+    },
+  };
+}
+
+export const journeyActions = createJourneyActions(journeyStore, {
+  historyLimit: currentHistoryLimit,
+  now: () => new Date().toISOString(),
+  persist: persistJourneyStateToProductStorage,
+});

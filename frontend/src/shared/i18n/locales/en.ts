@@ -51,8 +51,9 @@ export const en = {
       title: 'Compatibility',
     },
     notFound: {
-      description: 'The requested page could not be found.',
-      title: '404',
+      action: 'Return home',
+      description: 'This page may no longer exist, or there may be a mistake in the address.',
+      title: 'Page not found',
     },
   },
   home: {

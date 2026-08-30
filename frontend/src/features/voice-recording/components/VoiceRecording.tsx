@@ -4,7 +4,7 @@ import type { DraftVoiceSelection } from '@entities/personality-profile';
 import { useI18n } from '@shared/i18n';
 import { Badge, Button, Card, Container, Spinner, Stack, Surface, Typography } from '@shared/ui';
 
-import { preparedReadingText } from '../config';
+import { voiceRecordingCopy } from '../data';
 import { useVoiceRecording } from '../hooks';
 import type { VoiceRecordingStatus } from '../types';
 import { formatRecordingDuration } from '../utils';
@@ -14,20 +14,6 @@ import { VoiceLayerVisual } from './VoiceLayerVisual';
 type VoiceRecordingProps = {
   onBack: () => void;
   onComplete: (result: DraftVoiceSelection) => void;
-};
-
-const statusLabels: Record<VoiceRecordingStatus, string> = {
-  error: 'Нужна проверка',
-  idle: 'Микрофон выключен',
-  invalid: 'Лучше повторить',
-  'permission-denied': 'Доступ не предоставлен',
-  ready: 'Микрофон готов',
-  recorded: 'Запись завершена',
-  recording: 'Идёт запись',
-  'requesting-permission': 'Проверяем доступ',
-  unsupported: 'Запись недоступна',
-  valid: 'Запись готова',
-  validating: 'Проверяем запись',
 };
 
 function getStatusTone(status: VoiceRecordingStatus) {
@@ -42,28 +28,33 @@ function getStatusTone(status: VoiceRecordingStatus) {
   return 'info' as const;
 }
 
-function getSignalDescription(audioLevel: number | null, status: VoiceRecordingStatus) {
+function getSignalDescription(
+  audioLevel: number | null,
+  status: VoiceRecordingStatus,
+  copy: (typeof voiceRecordingCopy)['ru']['signal'],
+) {
   if (status !== 'recording') {
-    return 'Микрофон сейчас не записывает';
+    return copy.idle;
   }
 
   if (audioLevel === null) {
-    return 'Измерение уровня недоступно, запись продолжается';
+    return copy.unavailable;
   }
 
   if (audioLevel < 0.08) {
-    return 'Сигнал пока очень тихий';
+    return copy.quiet;
   }
 
   if (audioLevel < 0.25) {
-    return 'Сигнал обнаружен';
+    return copy.detected;
   }
 
-  return 'Уровень сигнала достаточный';
+  return copy.good;
 }
 
 export function VoiceRecording({ onBack, onComplete }: VoiceRecordingProps) {
   const { locale } = useI18n();
+  const copy = voiceRecordingCopy[locale];
   const [skipMessage, setSkipMessage] = useState('');
   const skipTimerRef = useRef<number | null>(null);
   useEffect(
@@ -86,7 +77,7 @@ export function VoiceRecording({ onBack, onComplete }: VoiceRecordingProps) {
     requestPermission,
     startRecording,
     stopRecording,
-  } = useVoiceRecording();
+  } = useVoiceRecording(locale);
 
   const leaveStep = (destination: () => void) => {
     release();
@@ -106,54 +97,32 @@ export function VoiceRecording({ onBack, onComplete }: VoiceRecordingProps) {
   };
 
   const skipRecording = () => {
-    const message =
-      locale === 'en'
-        ? 'Continuing without the voice layer'
-        : locale === 'uk'
-          ? 'Продовжуємо без голосового шару'
-          : 'Продолжаем без голосового слоя';
-    setSkipMessage(message);
+    setSkipMessage(copy.skipMessage);
     skipTimerRef.current = window.setTimeout(
       () => leaveStep(() => onComplete({ status: 'skipped' })),
       window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 380,
     );
   };
 
-  const statusDescription =
-    error?.message ??
-    (status === 'idle'
-      ? 'Доступ запрашивается только после вашего действия.'
-      : status === 'requesting-permission'
-        ? 'Подтвердите доступ в системном окне браузера.'
-        : status === 'ready'
-          ? 'Доступ проверен, но запись ещё не началась.'
-          : status === 'recording'
-            ? 'Читайте текст в привычном темпе. Остановить запись можно в любой момент.'
-            : status === 'recorded' || status === 'validating'
-              ? 'Локально проверяем длительность, формат и уровень сигнала.'
-              : status === 'valid'
-                ? 'Можно прослушать запись, использовать её или записать заново.'
-                : status === 'invalid'
-                  ? 'Запись сохранена только в этой вкладке. Можно спокойно повторить попытку.'
-                  : 'Голосовой этап можно пропустить без потери остального пути.');
+  const statusDescription = error?.message ?? copy.statusDescriptions[status];
 
   const currentDuration = recording?.durationMs ?? elapsedMs;
-  const signalDescription = getSignalDescription(audioLevel, status);
+  const signalDescription = getSignalDescription(audioLevel, status, copy.signal);
   const showPlayback = recording && ['recorded', 'validating', 'valid', 'invalid'].includes(status);
   const isChecking = status === 'requesting-permission' || status === 'validating';
 
   const primaryAction =
     status === 'idle' ? (
       <Button onClick={requestPermission} prominence="primary" size="large">
-        Разрешить микрофон
+        {copy.actions.allow}
       </Button>
     ) : status === 'ready' ? (
       <Button onClick={startRecording} prominence="primary" size="large">
-        Начать запись
+        {copy.actions.start}
       </Button>
     ) : status === 'recording' ? (
       <Button onClick={stopRecording} prominence="primary" size="large">
-        Остановить запись
+        {copy.actions.stop}
       </Button>
     ) : status === 'valid' ? (
       <Button
@@ -162,7 +131,7 @@ export function VoiceRecording({ onBack, onComplete }: VoiceRecordingProps) {
         prominence="primary"
         size="large"
       >
-        Использовать запись
+        {copy.actions.use}
       </Button>
     ) : status === 'invalid' ? (
       <Button
@@ -171,19 +140,19 @@ export function VoiceRecording({ onBack, onComplete }: VoiceRecordingProps) {
         prominence="primary"
         size="large"
       >
-        Записать заново
+        {copy.actions.recordAgain}
       </Button>
     ) : status === 'permission-denied' || status === 'error' ? (
       <Button onClick={requestPermission} prominence="primary" size="large">
-        Проверить микрофон снова
+        {copy.actions.requestAgain}
       </Button>
     ) : status === 'unsupported' ? (
       <Button onClick={skipRecording} prominence="primary" size="large">
-        Продолжить без голоса
+        {copy.actions.continueWithout}
       </Button>
     ) : (
       <Button disabled prominence="primary" size="large">
-        {status === 'validating' ? 'Проверяем запись' : 'Ожидаем разрешение'}
+        {status === 'validating' ? copy.actions.checking : copy.actions.waiting}
       </Button>
     );
 
@@ -193,14 +162,13 @@ export function VoiceRecording({ onBack, onComplete }: VoiceRecordingProps) {
         <Container size="default">
           <Stack className={styles.introductionContent} gap="md">
             <Typography as="p" variant="eyebrow">
-              Необязательный этап
+              {copy.introduction.eyebrow}
             </Typography>
             <Typography as="h1" className={styles.title} id="voice-title" variant="flow-title">
-              Добавьте голос к портрету
+              {copy.introduction.title}
             </Typography>
             <Typography className={styles.lead} variant="flow-lead">
-              Короткая запись добавит наблюдения только об особенностях речи в этом фрагменте. Она
-              не определяет личность и не используется для идентификации.
+              {copy.introduction.lead}
             </Typography>
           </Stack>
         </Container>
@@ -212,40 +180,37 @@ export function VoiceRecording({ onBack, onComplete }: VoiceRecordingProps) {
             <div className={styles.privacyGrid}>
               <Stack gap="sm">
                 <Typography as="p" variant="eyebrow">
-                  Приватность
+                  {copy.privacy.eyebrow}
                 </Typography>
                 <Typography as="h2" id="voice-privacy-title" variant="heading-md">
-                  Запись остаётся под вашим контролем
+                  {copy.privacy.title}
                 </Typography>
               </Stack>
               <ul className={styles.privacyList}>
-                <li>Голос можно пропустить.</li>
-                <li>Аудио не отправляется на сервер.</li>
-                <li>Исходная запись удаляется после анализа по умолчанию.</li>
-                <li>После обновления страницы запись не сохраняется.</li>
+                {copy.privacy.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
               </ul>
             </div>
           </Surface>
         </Container>
       </section>
 
-      <section aria-label="Подготовка и запись голоса" className={styles.workspaceSection}>
+      <section aria-label={copy.workspaceLabel} className={styles.workspaceSection}>
         <Container size="default">
           <div className={styles.workspaceGrid}>
             <Card aria-labelledby="reading-text-title" className={styles.scriptCard}>
               <Stack gap="lg">
                 <Stack gap="sm">
                   <Typography as="p" variant="eyebrow">
-                    Текст для чтения
+                    {copy.script.eyebrow}
                   </Typography>
                   <Typography as="h2" id="reading-text-title" variant="heading-lg">
-                    Прочитайте в привычном темпе
+                    {copy.script.title}
                   </Typography>
-                  <Typography variant="caption">
-                    Ориентировочное время чтения — 30–45 секунд.
-                  </Typography>
+                  <Typography variant="caption">{copy.script.duration}</Typography>
                 </Stack>
-                <Typography className={styles.readingText}>{preparedReadingText}</Typography>
+                <Typography className={styles.readingText}>{copy.readingText}</Typography>
               </Stack>
             </Card>
 
@@ -255,9 +220,9 @@ export function VoiceRecording({ onBack, onComplete }: VoiceRecordingProps) {
                 <Stack gap="sm">
                   <Stack align="center" direction="row" justify="between">
                     <Typography as="h2" id="recording-panel-title" variant="heading-lg">
-                      Запись
+                      {copy.panel.recording}
                     </Typography>
-                    <Badge tone={getStatusTone(status)}>{statusLabels[status]}</Badge>
+                    <Badge tone={getStatusTone(status)}>{copy.statusLabels[status]}</Badge>
                   </Stack>
                   <Typography aria-live="polite" className={styles.statusText} role="status">
                     {statusDescription}
@@ -267,25 +232,25 @@ export function VoiceRecording({ onBack, onComplete }: VoiceRecordingProps) {
                 <div className={styles.recordingMetrics}>
                   <div className={styles.metric}>
                     <Typography as="span" variant="caption">
-                      Длительность
+                      {copy.panel.duration}
                     </Typography>
                     <time
-                      aria-label={`Текущая длительность записи ${formatRecordingDuration(
-                        currentDuration,
-                      )}`}
+                      aria-label={copy.panel.currentDuration(
+                        formatRecordingDuration(currentDuration),
+                      )}
                       className={styles.timer}
                       dateTime={`PT${Math.floor(currentDuration / 1000)}S`}
                     >
                       {formatRecordingDuration(currentDuration)}
                     </time>
                     <Typography as="span" variant="caption">
-                      максимум {formatRecordingDuration(maxDurationMs)}
+                      {copy.panel.maximum(formatRecordingDuration(maxDurationMs))}
                     </Typography>
                   </div>
 
                   <div className={styles.metric}>
                     <Typography as="span" variant="caption">
-                      Уровень сигнала
+                      {copy.panel.signal}
                     </Typography>
                     <meter
                       aria-label={signalDescription}
@@ -304,8 +269,8 @@ export function VoiceRecording({ onBack, onComplete }: VoiceRecordingProps) {
                   <Spinner
                     label={
                       status === 'validating'
-                        ? 'Проверяем техническое качество записи'
-                        : 'Ожидаем разрешение на использование микрофона'
+                        ? copy.panel.spinnerValidation
+                        : copy.panel.spinnerPermission
                     }
                   />
                 ) : null}
@@ -313,10 +278,10 @@ export function VoiceRecording({ onBack, onComplete }: VoiceRecordingProps) {
                 {showPlayback ? (
                   <Stack className={styles.playbackBlock} gap="sm">
                     <Typography as="h3" variant="heading-sm">
-                      Прослушивание
+                      {copy.panel.playback}
                     </Typography>
                     <audio
-                      aria-label="Прослушать записанный голос"
+                      aria-label={copy.panel.playbackLabel}
                       className={styles.audio}
                       controls
                       onError={reportPlaybackError}
@@ -324,20 +289,20 @@ export function VoiceRecording({ onBack, onComplete }: VoiceRecordingProps) {
                       src={recording.url}
                     />
                     <Typography variant="caption">
-                      Длительность: {formatRecordingDuration(recording.durationMs)}
+                      {copy.panel.duration}: {formatRecordingDuration(recording.durationMs)}
                     </Typography>
                   </Stack>
                 ) : null}
 
                 {quality ? (
                   <Surface
-                    aria-label="Техническая оценка качества записи"
+                    aria-label={copy.panel.qualityLabel}
                     className={styles.qualityBlock}
                     role="status"
                   >
                     <Stack gap="xs">
                       <Typography as="h3" variant="heading-sm">
-                        {quality.valid ? 'Запись подходит' : 'Запись лучше повторить'}
+                        {quality.valid ? copy.panel.qualityGood : copy.panel.qualityBad}
                       </Typography>
                       <Typography className={styles.statusText} id="voice-quality-description">
                         {quality.message}
@@ -347,13 +312,13 @@ export function VoiceRecording({ onBack, onComplete }: VoiceRecordingProps) {
                 ) : null}
 
                 <div className={styles.actions}>
-                  <Button onClick={() => leaveStep(onBack)}>Назад</Button>
+                  <Button onClick={() => leaveStep(onBack)}>{copy.actions.back}</Button>
                   <div className={styles.forwardActions}>
                     {status === 'valid' ? (
-                      <Button onClick={recordAgain}>Записать заново</Button>
+                      <Button onClick={recordAgain}>{copy.actions.recordAgain}</Button>
                     ) : null}
                     {status !== 'unsupported' ? (
-                      <Button onClick={skipRecording}>Пропустить голос</Button>
+                      <Button onClick={skipRecording}>{copy.actions.skip}</Button>
                     ) : null}
                     {primaryAction}
                   </div>

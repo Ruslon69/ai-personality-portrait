@@ -59,6 +59,7 @@ export type I18nMessages = {
       title: string;
     };
     notFound: {
+      action: string;
       description: string;
       title: string;
     };

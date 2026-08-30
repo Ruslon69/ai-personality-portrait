@@ -45,7 +45,8 @@ export type SettingsAccount = {
 
 export type PendingSettingsAction = {
   action: SettingsAction;
-  focusTargetId: string;
+  cancelFocusTargetId: string;
+  confirmFocusTargetId: string;
   invitationId?: string;
 };
 

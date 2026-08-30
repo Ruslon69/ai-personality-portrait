@@ -182,7 +182,7 @@ export const tarotContextQuestions: readonly TarotContextQuestion[] = [
     options: [
       option(
         'threshold',
-        'Я стою у точки перехода',
+        'Я нахожусь в точке перехода',
         'I am at a threshold',
         'Я стою на порозі переходу',
       ),

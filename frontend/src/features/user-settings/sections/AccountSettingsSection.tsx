@@ -1,13 +1,15 @@
 import { Badge, Container, Stack, Surface, Typography } from '@shared/ui';
 
 import type { SettingsAccount } from '../types';
+import type { UserSettingsCopy } from '../data';
 import styles from './UserSettingsSections.module.css';
 
 type AccountSettingsSectionProps = {
   account: SettingsAccount;
+  copy: UserSettingsCopy['account'];
 };
 
-export function AccountSettingsSection({ account }: AccountSettingsSectionProps) {
+export function AccountSettingsSection({ account, copy }: AccountSettingsSectionProps) {
   return (
     <section aria-labelledby="account-settings-title" className={styles.section}>
       <Container size="wide">
@@ -15,16 +17,16 @@ export function AccountSettingsSection({ account }: AccountSettingsSectionProps)
           <div className={styles.accountGrid}>
             <Stack gap="sm">
               <Typography as="p" variant="eyebrow">
-                Аккаунт
+                {copy.eyebrow}
               </Typography>
               <Typography as="h2" id="account-settings-title" variant="heading-lg">
-                Текущее состояние
+                {copy.title}
               </Typography>
             </Stack>
             <Stack align="start" gap="sm">
               <Badge tone="neutral">{account.label}</Badge>
               <Typography className={styles.muted}>{account.description}</Typography>
-              <Typography variant="caption">Регистрация на этом этапе не требуется.</Typography>
+              <Typography variant="caption">{copy.note}</Typography>
             </Stack>
           </div>
         </Surface>

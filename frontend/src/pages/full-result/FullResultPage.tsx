@@ -1,30 +1,33 @@
-import { useEffect } from 'react';
-
 import { useNotifications } from '@app/providers';
-import { PersonalityReport } from '@features/personality-report';
-import { useRouter } from '@router/navigation';
-import { ROUTES } from '@shared/config';
-import { useI18n } from '@shared/i18n';
+import type { PersonalityProfile } from '@entities/personality-profile';
+import { PersonalityReport, PortraitResultBoundary } from '@features/personality-report';
+import { useI18n, type Locale } from '@shared/i18n';
 import { useDraftPortraitState } from '@store';
+
+export function FullResultPageContent({
+  locale,
+  onShare,
+  profile,
+}: {
+  locale: Locale;
+  onShare: () => void;
+  profile: PersonalityProfile | null;
+}) {
+  return (
+    <PortraitResultBoundary locale={locale} profile={profile}>
+      {(availableProfile) => <PersonalityReport onShare={onShare} profile={availableProfile} />}
+    </PortraitResultBoundary>
+  );
+}
 
 export function FullResultPage() {
   const { notify } = useNotifications();
   const { locale } = useI18n();
-  const { navigate } = useRouter();
   const { currentProfile } = useDraftPortraitState();
 
-  useEffect(() => {
-    if (!currentProfile) {
-      navigate(ROUTES.portrait, { replace: true });
-    }
-  }, [currentProfile, navigate]);
-
-  if (!currentProfile) {
-    return null;
-  }
-
   return (
-    <PersonalityReport
+    <FullResultPageContent
+      locale={locale}
       onShare={() =>
         notify(
           locale === 'en'

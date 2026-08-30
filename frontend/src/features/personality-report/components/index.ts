@@ -4,6 +4,7 @@ export { ExplainCard } from './ExplainCard';
 export { ExpandableReportCard } from './ExpandableReportCard';
 export { ExplanationSection } from './ExplanationSection';
 export { PersonalityReport } from './PersonalityReport';
+export { PortraitResultBoundary, PortraitResultRecovery } from './PortraitResultBoundary';
 export { PortraitSummary } from './PortraitSummary';
 export { ReportSectionNav } from './ReportSectionNav';
 export { ResultReveal } from './ResultReveal';

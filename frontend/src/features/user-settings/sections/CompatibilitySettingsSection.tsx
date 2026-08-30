@@ -1,16 +1,22 @@
 import { Badge, Button, Card, Container, Stack, Typography } from '@shared/ui';
+import type { Locale } from '@shared/i18n';
 
+import type { UserSettingsCopy } from '../data';
 import type { CompatibilityInvitation } from '../types';
 import { formatInvitationDate, getInvitationStatusLabel } from '../utils';
 import styles from './UserSettingsSections.module.css';
 
 type CompatibilitySettingsSectionProps = {
+  copy: UserSettingsCopy['compatibility'];
   invitations: readonly CompatibilityInvitation[];
+  locale: Locale;
   onRevoke: (invitation: CompatibilityInvitation, focusTargetId: string) => void;
 };
 
 export function CompatibilitySettingsSection({
+  copy,
   invitations,
+  locale,
   onRevoke,
 }: CompatibilitySettingsSectionProps) {
   return (
@@ -19,7 +25,7 @@ export function CompatibilitySettingsSection({
         <Stack gap="lg">
           <Stack className={styles.sectionIntroduction} gap="sm">
             <Typography as="p" variant="eyebrow">
-              Совместимость
+              {copy.eyebrow}
             </Typography>
             <Typography
               as="h2"
@@ -27,11 +33,9 @@ export function CompatibilitySettingsSection({
               tabIndex={-1}
               variant="heading-lg"
             >
-              Активные приглашения
+              {copy.title}
             </Typography>
-            <Typography className={styles.muted}>
-              Согласие относится только к конкретному приглашению и может быть отозвано.
-            </Typography>
+            <Typography className={styles.muted}>{copy.description}</Typography>
           </Stack>
 
           <div className={styles.invitationGrid}>
@@ -49,11 +53,11 @@ export function CompatibilitySettingsSection({
                     <Stack align="center" direction="row" justify="between" wrap>
                       <Typography className={styles.muted} variant="caption">
                         <time dateTime={invitation.createdAt}>
-                          {formatInvitationDate(invitation.createdAt)}
+                          {formatInvitationDate(invitation.createdAt, locale)}
                         </time>
                       </Typography>
                       <Badge tone={isRevoked ? 'neutral' : 'info'}>
-                        {getInvitationStatusLabel(invitation.status)}
+                        {getInvitationStatusLabel(invitation.status, locale)}
                       </Badge>
                     </Stack>
                     <Stack gap="xs">
@@ -63,16 +67,14 @@ export function CompatibilitySettingsSection({
                       <Typography className={styles.muted}>{invitation.label}</Typography>
                     </Stack>
                     {isRevoked ? (
-                      <Typography variant="caption">
-                        Новые открытия по ссылке недоступны.
-                      </Typography>
+                      <Typography variant="caption">{copy.newLinksUnavailable}</Typography>
                     ) : (
                       <Button
                         className={styles.dangerOutline}
                         id={buttonId}
-                        onClick={() => onRevoke(invitation, 'compatibility-settings-title')}
+                        onClick={() => onRevoke(invitation, buttonId)}
                       >
-                        Отозвать приглашение
+                        {copy.revoke}
                       </Button>
                     )}
                   </Stack>

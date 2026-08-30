@@ -7,8 +7,12 @@ import { createBrowserProductStorageLegacyBridge } from '../compatibility';
 import { LEGACY_STORAGE_KEYS } from '../constants';
 import { createBrowserProductStorageRepository } from '../repositories';
 import { ProductStorageService } from '../service';
-import type { ProductStorageEventTarget } from '../types';
-import type { PreferencesStorageSection } from '../types';
+import type {
+  PreferencesStorageSection,
+  ProductStorageEventTarget,
+  ProductStorageSectionWriteResult,
+  StorageCapability,
+} from '../types';
 import { createProductStorageDiagnosticSink } from './diagnostics';
 import { resolveProductStorageFeatureFlag } from './feature-flag';
 
@@ -80,12 +84,20 @@ export function readJourneyStateFromProductStorage() {
   return journeyStorageAdapter.legacyFallback(legacy[LEGACY_STORAGE_KEYS.journey[0]] ?? null);
 }
 
+export function didJourneyWritePersist(
+  write: ProductStorageSectionWriteResult,
+  capability: StorageCapability,
+) {
+  return write.legacyWritten || (write.envelopeWritten && capability === 'persistent');
+}
+
 export function persistJourneyStateToProductStorage(
   state: Parameters<typeof journeyStorageAdapter.toEnvelopeSection>[0],
 ) {
+  const runtime = getProductStorageService();
   const section = journeyStorageAdapter.toEnvelopeSection(state);
-  return section
-    ? getProductStorageService().updateSection('journey', section)
+  const write = section
+    ? runtime.updateSection('journey', section)
     : {
         envelopeWritten: false,
         errors: ['journey-adapter-failed'],
@@ -94,6 +106,9 @@ export function persistJourneyStateToProductStorage(
         status: 'failed' as const,
         warnings: [],
       };
+  const persisted = didJourneyWritePersist(write, runtime.getCapability());
+
+  return { ...write, persisted };
 }
 
 export function readNumerologyBirthDateFromProductStorage() {

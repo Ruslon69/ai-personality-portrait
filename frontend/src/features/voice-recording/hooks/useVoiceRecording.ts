@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import type { Locale } from '@shared/i18n';
+
 import { voiceRecordingConfig } from '../config';
+import { voiceRecordingCopy } from '../data';
 import type {
   LocalAudioRecording,
   VoiceQualityResult,
@@ -25,7 +28,8 @@ const audioConstraints: MediaStreamConstraints = {
   video: false,
 };
 
-export function useVoiceRecording() {
+export function useVoiceRecording(locale: Locale = 'ru') {
+  const copy = voiceRecordingCopy[locale];
   const [status, setStatus] = useState<VoiceRecordingStatus>('idle');
   const [elapsedMs, setElapsedMs] = useState(0);
   const [audioLevel, setAudioLevel] = useState<number | null>(null);
@@ -143,14 +147,14 @@ export function useVoiceRecording() {
   const handleFailure = useCallback(
     (failure: unknown) => {
       abortActiveCapture();
-      const mappedError = mapMediaError(failure);
+      const mappedError = mapMediaError(failure, locale);
 
       if (mountedRef.current) {
         setError(mappedError.error);
         updateStatus(mappedError.status);
       }
     },
-    [abortActiveCapture, updateStatus],
+    [abortActiveCapture, locale, updateStatus],
   );
 
   const startLevelMonitoring = useCallback(
@@ -220,20 +224,18 @@ export function useVoiceRecording() {
     } catch {
       abortActiveCapture({
         code: 'recorder-error',
-        message:
-          'Запись не удалось корректно остановить. Попробуйте ещё раз или продолжите без голоса.',
+        message: copy.errors.stop,
       });
     } finally {
       releaseStream();
     }
-  }, [abortActiveCapture, clearTimers, releaseStream, stopLevelMonitoring]);
+  }, [abortActiveCapture, clearTimers, copy.errors.stop, releaseStream, stopLevelMonitoring]);
 
   const requestPermission = useCallback(async () => {
     if (!isRecordingSupported()) {
       setError({
         code: 'unsupported-format',
-        message:
-          'Этот браузер не поддерживает локальную запись. Можно продолжить без голосового шага.',
+        message: copy.errors.unsupported,
       });
       updateStatus('unsupported');
       return;
@@ -260,14 +262,13 @@ export function useVoiceRecording() {
     } catch (failure) {
       handleFailure(failure);
     }
-  }, [handleFailure, updateStatus]);
+  }, [copy.errors.unsupported, handleFailure, updateStatus]);
 
   const startRecording = useCallback(async () => {
     if (!isRecordingSupported()) {
       setError({
         code: 'unsupported-format',
-        message:
-          'Этот браузер не поддерживает локальную запись. Можно продолжить без голосового шага.',
+        message: copy.errors.unsupported,
       });
       updateStatus('unsupported');
       return;
@@ -311,7 +312,7 @@ export function useVoiceRecording() {
 
         abortActiveCapture({
           code: 'device-lost',
-          message: 'Микрофон перестал передавать звук. Проверьте устройство и попробуйте ещё раз.',
+          message: copy.errors.deviceLost,
         });
       };
 
@@ -328,8 +329,7 @@ export function useVoiceRecording() {
       recorder.onerror = () => {
         abortActiveCapture({
           code: 'recorder-error',
-          message:
-            'Во время записи произошла ошибка. Попробуйте ещё раз или продолжите без голоса.',
+          message: copy.errors.recorder,
         });
       };
 
@@ -364,8 +364,7 @@ export function useVoiceRecording() {
         } catch {
           setError({
             code: 'recorder-error',
-            message:
-              'Не удалось подготовить запись для прослушивания. Попробуйте записать её ещё раз.',
+            message: copy.errors.preparePlayback,
           });
           updateStatus('error');
         }
@@ -396,6 +395,10 @@ export function useVoiceRecording() {
   }, [
     abortActiveCapture,
     clearRecording,
+    copy.errors.deviceLost,
+    copy.errors.preparePlayback,
+    copy.errors.recorder,
+    copy.errors.unsupported,
     handleFailure,
     startLevelMonitoring,
     stopRecording,
@@ -412,27 +415,25 @@ export function useVoiceRecording() {
   const reportPlaybackError = useCallback(() => {
     setQuality({
       issues: ['unsupported-format'],
-      message:
-        'Браузер не смог воспроизвести эту запись. Попробуйте записать её ещё раз или пропустите голос.',
+      message: copy.errors.playback,
       valid: false,
     });
     updateStatus('invalid');
-  }, [updateStatus]);
+  }, [copy.errors.playback, updateStatus]);
 
   useEffect(() => {
     const supportCheckTimeout = window.setTimeout(() => {
       if (!isRecordingSupported()) {
         setError({
           code: 'unsupported-format',
-          message:
-            'Этот браузер не поддерживает локальную запись. Можно продолжить без голосового шага.',
+          message: copy.errors.unsupported,
         });
         updateStatus('unsupported');
       }
     }, 0);
 
     return () => window.clearTimeout(supportCheckTimeout);
-  }, [updateStatus]);
+  }, [copy.errors.unsupported, updateStatus]);
 
   useEffect(() => {
     if (status !== 'recorded' || !recording) {
@@ -441,13 +442,16 @@ export function useVoiceRecording() {
 
     updateStatus('validating');
     const validationTimeout = window.setTimeout(() => {
-      const nextQuality = validateAudioQuality({
-        averageSignalLevel: recording.averageSignalLevel,
-        blobSize: recording.blob.size,
-        durationMs: recording.durationMs,
-        mimeType: recording.mimeType,
-        signalSampleCount: recording.signalSampleCount,
-      });
+      const nextQuality = validateAudioQuality(
+        {
+          averageSignalLevel: recording.averageSignalLevel,
+          blobSize: recording.blob.size,
+          durationMs: recording.durationMs,
+          mimeType: recording.mimeType,
+          signalSampleCount: recording.signalSampleCount,
+        },
+        locale,
+      );
 
       if (mountedRef.current) {
         setQuality(nextQuality);
@@ -456,7 +460,7 @@ export function useVoiceRecording() {
     }, 0);
 
     return () => window.clearTimeout(validationTimeout);
-  }, [recording, status, updateStatus]);
+  }, [locale, recording, status, updateStatus]);
 
   useEffect(() => {
     mountedRef.current = true;

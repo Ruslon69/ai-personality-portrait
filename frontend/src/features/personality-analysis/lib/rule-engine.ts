@@ -181,7 +181,7 @@ export function runRuleEngine(
   );
 
   const interest = options.interests[0]
-    ? getInterestLabel(options.interests[0], options.locale)
+    ? getInterestLabel(options.interests[0], options.locale, 'instrumental')
     : undefined;
   const recommendations = ranked.slice(0, 5).map(({ evidence: traitEvidence, id }) => {
     const template = getTraitTemplate(id, options.locale);

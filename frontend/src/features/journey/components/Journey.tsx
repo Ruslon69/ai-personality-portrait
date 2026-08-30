@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import { useNotifications } from '@app/providers';
 import type { PersonalityProfile } from '@entities/personality-profile';
 import { createNumerologyProfile } from '@features/numerology';
 import { TarotCardView, tarotCardById } from '@features/tarot';
 import type { Locale } from '@shared/i18n';
 import { Button, Container, Stack, Typography } from '@shared/ui';
 
-import { journeyCopy } from '../data';
+import { journeyCopy, journeyPersistenceCopy } from '../data';
 import { useJourney } from '../hooks';
 import { createDailyCard, createJourneyChapters, getLocalDateKey } from '../lib';
 import type { JourneyReadingRecord } from '../types';
@@ -29,8 +30,10 @@ export function Journey({
   onOpenReading,
   profile,
 }: JourneyProps) {
+  const { notify } = useNotifications();
   const { actions, state } = useJourney();
   const copy = journeyCopy[locale];
+  const persistenceCopy = journeyPersistenceCopy[locale];
   const dateKey = getLocalDateKey();
   const chapters = useMemo(
     () => createJourneyChapters(state.readings, locale),
@@ -69,15 +72,18 @@ export function Journey({
 
   function openDailyCard() {
     actions.ensureDailyCard(candidate);
-    actions.openDailyCard(dateKey);
-    setAnnouncement(`${card.name[locale]}. ${copy.card.opened}`);
+    const result = actions.openDailyCard(dateKey);
+    if (result.persisted) setAnnouncement(`${card.name[locale]}. ${copy.card.opened}`);
+    else notify(persistenceCopy.dailyCardFailed, 'error');
   }
 
   function toggleBookmark(record: JourneyReadingRecord) {
-    actions.toggleFavorite(record.reading.id);
-    setAnnouncement(
-      `${record.reading.headline}. ${record.favorite ? copy.path.removedBookmark : copy.path.addedBookmark}`,
-    );
+    const result = actions.toggleFavorite(record.reading.id);
+    if (result.persisted) {
+      setAnnouncement(
+        `${record.reading.headline}. ${record.favorite ? copy.path.removedBookmark : copy.path.addedBookmark}`,
+      );
+    } else notify(persistenceCopy.favoriteFailed, 'error');
   }
 
   return (

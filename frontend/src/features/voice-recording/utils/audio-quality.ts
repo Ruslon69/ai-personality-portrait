@@ -1,29 +1,20 @@
 import { voiceRecordingConfig } from '../config';
+import { voiceRecordingCopy } from '../data';
+import type { Locale } from '@shared/i18n';
 import type { AudioQualityInput, VoiceQualityResult, VoiceRecordingIssue } from '../types';
 
 const supportedMimeTypes = ['audio/webm', 'audio/ogg', 'audio/mp4'];
-
-const issueMessages: Record<VoiceRecordingIssue, string> = {
-  empty: 'В записи не обнаружены аудиоданные. Проверьте микрофон и попробуйте ещё раз.',
-  'low-signal': 'Сигнал получился слишком тихим. Попробуйте говорить немного ближе к микрофону.',
-  'too-long': 'Запись превысила максимальную длительность. Прочитайте текст ещё раз без спешки.',
-  'too-short': 'Запись получилась слишком короткой. Прочитайте подготовленный текст полностью.',
-  'unsupported-format':
-    'Браузер создал неподдерживаемый аудиоформат. Можно попробовать другой браузер или пропустить голос.',
-};
 
 export function isSupportedAudioMimeType(mimeType: string) {
   const normalizedMimeType = mimeType.toLowerCase();
   return supportedMimeTypes.some((supportedType) => normalizedMimeType.startsWith(supportedType));
 }
 
-export function validateAudioQuality({
-  averageSignalLevel,
-  blobSize,
-  durationMs,
-  mimeType,
-  signalSampleCount,
-}: AudioQualityInput): VoiceQualityResult {
+export function validateAudioQuality(
+  { averageSignalLevel, blobSize, durationMs, mimeType, signalSampleCount }: AudioQualityInput,
+  locale: Locale = 'ru',
+): VoiceQualityResult {
+  const copy = voiceRecordingCopy[locale];
   const issues: VoiceRecordingIssue[] = [];
 
   if (blobSize === 0) {
@@ -54,9 +45,7 @@ export function validateAudioQuality({
 
   return {
     issues,
-    message: firstIssue
-      ? issueMessages[firstIssue]
-      : 'Техническое качество записи подходит для следующего шага.',
+    message: firstIssue ? copy.issueMessages[firstIssue] : copy.qualitySuccess,
     valid: issues.length === 0,
   };
 }

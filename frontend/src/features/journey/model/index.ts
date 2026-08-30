@@ -1,1 +1,6 @@
-export { journeyActions, journeyStore } from './journey-store';
+export {
+  createJourneyActions,
+  journeyActions,
+  journeyStore,
+  type JourneyMutationResult,
+} from './journey-store';

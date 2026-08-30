@@ -1,4 +1,6 @@
 import { voiceRecordingConfig } from '../config';
+import { voiceRecordingCopy } from '../data';
+import type { Locale } from '@shared/i18n';
 import type { VoiceRecordingError, VoiceRecordingStatus } from '../types';
 
 type MediaRecorderConstructor = typeof MediaRecorder;
@@ -35,18 +37,21 @@ export function revokeObjectUrl(url: string | null) {
   }
 }
 
-export function mapMediaError(error: unknown): {
+export function mapMediaError(
+  error: unknown,
+  locale: Locale = 'ru',
+): {
   error: VoiceRecordingError;
   status: Extract<VoiceRecordingStatus, 'permission-denied' | 'unsupported' | 'error'>;
 } {
+  const copy = voiceRecordingCopy[locale];
   const errorName = error instanceof DOMException ? error.name : '';
 
   if (errorName === 'NotAllowedError' || errorName === 'SecurityError') {
     return {
       error: {
         code: 'unknown',
-        message:
-          'Доступ к микрофону не предоставлен. Его можно разрешить в настройках браузера или продолжить без голоса.',
+        message: copy.errors.permissionDenied,
       },
       status: 'permission-denied',
     };
@@ -56,8 +61,7 @@ export function mapMediaError(error: unknown): {
     return {
       error: {
         code: 'no-device',
-        message:
-          'Микрофон не найден. Проверьте подключение устройства или продолжите без голосового шага.',
+        message: copy.errors.noDevice,
       },
       status: 'error',
     };
@@ -67,8 +71,7 @@ export function mapMediaError(error: unknown): {
     return {
       error: {
         code: 'unsupported-format',
-        message:
-          'Браузер не смог начать запись в поддерживаемом формате. Можно попробовать другой браузер или пропустить голос.',
+        message: copy.errors.unsupportedFormat,
       },
       status: 'unsupported',
     };
@@ -77,8 +80,7 @@ export function mapMediaError(error: unknown): {
   return {
     error: {
       code: 'unknown',
-      message:
-        'Не удалось подготовить микрофон. Попробуйте ещё раз или продолжите без голосового шага.',
+      message: copy.errors.genericPermission,
     },
     status: 'error',
   };

@@ -82,7 +82,7 @@ export function Header({
                 className={styles.userAction}
                 disabled
               >
-                <span aria-hidden="true">П</span>
+                <span aria-hidden="true">{messages.shell.header.userPlaceholder.charAt(0)}</span>
                 <span className={styles.actionLabel}>{messages.shell.header.userPlaceholder}</span>
               </Button>
             </>

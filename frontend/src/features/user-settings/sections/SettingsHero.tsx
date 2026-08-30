@@ -1,14 +1,15 @@
 import { Badge, Container, Stack, Typography } from '@shared/ui';
 
+import type { UserSettingsCopy } from '../data';
 import styles from './UserSettingsSections.module.css';
 
-export function SettingsHero() {
+export function SettingsHero({ copy }: { copy: UserSettingsCopy['hero'] }) {
   return (
     <section aria-labelledby="settings-title" className={styles.hero}>
       <Container size="wide">
         <Stack className={styles.heroContent} gap="lg">
           <Badge className={styles.badge} tone="info">
-            Локальные настройки
+            {copy.badge}
           </Badge>
           <Stack gap="sm">
             <Typography
@@ -18,12 +19,9 @@ export function SettingsHero() {
               tabIndex={-1}
               variant="display"
             >
-              Настройки
+              {copy.title}
             </Typography>
-            <Typography variant="lead">
-              Управляйте оформлением, отдельными согласиями и демонстрационными данными. Кроме темы,
-              изменения сбросятся после обновления страницы.
-            </Typography>
+            <Typography variant="lead">{copy.description}</Typography>
           </Stack>
         </Stack>
       </Container>

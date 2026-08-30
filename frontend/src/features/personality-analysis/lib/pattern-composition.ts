@@ -78,7 +78,7 @@ export function createHeroPhrase(input: PatternCompositionInput) {
   const secondary = input.ranked[1] ?? primary;
   if (!primary || !secondary) return '';
   const interest = input.interests[0]
-    ? getInterestLabel(input.interests[0], input.locale)
+    ? getInterestLabel(input.interests[0], input.locale, 'object')
     : undefined;
   return phrase(
     input.locale,

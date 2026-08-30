@@ -1,28 +1,28 @@
 import { Button, Card, Container, Stack, Typography } from '@shared/ui';
 
 import type { SettingsAction } from '../types';
+import type { UserSettingsCopy } from '../data';
 import styles from './UserSettingsSections.module.css';
 
 type DataManagementSectionProps = {
   actions: readonly SettingsAction[];
+  copy: UserSettingsCopy['data'];
   onAction: (action: SettingsAction, focusTargetId: string) => void;
 };
 
-export function DataManagementSection({ actions, onAction }: DataManagementSectionProps) {
+export function DataManagementSection({ actions, copy, onAction }: DataManagementSectionProps) {
   return (
     <section aria-labelledby="data-settings-title" className={styles.section}>
       <Container size="wide">
         <Stack gap="lg">
           <Stack className={styles.sectionIntroduction} gap="sm">
             <Typography as="p" variant="eyebrow">
-              Данные портрета
+              {copy.eyebrow}
             </Typography>
             <Typography as="h2" id="data-settings-title" variant="heading-lg">
-              Действия с текущими данными
+              {copy.title}
             </Typography>
-            <Typography className={styles.muted}>
-              Эти действия демонстрируют будущие сценарии и не экспортируют или не удаляют данные.
-            </Typography>
+            <Typography className={styles.muted}>{copy.description}</Typography>
           </Stack>
 
           <div className={styles.actionGrid}>

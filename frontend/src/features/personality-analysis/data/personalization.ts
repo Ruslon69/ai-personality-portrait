@@ -307,9 +307,9 @@ const interestLabels = {
     learning: 'обучение',
     business: 'бизнес',
     games: 'игры',
-    music: 'музыку',
+    music: 'музыка',
     cinema: 'кино',
-    nature: 'природу',
+    nature: 'природа',
     selfDevelopment: 'саморазвитие',
   },
   uk: {
@@ -321,14 +321,64 @@ const interestLabels = {
     learning: 'навчання',
     business: 'бізнес',
     games: 'ігри',
-    music: 'музику',
+    music: 'музика',
     cinema: 'кіно',
-    nature: 'природу',
+    nature: 'природа',
     selfDevelopment: 'саморозвиток',
   },
 } as const;
 
-export function getInterestLabel(id: string, locale: ProfileLocale) {
+const interestObjectLabels = {
+  ru: { ...interestLabels.ru, music: 'музыку', nature: 'природу' },
+  uk: { ...interestLabels.uk, music: 'музику', nature: 'природу' },
+} as const;
+
+const interestInstrumentalLabels = {
+  ru: {
+    technology: 'технологиями',
+    creativity: 'творчеством',
+    people: 'отношениями',
+    movement: 'движением',
+    travel: 'путешествиями',
+    learning: 'обучением',
+    business: 'бизнесом',
+    games: 'играми',
+    music: 'музыкой',
+    cinema: 'кино',
+    nature: 'природой',
+    selfDevelopment: 'саморазвитием',
+  },
+  uk: {
+    technology: 'технологіями',
+    creativity: 'творчістю',
+    people: 'стосунками',
+    movement: 'рухом',
+    travel: 'подорожами',
+    learning: 'навчанням',
+    business: 'бізнесом',
+    games: 'іграми',
+    music: 'музикою',
+    cinema: 'кіно',
+    nature: 'природою',
+    selfDevelopment: 'саморозвитком',
+  },
+} as const;
+
+export function getInterestLabel(
+  id: string,
+  locale: ProfileLocale,
+  form: 'display' | 'instrumental' | 'object' = 'display',
+) {
   if (id.startsWith('other:')) return id.slice(6);
+  if (locale !== 'en' && form === 'instrumental')
+    return (
+      interestInstrumentalLabels[locale][
+        id as keyof (typeof interestInstrumentalLabels)[typeof locale]
+      ] ?? id
+    );
+  if (locale !== 'en' && form === 'object')
+    return (
+      interestObjectLabels[locale][id as keyof (typeof interestObjectLabels)[typeof locale]] ?? id
+    );
   return interestLabels[locale][id as keyof (typeof interestLabels)[ProfileLocale]] ?? id;
 }

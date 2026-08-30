@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
 
+import { useNotifications } from '@app/providers';
 import { TarotCardView, tarotCardById } from '@features/tarot';
 import type { Locale } from '@shared/i18n';
 import { Badge, Button, Container, Modal, Stack, Typography } from '@shared/ui';
 
-import { tarotHistoryCopy } from '../data';
+import { journeyPersistenceCopy, tarotHistoryCopy } from '../data';
 import { useJourney } from '../hooks';
 import { historySnapshotForRecord } from '../lib';
 import type { JourneyReadingRecord } from '../types';
@@ -23,8 +24,10 @@ export function TarotHistory({
   onCreate: () => void;
   onOpenReading: (record: JourneyReadingRecord) => void;
 }) {
+  const { notify } = useNotifications();
   const { actions, state } = useJourney();
   const copy = tarotHistoryCopy[locale];
+  const persistenceCopy = journeyPersistenceCopy[locale];
   const [announcement, setAnnouncement] = useState('');
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
   const records = useMemo(
@@ -47,11 +50,13 @@ export function TarotHistory({
 
   function confirmAction() {
     if (pendingAction?.kind === 'delete') {
-      actions.deleteReading(pendingAction.record.reading.id);
-      setAnnouncement(copy.removed);
+      const result = actions.deleteReading(pendingAction.record.reading.id);
+      if (result.persisted) setAnnouncement(copy.removed);
+      else notify(persistenceCopy.deleteFailed, 'error');
     } else if (pendingAction?.kind === 'clear') {
-      actions.clearReadings();
-      setAnnouncement(copy.cleared);
+      const result = actions.clearReadings();
+      if (result.persisted) setAnnouncement(copy.cleared);
+      else notify(persistenceCopy.clearFailed, 'error');
     }
     setPendingAction(null);
     window.requestAnimationFrame(() => document.getElementById('saved-readings-title')?.focus());

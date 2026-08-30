@@ -1,14 +1,16 @@
 import { Button, Container, Stack, Surface, Typography } from '@shared/ui';
 
 import type { SettingsAction } from '../types';
+import type { UserSettingsCopy } from '../data';
 import styles from './UserSettingsSections.module.css';
 
 type DangerZoneSectionProps = {
   actions: readonly SettingsAction[];
+  copy: UserSettingsCopy['danger'];
   onAction: (action: SettingsAction, focusTargetId: string) => void;
 };
 
-export function DangerZoneSection({ actions, onAction }: DangerZoneSectionProps) {
+export function DangerZoneSection({ actions, copy, onAction }: DangerZoneSectionProps) {
   return (
     <section aria-labelledby="danger-zone-title" className={styles.dangerSection}>
       <Container size="wide">
@@ -16,15 +18,12 @@ export function DangerZoneSection({ actions, onAction }: DangerZoneSectionProps)
           <Stack gap="lg">
             <Stack className={styles.sectionIntroduction} gap="sm">
               <Typography as="p" variant="eyebrow">
-                Опасная зона
+                {copy.eyebrow}
               </Typography>
               <Typography as="h2" id="danger-zone-title" variant="heading-lg">
-                Действия с профилем и всеми данными
+                {copy.title}
               </Typography>
-              <Typography className={styles.muted}>
-                Каждое действие требует отдельного подтверждения. В демонстрации данные не
-                удаляются.
-              </Typography>
+              <Typography className={styles.muted}>{copy.description}</Typography>
             </Stack>
 
             <div className={styles.dangerActions}>

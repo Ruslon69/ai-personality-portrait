@@ -1,29 +1,13 @@
 import type { ThemeMode } from '@app/providers/theme';
+import type { Locale } from '@shared/i18n';
 
+import { userSettingsCopy } from '../data';
 import type {
   CompatibilityInvitation,
   InvitationConsentStatus,
   SettingsConsentId,
   SettingsConsentValues,
 } from '../types';
-
-const invitationDateFormatter = new Intl.DateTimeFormat('ru-RU', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-});
-
-const invitationStatusLabels: Record<InvitationConsentStatus, string> = {
-  accepted: 'Согласие получено',
-  'awaiting-consent': 'Согласие ожидается',
-  revoked: 'Приглашение отозвано',
-};
-
-const themeLabels: Record<ThemeMode, string> = {
-  dark: 'тёмная',
-  light: 'светлая',
-  system: 'системная',
-};
 
 export function createDefaultConsentValues(): SettingsConsentValues {
   return {
@@ -41,18 +25,24 @@ export function updateConsentValue(
   return { ...values, [id]: enabled };
 }
 
-export function formatInvitationDate(value: string) {
+export function formatInvitationDate(value: string, locale: Locale) {
   const date = new Date(value);
 
-  return Number.isNaN(date.getTime()) ? 'Дата не указана' : invitationDateFormatter.format(date);
+  return Number.isNaN(date.getTime())
+    ? userSettingsCopy[locale].dateUnavailable
+    : new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : locale === 'uk' ? 'uk-UA' : 'ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      }).format(date);
 }
 
-export function getInvitationStatusLabel(status: InvitationConsentStatus) {
-  return invitationStatusLabels[status];
+export function getInvitationStatusLabel(status: InvitationConsentStatus, locale: Locale) {
+  return userSettingsCopy[locale].invitationStatuses[status];
 }
 
-export function getSettingsThemeLabel(theme: ThemeMode) {
-  return themeLabels[theme];
+export function getSettingsThemeLabel(theme: ThemeMode, locale: Locale) {
+  return userSettingsCopy[locale].themeLabels[theme];
 }
 
 export function revokeCompatibilityInvitation(

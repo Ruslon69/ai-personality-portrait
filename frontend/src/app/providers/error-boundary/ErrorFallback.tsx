@@ -1,8 +1,18 @@
-import { Button, Stack, Surface, Typography } from '@shared/ui';
+import { useEffect } from 'react';
 
+import { Button, Stack, Surface, Typography } from '@shared/ui';
+import type { Locale } from '@shared/i18n/types';
+
+import { errorFallbackCopy, getErrorFallbackLocale } from './error-fallback-localization';
 import styles from './ErrorFallback.module.css';
 
-export function ErrorFallback() {
+export function ErrorFallback({ locale = getErrorFallbackLocale() }: { locale?: Locale }) {
+  const copy = errorFallbackCopy[locale];
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
+
   return (
     <main className={styles.root}>
       <Surface
@@ -14,14 +24,12 @@ export function ErrorFallback() {
         <Stack align="start" gap="lg">
           <Stack gap="sm">
             <Typography as="h1" id="application-error-title" variant="heading-lg">
-              Не удалось открыть приложение
+              {copy.title}
             </Typography>
-            <Typography>
-              Обновите страницу. Локальные данные текущего прохождения могут быть сброшены.
-            </Typography>
+            <Typography>{copy.description}</Typography>
           </Stack>
           <Button onClick={() => window.location.reload()} prominence="primary" size="large">
-            Обновить страницу
+            {copy.action}
           </Button>
         </Stack>
       </Surface>

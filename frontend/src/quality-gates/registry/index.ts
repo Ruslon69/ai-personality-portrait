@@ -11,6 +11,8 @@ import { runNumerologyRegressionGate } from '../determinism/numerology';
 import { runTarotRegressionGate } from '../determinism/tarot';
 import { QUALITY_BASELINE } from '../fixtures/baseline';
 import { runPrivacyGate } from '../privacy';
+import { runCrossProductConsistencyGate } from '../regression/cross-product-consistency';
+import { runReleaseHardeningGate } from '../regression/release-hardening';
 import { runTarotArtworkGate } from '../regression/tarot-artwork';
 import { runTarotGoldenMasterGate } from '../regression/tarot-golden-master';
 import { runTarotPremiumProductionGate } from '../regression/tarot-premium-production';
@@ -307,6 +309,32 @@ export const qualityGateRegistry: readonly QualityGateDefinition[] = [
     tags: ['regression', 'fast', 'full'],
     timeout: 5_000,
     title: 'Visual Composition',
+  },
+  {
+    affectedModules: ['app/layout', 'widgets/sidebar', 'styles', 'pages/not-found', 'i18n'],
+    description:
+      'Shared shell reflow, navigation state, focus treatment, and localized recovery actions.',
+    group: 'regression',
+    id: 'cross-product-consistency',
+    required: true,
+    runner: ({ rootDir }) => runCrossProductConsistencyGate(rootDir),
+    severity: 'error',
+    tags: ['regression', 'fast', 'full'],
+    timeout: 5_000,
+    title: 'Cross-product Consistency',
+  },
+  {
+    affectedModules: ['journey', 'personality-report', 'error-boundary'],
+    description:
+      'Persistence failure outcomes, stable Portrait missing-state recovery, and provider-independent root error localization.',
+    group: 'regression',
+    id: 'release-hardening',
+    required: true,
+    runner: runReleaseHardeningGate,
+    severity: 'error',
+    tags: ['regression', 'fast', 'full'],
+    timeout: 5_000,
+    title: 'Release Hardening',
   },
   {
     affectedModules: ['frontend/src'],

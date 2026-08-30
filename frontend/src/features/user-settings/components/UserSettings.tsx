@@ -1,6 +1,7 @@
 import { useEffect, type ReactNode } from 'react';
 
 import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
+import type { Locale } from '@shared/i18n';
 
 import {
   AccountSettingsSection,
@@ -12,6 +13,7 @@ import {
   SettingsHero,
 } from '../sections';
 import { useUserSettings } from '../hooks';
+import { userSettingsCopy } from '../data';
 import type {
   AppearanceOption,
   CompatibilityInvitation,
@@ -28,6 +30,7 @@ type UserSettingsProps = {
   dangerActions: readonly SettingsAction[];
   dataActions: readonly SettingsAction[];
   initialInvitations: readonly CompatibilityInvitation[];
+  locale: Locale;
   privacyConsents: readonly SettingsConsent[];
   tarotPreferences: ReactNode;
 };
@@ -38,6 +41,7 @@ export function UserSettings({
   dangerActions,
   dataActions,
   initialInvitations,
+  locale,
   privacyConsents,
   tarotPreferences,
 }: UserSettingsProps) {
@@ -53,27 +57,36 @@ export function UserSettings({
     requestInvitationRevocation,
     runAction,
     theme,
-  } = useUserSettings({ initialInvitations });
+  } = useUserSettings({ initialInvitations, locale });
+  const copy = userSettingsCopy[locale];
 
   useEffect(() => focusElementByIdOnNextFrame('settings-title'), []);
 
   return (
     <div className={styles.root}>
-      <SettingsHero />
-      <AppearanceSettingsSection onChange={changeTheme} options={appearanceOptions} value={theme} />
+      <SettingsHero copy={copy.hero} />
+      <AppearanceSettingsSection
+        copy={copy.appearance}
+        onChange={changeTheme}
+        options={appearanceOptions}
+        value={theme}
+      />
       {tarotPreferences}
-      <DataManagementSection actions={dataActions} onAction={runAction} />
+      <DataManagementSection actions={dataActions} copy={copy.data} onAction={runAction} />
       <PrivacySettingsSection
         consents={consents}
+        copy={copy.privacy}
         items={privacyConsents}
         onChange={changeConsent}
       />
       <CompatibilitySettingsSection
+        copy={copy.compatibility}
         invitations={invitations}
+        locale={locale}
         onRevoke={requestInvitationRevocation}
       />
-      <AccountSettingsSection account={account} />
-      <DangerZoneSection actions={dangerActions} onAction={runAction} />
+      <AccountSettingsSection account={account} copy={copy.account} />
+      <DangerZoneSection actions={dangerActions} copy={copy.danger} onAction={runAction} />
 
       <p aria-atomic="true" aria-live="polite" className={styles.visuallyHidden} role="status">
         {announcement}
@@ -81,6 +94,7 @@ export function UserSettings({
 
       <SettingsConfirmationDialog
         action={pendingAction}
+        copy={copy.dialog}
         onCancel={cancelPendingAction}
         onConfirm={confirmPendingAction}
       />

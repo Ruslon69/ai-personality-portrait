@@ -5,6 +5,11 @@ import { defineConfig } from 'vite';
 
 const sourcePath = (path: string) => fileURLToPath(new URL(`./src/${path}`, import.meta.url));
 
+const cloudflareCommitSha = process.env.CF_PAGES_COMMIT_SHA?.trim();
+if (!process.env.VITE_APP_VERSION?.trim() && cloudflareCommitSha) {
+  process.env.VITE_APP_VERSION = cloudflareCommitSha;
+}
+
 export default defineConfig({
   build: {
     rolldownOptions: {

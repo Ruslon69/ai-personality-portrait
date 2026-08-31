@@ -31,7 +31,9 @@ Current owned keys are enumerated in `frontend/src/features/product-storage/cons
 - The UI has a reusable API client, but no current product flow calls it.
 - No analytics, advertising, tracking pixel, cookie, third-party script, external font or external image request is configured.
 - The production runtime smoke recorded no external request for the audited routes.
-- Static application assets are expected to be served from the chosen Soul Arkana origin.
+- Cloudflare Pages is the selected static host and CDN. It necessarily receives ordinary HTTP request data such as IP addresses, browser/device headers, requested URLs, timestamps, and network/security logs while serving the application.
+- Current product code does not upload Portrait answers, Tarot selections, Numerology inputs, voice recordings or other product content to Cloudflare APIs or another external service.
+- Static application assets are served from the Soul Arkana Cloudflare Pages origin and, later, the attached production custom domain.
 
 ## Retention boundaries
 

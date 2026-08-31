@@ -17,7 +17,7 @@ export type LegalDocument = {
 
 export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
   en: {
-    effectiveDate: 'Current implementation snapshot: 30 August 2026',
+    effectiveDate: 'Current implementation snapshot: 31 August 2026',
     eyebrow: 'LEGAL · PRIVACY',
     intro:
       'This policy explains how the current Soul Arkana web application processes information. The product is designed to work locally in your browser and currently has no account system, analytics or server-side profile storage.',
@@ -40,6 +40,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
         title: 'Where processing happens',
         paragraphs: [
           'The current application performs its calculations and interpretations in your browser. It does not actively send your inputs, readings, portrait, birth date or voice recording to an external service.',
+          'Cloudflare Pages serves the application. As hosting and delivery infrastructure, Cloudflare may process ordinary request information such as an IP address, browser and device headers, the requested URL, timestamps, and network or security logs. This is separate from Soul Arkana actively uploading your Portrait answers, Tarot selections, Numerology inputs or voice recording; the current product code does not send those inputs to Cloudflare APIs or another external service.',
           'Portrait answers and results remain in application memory. They are not written to browser storage and are no longer available after the page is reloaded or the session is otherwise reset.',
         ],
       },
@@ -84,7 +85,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
     ],
   },
   ru: {
-    effectiveDate: 'Состояние текущей реализации: 30 августа 2026 года',
+    effectiveDate: 'Состояние текущей реализации: 31 августа 2026 года',
     eyebrow: 'ПРАВОВАЯ ИНФОРМАЦИЯ · ПРИВАТНОСТЬ',
     intro:
       'Эта политика объясняет, как текущая веб-версия Soul Arkana обрабатывает информацию. Продукт работает локально в браузере и сейчас не использует аккаунты, аналитику или серверное хранение профиля.',
@@ -107,6 +108,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
         title: 'Где происходит обработка',
         paragraphs: [
           'Текущая версия выполняет расчёты и интерпретации в вашем браузере и не отправляет ваши ответы, расклады, портрет, дату рождения или запись голоса во внешний сервис.',
+          'Приложение размещено на Cloudflare Pages. Как инфраструктура хостинга и доставки Cloudflare может обрабатывать обычные данные запроса: IP-адрес, заголовки браузера и устройства, запрошенный URL, время запроса, а также сетевые журналы или журналы безопасности. Это не означает, что Soul Arkana загружает ответы Портрета, выборы Таро, данные Нумерологии или запись голоса: текущий код продукта не отправляет эти данные в API Cloudflare или другой внешний сервис.',
           'Ответы и результат Портрета остаются в памяти приложения. Они не записываются в хранилище браузера и становятся недоступны после перезагрузки страницы или сброса сессии.',
         ],
       },
@@ -151,7 +153,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
     ],
   },
   uk: {
-    effectiveDate: 'Стан поточної реалізації: 30 серпня 2026 року',
+    effectiveDate: 'Стан поточної реалізації: 31 серпня 2026 року',
     eyebrow: 'ПРАВОВА ІНФОРМАЦІЯ · ПРИВАТНІСТЬ',
     intro:
       'Ця політика пояснює, як поточна вебверсія Soul Arkana обробляє інформацію. Продукт працює локально у браузері й зараз не використовує облікові записи, аналітику або серверне зберігання профілю.',
@@ -174,6 +176,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
         title: 'Де відбувається обробка',
         paragraphs: [
           'Поточна версія виконує розрахунки й інтерпретації у вашому браузері та не надсилає ваші відповіді, розклади, портрет, дату народження або запис голосу до зовнішнього сервісу.',
+          'Застосунок розміщено на Cloudflare Pages. Як інфраструктура хостингу й доставки Cloudflare може обробляти звичайні дані запиту: IP-адресу, заголовки браузера та пристрою, запитану URL-адресу, час запиту, а також мережеві журнали або журнали безпеки. Це не означає, що Soul Arkana завантажує відповіді Портрета, вибір Таро, дані Нумерології або запис голосу: поточний код продукту не надсилає ці дані до API Cloudflare чи іншого зовнішнього сервісу.',
           'Відповіді й результат Портрета залишаються в пам’яті застосунку. Вони не записуються до сховища браузера й стають недоступними після перезавантаження сторінки або скидання сесії.',
         ],
       },

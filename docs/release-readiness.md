@@ -1,82 +1,115 @@
-# Production deployment requirements
+# Soul Arkana — Cloudflare Pages deployment runbook
 
-The hosting target is not yet defined. A release deployment must serve only `frontend/dist` and satisfy the contracts below; Vite development mode and `vite preview` are not production servers. The public product brand is **Soul Arkana**; package, repository and persisted-schema identifiers may retain historical technical names.
+Cloudflare Pages is the selected production host. This runbook covers the current static React/Vite application; no Pages Functions, Worker, backend, analytics, cookies, or third-party runtime service is required.
 
-## Build and environment
+## Deployment contract
 
-Use the pinned Node version and deterministic lockfile:
+| Setting | Value |
+| --- | --- |
+| Framework | React / Vite SPA |
+| Git production branch | `main` |
+| Root directory | `frontend` |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Deployment path | Domain root `/` |
+| Node version | `24.18.0` (matches repository `.nvmrc`) |
+
+The router has no basename and Vite uses `base: /`; subdirectory deployment is unsupported without a separately tested source change. Cloudflare Pages must publish only `frontend/dist`.
+
+## Create the Pages project
+
+1. In Cloudflare Dashboard, open **Workers & Pages**, choose **Create application**, then **Pages** and **Connect to Git**.
+2. Authorize and select the Soul Arkana repository. Do not use Direct Upload for the normal release path.
+3. Set the production branch to `main`.
+4. Set the root directory to `frontend`, build command to `npm run build`, and output directory to `dist`.
+5. Select the current Pages build system. Set `NODE_VERSION=24.18.0` so the build matches `.nvmrc` and `package.json`.
+6. Add the production environment values below. Review preview values separately; do not copy future production secrets into a preview.
+7. Save and run the first deployment. The deployment URL appears on the project overview and deployment detail pages.
+
+Do not add Wrangler configuration or a Functions directory for RC1. Git-connected Pages deployments provide atomic versions and dashboard rollback without a custom deployment client.
+
+## Environment values
+
+All `VITE_*` values are compiled into public JavaScript and must never contain secrets.
+
+| Variable | Production value | Status |
+| --- | --- | --- |
+| `NODE_VERSION` | `24.18.0` | Required Pages build setting; not exposed by Vite |
+| `VITE_APP_ENV` | `production` | Required for an explicit release environment |
+| `VITE_PRODUCT_STORAGE_V2` | `false` | Required until rollout and migration are approved |
+| `VITE_APP_VERSION` | Release tag or Git SHA | Optional explicit override |
+| `VITE_API_BASE_URL` | Unset | Optional; current UI has no active API flow and safely falls back to same-origin `/api` |
+| `VITE_API_TIMEOUT_MS` | Unset | Optional; defaults to `10000` |
+
+Cloudflare injects `CF_PAGES_COMMIT_SHA` for every Pages build. `vite.config.ts` exposes that non-sensitive SHA as `VITE_APP_VERSION` when an explicit `VITE_APP_VERSION` is absent. Local builds retain the safe `0.0.0` fallback. No API origin or credential should be invented for RC1.
+
+## SPA routing
+
+Cloudflare Pages automatically treats a site without a top-level `404.html` as an SPA and serves the root document for unmatched paths. Existing static files take precedence, so no `_redirects` file is required. Adding a wildcard rewrite would duplicate the platform behavior and risks obscuring asset handling.
+
+The application router owns the visible not-found experience. Verify direct entry and refresh for:
+
+- `/`, `/tarot`, `/tarot/history`, `/tarot/reading`, `/numerology`, `/portrait`, `/portrait/result`, `/portrait/result-preview`;
+- `/profile`, `/profile/history`, `/settings`, `/privacy`, `/terms`;
+- an invalid application route.
+
+Cloudflare's native SPA fallback also handles any otherwise unmatched URL. Release smoke testing must therefore confirm that every HTML-referenced hashed asset exists and returns its real MIME type; a missing asset must be treated as a failed deployment even if the platform fallback returns the SPA document.
+
+## Headers, permissions, and CSP
+
+`frontend/public/_headers` is copied into `dist` and applied by Cloudflare Pages to static responses. It provides:
+
+- a same-origin CSP with no wildcard and no `unsafe-eval`;
+- `frame-ancestors 'none'` plus `X-Frame-Options: DENY` for compatibility;
+- `X-Content-Type-Options: nosniff` and `Referrer-Policy: strict-origin-when-cross-origin`;
+- `microphone=(self)`, with camera and geolocation disabled.
+
+`style-src 'unsafe-inline'` is intentionally limited to styles because the React UI uses inline style attributes and CSS custom properties. `media-src blob:` is required for temporary local voice-recording playback. Scripts, fonts, images, media, and network connections otherwise remain same-origin; workers are disabled. If an external API is later approved, add only its reviewed HTTPS origin to `connect-src` and update Privacy before enabling it.
+
+Do not set HSTS through `_headers` before the production domain and all included subdomains are known. Cloudflare Pages provides HTTPS. Enable HSTS at the zone level only after confirming that every affected hostname supports HTTPS.
+
+## Cache behavior
+
+- Cloudflare's default HTML/SPA response policy revalidates (`max-age=0, must-revalidate`); `/index.html` also explicitly uses `no-cache`.
+- `/assets/*` uses `public, max-age=31536000, immutable`. Vite content-hashes JavaScript, CSS, fonts, and all bundled Tarot artwork, so a content change creates a new URL.
+- `favicon.svg` uses a short one-hour lifetime with revalidation.
+- `robots.txt` uses `no-cache`.
+
+Do not create a broad custom-domain Cache Rule for HTML. Cloudflare retains prior deployment assets temporarily, but release deployment and rollback should still be treated atomically.
+
+## Preview and production
+
+Commits to `main` create production deployments; other configured branches and pull requests create preview deployments. Preview URLs are separate from the production `*.pages.dev` alias and any future custom domain. Cloudflare Pages adds `X-Robots-Tag: noindex` to preview responses by default; verify it with `curl -I` after the first preview. Do not use a preview URL as a canonical, sitemap, or social metadata origin. Cloudflare Access may be enabled later if previews must be private.
+
+## Custom domain (owner action)
+
+After the owner chooses the production origin:
+
+1. Open the Pages project, choose **Custom domains**, then **Set up a domain**.
+2. Attach the chosen apex or `www` hostname and complete Cloudflare's DNS verification; do not add a manual CNAME without first associating the domain in Pages.
+3. Confirm the active HTTPS certificate before publishing the hostname.
+4. Choose one canonical hostname and redirect the alternate hostname at the Cloudflare zone level.
+5. Update canonical metadata, sitemap, robots policy, Open Graph URL/image, and production Privacy/Terms references using the final HTTPS origin.
+6. Re-run the full deployed-origin smoke and header checks on both the canonical and alternate hostnames.
+
+## First deployment verification
+
+Before announcing a release:
+
+1. Confirm the Pages build used the expected commit and Node version and that the UI exposes a non-`0.0.0` release identifier where configured.
+2. Run the route list above through direct navigation, refresh, Back, and Forward.
+3. Confirm `Content-Security-Policy`, `Permissions-Policy`, `X-Content-Type-Options`, `Referrer-Policy`, and frame protection on HTML responses.
+4. Confirm HTML revalidation and immutable caching for a hashed asset.
+5. Check browser console CSP errors, failed requests, mixed content, unexpected external requests, horizontal overflow, legal links, locale switching, and microphone permission on HTTPS.
+6. Check `/privacy` and `/terms` in RU, EN, and UK. Owner/legal approval and real operator/contact details remain mandatory before public launch.
+
+Use the project's **Deployments** view to locate the deployment URL and build log. If a release fails smoke, choose the last verified deployment and use **Rollback to this deployment**; then investigate before rebuilding. Do not fix a bad production deployment by weakening headers or tests.
+
+## Local and release validation
 
 ```bash
 cd frontend
 npm ci
-npm run build
-```
-
-All `VITE_*` values are embedded in public client assets and must never contain secrets.
-
-- `VITE_APP_ENV=production` identifies the release environment. Production builds also resolve safely to production when it is omitted.
-- `VITE_APP_VERSION` should be a non-sensitive release tag or Git SHA. The source fallback is `0.0.0`, so deployment automation must supply a useful identifier.
-- `VITE_API_BASE_URL` is optional while the current UI has no active API calls. Its safe fallback is the same-origin `/api`; configure an explicit HTTPS origin before enabling an API-backed feature.
-- `VITE_API_TIMEOUT_MS` defaults to `10000`.
-- `VITE_PRODUCT_STORAGE_V2` is optional and disabled by default in production. Do not enable it until its rollout and migration decision is approved.
-
-## Routing and base path
-
-The build assumes deployment at the domain root (`base: /`) and the router has no basename. A subdirectory deployment is unsupported without an explicit, separately tested configuration change.
-
-The host must rewrite application routes to `/index.html` while preserving real static files and returning a real 404 for missing assets. Smoke at least:
-
-- `/`, `/tarot`, `/tarot/history`, `/numerology`, `/portrait`, `/portrait/result`, `/portrait/result-preview`, `/profile`, `/settings`, `/privacy`, `/terms`, and an invalid route;
-- direct entry and refresh on every route;
-- client navigation plus browser Back and Forward.
-
-`/profile` is the current Journey route. `/journey` is not an application route and currently renders the in-app not-found page.
-
-## HTTPS and browser permissions
-
-Production must use HTTPS. Microphone capture relies on a secure context; plain HTTP is unsupported outside the browser's localhost exception. The app does not use camera or geolocation.
-
-Recommended policy:
-
-```text
-Permissions-Policy: microphone=(self), camera=(), geolocation=()
-```
-
-## Security headers
-
-This policy was exercised against the production build in Chromium. React uses inline style attributes for bounded visual variables, and local voice playback uses a Blob URL.
-
-```text
-Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self' blob:; connect-src 'self'; worker-src 'self' blob:
-X-Content-Type-Options: nosniff
-Referrer-Policy: strict-origin-when-cross-origin
-X-Frame-Options: DENY
-Permissions-Policy: microphone=(self), camera=(), geolocation=()
-Strict-Transport-Security: max-age=31536000; includeSubDomains
-```
-
-If an external `VITE_API_BASE_URL` is introduced, add only that reviewed HTTPS origin to `connect-src`. Enable HSTS only after HTTPS and all included subdomains are confirmed. The host does not need permissive cross-origin isolation headers for current functionality.
-
-## Cache and atomic deployment
-
-- `/index.html`, route fallbacks, `robots.txt`, and `favicon.svg`: `Cache-Control: no-cache`.
-- `/assets/*`: `Cache-Control: public, max-age=31536000, immutable` because filenames are content-hashed.
-- Deploy HTML and assets atomically or retain the previous asset generation during rollout so cached HTML never references removed files.
-
-No service worker is registered, so there is no application-managed cache or offline update path.
-
-The current `A` favicon is an RC placeholder representing Arkana. Final logo exploration and visual identity are intentionally deferred to the Visual Identity Sprint.
-
-## SEO and origin-dependent metadata
-
-Public landing and legal routes use localized titles and may be indexed. Volatile results, saved-data views, Settings and unfinished flows use `noindex, nofollow` and are excluded in `robots.txt`.
-
-A canonical URL, sitemap and social preview image are intentionally deferred until the production origin/domain and an approved share asset exist. Add them only with the selected host and verify that canonical URLs use the production HTTPS origin; do not point production metadata at a preview domain.
-
-## Release validation
-
-```bash
-cd frontend
 npm run lint
 npm run format:check
 npm run build
@@ -89,12 +122,12 @@ cd ..
 git diff --check
 ```
 
-Inspect `frontend/dist` for source maps, environment files, reports, fixtures, and authoring assets. Verify the response headers and production routes from the deployed origin, not from a development server.
+Inspect `frontend/dist` for source maps, environment files, reports, fixtures, authoring assets, and credentials. The current artifact is within Cloudflare Pages limits: the Free plan permits 20,000 files and a maximum of 25 MiB per file. Approved Premium Tarot artwork must not be recompressed for deployment.
 
-## Release gates and operational risks
+## Known release boundaries
 
-Before a public production launch, complete the applicable privacy/security gates in `docs/privacy-security.md` and obtain owner/legal approval for the visible Privacy Policy and Terms. The demonstrational consent/export/deletion UI has been removed; current deletion disclosures now describe only working product and browser controls. Choose a hosting target and encode the rewrite, headers, HTTPS, and cache contracts in its reviewed configuration.
-
-External crash reporting is not configured. Until an approved privacy-safe observability path exists, production runtime failures will not be remotely visible.
-
-Deferred product decisions remain: exact Tarot pre-reveal `stepIndex` persistence, Product Storage V2 rollout, physical 200% zoom/device testing, and microphone hardware testing.
+- A real Cloudflare deployment and custom domain require owner-account action; local simulation cannot verify Cloudflare edge behavior.
+- The legal operator, privacy contact, jurisdiction, and final legal approval remain release requirements.
+- Canonical URL, sitemap, and social preview image remain deferred until the production origin and approved share asset exist.
+- External crash reporting is not configured, so runtime failures are not remotely observable.
+- Exact Tarot pre-reveal `stepIndex` persistence, Product Storage V2 rollout, physical 200% zoom/device testing, and microphone hardware testing remain deferred product decisions.

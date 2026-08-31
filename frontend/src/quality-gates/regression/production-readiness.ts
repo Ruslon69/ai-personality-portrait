@@ -77,6 +77,7 @@ export function runProductionReadinessGate(rootDir: string) {
   });
 
   const html = read(rootDir, 'index.html');
+  const headers = read(rootDir, 'public/_headers');
   const robots = read(rootDir, 'public/robots.txt');
   const publicRuntimeCopy = [
     html,
@@ -141,6 +142,9 @@ export function runProductionReadinessGate(rootDir: string) {
         ) &&
         privacy.sections.some((section) =>
           section.paragraphs?.some((paragraph) => /analytics|аналитик|аналітик/i.test(paragraph)),
+        ) &&
+        privacy.sections.some((section) =>
+          section.paragraphs?.some((paragraph) => paragraph.includes('Cloudflare Pages')),
         ),
       {
         code: `production-legal-content-${locale}`,
@@ -184,6 +188,7 @@ export function runProductionReadinessGate(rootDir: string) {
   );
 
   const envSource = read(rootDir, 'src/shared/config/env.ts');
+  const viteConfig = read(rootDir, 'vite.config.ts');
   assertions.assert(
     !envSource.includes("'http://127.0.0.1:8000'") &&
       envSource.includes("'VITE_API_BASE_URL', '/api'") &&
@@ -193,19 +198,95 @@ export function runProductionReadinessGate(rootDir: string) {
       message: 'Production bundles must not retain a localhost API or development-mode fallback.',
     },
   );
+  assertions.assert(
+    viteConfig.includes('process.env.CF_PAGES_COMMIT_SHA') &&
+      viteConfig.includes('process.env.VITE_APP_VERSION = cloudflareCommitSha'),
+    {
+      code: 'production-cloudflare-release-identifier',
+      message:
+        'Cloudflare builds must expose the injected commit SHA when no explicit public release version is supplied.',
+    },
+  );
+
+  const csp = headers
+    .split('\n')
+    .find((line) => line.trimStart().startsWith('Content-Security-Policy:'));
+  assertions.assert(
+    Boolean(csp) &&
+      csp?.includes("default-src 'self'") &&
+      csp.includes("script-src 'self'") &&
+      csp.includes("style-src 'self' 'unsafe-inline'") &&
+      csp.includes("media-src 'self' blob:") &&
+      csp.includes("connect-src 'self'") &&
+      csp.includes("frame-ancestors 'none'") &&
+      csp.includes("worker-src 'none'") &&
+      !csp.includes('unsafe-eval') &&
+      !csp.includes('*'),
+    {
+      code: 'production-cloudflare-csp',
+      message:
+        'Cloudflare Pages requires a bounded CSP matching same-origin application and local voice playback behavior.',
+    },
+  );
+  assertions.assert(
+    headers.includes('X-Content-Type-Options: nosniff') &&
+      headers.includes('Referrer-Policy: strict-origin-when-cross-origin') &&
+      headers.includes('X-Frame-Options: DENY') &&
+      headers.includes('Permissions-Policy: microphone=(self), camera=(), geolocation=()'),
+    {
+      code: 'production-cloudflare-security-headers',
+      message: 'Cloudflare Pages must enforce the reviewed security and browser permission policy.',
+    },
+  );
+  assertions.assert(
+    /\/index\.html\s+Cache-Control: no-cache/.test(headers) &&
+      /\/assets\/\*\s+Cache-Control: public, max-age=31536000, immutable/.test(headers) &&
+      !/\/index\.html\s+Cache-Control:[^\n]*immutable/.test(headers),
+    {
+      code: 'production-cloudflare-cache-policy',
+      message:
+        'Cloudflare Pages must revalidate the application document and cache only fingerprinted assets as immutable.',
+    },
+  );
+  assertions.assert(
+    !existsSync(resolve(rootDir, 'public/_redirects')) &&
+      !existsSync(resolve(rootDir, 'public/404.html')) &&
+      !existsSync(resolve(rootDir, 'public/_routes.json')) &&
+      !existsSync(resolve(rootDir, 'public/_worker.js')) &&
+      !existsSync(resolve(rootDir, 'functions')) &&
+      !existsSync(resolve(rootDir, 'wrangler.toml')) &&
+      !existsSync(resolve(rootDir, 'wrangler.json')) &&
+      !existsSync(resolve(rootDir, 'wrangler.jsonc')) &&
+      !existsSync(resolve(rootDir, 'vercel.json')) &&
+      !existsSync(resolve(rootDir, 'netlify.toml')) &&
+      !existsSync(resolve(rootDir, '../wrangler.toml')) &&
+      !existsSync(resolve(rootDir, '../wrangler.json')) &&
+      !existsSync(resolve(rootDir, '../wrangler.jsonc')) &&
+      !existsSync(resolve(rootDir, '../vercel.json')) &&
+      !existsSync(resolve(rootDir, '../netlify.toml')),
+    {
+      code: 'production-cloudflare-minimal-static-config',
+      message:
+        'The static Pages deployment must rely on native SPA fallback without Functions or foreign-host configuration.',
+    },
+  );
 
   const deployment = read(rootDir, '../docs/release-readiness.md');
   assertions.assert(
-    deployment.includes('rewrite application routes to `/index.html`') &&
-      deployment.includes("Content-Security-Policy: default-src 'self'") &&
+    deployment.includes('Cloudflare Pages deployment runbook') &&
+      deployment.includes('| Root directory | `frontend` |') &&
+      deployment.includes('| Build command | `npm run build` |') &&
+      deployment.includes('CF_PAGES_COMMIT_SHA') &&
+      deployment.includes('no `_redirects` file is required') &&
       deployment.includes('max-age=31536000, immutable') &&
+      deployment.includes('Rollback to this deployment') &&
       deployment.includes('Product Storage V2 rollout'),
     {
       code: 'production-deployment-contract',
       message:
-        'Deployment requirements must cover SPA fallback, CSP, cache policy and deferred V2.',
+        'The Cloudflare runbook must cover build settings, native SPA fallback, versioning, caching, rollback and deferred V2.',
     },
   );
 
-  return assertions.result({ fixtureCount: 18 });
+  return assertions.result({ fixtureCount: 23 });
 }

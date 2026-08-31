@@ -12,6 +12,7 @@ import { runTarotRegressionGate } from '../determinism/tarot';
 import { QUALITY_BASELINE } from '../fixtures/baseline';
 import { runPrivacyGate } from '../privacy';
 import { runCrossProductConsistencyGate } from '../regression/cross-product-consistency';
+import { runProductionReadinessGate } from '../regression/production-readiness';
 import { runReleaseHardeningGate } from '../regression/release-hardening';
 import { runTarotArtworkGate } from '../regression/tarot-artwork';
 import { runTarotGoldenMasterGate } from '../regression/tarot-golden-master';
@@ -335,6 +336,19 @@ export const qualityGateRegistry: readonly QualityGateDefinition[] = [
     tags: ['regression', 'fast', 'full'],
     timeout: 5_000,
     title: 'Release Hardening',
+  },
+  {
+    affectedModules: ['index.html', 'public', 'router', 'config', 'pages/legal', 'docs'],
+    description:
+      'Canonical brand metadata, localized legal routes, private-route indexing, truthful privacy boundaries, safe environment defaults, and deployment contracts.',
+    group: 'regression',
+    id: 'production-readiness',
+    required: true,
+    runner: ({ rootDir }) => runProductionReadinessGate(rootDir),
+    severity: 'error',
+    tags: ['regression', 'fast', 'full'],
+    timeout: 5_000,
+    title: 'Production Readiness',
   },
   {
     affectedModules: ['frontend/src'],

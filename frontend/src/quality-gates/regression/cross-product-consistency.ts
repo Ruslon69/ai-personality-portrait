@@ -19,11 +19,8 @@ export function runCrossProductConsistencyGate(rootDir: string) {
   const layoutCss = read(rootDir, 'src/app/layout/Layout.module.css');
   const sidebar = read(rootDir, 'src/widgets/sidebar/Sidebar.tsx');
   const notFound = read(rootDir, 'src/pages/not-found/NotFoundPage.tsx');
-  const compatibilitySettings = read(
-    rootDir,
-    'src/features/user-settings/sections/CompatibilitySettingsSection.tsx',
-  );
-  const userSettingsHook = read(rootDir, 'src/features/user-settings/hooks/useUserSettings.ts');
+  const userSettings = read(rootDir, 'src/features/user-settings/components/UserSettings.tsx');
+  const settingsPage = read(rootDir, 'src/pages/settings/SettingsPage.tsx');
   const locales = [
     read(rootDir, 'src/shared/i18n/locales/ru.ts'),
     read(rootDir, 'src/shared/i18n/locales/en.ts'),
@@ -115,15 +112,11 @@ export function runCrossProductConsistencyGate(rootDir: string) {
     userSettingsCopy.en.hero.title === 'Settings' &&
       userSettingsCopy.uk.hero.title === 'Налаштування' &&
       englishSettings.appearanceOptions.map((option) => option.value).join(',') ===
-        ukrainianSettings.appearanceOptions.map((option) => option.value).join(',') &&
-      englishSettings.portraitDataActions.map((action) => action.id).join(',') ===
-        ukrainianSettings.portraitDataActions.map((action) => action.id).join(',') &&
-      englishSettings.portraitDataActions[0]?.label === 'Export data' &&
-      ukrainianSettings.portraitDataActions[0]?.label === 'Експортувати дані',
+        ukrainianSettings.appearanceOptions.map((option) => option.value).join(','),
     {
       code: 'localized-settings-behavior-parity',
       message:
-        'Settings locales must change presentation copy while preserving identical control and action semantics.',
+        'Settings locales must change presentation copy while preserving identical working control semantics.',
     },
   );
 
@@ -150,15 +143,17 @@ export function runCrossProductConsistencyGate(rootDir: string) {
   );
 
   assertions.assert(
-    compatibilitySettings.includes('onRevoke(invitation, buttonId)') &&
-      userSettingsHook.includes('cancelFocusTargetId: returnFocusId') &&
-      userSettingsHook.includes("confirmFocusTargetId: 'compatibility-settings-title'") &&
-      userSettingsHook.includes('setFocusTargetId(pendingAction.cancelFocusTargetId)') &&
-      userSettingsHook.includes('setFocusTargetId(pendingAction.confirmFocusTargetId)'),
+    userSettings.includes('<AppearanceSettingsSection') &&
+      !userSettings.includes('DataManagementSection') &&
+      !userSettings.includes('PrivacySettingsSection') &&
+      !userSettings.includes('DangerZoneSection') &&
+      !settingsPage.includes('portraitDataActions') &&
+      !settingsPage.includes('privacyConsents') &&
+      !settingsPage.includes('dangerActions'),
     {
-      code: 'settings-dialog-focus-destination',
+      code: 'settings-working-controls-only',
       message:
-        'Cancelling a settings dialog must return focus to its trigger while confirmed removal moves focus to a surviving target.',
+        'Settings must expose only working appearance and Tarot controls, not demonstrational consent, export or deletion actions.',
     },
   );
 

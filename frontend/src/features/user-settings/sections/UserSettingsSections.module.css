@@ -19,8 +19,7 @@
   outline: none;
 }
 
-.section,
-.dangerSection {
+.section {
   padding-block: var(--page-section-padding-block);
 }
 
@@ -29,16 +28,10 @@
   color: var(--color-text-muted);
 }
 
-.settingsSurface,
-.accountSurface,
-.dangerSurface {
+.settingsSurface {
   padding: var(--page-surface-padding);
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
-}
-
-.settingsSurface,
-.accountSurface {
   background: var(--surface-accent-subtle);
 }
 
@@ -49,15 +42,12 @@
   margin: 0;
 }
 
-.optionGrid,
-.actionGrid,
-.invitationGrid {
+.optionGrid {
   display: grid;
   gap: var(--space-4);
 }
 
-.choiceCard,
-.consentRow {
+.choiceCard {
   display: grid;
   align-items: start;
   padding: var(--space-4);
@@ -71,13 +61,11 @@
     box-shadow var(--transition-duration-fast) var(--transition-easing-standard);
 }
 
-.choiceCard:hover,
-.consentRow:hover {
+.choiceCard:hover {
   border-color: var(--color-border-strong);
 }
 
-.choiceCard:has(.control:focus-visible),
-.consentRow:has(.control:focus-visible) {
+.choiceCard:has(.control:focus-visible) {
   outline: var(--focus-ring-width) solid var(--color-focus);
   outline-offset: var(--focus-ring-offset);
 }
@@ -107,58 +95,6 @@
   font-size: var(--font-size-sm);
 }
 
-.consentList {
-  display: grid;
-  gap: var(--space-3);
-}
-
-.actionGrid {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
-}
-
-.actionCard,
-.invitationCard {
-  min-block-size: 100%;
-  padding: var(--page-card-padding);
-}
-
-.actionCard button,
-.invitationCard button {
-  align-self: flex-start;
-}
-
-.dangerOutline {
-  border-color: var(--color-feedback-error);
-  color: var(--color-feedback-error);
-}
-
-.accountGrid {
-  display: grid;
-  gap: var(--space-6);
-}
-
-.dangerSection {
-  padding-block-end: var(--page-ending-padding-block);
-}
-
-.dangerSurface {
-  border-color: var(--color-feedback-error);
-  background: color-mix(in srgb, var(--color-feedback-error) 4%, var(--color-surface));
-}
-
-.dangerActions {
-  display: grid;
-  gap: var(--space-3);
-}
-
-.dangerAction {
-  display: grid;
-  align-items: center;
-  padding-block-start: var(--space-4);
-  border-block-start: 0.0625rem solid var(--color-border);
-  gap: var(--space-4);
-}
-
 .visuallyHidden {
   position: absolute;
   overflow: hidden;
@@ -172,32 +108,14 @@
   white-space: nowrap;
 }
 
-@media (max-width: 29.999rem) {
-  .actionCard button,
-  .invitationCard button,
-  .dangerAction button {
-    inline-size: 100%;
-  }
-}
-
 @media (min-width: 48rem) {
   .optionGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-
-  .invitationGrid,
-  .accountGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .dangerAction {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .choiceCard,
-  .consentRow {
+  .choiceCard {
     transition: none;
   }
 }

@@ -3,6 +3,11 @@ import type { I18nMessages } from '../types';
 export const en = {
   shell: {
     footer: 'For self-reflection — not diagnosis or prediction',
+    legal: {
+      label: 'Legal information',
+      privacy: 'Privacy',
+      terms: 'Terms',
+    },
     header: {
       closeNavigation: 'Close navigation',
       language: 'Interface language',
@@ -10,8 +15,6 @@ export const en = {
       openNavigation: 'Open navigation',
       openSettings: 'Open settings',
       settings: 'Settings',
-      userMenuUnavailable: 'User menu is not available yet',
-      userPlaceholder: 'User',
     },
     navigation: {
       close: 'Close',
@@ -65,8 +68,8 @@ export const en = {
         {
           description:
             'Answers, interests and selected interpretations become one coherent view instead of a collection of isolated facts.',
-          eyebrow: 'AI synthesis',
-          title: 'AI connects the details',
+          eyebrow: 'Connected perspective',
+          title: 'The details form a wider picture',
         },
         {
           description:
@@ -105,12 +108,12 @@ export const en = {
     final: {
       description:
         'Begin with a few short questions. You can choose every other layer along the way.',
-      title: 'Curious what connections AI may notice in you?',
+      title: 'Curious what connections may open up for you?',
     },
     hero: {
       description:
         'Answer a few questions, choose the layers that feel relevant, and receive a personal portrait that connects your habits, interests and ways of expressing yourself.',
-      eyebrow: 'YOUR PERSONAL AI PORTRAIT',
+      eyebrow: 'YOUR PERSONAL PORTRAIT',
       primaryCta: 'Create my portrait',
       secondaryCta: 'See how it works',
       title: ['There’s more to you', 'than meets the eye'],
@@ -122,8 +125,8 @@ export const en = {
       ],
       visual: {
         ariaLabel:
-          'AI synthesis connects five displayed layers — answers, interests, zodiac, numerology and voice — into a personal portrait',
-        coreLabel: 'AI synthesis',
+          'Five displayed layers — answers, interests, zodiac, numerology and voice — connect into a personal portrait',
+        coreLabel: 'Connected picture',
         coreStatus: 'Connecting your chosen facets',
         coreValue: 'Your portrait',
         layers: ['Answers', 'Interests', 'Zodiac', 'Numerology', 'Voice'],
@@ -132,7 +135,7 @@ export const en = {
     layers: {
       baseLabel: 'Foundation',
       description:
-        'Psychological self-reflection and AI synthesis form the foundation. Every other layer is voluntary and clearly identified.',
+        'Self-reflection and connected analysis form the foundation. Every other layer is voluntary and clearly identified.',
       eyebrow: 'You control the depth',
       items: [
         {
@@ -176,8 +179,8 @@ export const en = {
     },
     process: {
       description:
-        'No technical jargon or hidden conclusions: each source becomes its own meaning layer, while AI helps surface connections and differences.',
-      eyebrow: 'How AI works',
+        'No technical jargon or hidden conclusions: each source becomes its own meaning layer, while the wider picture surfaces connections and differences.',
+      eyebrow: 'How the picture comes together',
       items: [
         {
           description: 'Short answers and interests add context without a long questionnaire.',
@@ -190,7 +193,7 @@ export const en = {
         {
           description:
             'The system compares observations, highlights overlaps and keeps differences visible.',
-          title: 'AI finds connections and contrasts',
+          title: 'The sources reveal connections and contrasts',
         },
         {
           description:
@@ -206,7 +209,7 @@ export const en = {
         'Personal suggestion',
       ],
       resultLabel: 'Portrait',
-      synthesisLabel: 'AI synthesis',
+      synthesisLabel: 'Connected picture',
       title: 'Different sources. One connected portrait.',
     },
     privacy: {
@@ -266,8 +269,8 @@ export const en = {
           title: 'Optional layers',
         },
         {
-          description: 'AI connects the sources into one portrait without definitive claims.',
-          title: 'AI synthesis',
+          description: 'Your chosen sources connect into one portrait without definitive claims.',
+          title: 'Connected synthesis',
         },
         {
           description: 'See meaningful observations before deciding whether to explore further.',

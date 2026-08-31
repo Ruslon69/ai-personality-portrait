@@ -13,13 +13,8 @@ export function SettingsPage() {
   const data = getLocalizedUserSettingsData(locale);
   return (
     <UserSettings
-      account={data.account}
       appearanceOptions={data.appearanceOptions}
-      dangerActions={data.dangerActions}
-      dataActions={data.portraitDataActions}
-      initialInvitations={data.invitations}
       locale={locale}
-      privacyConsents={data.privacyConsents}
       tarotPreferences={
         <TarotPreferencesSection
           locale={locale}

@@ -9,7 +9,7 @@ LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 class Settings(BaseModel):
     model_config = ConfigDict(frozen=True)
 
-    app_name: str = "AI Personality Portrait API"
+    app_name: str = "Soul Arkana API"
     version: str = "0.1.0"
     environment: Environment = "development"
     log_level: LogLevel = "INFO"

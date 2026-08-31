@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Disallow: /tarot/history
+Disallow: /tarot/reading
+Disallow: /tarot/result
+Disallow: /numerology/profile
+Disallow: /numerology/result
+Disallow: /portrait/questions
+Disallow: /portrait/voice
+Disallow: /portrait/birth-date
+Disallow: /portrait/generating
+Disallow: /portrait/result-preview
+Disallow: /portrait/result
+Disallow: /compatibility
+Disallow: /profile
+Disallow: /profile/history
+Disallow: /settings

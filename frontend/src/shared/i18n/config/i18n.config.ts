@@ -14,5 +14,3 @@ export const localeOptions = [
 }[];
 
 export const supportedLocales = localeOptions.map(({ locale }) => locale);
-
-// Questionnaire, profile, settings and long demo reports remain a future localization scope.

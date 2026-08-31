@@ -12,6 +12,7 @@ export const ROUTES = Object.freeze({
   portraitResult: '/portrait/result',
   portraitResultPreview: '/portrait/result-preview',
   portraitVoice: '/portrait/voice',
+  privacy: '/privacy',
   profile: '/profile',
   profileHistory: '/profile/history',
   settings: '/settings',
@@ -19,6 +20,7 @@ export const ROUTES = Object.freeze({
   tarotHistory: '/tarot/history',
   tarotReading: '/tarot/reading',
   tarotResult: '/tarot/result',
+  terms: '/terms',
 } as const);
 
 export type AppRoutePath = (typeof ROUTES)[keyof typeof ROUTES];

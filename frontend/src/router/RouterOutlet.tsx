@@ -1,9 +1,10 @@
-import { Suspense, useEffect, useRef } from 'react';
+import { Suspense, useEffect, useLayoutEffect, useRef } from 'react';
 
 import { useI18n } from '@shared/i18n';
 import { Spinner } from '@shared/ui';
 
 import { resolveRoute } from './routes';
+import { resolveRouteDocumentMetadata } from './route-metadata';
 import styles from './RouterOutlet.module.css';
 import { useRouter } from './useRouter';
 
@@ -13,6 +14,14 @@ export function RouterOutlet() {
   const previousPathRef = useRef(currentPath);
   const route = resolveRoute(currentPath);
   const Page = route.component;
+
+  useLayoutEffect(() => {
+    const metadata = resolveRouteDocumentMetadata(currentPath, locale);
+    document.title = metadata.title;
+    document
+      .querySelector<HTMLMetaElement>('meta[name="robots"]')
+      ?.setAttribute('content', metadata.robots);
+  }, [currentPath, locale]);
 
   useEffect(() => {
     if (previousPathRef.current === currentPath) {

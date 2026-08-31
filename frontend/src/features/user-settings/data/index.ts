@@ -1,11 +1,4 @@
-export {
-  appearanceOptions,
-  dangerZoneActions,
-  demoCompatibilityInvitations,
-  demoSettingsAccount,
-  portraitDataActions,
-  privacyConsentSettings,
-} from './user-settings.data';
+export { appearanceOptions } from './user-settings.data';
 export {
   getLocalizedUserSettingsData,
   userSettingsCopy,

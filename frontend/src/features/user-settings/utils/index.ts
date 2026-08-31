@@ -1,8 +1,1 @@
-export {
-  createDefaultConsentValues,
-  formatInvitationDate,
-  getInvitationStatusLabel,
-  getSettingsThemeLabel,
-  revokeCompatibilityInvitation,
-  updateConsentValue,
-} from './settings-utils';
+export { getSettingsThemeLabel } from './settings-utils';

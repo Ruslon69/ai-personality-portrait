@@ -15,7 +15,7 @@ export function createProductStorageDiagnosticSink(logger: Logger): ProductStora
       };
       if (event.status === 'error') logger.error('Product storage status', metadata);
       else if (event.status === 'warning') logger.warn('Product storage status', metadata);
-      else logger.info('Product storage status', metadata);
+      else logger.debug('Product storage status', metadata);
     },
   };
 }

@@ -3,6 +3,7 @@ export * from './compatibility';
 export * from './full-result';
 export * from './generating';
 export * from './history';
+export * from './legal';
 export * from './home';
 export * from './not-found';
 export * from './portrait';

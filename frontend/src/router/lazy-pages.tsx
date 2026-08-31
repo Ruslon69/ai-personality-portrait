@@ -39,6 +39,12 @@ export const SettingsPage = lazy(() =>
 export const NotFoundPage = lazy(() =>
   import('@pages/not-found').then((module) => ({ default: module.NotFoundPage })),
 );
+export const PrivacyPage = lazy(() =>
+  import('@pages/legal').then((module) => ({ default: module.PrivacyPage })),
+);
+export const TermsPage = lazy(() =>
+  import('@pages/legal').then((module) => ({ default: module.TermsPage })),
+);
 export const TarotPage = lazy(() =>
   import('@pages/tarot').then((module) => ({ default: module.TarotPage })),
 );

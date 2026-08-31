@@ -12,6 +12,7 @@ import {
   NumerologyProfilePage,
   NumerologyResultPage,
   PortraitPage,
+  PrivacyPage,
   ProfilePage,
   QuestionsPage,
   ResultPreviewPage,
@@ -20,6 +21,7 @@ import {
   TarotHistoryPage,
   TarotReadingPage,
   TarotResultPage,
+  TermsPage,
   VoicePage,
 } from './lazy-pages';
 import type { AppRoute } from './RouterProvider.types';
@@ -34,6 +36,7 @@ export const appRoutes: readonly AppRoute[] = [
   { component: NumerologyProfilePage, path: ROUTES.numerologyProfile },
   { component: NumerologyResultPage, path: ROUTES.numerologyResult },
   { component: PortraitPage, path: ROUTES.portrait },
+  { component: PrivacyPage, path: ROUTES.privacy },
   { component: QuestionsPage, path: ROUTES.portraitQuestions },
   { component: VoicePage, path: ROUTES.portraitVoice },
   { component: BirthDatePage, path: ROUTES.portraitBirthDate },
@@ -44,6 +47,7 @@ export const appRoutes: readonly AppRoute[] = [
   { component: ProfilePage, path: ROUTES.profile },
   { component: HistoryPage, path: ROUTES.profileHistory },
   { component: SettingsPage, path: ROUTES.settings },
+  { component: TermsPage, path: ROUTES.terms },
   { component: NotFoundPage, path: ROUTES.notFound },
 ];
 

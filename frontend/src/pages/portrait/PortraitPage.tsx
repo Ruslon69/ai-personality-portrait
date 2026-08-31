@@ -99,7 +99,7 @@ export function PortraitPage() {
                   <path d="M330 340Q405 415 488 488" pathLength="1" />
                 </svg>
                 <div aria-hidden="true" className={styles.journeyCore}>
-                  <span>AI</span>
+                  <span>SA</span>
                 </div>
                 <ol aria-hidden="true" className={styles.journeyTrack}>
                   {content.journey.items.map((item, index) => (

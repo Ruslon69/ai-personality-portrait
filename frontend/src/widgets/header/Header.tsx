@@ -56,10 +56,10 @@ export function Header({
             }}
           >
             <span aria-hidden="true" className={styles.logo}>
-              AP
+              SA
             </span>
             <Typography as="span" className={styles.projectName} variant="heading-sm">
-              {appConfig.name}
+              {appConfig.brand.displayName}
             </Typography>
           </a>
         </div>
@@ -76,14 +76,6 @@ export function Header({
               >
                 <span aria-hidden="true">⚙</span>
                 <span className={styles.actionLabel}>{messages.shell.header.settings}</span>
-              </Button>
-              <Button
-                aria-label={messages.shell.header.userMenuUnavailable}
-                className={styles.userAction}
-                disabled
-              >
-                <span aria-hidden="true">{messages.shell.header.userPlaceholder.charAt(0)}</span>
-                <span className={styles.actionLabel}>{messages.shell.header.userPlaceholder}</span>
               </Button>
             </>
           ) : null}

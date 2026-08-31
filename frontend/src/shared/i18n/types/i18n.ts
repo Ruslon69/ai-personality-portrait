@@ -19,6 +19,11 @@ export type LocalizedFeature = LocalizedCard & {
 export type I18nMessages = {
   shell: {
     footer: string;
+    legal: {
+      label: string;
+      privacy: string;
+      terms: string;
+    };
     header: {
       closeNavigation: string;
       language: string;
@@ -26,8 +31,6 @@ export type I18nMessages = {
       openNavigation: string;
       openSettings: string;
       settings: string;
-      userMenuUnavailable: string;
-      userPlaceholder: string;
     };
     navigation: {
       close: string;

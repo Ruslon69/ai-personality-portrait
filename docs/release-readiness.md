@@ -71,7 +71,7 @@ Do not set HSTS through `_headers` before the production domain and all included
 ## Cache behavior
 
 - Cloudflare's default HTML/SPA response policy revalidates (`max-age=0, must-revalidate`); `/index.html` also explicitly uses `no-cache`.
-- `/assets/*` uses `public, max-age=31536000, immutable`. Vite content-hashes JavaScript, CSS, fonts, and all bundled Tarot artwork, so a content change creates a new URL.
+- `/assets/*` intentionally has no custom browser cache override. Vite content-hashes the files, but native Pages SPA fallback also answers missing asset URLs with `index.html`; a wildcard immutable rule would therefore cache fallback HTML under a missing asset URL for a year. Cloudflare's deployment-aware CDN cache and default browser revalidation remain active.
 - `favicon.svg` uses a short one-hour lifetime with revalidation.
 - `robots.txt` uses `no-cache`.
 
@@ -99,7 +99,7 @@ Before announcing a release:
 1. Confirm the Pages build used the expected commit and Node version and that the UI exposes a non-`0.0.0` release identifier where configured.
 2. Run the route list above through direct navigation, refresh, Back, and Forward.
 3. Confirm `Content-Security-Policy`, `Permissions-Policy`, `X-Content-Type-Options`, `Referrer-Policy`, and frame protection on HTML responses.
-4. Confirm HTML revalidation and immutable caching for a hashed asset.
+4. Confirm HTML and hashed assets revalidate, valid assets return their real MIME types, and a missing `/assets/...` request is not marked immutable.
 5. Check browser console CSP errors, failed requests, mixed content, unexpected external requests, horizontal overflow, legal links, locale switching, and microphone permission on HTTPS.
 6. Check `/privacy` and `/terms` in RU, EN, and UK. Owner/legal approval and real operator/contact details remain mandatory before public launch.
 

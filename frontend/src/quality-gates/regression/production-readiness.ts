@@ -240,12 +240,12 @@ export function runProductionReadinessGate(rootDir: string) {
   );
   assertions.assert(
     /\/index\.html\s+Cache-Control: no-cache/.test(headers) &&
-      /\/assets\/\*\s+Cache-Control: public, max-age=31536000, immutable/.test(headers) &&
+      !/\/assets\/\*\s+Cache-Control:/.test(headers) &&
       !/\/index\.html\s+Cache-Control:[^\n]*immutable/.test(headers),
     {
       code: 'production-cloudflare-cache-policy',
       message:
-        'Cloudflare Pages must revalidate the application document and cache only fingerprinted assets as immutable.',
+        'Cloudflare Pages must revalidate the application document without an immutable asset wildcard that can cache SPA fallback HTML.',
     },
   );
   assertions.assert(
@@ -278,7 +278,7 @@ export function runProductionReadinessGate(rootDir: string) {
       deployment.includes('| Build command | `npm run build` |') &&
       deployment.includes('CF_PAGES_COMMIT_SHA') &&
       deployment.includes('no `_redirects` file is required') &&
-      deployment.includes('max-age=31536000, immutable') &&
+      deployment.includes('wildcard immutable rule') &&
       deployment.includes('Rollback to this deployment') &&
       deployment.includes('Product Storage V2 rollout'),
     {

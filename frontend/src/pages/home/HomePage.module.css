@@ -1,356 +1,342 @@
 .root {
+  min-inline-size: 0;
   overflow: clip;
   background: var(--color-marketing-canvas);
 }
+
 .hero {
-  padding-block: clamp(var(--space-3), 3vw, var(--space-6)) var(--space-8);
+  padding-block: clamp(var(--space-3), 2vw, var(--space-5));
 }
+
 .heroFrame {
   position: relative;
   overflow: hidden;
-  min-block-size: min(45rem, calc(100svh - 8rem));
-  padding: clamp(var(--space-5), 5vw, var(--space-9));
+  padding: clamp(var(--space-6), 5vw, var(--space-9));
   border: 0.0625rem solid var(--color-marketing-border);
   border-radius: calc(var(--radius-lg) + var(--space-3));
   background:
-    radial-gradient(circle at 82% 20%, var(--color-marketing-glow-primary), transparent 32%),
-    radial-gradient(circle at 12% 82%, var(--color-marketing-glow-secondary), transparent 35%),
+    radial-gradient(circle at 84% 20%, var(--color-marketing-glow-primary), transparent 30%),
+    radial-gradient(circle at 14% 92%, var(--color-marketing-glow-secondary), transparent 32%),
     var(--color-marketing-surface);
 }
+
 .heroGrid {
   display: grid;
-  min-block-size: 100%;
   align-items: center;
-  gap: var(--page-hero-gap);
+  gap: clamp(var(--space-6), 6vw, var(--space-9));
 }
+
+.heroCopy {
+  display: grid;
+  max-inline-size: 43rem;
+  justify-items: start;
+  gap: var(--space-5);
+}
+
+.eyebrow {
+  color: var(--color-marketing-accent);
+}
+
 .heroTitle {
-  max-inline-size: 13ch;
+  max-inline-size: 16ch;
   text-wrap: balance;
 }
+
 .lead {
-  max-inline-size: 56ch;
+  max-inline-size: 52ch;
   color: var(--color-text-muted);
 }
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-}
-.actions a {
-  white-space: normal;
-}
+
 .trust {
   display: flex;
   padding: 0;
+  margin: 0;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
   list-style: none;
 }
-.trust li {
-  display: flex;
-  align-items: center;
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
-  gap: var(--space-2);
+
+.trust li + li::before {
+  margin-inline-end: var(--space-4);
+  color: var(--color-marketing-accent-secondary);
+  content: '·';
 }
-.trust li:before {
-  inline-size: 0.4rem;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--color-marketing-accent-secondary);
-  content: '';
-}
+
 .heroVisual {
   position: relative;
-  min-block-size: 28rem;
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: calc(var(--radius-lg) + var(--space-3));
+  min-block-size: clamp(18rem, 30vw, 25rem);
+  border: 0.0625rem solid color-mix(in srgb, var(--color-marketing-border-strong) 72%, transparent);
+  border-radius: calc(var(--radius-lg) + var(--space-2));
   background:
-    radial-gradient(
-      circle at center,
-      color-mix(in srgb, var(--color-marketing-accent) 15%, transparent),
-      transparent 35%
-    ),
-    var(--color-marketing-surface-raised);
+    radial-gradient(circle at 52% 48%, rgb(204 166 92 / 17%), transparent 34%),
+    radial-gradient(circle at 74% 22%, rgb(83 88 151 / 24%), transparent 38%),
+    linear-gradient(145deg, rgb(17 24 41 / 98%), rgb(6 10 19 / 99%));
+  box-shadow:
+    inset 0 0 0 0.0625rem rgb(231 215 180 / 4%),
+    inset 0 -5rem 7rem rgb(0 0 0 / 22%);
   overflow: hidden;
 }
-.heroVisual svg {
+
+.heroVisual::before,
+.heroVisual::after {
   position: absolute;
+  inline-size: 15rem;
+  aspect-ratio: 1.7;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgb(87 92 153 / 18%), transparent 68%);
+  content: '';
+  filter: blur(0.2rem);
+  pointer-events: none;
+}
+.heroVisual::before {
+  inset: auto auto -3.5rem -4rem;
+}
+.heroVisual::after {
+  inset: -2.5rem -5rem auto auto;
+}
+
+.heroOrbit {
+  position: absolute;
+  inset: 10% 13%;
+  border: 0.0625rem solid rgb(150 155 205 / 24%);
+  border-radius: 50%;
+  transform: rotate(-8deg);
+}
+.heroOrbit::before,
+.heroOrbit::after {
+  position: absolute;
+  border: 0.0625rem solid rgb(205 177 116 / 16%);
+  border-radius: 50%;
+  content: '';
+  inset: 11%;
+}
+.heroOrbit::after {
+  border-color: rgb(119 124 181 / 16%);
+  inset: 25%;
+}
+.heroOrbit i {
+  position: absolute;
+  inline-size: 0.22rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #e0c78f;
+  box-shadow: 0 0 0.7rem rgb(224 199 143 / 66%);
+}
+.heroOrbit i:first-child {
+  inset: 20% 5% auto auto;
+}
+.heroOrbit i:last-child {
+  inset: auto auto 12% 13%;
+}
+
+.heroCard {
+  position: absolute;
+  z-index: 2;
+  inset: 50% auto auto 50%;
+  inline-size: clamp(9rem, 14vw, 12.5rem);
+  aspect-ratio: 11 / 18;
+  color: #c9a867;
+  filter: drop-shadow(0 1.25rem 1.5rem rgb(0 0 0 / 52%))
+    drop-shadow(0 0 1rem rgb(201 168 103 / 16%));
+  transform: translate(-50%, -50%) rotate(-2.5deg);
+}
+.heroCard svg {
   inline-size: 100%;
   block-size: 100%;
-  inset: 0;
+  overflow: visible;
+}
+.heroCardFrame {
+  fill: rgb(8 13 25 / 96%);
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+.heroCardInner,
+.heroCardArc,
+.heroCandle,
+.heroWick,
+.heroCardOrbit,
+.heroCardStar {
   fill: none;
-  stroke: color-mix(in srgb, var(--color-marketing-accent) 45%, transparent);
-  stroke-dasharray: 5 8;
-  pointer-events: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
-.tarotStack,
-.numberOrbit,
-.portraitNode {
+.heroCardInner {
+  fill: rgb(18 25 43 / 86%);
+  stroke: rgb(134 140 194 / 62%);
+  stroke-width: 1;
+}
+.heroCardArc {
+  stroke: rgb(158 164 215 / 66%);
+  stroke-width: 1.5;
+}
+.heroCandle,
+.heroWick {
+  stroke: #d7bb7e;
+  stroke-width: 2;
+}
+.heroFlame {
+  fill: rgb(218 177 93 / 52%);
+  stroke: #efd59a;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 0.45rem rgb(235 195 112 / 70%));
+}
+.heroCardOrbit {
+  stroke: rgb(211 183 125 / 68%);
+  stroke-width: 1.25;
+}
+.heroOrbitPoint {
+  fill: #edd39a;
+  filter: drop-shadow(0 0 0.25rem rgb(237 211 154 / 70%));
+}
+.heroCardStar {
+  fill: rgb(224 199 143 / 22%);
+  stroke: #e0c78f;
+  stroke-width: 1.2;
+}
+
+.heroStar {
   position: absolute;
-  display: grid;
-  place-items: center;
+  color: rgb(230 207 158 / 72%);
+  filter: drop-shadow(0 0 0.4rem rgb(230 207 158 / 38%));
+  font-size: var(--font-size-lg);
 }
-.tarotStack {
-  inset: 22% auto auto 12%;
-  inline-size: 9rem;
-  aspect-ratio: 1;
+.heroStar[data-position='top'] {
+  inset: 17% 17% auto auto;
 }
-.tarotStack i {
-  position: absolute;
-  inline-size: 4.8rem;
-  aspect-ratio: 0.68;
-  border: 0.0625rem solid var(--color-marketing-accent-warm);
-  border-radius: var(--radius-md);
-  background: var(--color-marketing-surface);
-  transform-origin: 50% 120%;
-  transition: transform var(--motion-connect-duration) var(--motion-easing-connect);
-}
-.tarotStack i:first-child {
-  transform: rotate(-15deg);
-}
-.tarotStack i:nth-child(3) {
-  transform: rotate(15deg);
-}
-.tarotStack b {
-  z-index: 1;
-}
-.heroVisual:hover .tarotStack i:first-child {
-  transform: rotate(-24deg);
-}
-.heroVisual:hover .tarotStack i:nth-child(3) {
-  transform: rotate(24deg);
-}
-.numberOrbit {
-  inset: 8% 8% auto auto;
-  inline-size: 9rem;
-  aspect-ratio: 1;
-  border: 0.0625rem solid var(--color-marketing-accent-secondary);
-  border-radius: 50%;
-}
-.numberOrbit span {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-}
-.numberOrbit i {
-  position: absolute;
-  inline-size: 0.55rem;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--color-marketing-accent-secondary);
-}
-.numberOrbit i:first-of-type {
-  inset: 10% 15%;
-}
-.numberOrbit i:nth-of-type(2) {
-  inset: auto 8% 30% auto;
-}
-.numberOrbit i:nth-of-type(3) {
-  inset: auto auto 6% 28%;
-}
-.portraitNode {
-  inset: auto 12% 14% auto;
-  inline-size: 8rem;
-  aspect-ratio: 1;
-  border: 0.0625rem solid var(--color-marketing-accent);
-  border-radius: 42% 58% 48% 52%;
-  transform: rotate(12deg);
-}
-.portraitNode i {
-  inline-size: 52%;
-  aspect-ratio: 1;
-  border: 0.0625rem solid var(--color-marketing-accent);
-  border-radius: 50%;
-}
-.portraitNode span {
-  position: absolute;
-  inline-size: 0.7rem;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--color-marketing-accent);
-}
-.directions {
-  padding-block: var(--page-section-padding-block);
-}
-.sectionHeading {
-  display: grid;
-  max-inline-size: 46rem;
-  gap: var(--space-3);
-}
-.directionGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-auto-rows: 1fr;
-  gap: var(--space-4);
-}
-.directionCard {
-  position: relative;
-  display: grid;
-  min-inline-size: 0;
-  min-block-size: 25rem;
-  padding: var(--page-card-padding);
-  overflow: hidden;
-  transition:
-    transform var(--motion-card-hover-duration) var(--motion-interaction-easing),
-    border-color var(--motion-card-return-duration);
-}
-.directionCard[data-direction='tarot'] {
-  background:
-    radial-gradient(
-      circle at 90% 10%,
-      color-mix(in srgb, var(--color-marketing-accent-warm) 16%, transparent),
-      transparent 34%
-    ),
-    var(--color-marketing-surface);
-}
-.directionCard:hover,
-.directionCard:focus-within {
-  border-color: var(--color-marketing-border-strong);
-  transform: translateY(var(--motion-surface-lift-distance));
-}
-.directionContent {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  min-inline-size: 0;
-  min-block-size: 100%;
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
-  align-items: start;
-  gap: var(--space-4);
-}
-.directionHeader {
-  display: grid;
-  min-inline-size: 0;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  gap: var(--space-3);
-}
-.directionHeader > :first-child {
-  min-inline-size: 0;
-  max-inline-size: 100%;
-  overflow-wrap: break-word;
-  white-space: normal;
-}
-.cardIndex {
-  position: relative;
-  align-self: start;
-  color: color-mix(in srgb, var(--color-marketing-accent) 25%, transparent);
-  font-family: var(--font-family-heading);
-  font-size: clamp(2.25rem, 4vw, 3.75rem);
-  line-height: 1;
-  pointer-events: none;
-}
-.directionCard h3 {
-  max-inline-size: 100%;
-  font-size: clamp(var(--font-size-xl), 2.2vw, var(--font-size-2xl));
-  overflow-wrap: anywhere;
-  word-break: normal;
-}
-.directionDescription {
-  max-inline-size: 38ch;
-  color: var(--color-text-muted);
-  overflow-wrap: break-word;
-}
-.directionContent > a {
-  align-self: end;
-  justify-self: start;
-}
-.directionMotif {
-  position: absolute;
-  z-index: 0;
-  display: grid;
-  inset: auto -1rem -2rem auto;
-  inline-size: 9rem;
-  aspect-ratio: 1;
-  place-items: center;
-  border: 0.0625rem solid color-mix(in srgb, var(--color-marketing-accent) 35%, transparent);
-  border-radius: 50%;
-  opacity: 0.28;
-  pointer-events: none;
-}
-.directionMotif i {
-  position: absolute;
-  inline-size: 50%;
-  aspect-ratio: 1;
-  border: 0.0625rem solid currentColor;
-  transform: rotate(45deg);
-}
-.directionMotif i:nth-child(2) {
-  inline-size: 25%;
-  border-radius: 50%;
-}
-.directionMotif i:nth-child(3) {
-  inline-size: 0.55rem;
-  border: 0;
-  border-radius: 50%;
-  background: var(--color-marketing-accent);
-}
-.note {
-  max-inline-size: 72ch;
-  color: var(--color-text-muted);
+.heroStar[data-position='bottom'] {
+  inset: auto auto 18% 15%;
   font-size: var(--font-size-sm);
 }
-@media (min-width: 60rem) {
+
+.directions {
+  padding-block: clamp(var(--space-6), 6vw, var(--space-8)) var(--page-section-padding-block);
+}
+
+.sectionTitle {
+  margin-block-end: var(--space-5);
+}
+
+.directionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-inline-size: 62rem;
+  gap: var(--space-4);
+}
+
+.directionCard {
+  display: grid;
+  min-inline-size: 0;
+  min-block-size: 16rem;
+  grid-template-rows: auto auto 1fr auto;
+  padding: var(--page-card-padding);
+  border: 0.0625rem solid var(--color-marketing-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-marketing-surface);
+  color: var(--color-text);
+  gap: var(--space-3);
+  text-decoration: none;
+  transition:
+    background-color var(--transition-duration-fast) var(--transition-easing-standard),
+    border-color var(--transition-duration-fast) var(--transition-easing-standard),
+    box-shadow var(--transition-duration-fast) var(--transition-easing-standard);
+}
+
+.directionCard:hover {
+  border-color: var(--color-marketing-border-strong);
+  background: var(--color-marketing-surface-raised);
+  box-shadow: var(--shadow-low);
+}
+
+.directionCard:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.cardBadge {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.035em;
+}
+
+.directionDescription,
+.note {
+  color: var(--color-text-muted);
+}
+
+.cardAction {
+  align-self: end;
+  color: var(--color-marketing-accent);
+  font-weight: var(--font-weight-semibold);
+}
+
+.note {
+  max-inline-size: 70ch;
+  margin-block-start: var(--space-5);
+  font-size: var(--font-size-sm);
+}
+
+@media (min-width: 56rem) {
   .heroGrid {
-    grid-template-columns: minmax(0, 1.05fr) minmax(24rem, 0.95fr);
+    grid-template-columns: minmax(0, 1.12fr) minmax(19rem, 0.88fr);
   }
 }
-@media (max-width: 59.99rem) {
-  .directionGrid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .directionCard:first-child {
-    grid-column: 1/-1;
-  }
-}
-@media (max-width: 40rem) {
-  .heroFrame {
-    min-block-size: 0;
-  }
+
+@media (max-width: 55.99rem) {
   .heroVisual {
-    min-block-size: 20rem;
+    min-block-size: 13rem;
   }
+
   .directionGrid {
     grid-template-columns: 1fr;
   }
-  .directionCard:first-child {
-    grid-column: auto;
-  }
+
   .directionCard {
-    min-block-size: 20rem;
-  }
-  .directionContent > a {
-    inline-size: 100%;
-  }
-  .actions a {
-    inline-size: 100%;
-  }
-  .heroTitle {
-    font-size: clamp(2.45rem, 12vw, 4rem);
+    min-block-size: 0;
   }
 }
-@media (max-width: 23.5rem) {
+
+@media (max-width: 40rem) {
+  .hero {
+    padding-block: var(--space-2) var(--space-4);
+  }
+
   .heroFrame {
-    padding: var(--space-4);
+    padding: var(--space-5);
   }
+
+  .heroCopy {
+    gap: var(--space-4);
+  }
+
+  .heroTitle {
+    max-inline-size: 17ch;
+    font-size: clamp(2.2rem, 9vw, 2.75rem);
+    line-height: 1.08;
+  }
+
   .heroVisual {
-    min-block-size: 17rem;
+    display: none;
   }
-  .tarotStack {
-    inset-inline-start: 4%;
-    transform: scale(0.8);
+
+  .trust {
+    gap: var(--space-1) var(--space-3);
   }
-  .numberOrbit {
-    inset-inline-end: 3%;
-    transform: scale(0.8);
+
+  .trust li + li::before {
+    margin-inline-end: var(--space-3);
   }
-  .portraitNode {
-    inset-inline-end: 5%;
-    transform: rotate(12deg) scale(0.8);
+
+  .directions {
+    padding-block-start: var(--space-5);
   }
 }
+
 @media (prefers-reduced-motion: reduce) {
-  .tarotStack i,
   .directionCard {
     transition: none;
   }

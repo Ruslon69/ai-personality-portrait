@@ -38,7 +38,7 @@ export function ResultPreview({ onOpenFullResult, profile }: ResultPreviewProps)
       lead: 'Start with three observations assembled from your confirmed answers and selected sources.',
       important: 'Important',
       caution:
-        'This is not a diagnosis or a final definition of personality. Treat each observation as an invitation to reflect.',
+        'This is not a diagnosis or a final definition of personality. Use each observation as a question to consider.',
       observationEyebrow: 'First observations',
       observationTitle: 'What may already be visible',
       recommendationEyebrow: 'Small actions',
@@ -55,7 +55,7 @@ export function ResultPreview({ onOpenFullResult, profile }: ResultPreviewProps)
       lead: 'Начните с трёх коротких наблюдений, собранных из ваших подтверждённых ответов и выбранных источников.',
       important: 'Важно',
       caution:
-        'Это не диагноз и не окончательное определение личности. Любой вывод можно воспринимать как повод для саморефлексии.',
+        'Это не диагноз и не окончательное определение личности. Используйте каждый вывод как повод поразмышлять о себе.',
       observationEyebrow: 'Первые наблюдения',
       observationTitle: 'Что можно заметить уже сейчас',
       recommendationEyebrow: 'Небольшие действия',
@@ -72,7 +72,7 @@ export function ResultPreview({ onOpenFullResult, profile }: ResultPreviewProps)
       lead: 'Почніть із трьох коротких спостережень, зібраних із підтверджених відповідей та обраних джерел.',
       important: 'Важливо',
       caution:
-        'Це не діагноз і не остаточне визначення особистості. Кожен висновок можна сприймати як привід для саморефлексії.',
+        'Це не діагноз і не остаточне визначення особистості. Використовуйте кожен висновок як привід поміркувати про себе.',
       observationEyebrow: 'Перші спостереження',
       observationTitle: 'Що можна помітити вже зараз',
       recommendationEyebrow: 'Невеликі дії',

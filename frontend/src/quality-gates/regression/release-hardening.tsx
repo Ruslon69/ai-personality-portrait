@@ -95,15 +95,18 @@ export function runReleaseHardeningGate() {
 
   const failedSave = journeyHarness(initialJourneyState(), [false]);
   const failedSaveResult = failedSave.actions.recordReading(storageFixtureReading);
+  const unchangedAfterFailedSave = failedSave.actions.recordReading(storageFixtureReading);
   assertions.assert(
     failedSaveResult.changed &&
       !failedSaveResult.persisted &&
+      !unchangedAfterFailedSave.changed &&
+      unchangedAfterFailedSave.persisted &&
       failedSave.store.getState().readings.length === 1 &&
       failedSave.attempts.length === 1,
     {
       code: 'journey-failed-save-keeps-session-state',
       message:
-        'A failed permanent save must be reported without discarding the valid in-memory reading.',
+        'A failed permanent save must keep valid session data without leaking its stale failure into later no-op actions.',
     },
   );
 

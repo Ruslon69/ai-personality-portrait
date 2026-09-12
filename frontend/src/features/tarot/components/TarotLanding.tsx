@@ -74,6 +74,8 @@ export function TarotLanding({
                 >
                   {copy.primary} <span aria-hidden="true">→</span>
                 </Button>
+              </div>
+              <div aria-label={copy.secondaryActions} className={styles.utilityActions}>
                 <Button onClick={onOpenHistory} prominence="quiet">
                   {copy.history}
                 </Button>
@@ -81,7 +83,6 @@ export function TarotLanding({
                   {copy.settings}
                 </Button>
               </div>
-              <Typography className={styles.disclaimer}>{copy.reflectionNote}</Typography>
             </Stack>
             <div aria-hidden="true" className={styles.heroCards}>
               <i />

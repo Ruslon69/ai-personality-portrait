@@ -2,9 +2,9 @@ import type { ContentDictionary } from './types';
 
 export const enContent: ContentDictionary = {
   closing: [
-    'Your reading leaves room for your own decision and one observable next step.',
-    'Use these themes as orientation: the reading offers a perspective, while the choice remains yours.',
-    'Let this interpretation become a reason to check the context, not an answer made on your behalf.',
+    'Use this reading as a prompt to reflect. The decision remains yours.',
+    'Keep what helps you see the situation more clearly, then choose one small step.',
+    'Check the interpretation against real events and do not treat it as a ready-made answer.',
   ],
   connection: {
     reinforcement: [
@@ -37,39 +37,30 @@ export const enContent: ContentDictionary = {
     ],
   },
   contextual: [
-    'Within this reading, the motif relates most directly to {context}.',
-    'For your question, the useful part is how {context} appears now rather than an abstract meaning.',
-    'Your current focus on {context} gives this card a more specific angle.',
+    'Connect the card’s meaning with what is happening in {context} now.',
+    'For your question, what is actually happening in {context} matters most.',
+    'The topic of {context} helps apply the card’s meaning to your situation.',
   ],
   headline: {
-    'card-of-the-day': ['Today centres on {focus}', 'The day returns your attention to {focus}'],
-    week: [
-      'This week links {focus} with checking direction',
-      'The week takes shape around {focus}',
+    'card-of-the-day': [
+      'Pay attention to {focus} today',
+      'The day returns your attention to {focus}',
     ],
-    month: [
-      'This month asks you to give {focus} a clear form',
-      'The month is organised around {focus}',
-    ],
-    'compact-year': [
-      'The yearly path begins with {focus}',
-      'This cycle connects change with {focus}',
-    ],
+    week: ['Pay attention to {focus} this week', 'It may help to return to {focus} this week'],
+    month: ['Pay attention to {focus} this month', 'It may help to return to {focus} this month'],
+    'compact-year': ['Pay attention to {focus} this year', 'Return to {focus} during the year'],
     love: [
-      'Connection now needs {focus} and clear dialogue',
-      'The relationship becomes clearer through {focus}',
+      'Pay attention to {focus} in this relationship',
+      'An honest conversation may help with {focus}',
     ],
-    'work-study': [
-      'Your practical anchor is {focus}',
-      'The work direction becomes clearer through {focus}',
-    ],
+    'work-study': ['Pay attention to {focus} at work', 'It may help to return to {focus} at work'],
     money: [
-      'Resources now require {focus} and clear limits',
-      'The money context asks you to examine {focus}',
+      'Pay attention to {focus} in money matters',
+      'Return to {focus} before a money decision',
     ],
     decision: [
-      'Before choosing, bring {focus} back to the centre',
-      'The decision becomes clearer through {focus}',
+      'Pay attention to {focus} before choosing',
+      'It may help to return to {focus} before deciding',
     ],
   },
   interestExamples: {
@@ -98,14 +89,12 @@ export const enContent: ContentDictionary = {
     33: 'responsible support without losing boundaries',
   },
   numerology: {
-    core: ['The core number adds a symbolic theme of {numberTheme}.'],
+    core: ['The core number suggests paying attention to {numberTheme}.'],
     social: ['The first-impression number offers a view of {numberTheme} in contact with others.'],
     period: [
       'The current-period number points towards {numberTheme}; it is a backdrop, not an event forecast.',
     ],
-    practical: [
-      'In practical terms, number {number} suggests testing a step connected with {numberTheme}.',
-    ],
+    practical: ['Number {number} suggests one small step and attention to {numberTheme}.'],
     relational: [
       'In relationships, the number context highlights {numberTheme} without claiming to know another person’s thoughts.',
     ],
@@ -113,7 +102,7 @@ export const enContent: ContentDictionary = {
       'The difference between the numbers shows two symbolic emphases that do not have to match.',
     ],
     tarot: [
-      'Number {number} echoes the card number and adds the lens of {numberTheme} without changing the card’s meaning.',
+      'Number {number} suggests attention to {numberTheme} without changing the card’s meaning.',
     ],
   },
   opening: {
@@ -123,7 +112,7 @@ export const enContent: ContentDictionary = {
     ],
     week: [
       'Five positions show the week moving from its beginning towards a possible outcome.',
-      'The weekly reading forms a sequence of impulse, check, support and synthesis.',
+      'The weekly reading shows a beginning, a possible difficulty, support and an outcome.',
     ],
     month: [
       'The monthly reading connects work, relationships, inner tone and practical guidance.',
@@ -134,7 +123,7 @@ export const enContent: ContentDictionary = {
       'This format shows the broad rhythm of the year without assigning events to exact dates.',
     ],
     love: [
-      'The reading separates your position, the relationship dynamic, tension and a possible conversation.',
+      'The reading separates your position, what is happening between you, the difficulty and a possible conversation.',
       'The focus is on observable connection without guessing what another person thinks.',
     ],
     'work-study': [
@@ -146,18 +135,16 @@ export const enContent: ContentDictionary = {
       'Five positions examine approach, resource, risk and a practical boundary.',
     ],
     decision: [
-      'This reading does not choose for you; it lays the situation out through five perspectives.',
+      'This reading does not choose for you; it shows five sides of the situation.',
       'The positions separate what is visible, what may be missed and what action is available.',
     ],
   },
   orientation: {
-    upright: ['Upright, the theme of {focus} is expressed openly and can be observed directly.'],
-    'inner-expression': [
-      'Reversed, the theme of {focus} turns inward rather than showing itself openly.',
-    ],
+    upright: ['The upright card invites you to address {focus} directly.'],
+    'inner-expression': ['The reversed card asks you to notice how you feel about {focus}.'],
     delay: ['The reversed card shows a delay around {focus}, not a final prohibition.'],
     blockage: [
-      'Here the reversed position marks a blockage around {focus} that needs a more precise name.',
+      'The reversed card points to an obstacle around {focus}. Name it as clearly as you can.',
     ],
     excess: ['The reversed card asks whether {focus} has become overemphasised.'],
     lack: ['This position may be missing the quality connected with {focus}.'],
@@ -174,12 +161,12 @@ export const enContent: ContentDictionary = {
     restrictive: [
       'In a limiting position, {focus} marks where slowing down and checking conditions may help.',
     ],
-    hidden: ['In a hidden position, {focus} names an angle that is easy to miss at first.'],
+    hidden: ['In this position, {focus} points to something that may be easy to miss at first.'],
     relational: [
-      'In a relational position, {focus} concerns observable dynamics rather than another person’s thoughts.',
+      'Here, {focus} describes what you can observe between you, not what another person may be thinking.',
     ],
     directional: ['In a directional position, {focus} becomes an option to test through action.'],
-    reflective: ['This position invites you to consider {focus} as the current centre of meaning.'],
+    reflective: ['This card invites you to pay closer attention to {focus}.'],
     'outcome-oriented': [
       'In an outcome position, {focus} describes a possible direction, not a guaranteed ending.',
     ],
@@ -192,7 +179,7 @@ export const enContent: ContentDictionary = {
   psychological: [
     'Your answers suggest that {context} matters more right now, without turning it into a permanent trait.',
     'In the selected context, you more often chose options linked with {context}. This shapes the advice without defining your character.',
-    'Your answers add the current angle of {context} while leaving room for a different response elsewhere.',
+    'Your answers connect the reading to {context}. Your response may differ in another situation.',
   ],
   reflection: [
     'Where is {focus} already visible in the facts, and where is it still only an expectation?',
@@ -208,19 +195,19 @@ export const enContent: ContentDictionary = {
       'This theme is safer to use as a self-reflection prompt than as a statement about the future.',
   },
   sectionHeadline: [
-    'This position centres on {focus}',
-    'This angle brings {focus} forward',
-    'The main emphasis is {focus}',
+    'Pay attention to {focus}',
+    'Take a closer look at {focus}',
+    'The main question returns to {focus}',
   ],
   transitions: [
     'At the same time',
-    'The next angle',
+    'The next part',
     'Connected with this',
     'It is also worth noticing',
   ],
   uncertainty: [
     'This is one possible symbolic interpretation, not a promise of an event.',
-    'The reading offers a perspective for reflection and does not replace your decision.',
+    'The reading may help you reflect, but it does not replace your decision.',
     'Check this connection against the real context rather than treating it as an established fact.',
   ],
 };

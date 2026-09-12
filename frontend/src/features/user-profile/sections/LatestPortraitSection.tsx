@@ -11,6 +11,29 @@ type LatestPortraitSectionProps = {
 
 export function LatestPortraitSection({ onOpenPortrait, profile }: LatestPortraitSectionProps) {
   const includedSources = profile.sourceDetails.filter((source) => source.status !== 'omitted');
+  const copy = {
+    en: {
+      eyebrow: 'Latest result',
+      title: 'Return to your main result',
+      created: 'Created',
+      sources: 'Sources used',
+      open: 'Open personal reflection',
+    },
+    ru: {
+      eyebrow: 'Последний результат',
+      title: 'Вернитесь к главному результату',
+      created: 'Создан',
+      sources: 'Использованные источники',
+      open: 'Открыть личный разбор',
+    },
+    uk: {
+      eyebrow: 'Останній результат',
+      title: 'Поверніться до головного результату',
+      created: 'Створено',
+      sources: 'Використані джерела',
+      open: 'Відкрити особистий розбір',
+    },
+  }[profile.locale];
 
   return (
     <section aria-labelledby="latest-portrait-title" className={styles.section}>
@@ -18,10 +41,10 @@ export function LatestPortraitSection({ onOpenPortrait, profile }: LatestPortrai
         <Stack gap="lg">
           <Stack className={styles.sectionIntroduction} gap="sm">
             <Typography as="p" variant="eyebrow">
-              Последний портрет
+              {copy.eyebrow}
             </Typography>
             <Typography as="h2" id="latest-portrait-title" variant="heading-lg">
-              Вернитесь к главному результату
+              {copy.title}
             </Typography>
           </Stack>
 
@@ -34,13 +57,15 @@ export function LatestPortraitSection({ onOpenPortrait, profile }: LatestPortrai
               />
               <Stack gap="md">
                 <Typography className={styles.muted} variant="caption">
-                  Создан{' '}
-                  <time dateTime={profile.createdAt}>{formatProfileDate(profile.createdAt)}</time>
+                  {copy.created}{' '}
+                  <time dateTime={profile.createdAt}>
+                    {formatProfileDate(profile.createdAt, profile.locale)}
+                  </time>
                 </Typography>
                 <Typography as="h3" className={styles.keyPhrase} variant="heading-md">
                   {profile.revealHeadline}
                 </Typography>
-                <div aria-label="Использованные источники" className={styles.sourceList}>
+                <div aria-label={copy.sources} className={styles.sourceList}>
                   {includedSources.map((source) => (
                     <Badge key={source.id} tone="info">
                       {source.label}
@@ -50,7 +75,7 @@ export function LatestPortraitSection({ onOpenPortrait, profile }: LatestPortrai
               </Stack>
 
               <Button onClick={onOpenPortrait} prominence="primary" size="large">
-                Открыть портрет
+                {copy.open}
               </Button>
             </div>
           </Card>

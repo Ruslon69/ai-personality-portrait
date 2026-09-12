@@ -1,12 +1,19 @@
 import { Suspense, useEffect, useLayoutEffect, useRef } from 'react';
+import type { ComponentType } from 'react';
 
 import { useI18n } from '@shared/i18n';
 import { Spinner } from '@shared/ui';
 
 import { resolveRoute } from './routes';
 import { resolveRouteDocumentMetadata } from './route-metadata';
+import { restoreCurrentRouteScroll } from './scroll-restoration';
 import styles from './RouterOutlet.module.css';
 import { useRouter } from './useRouter';
+
+function RoutePage({ Page, path }: { Page: ComponentType; path: string }) {
+  useLayoutEffect(() => restoreCurrentRouteScroll(), [path]);
+  return <Page />;
+}
 
 export function RouterOutlet() {
   const { currentPath } = useRouter();
@@ -60,7 +67,7 @@ export function RouterOutlet() {
           </div>
         }
       >
-        <Page />
+        <RoutePage Page={Page} path={currentPath} />
       </Suspense>
     </div>
   );

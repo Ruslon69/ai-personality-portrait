@@ -11,6 +11,7 @@ import {
   shouldLoadTarotFaceArtwork,
   type TarotArtworkLoadingVariant,
 } from './tarot-artwork-loading';
+import { resolveTarotCardVisualFace } from './tarot-card-visual-state';
 import { getTarotArtworkRotation } from './tarot-artwork-orientation';
 import { TarotCardBack } from './TarotCardBack';
 import { withGoldenMasterDevelopmentPreview } from './golden-master-preview';
@@ -93,6 +94,7 @@ export function TarotCardView({
   const [failedAssets, setFailedAssets] = useState<readonly string[]>([]);
   const shouldRequestFaceArtwork =
     Boolean(card) && shouldLoadTarotFaceArtwork(isRevealed, variant, preloadFace);
+  const visualFace = resolveTarotCardVisualFace(isRevealed, revealStatus);
   const visibleArtworkLayers = artwork?.layers.filter(
     (layer) => !failedAssets.includes(layer.asset),
   );
@@ -231,6 +233,7 @@ export function TarotCardView({
         data-revealed={isRevealed || undefined}
         data-selected={isSelected || undefined}
         data-state={isRevealed ? 'face-up' : isSelected ? 'selected' : 'face-down'}
+        data-visual-face={visualFace}
         data-instant-reveal={instantReveal || undefined}
         data-reveal-phase={revealPhase}
         data-reveal-status={revealStatus}
@@ -243,6 +246,8 @@ export function TarotCardView({
         data-artwork-quality={artwork?.quality}
         data-artwork-render-mode={artwork?.renderMode}
         data-artwork-source={artwork?.sourceKind}
+        data-card-id={card?.id}
+        data-front-mounted={canRenderFaceAsset || undefined}
         data-orientation={selection?.orientation}
         role="img"
         style={style}
@@ -261,6 +266,7 @@ export function TarotCardView({
       data-revealed={isRevealed || undefined}
       data-selected={isSelected || undefined}
       data-state={isRevealed ? 'face-up' : isSelected ? 'selected' : 'selectable'}
+      data-visual-face={visualFace}
       data-instant-reveal={instantReveal || undefined}
       data-reveal-phase={revealPhase}
       data-reveal-status={revealStatus}
@@ -273,6 +279,8 @@ export function TarotCardView({
       data-artwork-quality={artwork?.quality}
       data-artwork-render-mode={artwork?.renderMode}
       data-artwork-source={artwork?.sourceKind}
+      data-card-id={card?.id}
+      data-front-mounted={canRenderFaceAsset || undefined}
       data-orientation={selection?.orientation}
       disabled={ariaDisabled}
       onClick={onClick}

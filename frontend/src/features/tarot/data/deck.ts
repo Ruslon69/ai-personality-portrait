@@ -383,6 +383,21 @@ const suitMeta: Record<
   },
 };
 
+const cardSuitForms = {
+  ru: {
+    cups: 'Кубков',
+    pentacles: 'Пентаклей',
+    swords: 'Мечей',
+    wands: 'Жезлов',
+  },
+  uk: {
+    cups: 'Кубків',
+    pentacles: 'Пентаклів',
+    swords: 'Мечів',
+    wands: 'Жезлів',
+  },
+} as const;
+
 const ranks = [
   ['ace', 1, 'Туз', 'Ace', 'Туз', 'чистый импульс', 'a clear opening', 'чистий імпульс'],
   [
@@ -536,19 +551,19 @@ function majorCard(item: (typeof major)[number]): TarotCard {
     baseThemes: { ru: [ruTheme], en: [enTheme], uk: [ukTheme] },
     keywords: { ru: [ruTheme, ruShadow], en: [enTheme, enShadow], uk: [ukTheme, ukShadow] },
     upright: localized(
-      `Карта предлагает рассмотреть ${ruTheme}.`,
-      `The card invites you to consider ${enTheme}.`,
-      `Карта пропонує розглянути ${ukTheme}.`,
+      `Карта связана с темой «${ruTheme}». Посмотрите, как это уже проявляется в вашей ситуации.`,
+      `This card is about ${enTheme}. Notice how this is already showing up in your situation.`,
+      `Карта пов’язана з темою «${ukTheme}». Подивіться, як це вже проявляється у вашій ситуації.`,
     ),
     reversed: localized(
-      `В перевёрнутом положении внимание смещается к теме: ${ruShadow}.`,
-      `Reversed, attention shifts to ${enShadow}.`,
-      `У перевернутому положенні увага переходить до теми: ${ukShadow}.`,
+      `Перевёрнутая карта предупреждает о возможном риске: ${ruShadow}.`,
+      `Reversed, this card points to a possible risk: ${enShadow}.`,
+      `Перевернута карта попереджає про можливий ризик: ${ukShadow}.`,
     ),
     relationship: localized(
-      `В отношениях может быть важна тема «${ruTheme}».`,
-      `In relationships, ${enTheme} may matter.`,
-      `У стосунках може бути важливою тема «${ukTheme}».`,
+      `В отношениях обратите внимание на тему «${ruTheme}».`,
+      `In relationships, pay attention to ${enTheme}.`,
+      `У стосунках зверніть увагу на тему «${ukTheme}».`,
     ),
     work: localized(
       `В делах карта предлагает проверить, как проявляется ${ruTheme}.`,
@@ -556,24 +571,24 @@ function majorCard(item: (typeof major)[number]): TarotCard {
       `У справах карта пропонує перевірити, як проявляється ${ukTheme}.`,
     ),
     money: localized(
-      `В денежных решениях полезно отделить ${ruTheme} от импульса «${ruShadow}».`,
-      `With money, separate ${enTheme} from ${enShadow}.`,
-      `У грошових рішеннях корисно відокремити ${ukTheme} від імпульсу «${ukShadow}».`,
+      `В денежных решениях проверьте факты и не позволяйте риску «${ruShadow}» управлять выбором.`,
+      `With money, check the facts and do not let ${enShadow} drive the decision.`,
+      `У грошових рішеннях перевірте факти й не дозволяйте ризику «${ukShadow}» керувати вибором.`,
     ),
     personalGrowth: localized(
-      `Для роста можно исследовать, где вам сейчас доступно: ${ruTheme}.`,
-      `For growth, explore where ${enTheme} is available now.`,
-      `Для розвитку можна дослідити, де вам зараз доступно: ${ukTheme}.`,
+      `Для размышления спросите себя: где в вашей ситуации уже есть «${ruTheme}»?`,
+      `For reflection, ask yourself where ${enTheme} is already present in your situation.`,
+      `Для роздумів запитайте себе: де у вашій ситуації вже є «${ukTheme}»?`,
     ),
     advice: localized(
-      'Не ищите окончательный ответ — выберите один наблюдаемый шаг.',
-      'Do not seek a final answer; choose one observable step.',
-      'Не шукайте остаточної відповіді — оберіть один спостережуваний крок.',
+      'Не ищите окончательный ответ. Выберите один небольшой шаг, который можно проверить на практике.',
+      'Do not look for a final answer. Choose one small step you can test in practice.',
+      'Не шукайте остаточної відповіді. Оберіть один невеликий крок, який можна перевірити на практиці.',
     ),
     caution: localized(
-      `Не превращайте символику карты в утверждение о будущем: ${ruShadow} — только возможный ракурс.`,
-      `Do not turn the symbol into a future claim: ${enShadow} is only one possible lens.`,
-      `Не перетворюйте символіку карти на твердження про майбутнє: ${ukShadow} — лише можливий ракурс.`,
+      `Не считайте это предсказанием. «${ruShadow}» — лишь один из возможных рисков.`,
+      `Do not treat this as a prediction. ${enShadow} is only one possible risk.`,
+      `Не сприймайте це як передбачення. «${ukShadow}» — лише один із можливих ризиків.`,
     ),
     visual: {
       accent: 'major',
@@ -587,9 +602,9 @@ function minorCard(suit: TarotSuit, rank: (typeof ranks)[number]): TarotCard {
   const [rankId, number, ruRank, enRank, ukRank, ruPhase, enPhase, ukPhase] = rank;
   const meta = suitMeta[suit];
   const names = {
-    ru: `${ruRank} · ${meta.name.ru}`,
+    ru: `${ruRank} ${cardSuitForms.ru[suit]}`,
     en: `${enRank} of ${meta.name.en}`,
-    uk: `${ukRank} · ${meta.name.uk}`,
+    uk: `${ukRank} ${cardSuitForms.uk[suit]}`,
   } as LocalizedText;
   return {
     id: `${suit}-${rankId}`,
@@ -614,39 +629,39 @@ function minorCard(suit: TarotSuit, rank: (typeof ranks)[number]): TarotCard {
     ),
     shadow: meta.shadow,
     upright: localized(
-      `Эта карта может указывать на ${ruPhase} в области: ${meta.theme.ru}.`,
-      `This card may point to ${enPhase} in ${meta.theme.en}.`,
-      `Ця карта може вказувати на ${ukPhase} у сфері: ${meta.theme.uk}.`,
+      `Карта показывает один из возможных этапов: ${ruPhase}. Он связан с темой «${meta.theme.ru}».`,
+      `This card shows a possible stage: ${enPhase}. It relates to ${meta.theme.en}.`,
+      `Карта показує один із можливих етапів: ${ukPhase}. Він пов’язаний із темою «${meta.theme.uk}».`,
     ),
     reversed: localized(
-      `Перевёрнутая карта предлагает заметить, не проявляется ли ${meta.shadow.ru}.`,
-      `Reversed, notice whether ${meta.shadow.en} is present.`,
-      `Перевернута карта пропонує помітити, чи не проявляється ${meta.shadow.uk}.`,
+      `Перевёрнутая карта предупреждает о возможном риске: ${meta.shadow.ru}.`,
+      `Reversed, this card points to a possible risk: ${meta.shadow.en}.`,
+      `Перевернута карта попереджає про можливий ризик: ${meta.shadow.uk}.`,
     ),
     relationship: localized(
-      `В отношениях возможная тема — ${ruPhase}; важен честный отклик, а не догадка.`,
-      `In relationships, ${enPhase} may be the theme; favour direct response over assumption.`,
-      `У стосунках можлива тема — ${ukPhase}; важливий чесний відгук, а не здогадка.`,
+      `В отношениях возможен этап «${ruPhase}». Опирайтесь на разговор, а не на догадки.`,
+      `In relationships, the current stage may be ${enPhase}. Rely on conversation, not assumptions.`,
+      `У стосунках можливий етап «${ukPhase}». Спирайтеся на розмову, а не на здогадки.`,
     ),
     work: localized(
-      `В работе карта связывает ${ruPhase} и ${meta.theme.ru}.`,
-      `At work, the card connects ${enPhase} with ${meta.theme.en}.`,
-      `У роботі карта поєднує ${ukPhase} та ${meta.theme.uk}.`,
+      `В работе карта советует проверить, как этап «${ruPhase}» влияет на ваши действия.`,
+      `At work, check how the stage of ${enPhase} affects your actions.`,
+      `У роботі карта радить перевірити, як етап «${ukPhase}» впливає на ваші дії.`,
     ),
     money: localized(
-      `Для денег это повод проверить ${meta.theme.ru} через конкретные цифры и ограничения.`,
-      `For money, test ${meta.theme.en} against concrete numbers and limits.`,
-      `Для грошей це привід перевірити ${meta.theme.uk} через конкретні цифри й обмеження.`,
+      'В вопросах денег опирайтесь на конкретные суммы, сроки и ограничения.',
+      'For money matters, rely on concrete amounts, dates and limits.',
+      'У питаннях грошей спирайтеся на конкретні суми, строки й обмеження.',
     ),
     personalGrowth: localized(
-      `Для саморефлексии рассмотрите, как ${ruPhase} меняет ваш привычный способ действия.`,
-      `For reflection, consider how ${enPhase} changes your usual way of acting.`,
-      `Для саморефлексії розгляньте, як ${ukPhase} змінює ваш звичний спосіб дії.`,
+      `Для размышления спросите себя, как этап «${ruPhase}» меняет ваш привычный способ действовать.`,
+      `For reflection, ask how the stage of ${enPhase} changes your usual way of acting.`,
+      `Для роздумів запитайте себе, як етап «${ukPhase}» змінює ваш звичний спосіб діяти.`,
     ),
     advice: localized(
-      `Сделайте небольшой шаг в теме «${meta.theme.ru}» и оцените реальный отклик.`,
-      `Take a small step in ${meta.theme.en} and observe the real response.`,
-      `Зробіть невеликий крок у темі «${meta.theme.uk}» й оцініть реальний відгук.`,
+      'Выберите один небольшой шаг и посмотрите, что изменится на практике.',
+      'Choose one small step and notice what changes in practice.',
+      'Оберіть один невеликий крок і подивіться, що зміниться на практиці.',
     ),
     caution: localized(
       `Не принимайте ${meta.shadow.ru} за гарантированный исход.`,

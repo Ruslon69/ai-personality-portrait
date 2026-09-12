@@ -74,32 +74,6 @@
 .root[data-ready] .lead {
   animation: reveal-copy var(--motion-reveal-duration) var(--motion-easing-discover) 0.12s forwards;
 }
-.sourceOrbit,
-.traits {
-  display: flex;
-  min-inline-size: 0;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-.sourceOrbit span,
-.traits span {
-  padding: var(--space-2) var(--space-3);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-full);
-  background: var(--color-surface);
-  font-size: var(--font-size-sm);
-}
-.sourceOrbit span {
-  opacity: 0;
-  animation: source-arrive var(--motion-connect-duration) var(--motion-easing-discover)
-    var(--source-delay) forwards;
-}
-.traits {
-  opacity: 0;
-}
-.root[data-ready] .traits {
-  animation: reveal-copy var(--motion-reveal-duration) var(--motion-easing-discover) 0.2s forwards;
-}
 .root[data-ready] .content > button {
   opacity: 0;
   animation: reveal-copy var(--motion-confirm-duration) var(--motion-easing-discover) 0.5s forwards;
@@ -112,16 +86,6 @@
   to {
     opacity: 1;
     transform: scale(1);
-  }
-}
-@keyframes source-arrive {
-  from {
-    opacity: 0;
-    transform: translateY(var(--motion-distance-sm));
-  }
-  to {
-    opacity: 1;
-    transform: none;
   }
 }
 @keyframes reveal-copy {
@@ -164,12 +128,10 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .visual,
   .root[data-ready] .title,
   .root[data-ready] .lead,
-  .root[data-ready] .traits,
   .root[data-ready] .content > button,
-  .sourceOrbit span {
+  .visual {
     opacity: 1;
     transform: none;
     animation: none;

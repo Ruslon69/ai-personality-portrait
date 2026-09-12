@@ -15,9 +15,9 @@ export function EvidenceTimeline({
   sources,
 }: EvidenceTimelineProps) {
   const copy = {
-    en: { insight: 'Observation', recommendation: 'Recommendation', rule: 'Pattern rule' },
-    ru: { insight: 'Наблюдение', recommendation: 'Рекомендация', rule: 'Правило паттерна' },
-    uk: { insight: 'Спостереження', recommendation: 'Рекомендація', rule: 'Правило патерну' },
+    en: { insight: 'Observation', recommendation: 'Recommendation', rule: 'Analysis rule' },
+    ru: { insight: 'Наблюдение', recommendation: 'Рекомендация', rule: 'Правило анализа' },
+    uk: { insight: 'Спостереження', recommendation: 'Рекомендація', rule: 'Правило аналізу' },
   }[locale];
   return (
     <div aria-hidden="true" className={styles.timeline}>

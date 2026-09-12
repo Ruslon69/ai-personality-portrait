@@ -30,16 +30,35 @@ export function UserProfile({
   profile,
 }: UserProfileProps) {
   useEffect(() => focusElementByIdOnNextFrame('profile-title'), []);
+  const locale = profile.locale;
+  const copy = {
+    en: {
+      greeting: 'My results',
+      introduction: 'Open your latest personal reflection, history or settings here.',
+      reminder:
+        'You control your saved results and data. Privacy and deletion settings remain available at any time.',
+    },
+    ru: {
+      greeting: 'Мои результаты',
+      introduction: 'Здесь можно открыть последний личный разбор, историю и настройки.',
+      reminder:
+        'Вы управляете сохранёнными результатами и данными. Настройки удаления и приватности доступны в любое время.',
+    },
+    uk: {
+      greeting: 'Мої результати',
+      introduction: 'Тут можна відкрити останній особистий розбір, історію й налаштування.',
+      reminder:
+        'Ви керуєте збереженими результатами й даними. Налаштування видалення та приватності доступні будь-коли.',
+    },
+  }[locale];
 
   return (
     <div className={styles.root}>
-      <ProfileHero
-        greeting="Ваше пространство"
-        introduction="Здесь собраны последний портрет, использованные источники и короткие пути к основным действиям."
-      />
+      <ProfileHero greeting={copy.greeting} introduction={copy.introduction} locale={locale} />
       <LatestPortraitSection onOpenPortrait={onOpenPortrait} profile={profile} />
-      <ProfileCompletionSection items={profile.completion} />
+      <ProfileCompletionSection items={profile.completion} locale={locale} />
       <QuickActionsSection
+        locale={locale}
         onCreatePortrait={onCreatePortrait}
         onOpenCompatibility={onOpenCompatibility}
         onOpenHistory={onOpenHistory}
@@ -47,8 +66,9 @@ export function UserProfile({
         onOpenSettings={onOpenSettings}
       />
       <ProfilePrivacySection
+        locale={locale}
         onOpenSettings={onOpenSettings}
-        reminder="Вы управляете сохранёнными портретами и данными. Настройки удаления и приватности всегда доступны отдельно."
+        reminder={copy.reminder}
       />
     </div>
   );

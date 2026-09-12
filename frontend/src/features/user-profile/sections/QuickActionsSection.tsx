@@ -1,8 +1,10 @@
 import { Button, Card, Container, Stack, Typography } from '@shared/ui';
+import type { ProfileLocale } from '@entities/personality-profile';
 
 import styles from './UserProfileSections.module.css';
 
 type QuickActionsSectionProps = {
+  locale: ProfileLocale;
   onCreatePortrait: () => void;
   onOpenCompatibility: () => void;
   onOpenHistory: () => void;
@@ -10,41 +12,51 @@ type QuickActionsSectionProps = {
   onOpenSettings: () => void;
 };
 
-const actions = [
-  {
-    description: 'Вернуться к подробному разбору.',
-    id: 'portrait',
-    label: 'Открыть полный портрет',
+const copy = {
+  en: {
+    eyebrow: 'More options',
+    title: 'What would you like to do next?',
+    actions: [
+      ['portrait', 'Open full reflection', 'Return to your detailed result.'],
+      ['create', 'Create a new reflection', 'Answer the questions again.'],
+      ['history', 'Open history', 'See your saved results.'],
+      ['compatibility', 'Explore compatibility', 'Open the experience for two people.'],
+      ['settings', 'Open settings', 'Manage the application and your data.'],
+    ],
   },
-  {
-    description: 'Пройти короткий путь ещё раз.',
-    id: 'create',
-    label: 'Создать новый портрет',
+  ru: {
+    eyebrow: 'Другие действия',
+    title: 'Что хотите сделать дальше?',
+    actions: [
+      ['portrait', 'Открыть полный разбор', 'Вернуться к подробному результату.'],
+      ['create', 'Создать новый разбор', 'Ответить на вопросы ещё раз.'],
+      ['history', 'Открыть историю', 'Посмотреть сохранённые результаты.'],
+      ['compatibility', 'Проверить совместимость', 'Открыть разбор для двух людей.'],
+      ['settings', 'Открыть настройки', 'Управлять приложением и данными.'],
+    ],
   },
-  {
-    description: 'Посмотреть сохранённые результаты.',
-    id: 'history',
-    label: 'Открыть историю',
+  uk: {
+    eyebrow: 'Інші дії',
+    title: 'Що хочете зробити далі?',
+    actions: [
+      ['portrait', 'Відкрити повний розбір', 'Повернутися до докладного результату.'],
+      ['create', 'Створити новий розбір', 'Відповісти на запитання ще раз.'],
+      ['history', 'Відкрити історію', 'Переглянути збережені результати.'],
+      ['compatibility', 'Перевірити сумісність', 'Відкрити розбір для двох людей.'],
+      ['settings', 'Відкрити налаштування', 'Керувати застосунком і даними.'],
+    ],
   },
-  {
-    description: 'Перейти к сценарию для двух людей.',
-    id: 'compatibility',
-    label: 'Начать совместимость',
-  },
-  {
-    description: 'Управлять приложением и данными.',
-    id: 'settings',
-    label: 'Перейти в настройки',
-  },
-] as const;
+} as const;
 
 export function QuickActionsSection({
+  locale,
   onCreatePortrait,
   onOpenCompatibility,
   onOpenHistory,
   onOpenPortrait,
   onOpenSettings,
 }: QuickActionsSectionProps) {
+  const text = copy[locale];
   const handlers = {
     compatibility: onOpenCompatibility,
     create: onCreatePortrait,
@@ -59,24 +71,24 @@ export function QuickActionsSection({
         <Stack gap="lg">
           <Stack className={styles.sectionIntroduction} gap="sm">
             <Typography as="p" variant="eyebrow">
-              Быстрые действия
+              {text.eyebrow}
             </Typography>
             <Typography as="h2" id="quick-actions-title" variant="heading-lg">
-              Куда перейти дальше
+              {text.title}
             </Typography>
           </Stack>
 
           <div className={styles.actionGrid}>
-            {actions.map((action) => (
-              <Card className={styles.actionCard} key={action.id}>
+            {text.actions.map(([id, label, description]) => (
+              <Card className={styles.actionCard} key={id}>
                 <Stack gap="md">
                   <Stack gap="xs">
                     <Typography as="h3" variant="heading-sm">
-                      {action.label}
+                      {label}
                     </Typography>
-                    <Typography className={styles.muted}>{action.description}</Typography>
+                    <Typography className={styles.muted}>{description}</Typography>
                   </Stack>
-                  <Button onClick={handlers[action.id]}>{action.label}</Button>
+                  <Button onClick={handlers[id]}>{label}</Button>
                 </Stack>
               </Card>
             ))}

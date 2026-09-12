@@ -1,5 +1,6 @@
 import { Badge, Card, Container, Progress, Stack, Typography } from '@shared/ui';
 import type { ProfileCompletionItem } from '@entities/personality-profile';
+import type { ProfileLocale } from '@entities/personality-profile';
 
 import { useProfileCompletion } from '../hooks';
 import { getCompletionStatusLabel } from '../utils';
@@ -7,10 +8,28 @@ import styles from './UserProfileSections.module.css';
 
 type ProfileCompletionSectionProps = {
   items: readonly ProfileCompletionItem[];
+  locale: ProfileLocale;
 };
 
-export function ProfileCompletionSection({ items }: ProfileCompletionSectionProps) {
-  const { completedCount, summary, totalCount } = useProfileCompletion(items);
+export function ProfileCompletionSection({ items, locale }: ProfileCompletionSectionProps) {
+  const { completedCount, summary, totalCount } = useProfileCompletion(items, locale);
+  const copy = {
+    en: {
+      eyebrow: 'Included information',
+      title: 'What is already included',
+      description: 'This shows what you added, not how accurately the portrait defines you.',
+    },
+    ru: {
+      eyebrow: 'Добавленные данные',
+      title: 'Что уже вошло в разбор',
+      description: 'Здесь показано, что вы добавили, а не насколько точно портрет определяет вас.',
+    },
+    uk: {
+      eyebrow: 'Додані дані',
+      title: 'Що вже увійшло до розбору',
+      description: 'Тут показано, що ви додали, а не наскільки точно портрет визначає вас.',
+    },
+  }[locale];
 
   return (
     <section aria-labelledby="profile-completion-title" className={styles.section}>
@@ -18,14 +37,12 @@ export function ProfileCompletionSection({ items }: ProfileCompletionSectionProp
         <Stack gap="lg">
           <Stack className={styles.sectionIntroduction} gap="sm">
             <Typography as="p" variant="eyebrow">
-              Заполнение профиля
+              {copy.eyebrow}
             </Typography>
             <Typography as="h2" id="profile-completion-title" variant="heading-lg">
-              Какие источники уже добавлены
+              {copy.title}
             </Typography>
-            <Typography className={styles.muted}>
-              Это прогресс заполнения, а не оценка точности личности.
-            </Typography>
+            <Typography className={styles.muted}>{copy.description}</Typography>
           </Stack>
 
           <Stack gap="md">
@@ -47,7 +64,7 @@ export function ProfileCompletionSection({ items }: ProfileCompletionSectionProp
                         {item.label}
                       </Typography>
                       <Badge tone={item.status === 'complete' ? 'success' : 'neutral'}>
-                        {getCompletionStatusLabel(item.status)}
+                        {getCompletionStatusLabel(item.status, locale)}
                       </Badge>
                     </Stack>
                     <Typography className={styles.muted}>{item.description}</Typography>

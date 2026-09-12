@@ -11,6 +11,7 @@ import {
   type RevealAction,
   type RevealState,
 } from '../../features/tarot/flows/reveal-state-machine';
+import { resolveTarotCardVisualFace } from '../../features/tarot/components/tarot-card-visual-state';
 import { QualityAssertions } from '../assertions';
 
 function applyTimer(state: RevealState) {
@@ -94,7 +95,12 @@ export function runTarotRevealGate() {
     single.card === 'settled' &&
       single.sequence === 'all-complete' &&
       single.positions[0] === 'revealed' &&
-      isCurrentCardVisible(single),
+      isCurrentCardVisible(single) &&
+      !isRevealActive(single) &&
+      resolveTarotCardVisualFace(
+        isCurrentCardVisible(single),
+        single.positions[single.currentIndex],
+      ) === 'front',
     {
       code: 'tarot-reveal-natural-completion',
       message: 'A reveal must become a stable face-up card without Skip.',
@@ -113,10 +119,16 @@ export function runTarotRevealGate() {
 
   let skipped = revealReducer(createRevealState(3), { reducedMotion: false, type: 'start' });
   skipped = applyTimer(skipped);
-  assertions.assert(skipped.card === 'flipping' && isPositionFaceUp(skipped, 0), {
-    code: 'tarot-reveal-face-swap',
-    message: 'The active face must become visible during the bounded physical flip.',
-  });
+  assertions.assert(
+    skipped.card === 'flipping' &&
+      isPositionFaceUp(skipped, 0) &&
+      resolveTarotCardVisualFace(isCurrentCardVisible(skipped), skipped.positions[0]) ===
+        'flipping',
+    {
+      code: 'tarot-reveal-face-swap',
+      message: 'The active face must become visible during the bounded physical flip.',
+    },
+  );
   skipped = revealReducer(skipped, { type: 'skip' });
   assertions.assert(
     skipped.card === 'settled' &&

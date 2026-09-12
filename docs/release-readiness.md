@@ -1,5 +1,13 @@
 # Soul Arkana — Cloudflare Pages deployment runbook
 
+## RC1 technical freeze
+
+- Technical freeze commit: `856d6460083d041b18d4ec74609de530988037f9`.
+- Verified production origin: `https://soul-arkana.pages.dev`.
+- The production release identifier, native SPA routing, security headers, cache behavior, valid and missing asset responses, and representative desktop/mobile browser flows were verified against the real Cloudflare edge.
+- Legal operator, privacy contact, jurisdiction, and final legal approval remain pre-commercial launch requirements.
+- Physical phone, browser UI at 200% zoom, microphone hardware/recording, and optional assistive-technology checks remain owner QA; automated viewport and browser-policy checks do not replace them.
+
 Cloudflare Pages is the selected production host. This runbook covers the current static React/Vite application; no Pages Functions, Worker, backend, analytics, cookies, or third-party runtime service is required.
 
 ## Deployment contract
@@ -126,8 +134,8 @@ Inspect `frontend/dist` for source maps, environment files, reports, fixtures, a
 
 ## Known release boundaries
 
-- A real Cloudflare deployment and custom domain require owner-account action; local simulation cannot verify Cloudflare edge behavior.
+- The verified production deployment currently uses the Cloudflare Pages origin above. A custom domain still requires owner-account action and a fresh deployed-origin verification pass.
 - The legal operator, privacy contact, jurisdiction, and final legal approval remain release requirements.
-- Canonical URL, sitemap, and social preview image remain deferred until the production origin and approved share asset exist.
+- Canonical URL, sitemap, and social preview image remain deferred until the final custom production origin and approved share asset exist.
 - External crash reporting is not configured, so runtime failures are not remotely observable.
 - Exact Tarot pre-reveal `stepIndex` persistence, Product Storage V2 rollout, physical 200% zoom/device testing, and microphone hardware testing remain deferred product decisions.

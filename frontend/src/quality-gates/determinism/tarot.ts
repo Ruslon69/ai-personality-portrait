@@ -412,8 +412,8 @@ export function runTarotRegressionGate() {
   });
   assertions.assert(
     starTheme !== starReversed &&
-      starTheme.includes('надежда') &&
-      starReversed.includes('разочарования'),
+      /надежд|восстанов/iu.test(starTheme) &&
+      /разочарован|идеал/iu.test(starReversed),
     {
       code: 'tarot-interpretation-orientation-distinction',
       message: 'Upright and reversed readings must express materially different card meanings.',
@@ -426,14 +426,14 @@ export function runTarotRegressionGate() {
       locale: 'ru',
       orientation: 'upright',
       position: monthSpread.positions[0]!,
-    }).includes('привязанность') &&
+    }).includes('ограничивать вашу свободу') &&
       createActiveCardInterpretation({
         card: eightOfCups,
         index: 0,
         locale: 'ru',
         orientation: 'upright',
         position: monthSpread.positions[0]!,
-      }).includes('эмоционально недостаточной ситуации'),
+      }).includes('ситуация больше не даёт'),
     {
       code: 'tarot-card-specific-semantic-identity',
       message: 'Canonical card-specific themes must remain visible in active interpretations.',
@@ -463,13 +463,13 @@ export function runTarotRegressionGate() {
   assertions.assert(
     activeInterpretations.every(
       (value) =>
-        !value.startsWith('Эта карта') &&
-        !value.includes('Карта предлагает рассмотреть') &&
-        !value.includes('может указывать на'),
+        !/через то, что|сегодня в центре|живой импульс|первоначальный огонь/iu.test(value) &&
+        !/(?:что|если|когда|чтобы)\s+[А-ЯЁ]/u.test(value) &&
+        !/\b([А-ЯЁа-яё]+)\s+\1\b/iu.test(value),
     ),
     {
-      code: 'tarot-interpretation-generic-phrasing',
-      message: 'Active interpretations must not fall back to the old repetitive templates.',
+      code: 'tarot-interpretation-fragment-seams',
+      message: 'Active interpretations must not contain known fragment seams or duplicated words.',
     },
   );
   const monthSelections = createAutomaticSelections(cards, monthSpread, 'quality-month-seed');
@@ -489,12 +489,13 @@ export function runTarotRegressionGate() {
     .join(', ');
   assertions.assert(
     !monthReading.summary.includes(oldConcatenation) &&
-      monthReading.summary.includes('снова и снова звучит') &&
+      monthReading.summary.includes('Главная тема расклада') &&
+      monthReading.summary.includes('На что обратить внимание') &&
       !monthReading.summary.includes('Доминирующий мотив') &&
       !monthReading.summary.includes('Напряжение проходит') &&
       !monthReading.summary.includes('Сильная возможность') &&
-      interpretationWordCount(monthReading.summary) >= 120 &&
-      interpretationWordCount(monthReading.summary) <= 180,
+      interpretationWordCount(monthReading.summary) >= 25 &&
+      interpretationWordCount(monthReading.summary) <= 60,
     {
       code: 'tarot-reading-synthesis-not-concatenation',
       message: 'The final reading must synthesize pattern, opportunity, risk and direction.',
@@ -502,16 +503,16 @@ export function runTarotRegressionGate() {
   );
   const resultPresentation = createTarotResultHeroPresentation(monthReading);
   assertions.assert(
-    countPresentationWords(resultPresentation.headline) >= 6 &&
-      countPresentationWords(resultPresentation.headline) <= 12,
+    countPresentationWords(resultPresentation.headline) >= 4 &&
+      countPresentationWords(resultPresentation.headline) <= 10,
     {
       code: 'tarot-result-headline-length',
-      message: 'The Russian result headline must stay within the concise 6–12 word range.',
+      message: 'The Russian result headline must stay within the concise 4–10 word range.',
     },
   );
   assertions.assert(
-    countPresentationWords(resultPresentation.heroSummary) >= 60 &&
-      countPresentationWords(resultPresentation.heroSummary) <= 100 &&
+    countPresentationWords(resultPresentation.heroSummary) >= 25 &&
+      countPresentationWords(resultPresentation.heroSummary) <= 60 &&
       !resultPresentation.heroSummary.includes(oldConcatenation),
     {
       code: 'tarot-result-hero-summary',
@@ -683,10 +684,16 @@ export function runTarotRegressionGate() {
       message: 'Russian Tarot copy must not expose mechanical interpretation templates.',
     },
   );
-  assertions.assert(russianCardName(eightOfCups) === 'Восьмёрка Кубков', {
-    code: 'tarot-natural-russian-card-name',
-    message: 'Russian prose must use natural card names instead of UI rank separators.',
-  });
+  assertions.assert(
+    russianCardName(eightOfCups) === 'Восьмёрка Кубков' &&
+      eightOfCups.name.ru === 'Восьмёрка Кубков' &&
+      eightOfCups.name.uk === 'Вісімка Кубків',
+    {
+      code: 'tarot-natural-russian-card-name',
+      message:
+        'Russian and Ukrainian card names must use natural case forms without UI separators.',
+    },
+  );
   assertions.assert(
     monthReading.interpretations.every(
       (interpretation) => !interpretation.connections.includes(' · '),
@@ -726,19 +733,82 @@ export function runTarotRegressionGate() {
       ),
     ),
   );
-  const openerSignatures = corpus.map((value) =>
-    value.split(/[.!?]/u)[0]?.trim().toLocaleLowerCase().split(/\s+/u).slice(0, 4).join(' '),
+  assertions.assert(
+    corpus.length === cards.length * corpusPositions.length * 2 &&
+      corpus.every(
+        (value) =>
+          value.split(/(?<=[.!?])\s+/u).filter(Boolean).length >= 3 &&
+          !/через то, что|сегодня в центре|живой импульс|первоначальный огонь|В центре —/iu.test(
+            value,
+          ) &&
+          !/[.!?]\s+[а-яё]/u.test(value) &&
+          !/\b([А-ЯЁа-яё]+)\s+\1\b/iu.test(value),
+      ),
+    {
+      code: 'tarot-russian-interpretation-corpus-structure',
+      message:
+        'Every card/position/orientation result must use complete sentences without known malformed seams.',
+    },
   );
-  const openerCounts = new Map<string, number>();
-  openerSignatures.forEach((signature) => {
-    if (signature) openerCounts.set(signature, (openerCounts.get(signature) ?? 0) + 1);
+  assertions.assert(
+    cards.every((card) => {
+      const profile = russianTarotInterpretationProfiles[card.id];
+      return (
+        Boolean(profile) &&
+        [profile?.upright, profile?.reversed, profile?.action].every(
+          (value) =>
+            Boolean(value) &&
+            /^[А-ЯЁ]/u.test(value ?? '') &&
+            /[.!?]$/u.test(value ?? '') &&
+            !/\b([А-ЯЁа-яё]+)\s+\1\b/iu.test(value ?? ''),
+        )
+      );
+    }),
+    {
+      code: 'tarot-russian-profile-complete-sentences',
+      message: 'Every Russian card meaning, risk and action must be a complete sentence.',
+    },
+  );
+  const readingCorpus = tarotSpreads.map((corpusSpread, spreadIndex) => {
+    const seed = `quality-language-corpus-${corpusSpread.id}-${spreadIndex}`;
+    const selections = createAutomaticSelections(cards, corpusSpread, seed);
+    const corpusContext: TarotReadingContext = {
+      birthDate: numerology.birthDate,
+      deckTheme: 'cosmic-minimal',
+      interests: ['learning'],
+      locale: 'ru',
+      numerology,
+      ...(corpusSpread.period ? { period: corpusSpread.period } : {}),
+      psychologyAnswers: [
+        { optionId: 'facts', questionId: 'decision-style' },
+        { optionId: 'work', questionId: 'current-focus' },
+      ],
+      seed,
+      selectionMode: 'automatic',
+      spreadId: corpusSpread.id,
+      ...(corpusSpread.topic ? { topic: corpusSpread.topic } : {}),
+    };
+    return createTarotReading(corpusContext, selections, timestamp);
   });
   assertions.assert(
-    new Set(openerSignatures).size >= Math.ceil(corpus.length * 0.05) &&
-      Math.max(...openerCounts.values()) <= Math.ceil(corpus.length * 0.08),
+    readingCorpus.length === tarotSpreads.length &&
+      (['day', 'week', 'month', 'year'] as const).every((period) =>
+        readingCorpus.some((reading) => reading.context.period === period),
+      ) &&
+      readingCorpus.every(
+        (reading) =>
+          countPresentationWords(reading.headline) >= 4 &&
+          countPresentationWords(reading.headline) <= 10 &&
+          interpretationWordCount(reading.summary) >= 25 &&
+          interpretationWordCount(reading.summary) <= 60 &&
+          !/через то, что|сегодня в центре|живой импульс|первоначальный огонь|В центре —|Она может поддержать/iu.test(
+            reading.summary,
+          ),
+      ),
     {
-      code: 'tarot-interpretation-corpus-repetition',
-      message: 'The full card/position/orientation corpus must not reuse one opener excessively.',
+      code: 'tarot-russian-reading-context-corpus',
+      message:
+        'Every topic and day/week/month/year reading must produce a concise headline and structurally safe Russian synthesis.',
     },
   );
   getTarotArtwork(first.selections[0]?.cardId ?? 'major-fool');

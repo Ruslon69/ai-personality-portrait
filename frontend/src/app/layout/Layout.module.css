@@ -1,10 +1,11 @@
 .root {
   display: grid;
   overflow-x: clip;
+  min-block-size: 100vh;
   min-block-size: 100dvh;
   max-inline-size: 100%;
   grid-template-rows: auto 1fr auto;
-  background: var(--color-background);
+  background: var(--color-marketing-canvas);
   color: var(--color-text);
 }
 

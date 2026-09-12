@@ -18,7 +18,7 @@ export type LegalDocument = {
 export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
   en: {
     effectiveDate: 'Current implementation snapshot: 31 August 2026',
-    eyebrow: 'LEGAL · PRIVACY',
+    eyebrow: 'Legal · Privacy',
     intro:
       'This policy explains how the current Soul Arkana web application processes information. The product is designed to work locally in your browser and currently has no account system, analytics or server-side profile storage.',
     ownerNotice:
@@ -31,7 +31,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
           'Birth dates used for optional Numerology, zodiac context and Tarot context.',
           'Tarot topics, answers, card selections, orientations and completed readings.',
           'Portrait answers, interests, optional birth date and the locally generated portrait.',
-          'Journey entries created from saved Tarot readings and daily-card activity.',
+          'Saved results created from Tarot readings and daily-card activity.',
           'Interface language, theme and Tarot preferences.',
           'An optional voice sample recorded only when you start the microphone flow.',
         ],
@@ -47,7 +47,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
       {
         title: 'Browser storage and retention',
         items: [
-          'Journey data, saved Tarot history, Tarot preferences, deck choice, language and theme may remain in persistent browser storage after the browser closes.',
+          'Saved results, Tarot history, Tarot preferences, deck choice, language and theme may remain in persistent browser storage after the browser closes.',
           'Unfinished Tarot state, its random seed and Numerology birth date use session-only browser storage and normally disappear when the browser session ends.',
           'Saved Tarot history is limited by the history limit you select. Reducing the limit removes the oldest overflow after the change is saved successfully.',
           'Browser privacy modes, quota limits, clearing site data or changing devices can make local information unavailable. Soul Arkana cannot recover browser-local data from a server.',
@@ -86,7 +86,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
   },
   ru: {
     effectiveDate: 'Состояние текущей реализации: 31 августа 2026 года',
-    eyebrow: 'ПРАВОВАЯ ИНФОРМАЦИЯ · ПРИВАТНОСТЬ',
+    eyebrow: 'Правовая информация · Приватность',
     intro:
       'Эта политика объясняет, как текущая веб-версия Soul Arkana обрабатывает информацию. Продукт работает локально в браузере и сейчас не использует аккаунты, аналитику или серверное хранение профиля.',
     ownerNotice:
@@ -99,7 +99,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
           'Дату рождения для необязательных расчётов Нумерологии, контекста знака и Таро.',
           'Темы Таро, ответы, выбранные карты, ориентации и завершённые расклады.',
           'Ответы Портрета, интересы, необязательную дату рождения и созданный локально портрет.',
-          'Записи Journey, созданные из сохранённых раскладов Таро и взаимодействия с картой дня.',
+          'Сохранённые результаты раскладов Таро и взаимодействия с картой дня.',
           'Язык интерфейса, тему и настройки Таро.',
           'Необязательную запись голоса, только если вы запускаете шаг с микрофоном.',
         ],
@@ -115,7 +115,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
       {
         title: 'Хранилище браузера и срок доступности',
         items: [
-          'Journey, история Таро, настройки Таро, выбранная колода, язык и тема могут оставаться в постоянном хранилище браузера после его закрытия.',
+          'Сохранённые результаты, история Таро, настройки Таро, выбранная колода, язык и тема могут оставаться в постоянном хранилище браузера после его закрытия.',
           'Незавершённый расклад Таро, его случайный seed и дата для Нумерологии используют сессионное хранилище браузера и обычно исчезают после завершения браузерной сессии.',
           'История Таро ограничена выбранным лимитом. При его уменьшении самые старые записи сверх лимита удаляются после успешного сохранения.',
           'Приватный режим, ограничение квоты, очистка данных сайта или смена устройства могут сделать локальные данные недоступными. Soul Arkana не может восстановить их с сервера.',
@@ -139,7 +139,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
         items: [
           'Удалить отдельный расклад или очистить всю сохранённую историю можно в Истории Таро.',
           'Сбросить настройки Таро можно в Настройках; тему и язык можно изменить в любой момент.',
-          'Чтобы отбросить временные ответы и результат Портрета, начните путь заново или перезагрузите страницу.',
+          'Чтобы отбросить временные ответы и результат личного разбора, начните его заново или перезагрузите страницу.',
           'Закройте браузерную сессию, чтобы удалить session-only данные Нумерологии и незавершённого Таро.',
           'Через настройки браузера можно удалить все данные сайта Soul Arkana из хранилища браузера. Это также удалит настройки и не может быть отменено Soul Arkana.',
         ],
@@ -154,7 +154,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
   },
   uk: {
     effectiveDate: 'Стан поточної реалізації: 31 серпня 2026 року',
-    eyebrow: 'ПРАВОВА ІНФОРМАЦІЯ · ПРИВАТНІСТЬ',
+    eyebrow: 'Правова інформація · Приватність',
     intro:
       'Ця політика пояснює, як поточна вебверсія Soul Arkana обробляє інформацію. Продукт працює локально у браузері й зараз не використовує облікові записи, аналітику або серверне зберігання профілю.',
     ownerNotice:
@@ -167,7 +167,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
           'Дату народження для необов’язкових розрахунків Нумерології, контексту знака й Таро.',
           'Теми Таро, відповіді, вибрані карти, орієнтації та завершені розклади.',
           'Відповіді Портрета, інтереси, необов’язкову дату народження та створений локально портрет.',
-          'Записи Journey, створені зі збережених розкладів Таро та взаємодії з картою дня.',
+          'Збережені результати розкладів Таро та взаємодії з картою дня.',
           'Мову інтерфейсу, тему й налаштування Таро.',
           'Необов’язковий запис голосу, лише якщо ви запускаєте крок із мікрофоном.',
         ],
@@ -183,7 +183,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
       {
         title: 'Сховище браузера та строк доступності',
         items: [
-          'Journey, історія Таро, налаштування Таро, вибрана колода, мова й тема можуть залишатися в постійному сховищі браузера після його закриття.',
+          'Збережені результати, історія Таро, налаштування Таро, вибрана колода, мова й тема можуть залишатися в постійному сховищі браузера після його закриття.',
           'Незавершений розклад Таро, його випадковий seed і дата для Нумерології використовують сесійне сховище браузера та зазвичай зникають після завершення браузерної сесії.',
           'Історія Таро обмежена вибраним лімітом. Після його зменшення найстаріші записи понад ліміт видаляються за умови успішного збереження.',
           'Приватний режим, обмеження квоти, очищення даних сайту або зміна пристрою можуть зробити локальні дані недоступними. Soul Arkana не може відновити їх із сервера.',
@@ -207,7 +207,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
         items: [
           'Видалити окремий розклад або очистити всю збережену історію можна в Історії Таро.',
           'Скинути налаштування Таро можна в Налаштуваннях; тему й мову можна змінити будь-коли.',
-          'Щоб відкинути тимчасові відповіді й результат Портрета, почніть шлях знову або перезавантажте сторінку.',
+          'Щоб відкинути тимчасові відповіді й результат особистого розбору, почніть його знову або перезавантажте сторінку.',
           'Закрийте браузерну сесію, щоб видалити session-only дані Нумерології та незавершеного Таро.',
           'У налаштуваннях браузера можна видалити всі дані сайту Soul Arkana зі сховища браузера. Це також видалить налаштування й не може бути скасовано Soul Arkana.',
         ],
@@ -225,7 +225,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
 export const termsCopy: Record<Locale, LegalDocument> = {
   en: {
     effectiveDate: 'Draft for release review: 30 August 2026',
-    eyebrow: 'LEGAL · TERMS',
+    eyebrow: 'Legal · Terms',
     intro:
       'These terms describe the intended use of the current Soul Arkana web application. They remain subject to owner and legal approval before public launch.',
     ownerNotice:
@@ -235,7 +235,7 @@ export const termsCopy: Record<Locale, LegalDocument> = {
       {
         title: 'A reflective, interpretive product',
         paragraphs: [
-          'Soul Arkana provides Tarot, Numerology, Portrait, Journey and contextual interpretations for personal reflection and entertainment. Results are perspectives and prompts, not verified facts about you or guaranteed statements about the future.',
+          'Soul Arkana provides Tarot readings, birth-date calculations and personal reflections for self-reflection and entertainment. Results are perspectives and prompts, not verified facts about you or guarantees about the future.',
         ],
       },
       {
@@ -276,7 +276,7 @@ export const termsCopy: Record<Locale, LegalDocument> = {
   },
   ru: {
     effectiveDate: 'Проект для релизной проверки: 30 августа 2026 года',
-    eyebrow: 'ПРАВОВАЯ ИНФОРМАЦИЯ · УСЛОВИЯ',
+    eyebrow: 'Правовая информация · Условия',
     intro:
       'Эти условия описывают предполагаемое использование текущей веб-версии Soul Arkana. До публичного запуска они должны быть утверждены владельцем продукта и юридическим специалистом.',
     ownerNotice:
@@ -284,9 +284,9 @@ export const termsCopy: Record<Locale, LegalDocument> = {
     title: 'Условия использования',
     sections: [
       {
-        title: 'Рефлексивный и интерпретационный продукт',
+        title: 'Продукт для размышления о себе',
         paragraphs: [
-          'Soul Arkana предлагает Таро, Нумерологию, Портрет, Journey и контекстные интерпретации для личной рефлексии и развлечения. Результаты — это ракурсы и вопросы, а не подтверждённые факты о вас и не гарантии будущего.',
+          'Soul Arkana предлагает расклады Таро, расчёты по дате рождения и личные разборы для размышления о себе и развлечения. Результаты помогают посмотреть на ситуацию и задать вопросы, но не являются подтверждёнными фактами о вас или гарантиями будущего.',
         ],
       },
       {
@@ -302,7 +302,7 @@ export const termsCopy: Record<Locale, LegalDocument> = {
         title: 'Ваши решения и использование',
         paragraphs: [
           'Вы сами отвечаете за интерпретацию и использование продукта. Не используйте расклад или портрет как единственное основание для решений о здоровье, безопасности, праве, финансах, работе или отношениях.',
-          'Используйте продукт для собственной рефлексии. Не записывайте другого человека и не вводите его чувствительные данные без надлежащего права и разрешения.',
+          'Используйте продукт, чтобы поразмышлять о себе. Не записывайте другого человека и не вводите его чувствительные данные без надлежащего права и разрешения.',
         ],
       },
       {
@@ -327,7 +327,7 @@ export const termsCopy: Record<Locale, LegalDocument> = {
   },
   uk: {
     effectiveDate: 'Проєкт для релізної перевірки: 30 серпня 2026 року',
-    eyebrow: 'ПРАВОВА ІНФОРМАЦІЯ · УМОВИ',
+    eyebrow: 'Правова інформація · Умови',
     intro:
       'Ці умови описують передбачене використання поточної вебверсії Soul Arkana. До публічного запуску їх мають затвердити власник продукту та юридичний фахівець.',
     ownerNotice:
@@ -335,9 +335,9 @@ export const termsCopy: Record<Locale, LegalDocument> = {
     title: 'Умови використання',
     sections: [
       {
-        title: 'Рефлексивний та інтерпретаційний продукт',
+        title: 'Продукт для роздумів про себе',
         paragraphs: [
-          'Soul Arkana пропонує Таро, Нумерологію, Портрет, Journey і контекстні інтерпретації для особистої рефлексії та розваги. Результати — це ракурси й запитання, а не підтверджені факти про вас і не гарантії майбутнього.',
+          'Soul Arkana пропонує розклади Таро, розрахунки за датою народження й особисті розбори для роздумів про себе та розваги. Результати допомагають поглянути на ситуацію й поставити запитання, але не є підтвердженими фактами про вас або гарантіями майбутнього.',
         ],
       },
       {
@@ -353,7 +353,7 @@ export const termsCopy: Record<Locale, LegalDocument> = {
         title: 'Ваші рішення та використання',
         paragraphs: [
           'Ви самі відповідаєте за інтерпретацію та використання продукту. Не використовуйте розклад або портрет як єдину підставу для рішень щодо здоров’я, безпеки, права, фінансів, роботи чи стосунків.',
-          'Використовуйте продукт для власної рефлексії. Не записуйте іншу людину й не вводьте її чутливі дані без належного права та дозволу.',
+          'Використовуйте продукт, щоб поміркувати про себе. Не записуйте іншу людину й не вводьте її чутливі дані без належного права та дозволу.',
         ],
       },
       {

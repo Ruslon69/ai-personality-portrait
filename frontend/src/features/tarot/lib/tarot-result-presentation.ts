@@ -4,15 +4,15 @@ import { tarotCardById, tarotSpreadById } from '../data';
 import type { TarotReading } from '../types';
 
 const headlineWordLimits: Record<Locale, { maximum: number; minimum: number }> = {
-  en: { maximum: 12, minimum: 4 },
-  ru: { maximum: 12, minimum: 6 },
-  uk: { maximum: 12, minimum: 4 },
+  en: { maximum: 10, minimum: 4 },
+  ru: { maximum: 10, minimum: 4 },
+  uk: { maximum: 10, minimum: 4 },
 };
 
 const semanticHeadlineTemplates: Record<Locale, (concept: string) => string> = {
-  en: (concept) => `The reading centres on ${concept}`,
-  ru: (concept) => `Сейчас в центре этого расклада — ${concept}`,
-  uk: (concept) => `У центрі розкладу — ${concept}`,
+  en: (concept) => `What matters now: ${concept}`,
+  ru: (concept) => `Сейчас важно: ${concept}`,
+  uk: (concept) => `Зараз важливо: ${concept}`,
 };
 
 const repeatedThemeCopy: Record<Locale, (theme: string) => string> = {
@@ -60,7 +60,7 @@ function firstSentence(value: string) {
   );
 }
 
-function constrainSummary(value: string, minimum = 60, maximum = 100) {
+function constrainSummary(value: string, minimum = 25, maximum = 60) {
   const sentences = value
     .trim()
     .split(/(?<=[.!?])\s+|\n+/u)

@@ -12,18 +12,18 @@ import {
 } from './explainability';
 
 const zodiacNotes: Readonly<Record<string, string>> = {
-  capricorn: 'образ последовательности, ответственности и движения к выбранной цели',
-  aquarius: 'образ независимого взгляда, идей и интереса к новым связям',
-  pisces: 'образ восприимчивости, воображения и внимания к оттенкам опыта',
-  aries: 'образ импульса к действию, прямоты и начала нового',
-  taurus: 'образ устойчивости, чувственного опыта и ценности надёжной опоры',
-  gemini: 'образ любопытства, обмена идеями и подвижности внимания',
-  cancer: 'образ эмоциональной памяти, заботы и значимости безопасного пространства',
-  leo: 'образ творческого выражения, щедрости и заметного присутствия',
-  virgo: 'образ внимания к деталям, практичности и стремления улучшать процессы',
-  libra: 'образ баланса, диалога и поиска справедливой формы взаимодействия',
-  scorpio: 'образ глубины, интенсивности и способности проходить изменения',
-  sagittarius: 'образ исследования, смысла и расширения привычной перспективы',
+  capricorn: 'последовательность, ответственность и движение к выбранной цели',
+  aquarius: 'независимый взгляд, новые идеи и интерес к необычным связям',
+  pisces: 'восприимчивость, воображение и внимание к тонким переживаниям',
+  aries: 'готовность действовать прямо и начинать новое',
+  taurus: 'устойчивость, внимание к ощущениям и потребность в надёжной опоре',
+  gemini: 'любопытство, обмен идеями и лёгкое переключение внимания',
+  cancer: 'эмоциональная память, забота и потребность в безопасной обстановке',
+  leo: 'творческое самовыражение, щедрость и желание быть замеченным',
+  virgo: 'внимание к деталям, практичность и желание улучшать процессы',
+  libra: 'стремление к балансу, диалогу и справедливым договорённостям',
+  scorpio: 'глубокие переживания и способность проходить через перемены',
+  sagittarius: 'интерес к новому, поиск смысла и расширение кругозора',
 };
 
 const qualityLabels = {
@@ -32,27 +32,27 @@ const qualityLabels = {
     earth: 'earth',
     air: 'air',
     water: 'water',
-    cardinal: 'cardinal',
-    fixed: 'fixed',
-    mutable: 'mutable',
+    cardinal: 'more likely to start something new',
+    fixed: 'more likely to stay the course',
+    mutable: 'more comfortable adapting to change',
   },
   ru: {
     fire: 'огонь',
     earth: 'земля',
     air: 'воздух',
     water: 'вода',
-    cardinal: 'кардинальная',
-    fixed: 'фиксированная',
-    mutable: 'мутабельная',
+    cardinal: 'легче начинает новое',
+    fixed: 'чаще сохраняет выбранный курс',
+    mutable: 'легче приспосабливается к переменам',
   },
   uk: {
     fire: 'вогонь',
     earth: 'земля',
     air: 'повітря',
     water: 'вода',
-    cardinal: 'кардинальна',
-    fixed: 'фіксована',
-    mutable: 'мутабельна',
+    cardinal: 'легше починає нове',
+    fixed: 'частіше зберігає обраний курс',
+    mutable: 'легше пристосовується до змін',
   },
 } as const;
 
@@ -118,20 +118,20 @@ export function createNumerologyInterpretation(
   return createInterpretation(
     'numerology',
     locale === 'en'
-      ? `Life-path number — ${number}`
+      ? `Your main number — ${number}`
       : locale === 'uk'
-        ? `Число шляху — ${number}`
-        : `Число пути — ${number}`,
+        ? `Ваше основне число — ${number}`
+        : `Ваше основное число — ${number}`,
     locale === 'en'
-      ? `In numerology, ${number} is used as a symbolic theme for reflection.`
+      ? `Numerology uses ${number} as a prompt for looking at familiar habits and choices.`
       : locale === 'uk'
-        ? `У нумерології число ${number} використовують як символічну тему для рефлексії.`
-        : `В нумерологической модели число ${number} используется как символическая тема для саморефлексии.`,
+        ? `У нумерології число ${number} використовують як привід придивитися до звичних дій і виборів.`
+        : `В нумерологии число ${number} используют как повод присмотреться к привычным действиям и решениям.`,
     locale === 'en'
-      ? 'This interpretation does not confirm psychological observations or predict events. The calculation uses every digit of the entered date and repeatedly sums them to a single digit, while retaining 11, 22 and 33.'
+      ? 'This does not define your personality or predict events. The calculation adds the digits of the entered date and keeps 11, 22 and 33 as separate results.'
       : locale === 'uk'
-        ? 'Ця інтерпретація не підтверджує психологічні спостереження й не прогнозує події. У розрахунку цифри дати послідовно складаються; 11, 22 і 33 зберігаються.'
-        : 'Эта интерпретация не подтверждает психологические наблюдения и не предсказывает события. Для расчёта цифры даты последовательно складываются; 11, 22 и 33 сохраняются.',
+        ? 'Цей розбір не визначає вашу особистість і не прогнозує події. У розрахунку цифри дати послідовно додаються, а 11, 22 і 33 залишаються окремими результатами.'
+        : 'Этот разбор не определяет вашу личность и не предсказывает события. В расчёте цифры даты последовательно складываются, а 11, 22 и 33 остаются отдельными результатами.',
     evidence,
     locale,
   );
@@ -160,20 +160,20 @@ export function createZodiacInterpretation(
   return createInterpretation(
     'zodiac',
     locale === 'en'
-      ? `${label}: an optional perspective`
+      ? `${label}: an optional reading`
       : locale === 'uk'
-        ? `${label}: додаткова перспектива`
-        : `${label}: дополнительная перспектива`,
+        ? `${label}: додатковий розбір`
+        : `${label}: дополнительный разбор`,
     locale === 'en'
-      ? 'A familiar cultural symbol offered as an optional reflection layer.'
+      ? 'This tradition links the sign with familiar ways of acting and reacting.'
       : locale === 'uk'
-        ? 'Знайомий культурний символ як необов’язковий шар для рефлексії.'
-        : `В зодиакальной традиции ${label} — это ${zodiacNotes[sign.signId]}.`,
+        ? 'У цій традиції знак пов’язують зі звичними способами діяти й реагувати.'
+        : `В этой традиции знак ${label} связывают с такими качествами: ${zodiacNotes[sign.signId]}.`,
     locale === 'en'
       ? 'This is a cultural and entertainment interpretation, not an established fact about personality.'
       : locale === 'uk'
-        ? 'Це культурна й розважальна інтерпретація, а не встановлений факт про особистість.'
-        : 'Это культурная и развлекательная интерпретация, а не установленный факт о личности.',
+        ? 'Це культурний погляд для розваги, а не встановлений факт про особистість.'
+        : 'Это культурный взгляд для развлечения, а не установленный факт о личности.',
     evidence,
     locale,
   );
@@ -189,10 +189,10 @@ export function createAstrologyInterpretation(
   const evidence = createInterpretationEvidence(
     'astrology',
     locale === 'en'
-      ? 'Date-based astrology layer'
+      ? 'Astrology reading by date'
       : locale === 'uk'
-        ? 'Астрологічний шар за датою'
-        : 'Астрологический слой по дате',
+        ? 'Астрологічний розбір за датою'
+        : 'Астрологический разбор по дате',
     locale === 'en'
       ? `Only the date ${birthDate} was used; birth time and place were not collected.`
       : locale === 'uk'
@@ -208,15 +208,15 @@ export function createAstrologyInterpretation(
         ? 'Астрологічний портрет за датою'
         : 'Астрологический портрет по дате',
     locale === 'en'
-      ? `${signLabel}: ${qualityLabels.en[element]} element, ${qualityLabels.en[modality]} modality.`
+      ? `${signLabel} is linked with the ${qualityLabels.en[element]} element and ${qualityLabels.en[modality]}.`
       : locale === 'uk'
-        ? `${signLabel}: стихія — ${qualityLabels.uk[element]}, модальність — ${qualityLabels.uk[modality]}.`
-        : `${signLabel}: стихия — ${qualityLabels.ru[element]}, модальность — ${qualityLabels.ru[modality]}.`,
+        ? `${signLabel} пов’язують зі стихією «${qualityLabels.uk[element]}». У цій традиції цей знак ${qualityLabels.uk[modality]}.`
+        : `${signLabel} связывают со стихией «${qualityLabels.ru[element]}». В этой традиции знак ${qualityLabels.ru[modality]}.`,
     locale === 'en'
       ? 'This is a popular symbolic interpretation based only on the date. It is not a natal chart and does not affect confidence in psychological observations.'
       : locale === 'uk'
-        ? 'Це популярна символічна інтерпретація лише за датою. Це не натальна карта, і вона не впливає на впевненість психологічних спостережень.'
-        : 'Это популярная символическая интерпретация только по дате. Это не натальная карта, и она не влияет на уверенность психологических наблюдений.',
+        ? 'Це популярний символічний розбір лише за датою. Він не є натальною картою й не підтверджує спостереження за вашими відповідями.'
+        : 'Это популярный символический разбор только по дате. Он не является натальной картой и не подтверждает наблюдения по вашим ответам.',
     evidence,
     locale,
   );

@@ -60,7 +60,7 @@ export function PortraitHistory({
                 tabIndex={-1}
                 variant="display"
               >
-                История портретов
+                История личных разборов
               </Typography>
               <Typography className={styles.heroLead} variant="lead">
                 Сравнивайте ключевые мысли и возвращайтесь к нужному результату.
@@ -76,7 +76,7 @@ export function PortraitHistory({
           {items.length > 0 ? (
             <Stack gap="lg">
               <Typography as="h2" id="history-list-title" tabIndex={-1} variant="heading-lg">
-                Сохранённые портреты
+                Сохранённые личные разборы
               </Typography>
               <div className={styles.historyList}>
                 {items.map((item) => (

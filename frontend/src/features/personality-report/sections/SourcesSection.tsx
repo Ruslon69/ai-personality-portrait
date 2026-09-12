@@ -27,22 +27,20 @@ const copy: Record<
   en: {
     description: 'Observations, interpretations and recommendations remain separate.',
     eyebrow: 'Sources',
-    status: { included: 'Included', interpretation: 'Interpretation', omitted: 'Not used' },
-    title: 'See where every layer comes from',
+    status: { included: 'Included', interpretation: 'Optional reading', omitted: 'Not used' },
+    title: 'See what each conclusion is based on',
   },
   ru: {
-    description:
-      'Наблюдения, интерпретации и рекомендации не смешиваются в один безусловный вывод.',
+    description: 'Наблюдения, дополнительные разборы и советы показаны отдельно.',
     eyebrow: 'Источники выводов',
-    status: { included: 'Учтено', interpretation: 'Интерпретация', omitted: 'Не использовано' },
-    title: 'Понятно, откуда берётся каждый слой',
+    status: { included: 'Учтено', interpretation: 'Доп. разбор', omitted: 'Не использовано' },
+    title: 'Понятно, на чём основан каждый вывод',
   },
   uk: {
-    description:
-      'Спостереження, інтерпретації та рекомендації не змішуються в один безумовний висновок.',
+    description: 'Спостереження, додаткові розбори й поради показано окремо.',
     eyebrow: 'Джерела висновків',
-    status: { included: 'Враховано', interpretation: 'Інтерпретація', omitted: 'Не використано' },
-    title: 'Зрозуміло, звідки походить кожен шар',
+    status: { included: 'Враховано', interpretation: 'Дод. розбір', omitted: 'Не використано' },
+    title: 'Зрозуміло, на чому ґрунтується кожен висновок',
   },
 };
 

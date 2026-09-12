@@ -111,30 +111,30 @@ function createInterpretation(
     meaningInPosition: meaning,
     contextLink:
       locale === 'en'
-        ? `For ${focus}, “${positionLabel}” makes ${card.name.en} a question about what you can actually notice, not a prediction.`
+        ? `For ${focus}, ${card.name.en} asks you to separate what is already happening from what you only expect.`
         : locale === 'uk'
-          ? `У контексті «${focus}» карта ${card.name.uk} допомагає побачити, що відбувається насправді, а не вгадувати майбутнє.`
+          ? `У темі «${focus}» карта ${card.name.uk} допомагає відокремити реальні події від очікувань.`
           : `Эта карта помогает посмотреть на происходящее трезво: что уже подтверждается фактами, а что пока держится на ожиданиях?`,
     connections,
     numerologyLink:
       locale === 'en'
-        ? `Life-path ${context.numerology.lifePath.value} and personal year ${context.numerology.personalYear.value} add themes of ${context.numerology.personalYear.strengths[0]}; they do not change the card’s meaning.`
+        ? `Your birth-date reading adds the theme “${context.numerology.personalYear.strengths[0]}”. It does not change the card’s meaning.`
         : locale === 'uk'
-          ? `Шлях ${context.numerology.lifePath.value} і персональний рік ${context.numerology.personalYear.value} додають тему «${context.numerology.personalYear.strengths[0]}», але не змінюють значення карти.`
-          : `Числовой период здесь лишь усиливает тему ${context.numerology.personalYear.strengths[0]}; основной смысл всё равно задаёт сама карта.`,
+          ? `Розбір за датою додає тему «${context.numerology.personalYear.strengths[0]}». Він не змінює значення карти.`
+          : `Разбор по дате добавляет тему «${context.numerology.personalYear.strengths[0]}». Он не меняет значение карты.`,
     practicalTheme: createCardPracticalFocus(card, locale),
     reflectionQuestion:
       locale === 'en'
-        ? `What in “${positionLabel}” supports the constructive meaning of ${card.name.en}, and what contradicts it?`
+        ? `What supports the meaning of ${card.name.en} here, and what contradicts it?`
         : locale === 'uk'
-          ? `Що в позиції «${positionLabel}» підтверджує конструктивний зміст карти ${card.name.uk}, а що йому суперечить?`
+          ? `Що тут підтверджує зміст карти ${card.name.uk}, а що йому суперечить?`
           : `Что здесь подтверждает смысл карты ${naturalCardName}, а что ему противоречит?`,
     uncertainty:
       locale === 'en'
         ? 'This is one possible symbolic reading, not a guaranteed event or instruction.'
         : locale === 'uk'
-          ? 'Це один із можливих символічних ракурсів, а не гарантована подія чи вказівка.'
-          : 'Это один из возможных символических ракурсов, а не гарантированное событие или указание.',
+          ? 'Це лише один зі способів тлумачення, а не гарантована подія чи вказівка.'
+          : 'Это лишь один из способов толкования, а не гарантированное событие или указание.',
   };
 }
 

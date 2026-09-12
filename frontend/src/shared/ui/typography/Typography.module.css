@@ -18,31 +18,31 @@
 
 .root[data-variant='eyebrow'] {
   color: var(--color-text);
-  font-size: var(--font-size-sm);
+  font-size: 0.8125rem;
   font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.035em;
   line-height: var(--line-height-normal);
-  text-transform: uppercase;
 }
 
 .root[data-variant='display'],
 .root[data-variant='flow-title'] {
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
+  font-synthesis: none;
   text-wrap: balance;
 }
 
 .root[data-variant='display'] {
   font-size: var(--page-title-size);
-  font-weight: var(--font-weight-bold);
+  font-weight: 400;
   letter-spacing: var(--page-title-letter-spacing);
   line-height: var(--page-title-line-height);
 }
 
 .root[data-variant='flow-title'] {
   font-size: var(--flow-title-size);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: -0.03em;
-  line-height: var(--line-height-tight);
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  line-height: 1.12;
 }
 
 .root[data-variant='lead'],
@@ -60,11 +60,19 @@
 }
 
 .root[data-variant='heading-sm'],
-.root[data-variant='heading-md'],
-.root[data-variant='heading-lg'] {
-  font-family: var(--font-family-heading);
+.root[data-variant='heading-md'] {
+  font-family: var(--font-family-body);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-tight);
+}
+
+.root[data-variant='heading-lg'] {
+  font-family: var(--font-family-display);
+  font-synthesis: none;
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  line-height: 1.14;
+  text-wrap: balance;
 }
 
 .root[data-variant='heading-sm'] {

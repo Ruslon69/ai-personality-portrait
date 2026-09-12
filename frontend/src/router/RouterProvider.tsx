@@ -2,6 +2,9 @@ import { useCallback, useMemo, useSyncExternalStore } from 'react';
 
 import { RouterContext } from './RouterContext';
 import type { RouterContextValue, RouterProviderProps } from './RouterProvider.types';
+import { createNavigationState, initializeScrollRestoration } from './scroll-restoration';
+
+const navigationEvent = 'soul-arkana:navigation';
 
 function getCurrentPath() {
   return window.location.pathname;
@@ -12,8 +15,12 @@ function getServerPath() {
 }
 
 function subscribeToHistory(onStoreChange: () => void) {
-  window.addEventListener('popstate', onStoreChange);
-  return () => window.removeEventListener('popstate', onStoreChange);
+  const cleanupScrollRestoration = initializeScrollRestoration(onStoreChange);
+  window.addEventListener(navigationEvent, onStoreChange);
+  return () => {
+    cleanupScrollRestoration();
+    window.removeEventListener(navigationEvent, onStoreChange);
+  };
 }
 
 export function RouterProvider({ children }: RouterProviderProps) {
@@ -24,9 +31,11 @@ export function RouterProvider({ children }: RouterProviderProps) {
       return;
     }
 
-    const method = options?.replace ? 'replaceState' : 'pushState';
-    window.history[method](null, '', path);
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    const isReplace = options?.replace === true;
+    const method = isReplace ? 'replaceState' : 'pushState';
+    window.history[method](createNavigationState(isReplace ? 'replace' : 'forward'), '', path);
+    window.scrollTo(0, 0);
+    window.dispatchEvent(new Event(navigationEvent));
   }, []);
 
   const value = useMemo(() => ({ currentPath, navigate }), [currentPath, navigate]);

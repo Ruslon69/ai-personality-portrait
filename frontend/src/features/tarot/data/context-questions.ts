@@ -10,9 +10,9 @@ export const tarotContextQuestions: readonly TarotContextQuestion[] = [
   {
     id: 'decision-style',
     title: {
-      ru: 'Когда решение действительно важно, что помогает сдвинуться?',
-      en: 'When a decision truly matters, what helps you move?',
-      uk: 'Коли рішення справді важливе, що допомагає зрушити?',
+      ru: 'Когда решение действительно важно, что помогает его принять?',
+      en: 'When a decision truly matters, what helps you make it?',
+      uk: 'Коли рішення справді важливе, що допомагає його прийняти?',
     },
     options: [
       option(
@@ -35,9 +35,9 @@ export const tarotContextQuestions: readonly TarotContextQuestion[] = [
       ),
       option(
         'pause',
-        'Дать себе паузу и услышать внутренний отклик',
-        'Pause and notice my inner response',
-        'Дати собі паузу й почути внутрішній відгук',
+        'Взять паузу и прислушаться к своим чувствам',
+        'Pause and notice how I feel',
+        'Взяти паузу й прислухатися до своїх почуттів',
       ),
     ],
   },
@@ -63,9 +63,9 @@ export const tarotContextQuestions: readonly TarotContextQuestion[] = [
       ),
       option(
         'wait',
-        'Жду нового сигнала или информации',
-        'I wait for another signal or piece of information',
-        'Чекаю нового сигналу чи інформації',
+        'Жду новой информации',
+        'I wait for more information',
+        'Чекаю на нову інформацію',
       ),
       option(
         'context',
@@ -98,9 +98,9 @@ export const tarotContextQuestions: readonly TarotContextQuestion[] = [
       option('resources', 'Деньги и устойчивость', 'Money and stability', 'Гроші та стійкість'),
       option(
         'change',
-        'Перемена, которую пора оформить',
-        'A change that needs a form',
-        'Зміна, якій час надати форми',
+        'Перемены и что с ними делать',
+        'A change and what to do with it',
+        'Зміни й те, що з ними робити',
       ),
     ],
   },
@@ -120,9 +120,9 @@ export const tarotContextQuestions: readonly TarotContextQuestion[] = [
       ),
       option(
         'space',
-        'Получить пространство без немедленного решения',
-        'Have space without an immediate decision',
-        'Отримати простір без негайного рішення',
+        'Не принимать решение сразу',
+        'Avoid deciding immediately',
+        'Не приймати рішення одразу',
       ),
       option(
         'new-route',
@@ -154,9 +154,9 @@ export const tarotContextQuestions: readonly TarotContextQuestion[] = [
       ),
       option(
         'angle',
-        'Найти непривычный ракурс',
-        'Find an unfamiliar angle',
-        'Знайти незвичний ракурс',
+        'Посмотреть на ситуацию иначе',
+        'Look at the situation differently',
+        'Поглянути на ситуацію інакше',
       ),
       option(
         'action',
@@ -182,21 +182,21 @@ export const tarotContextQuestions: readonly TarotContextQuestion[] = [
     options: [
       option(
         'threshold',
-        'Я нахожусь в точке перехода',
-        'I am at a threshold',
-        'Я стою на порозі переходу',
+        'Я нахожусь на пороге перемен',
+        'I am on the verge of change',
+        'Я стою на порозі змін',
       ),
       option(
         'building',
-        'Я постепенно собираю основу',
+        'Я постепенно закладываю основу',
         'I am gradually building a foundation',
-        'Я поступово збираю основу',
+        'Я поступово закладаю основу',
       ),
       option(
         'noise',
-        'Слишком много сигналов одновременно',
-        'There are too many signals at once',
-        'Забагато сигналів одночасно',
+        'Слишком много информации одновременно',
+        'There is too much information at once',
+        'Забагато інформації одночасно',
       ),
       option(
         'settling',

@@ -2,7 +2,7 @@ import type { TraitId, TraitTemplate } from '../model';
 
 export const traitTemplates: Readonly<Record<TraitId, TraitTemplate>> = {
   adaptability: {
-    energyDescription: 'Восстановлению может помогать возможность менять ритм по ситуации.',
+    energyDescription: 'Возможность менять ритм по ситуации может помогать вам восстанавливаться.',
     energyDetails:
       'Чередуйте способы отдыха и заранее оставляйте небольшое пространство для изменения плана.',
     energyTitle: 'Свобода сменить ритм',
@@ -18,7 +18,7 @@ export const traitTemplates: Readonly<Record<TraitId, TraitTemplate>> = {
     recommendationTitle: 'Подготовьте один запасной маршрут',
     strengthDescription: 'Вы можете менять способ действия, когда контекст этого требует.',
     strengthDetails:
-      'В ответах повторяется готовность соотносить решение с ситуацией, а не держаться за единственный сценарий.',
+      'В нескольких ответах вы выбираете способ под ситуацию, а не держитесь за один сценарий.',
     strengthTitle: 'Адаптивность',
   },
   autonomy: {
@@ -29,7 +29,7 @@ export const traitTemplates: Readonly<Record<TraitId, TraitTemplate>> = {
     growthDescription: 'Самостоятельность становится понятнее другим, когда ваши условия названы.',
     growthDetails:
       'Необязательно объяснять всё подробно: достаточно обозначить границу и момент, когда вы готовы вернуться к контакту.',
-    growthTitle: 'Делать автономность видимой',
+    growthTitle: 'Обозначать потребность в личном пространстве',
     label: 'самостоятельность',
     recommendationDescription: 'Защитите небольшой отрезок времени без новых запросов.',
     recommendationDetails:
@@ -59,7 +59,7 @@ export const traitTemplates: Readonly<Record<TraitId, TraitTemplate>> = {
     recommendationTitle: 'Создайте общую точку опоры',
     strengthDescription: 'Вы замечаете значение контакта и формы взаимодействия.',
     strengthDetails:
-      'В нескольких ответах важны доверие, готовность собеседника и поддерживающий способ разговора.',
+      'В нескольких ответах для вас важны доверие, готовность собеседника и спокойный разговор.',
     strengthTitle: 'Внимание к отношениям',
   },
   directness: {
@@ -85,7 +85,7 @@ export const traitTemplates: Readonly<Record<TraitId, TraitTemplate>> = {
   initiative: {
     energyDescription: 'Небольшое завершённое действие может возвращать чувство движения.',
     energyDetails: 'Выберите шаг с видимым результатом вместо попытки сразу решить всю задачу.',
-    energyTitle: 'Энергия от первого шага',
+    energyTitle: 'Силы после первого шага',
     growthDescription: 'Быстрый старт полезно сопровождать короткой проверкой направления.',
     growthDetails:
       'Перед действием задайте один вопрос: какой результат покажет, что выбранный способ действительно работает?',
@@ -105,7 +105,7 @@ export const traitTemplates: Readonly<Record<TraitId, TraitTemplate>> = {
     energyDescription: 'Новый контекст или впечатление может мягко переключать внимание.',
     energyDetails:
       'Для восстановления выбирайте небольшую смену обстановки, которая не требует нового большого обязательства.',
-    energyTitle: 'Небольшая смена перспективы',
+    energyTitle: 'Небольшая смена обстановки',
     growthDescription: 'Разнообразие легче поддерживает интерес, когда есть критерий выбора.',
     growthDetails:
       'Перед новым вариантом определите, что именно хотите проверить или получить от него.',
@@ -116,7 +116,7 @@ export const traitTemplates: Readonly<Record<TraitId, TraitTemplate>> = {
       'Не меняйте весь процесс: выберите одну часть, где эксперимент даст свежий взгляд без лишней нагрузки.',
     recommendationLabel: 'Для нового взгляда',
     recommendationTitle: 'Измените один элемент',
-    strengthDescription: 'Вы можете поддерживать интерес через новые способы и перспективы.',
+    strengthDescription: 'Новые способы и впечатления помогают вам сохранять интерес.',
     strengthDetails:
       'Ответы показывают готовность менять обстановку, пробовать подходы и учитывать внутренний отклик.',
     strengthTitle: 'Открытость вариантам',
@@ -139,7 +139,7 @@ export const traitTemplates: Readonly<Record<TraitId, TraitTemplate>> = {
     strengthDescription: 'Вы цените решения, которые можно применить и проверить.',
     strengthDetails:
       'В ответах повторяется ориентация на конкретную помощь, видимый прогресс и понятный следующий шаг.',
-    strengthTitle: 'Практический фокус',
+    strengthTitle: 'Практичный подход',
   },
   reflection: {
     energyDescription: 'Пауза без новых решений может возвращать ясность.',
@@ -155,8 +155,9 @@ export const traitTemplates: Readonly<Record<TraitId, TraitTemplate>> = {
     recommendationDetails:
       'Определите срок и два критерия, после которых готовы сделать следующий шаг, даже если полной уверенности пока нет.',
     recommendationLabel: 'Для важного выбора',
-    recommendationTitle: 'Задайте границу размышлению',
-    strengthDescription: 'Вы даёте себе время заметить контекст и сформулировать точный ответ.',
+    recommendationTitle: 'Ограничьте время на размышления',
+    strengthDescription:
+      'Вы даёте себе время разобраться в ситуации и сформулировать точный ответ.',
     strengthDetails:
       'В ответах неоднократно появляется пауза, наблюдение или проверка внутреннего отклика перед действием.',
     strengthTitle: 'Вдумчивость',

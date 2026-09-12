@@ -80,70 +80,32 @@ function russianAction(card: TarotCard) {
   return getRussianTarotInterpretationProfile(card.id)?.action ?? card.advice.ru;
 }
 
-function copyVariant(seed: string, length: number) {
-  const value = [...seed].reduce((total, character) => total * 31 + character.charCodeAt(0), 7);
-  return Math.abs(value) % length;
+function completeSentence(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) return trimmed;
+  const capitalized = `${trimmed.charAt(0).toLocaleUpperCase('ru-RU')}${trimmed.slice(1)}`;
+  return /[.!?]$/u.test(capitalized) ? capitalized : `${capitalized}.`;
 }
 
-function russianPositionAction(role: PositionRole, action: string, seed: string) {
-  const variants = {
-    advice: [
-      `Следующий шаг может быть таким: ${action}.`,
-      `Не обязательно решать всё сразу — сначала ${action}.`,
-      `Попробуйте проверить это небольшим действием: ${action}.`,
-      `Оставьте себе право на паузу и ${action}.`,
-    ],
-    current: [
-      `Сверьте это с реальными обстоятельствами: ${action}.`,
-      `Здесь не нужен рывок — сначала ${action}.`,
-      `Один честный шаг в эту сторону — ${action}.`,
-      `На практике это можно проверить так: ${action}.`,
-    ],
-    hidden: [
-      `Проверьте эту мысль фактами: ${action}.`,
-      `Не торопитесь делать вывод — сначала ${action}.`,
-      `Эта часть ситуации станет яснее, если ${action}.`,
-      `Оставьте место паузе и ${action}.`,
-    ],
-    inner: [
-      `С этим чувством можно обойтись бережно: ${action}.`,
-      `Попробуйте дать себе время и ${action}.`,
-      `Спросите себя, что изменится, если ${action}.`,
-      `Внутреннее напряжение ослабевает, когда ${action}.`,
-    ],
-    obstacle: [
-      `Снимите часть давления: ${action}.`,
-      `Не пытайтесь закрыть всё сразу — ${action}.`,
-      `Эта сложность требует не силы, а того, чтобы ${action}.`,
-      `Предел здесь обозначает одно: ${action}.`,
-    ],
-    outcome: [
-      `Сохраните это как ориентир: ${action}.`,
-      `Дальше пригодится ${action}.`,
-      `Здесь можно позволить себе ${action}.`,
-      `Итог проверяется тем, что вы ${action}.`,
-    ],
-    relationship: [
-      `Вместо догадок — ${action}.`,
-      `Открытый разговор начнётся с того, чтобы ${action}.`,
-      `Не оставляйте это между строк: ${action}.`,
-      `Сначала договоритесь о том, чтобы ${action}.`,
-    ],
-    support: [
-      `Эту опору можно использовать, если ${action}.`,
-      `Помощь здесь выглядит так: ${action}.`,
-      `Сильная сторона проявится, когда ${action}.`,
-      `Берегите этот ресурс и ${action}.`,
-    ],
-    work: [
-      `Вместо лишнего давления попробуйте ${action}.`,
-      `Сделайте ставку на то, чтобы ${action}.`,
-      `Здесь результат поддержит ${action}.`,
-      `Сначала освободите место для того, чтобы ${action}.`,
-    ],
-  } satisfies Record<PositionRole, readonly string[]>;
-  return variants[role][copyVariant(seed, variants[role].length)] ?? `Попробуйте ${action}.`;
+function plainCardMeaning(card: TarotCard, orientation: TarotCardSelection['orientation']) {
+  return completeSentence(russianMeaning(card, orientation));
 }
+
+function plainCardAction(card: TarotCard) {
+  return completeSentence(russianAction(card));
+}
+
+const russianPositionLead: Record<PositionRole, string> = {
+  advice: 'Эта карта подсказывает возможный следующий шаг.',
+  current: 'Карта описывает то, что сейчас важнее всего заметить.',
+  hidden: 'Карта обращает внимание на то, что легко упустить.',
+  inner: 'Карта помогает назвать ваше внутреннее состояние.',
+  obstacle: 'Карта показывает возможную трудность.',
+  outcome: 'Карта описывает возможное развитие ситуации, а не гарантированный итог.',
+  relationship: 'Карта помогает посмотреть на отношения без догадок о другом человеке.',
+  support: 'Карта показывает, на что уже можно опереться.',
+  work: 'Карта помогает оценить ситуацию в делах.',
+};
 
 function localizedTopicMeaning(card: TarotCard, locale: Locale, topic?: TarotTopic) {
   if (topic === 'love') return card.relationship[locale];
@@ -153,7 +115,7 @@ function localizedTopicMeaning(card: TarotCard, locale: Locale, topic?: TarotTop
   return card.upright[locale];
 }
 
-export function createActiveCardInterpretation(input: {
+export function createActiveCardGuidance(input: {
   card: TarotCard;
   index: number;
   locale: Locale;
@@ -161,87 +123,34 @@ export function createActiveCardInterpretation(input: {
   position: TarotSpreadPosition;
   topic?: TarotTopic;
 }) {
-  const { card, index, locale, orientation, position, topic } = input;
+  const { card, locale, orientation, position, topic } = input;
   const role = resolvePositionRole(position.id);
   if (locale === 'ru') {
-    const meaning = russianMeaning(card, orientation).replace(/[.!?]+$/u, '');
-    const openings: Record<PositionRole, readonly string[]> = {
-      advice: [
-        `Здесь пригодится ${meaning}.`,
-        `Следующий шаг проще выбрать, если ${meaning}.`,
-        `Похоже, решение начинается с того, что ${meaning}.`,
-        `Не усложняйте эту задачу: ${meaning}.`,
-        `Сейчас можно держаться того, что ${meaning}.`,
-      ],
-      current: [
-        `Похоже, ситуация требует признать: ${meaning}.`,
-        `Здесь чувствуется простая вещь: ${meaning}.`,
-        `На поверхности — одно, но важнее другое: ${meaning}.`,
-        `Ситуация складывается так, что ${meaning}.`,
-        `Это тот случай, когда ${meaning}.`,
-      ],
-      hidden: [
-        `За внешними обстоятельствами может скрываться то, что ${meaning}.`,
-        `Неочевидная часть ситуации — ${meaning}.`,
-        `Сначала легко заметить одно, но глубже видно: ${meaning}.`,
-        `Здесь есть то, что пока остаётся за кадром: ${meaning}.`,
-        `В этой истории не всё лежит на поверхности: ${meaning}.`,
-      ],
-      inner: [
-        `Внутри это может ощущаться так: ${meaning}.`,
-        `Похоже, вы уже чувствуете: ${meaning}.`,
-        `Когда остаётесь с собой, становится заметно: ${meaning}.`,
-        `Внутренний фон сейчас такой: ${meaning}.`,
-        `Есть чувство, которое трудно обойти: ${meaning}.`,
-      ],
-      obstacle: [
-        `Сложность появляется там, где ${meaning}.`,
-        `Главный узел здесь в том, что ${meaning}.`,
-        `Дело упирается в следующее: ${meaning}.`,
-        `Трудность не столько во внешнем, сколько в том, что ${meaning}.`,
-        `Напряжение накапливается, когда ${meaning}.`,
-      ],
-      outcome: [
-        `Дальше многое будет зависеть от того, что ${meaning}.`,
-        `К завершению этой истории проявится следующее: ${meaning}.`,
-        `Общий вектор выглядит так: ${meaning}.`,
-        `Со временем станет заметно: ${meaning}.`,
-        `Итог здесь скорее о том, что ${meaning}.`,
-      ],
-      relationship: [
-        `Между вами может проявляться так: ${meaning}.`,
-        `Тонкий нюанс здесь в том, что ${meaning}.`,
-        `В контакте с другим человеком особенно заметно: ${meaning}.`,
-        `Похоже, связь сейчас проверяется тем, что ${meaning}.`,
-        `Тема близости звучит здесь так: ${meaning}.`,
-      ],
-      support: [
-        `Опора уже есть в том, что ${meaning}.`,
-        `Ситуацию удерживает простая вещь: ${meaning}.`,
-        `Помогает то, что ${meaning}.`,
-        `Сильная сторона здесь в том, что ${meaning}.`,
-        `Ресурс проявляется там, где ${meaning}.`,
-      ],
-      work: [
-        `В задаче на первый план выходит: ${meaning}.`,
-        `Здесь многое решает то, что ${meaning}.`,
-        `Похоже, дело требует признать: ${meaning}.`,
-        `Результат сейчас зависит от того, что ${meaning}.`,
-        `Особенно заметно, что ${meaning}.`,
-      ],
+    return {
+      action: plainCardAction(card),
+      meaning: `${russianPositionLead[role]} ${plainCardMeaning(card, orientation)}`,
     };
-    const seed = `${card.id}:${position.id}:${orientation}:${index}`;
-    const opening =
-      openings[role][copyVariant(seed, openings[role].length)] ?? `Здесь заметно: ${meaning}.`;
-    return `${opening} ${russianPositionAction(role, russianAction(card), seed)}`;
   }
 
   const meaning =
     orientation === 'reversed' ? card.reversed[locale] : localizedTopicMeaning(card, locale, topic);
   if (locale === 'uk') {
-    return `У позиції «${position.label.uk}» карта ${card.name.uk} поєднує запит «${position.prompt.uk}» із таким змістом: ${meaning} Практичний напрям — ${card.advice.uk}`;
+    return {
+      action: completeSentence(card.advice.uk),
+      meaning: `${position.label.uk}: ${completeSentence(meaning)}`,
+    };
   }
-  return `In “${position.label.en}”, ${card.name.en} connects “${position.prompt.en}” with this specific theme: ${meaning} A practical direction is to ${card.advice.en.charAt(0).toLocaleLowerCase()}${card.advice.en.slice(1)}`;
+  return {
+    action: completeSentence(card.advice.en),
+    meaning: `${position.label.en}: ${completeSentence(meaning)}`,
+  };
+}
+
+export function createActiveCardInterpretation(
+  input: Parameters<typeof createActiveCardGuidance>[0],
+) {
+  const guidance = createActiveCardGuidance(input);
+  return `${guidance.meaning} ${guidance.action}`;
 }
 
 type SemanticDomain = 'action' | 'emotion' | 'material' | 'mind' | 'transition';
@@ -303,6 +212,30 @@ const domainCopy: Record<Locale, Record<SemanticDomain, string>> = {
   },
 };
 
+const domainHeadlines: Record<Locale, Record<SemanticDomain, string>> = {
+  en: {
+    action: 'Choose one clear step and begin',
+    emotion: 'Be honest about what you feel',
+    material: 'Focus on resources and clear boundaries',
+    mind: 'Clarify the facts before deciding',
+    transition: 'Accept the change and choose what follows',
+  },
+  ru: {
+    action: 'Выберите один конкретный шаг и начните',
+    emotion: 'Честно назовите то, что вы чувствуете',
+    material: 'Сосредоточьтесь на ресурсах и ясных границах',
+    mind: 'Сначала проясните факты и свои слова',
+    transition: 'Примите перемены и выберите следующий шаг',
+  },
+  uk: {
+    action: 'Оберіть один конкретний крок і почніть',
+    emotion: 'Чесно назвіть те, що ви відчуваєте',
+    material: 'Зосередьтеся на ресурсах і чітких межах',
+    mind: 'Спочатку з’ясуйте факти й доберіть слова',
+    transition: 'Прийміть зміни й оберіть наступний крок',
+  },
+};
+
 function dominantDomain(cards: readonly TarotCard[]) {
   const counts = new Map<SemanticDomain, number>();
   cards.forEach((card) => {
@@ -331,8 +264,10 @@ function localizedCardTheme(
   orientation: TarotCardSelection['orientation'],
   locale: Locale,
 ) {
-  if (locale === 'ru') return russianMeaning(card, orientation).replace(/[.!?]+$/u, '');
-  return orientation === 'reversed' ? card.shadow[locale] : card.light[locale];
+  if (locale === 'ru') return plainCardMeaning(card, orientation);
+  return completeSentence(
+    orientation === 'reversed' ? card.reversed[locale] : card.upright[locale],
+  );
 }
 
 export function createReadingSynthesis(input: {
@@ -370,33 +305,27 @@ export function createReadingSynthesis(input: {
     locale,
   );
   const riskTheme = localizedCardTheme(risk, 'reversed', locale);
-  const opportunityDomain = domainCopy[locale][cardDomain(opportunity)];
-  const riskDomain = domainCopy[locale][cardDomain(risk)];
   if (locale === 'ru') {
-    const action = russianAction(direction);
-    const singleSummary = `В этом раскладе особенно звучит тема ${opportunityDomain}. Она может поддержать через то, что ${opportunityTheme}. Рядом остаётся уязвимое место: ${riskTheme}. Не принимайте это за готовый прогноз — сверяйте смысл с тем, что происходит вокруг. ${action}.`;
+    const action = plainCardAction(direction);
     return {
-      headline: `В центре — ${domainLabel}`,
-      practicalFocus: `Попробуйте ${action}.`,
-      summary:
-        cards.length === 1
-          ? singleSummary
-          : `В этом раскладе снова и снова звучит тема ${domainLabel}. Похоже, вопрос упирается в то, на что вы реально можете опереться и где пора яснее обозначить границы.\n\nОдна часть ситуации подталкивает к ${opportunityDomain}, другая напоминает о ${riskDomain}. Хороший ресурс — ${opportunityTheme}. Но есть и уязвимое место: ${riskTheme}. Сверьте это не только с внутренним ощущением, но и с тем, как люди отвечают, какие договорённости выполняются и где расходуются силы.\n\nНе ищите в символах готовый прогноз. Посмотрите, что уже происходит в разговорах, делах или расходах, и ${action}.`,
+      headline: domainHeadlines.ru[domain],
+      practicalFocus: action,
+      summary: `Главная тема расклада — ${domainLabel}. ${opportunityTheme} На что обратить внимание. ${riskTheme} ${action}`,
     };
   }
 
   const action = direction.advice[locale];
   if (locale === 'uk') {
     return {
-      headline: `У центрі — ${domainLabel}`,
-      practicalFocus: action,
-      summary: `У цьому розкладі найсильніше повторюється тема ${domainLabel}. Водночас одна частина ситуації тягнеться до «${opportunityTheme}», а інша просить зважити на «${riskTheme}» — це не наперед визначений результат. Можливість пов’язана з конструктивною стороною карти, а головний ризик — прийняти складний сценарій за неминучий. Практичний напрям: ${action}`,
+      headline: domainHeadlines.uk[domain],
+      practicalFocus: completeSentence(action),
+      summary: `Головна тема розкладу — ${domainLabel}. ${opportunityTheme} На що звернути увагу. ${riskTheme} ${completeSentence(action)}`,
     };
   }
   return {
-    headline: `The reading centres on ${domainLabel}`,
-    practicalFocus: action,
-    summary: `The spread keeps returning to ${domainLabel}. One part of the situation leans toward “${opportunityTheme}”, while another asks for “${riskTheme}”; neither is a predetermined outcome. The useful opportunity is in the constructive side of the cards, while the main risk is treating a difficult possibility as inevitable. A practical direction is ${action}`,
+    headline: domainHeadlines.en[domain],
+    practicalFocus: completeSentence(action),
+    summary: `The reading’s main theme is ${domainLabel}. ${opportunityTheme} What to watch for. ${riskTheme} ${completeSentence(action)}`,
   };
 }
 
@@ -408,26 +337,19 @@ export function createCardConnection(input: {
   orientation: TarotCardSelection['orientation'];
   position: TarotSpreadPosition;
 }) {
-  const { card, index, locale, neighbour, orientation, position } = input;
+  const { card, locale, neighbour, orientation, position } = input;
   if (!neighbour) {
     if (locale === 'ru')
-      return `${russianCardName(card)} становится центральным ракурсом: ${russianMeaning(card, orientation)}.`;
-    if (locale === 'uk') return `${card.name.uk} стає центральним ракурсом цього розкладу.`;
-    return `${card.name.en} becomes the central lens of this reading.`;
+      return `${russianCardName(card)} задаёт главную тему. ${plainCardMeaning(card, orientation)}`;
+    if (locale === 'uk') return `${card.name.uk} задає головну тему цього розкладу.`;
+    return `${card.name.en} sets the main theme of this reading.`;
   }
   if (locale === 'ru') {
-    const left = getRussianTarotInterpretationProfile(card.id)?.upright ?? card.light.ru;
-    const right = getRussianTarotInterpretationProfile(neighbour.id)?.upright ?? neighbour.light.ru;
+    const left = plainCardMeaning(card, orientation);
+    const right = plainCardMeaning(neighbour, 'upright');
     const cardName = russianCardName(card);
     const neighbourName = russianCardName(neighbour);
-    const patterns = [
-      `${cardName} и ${neighbourName} встречаются в теме «${left}» и постепенно переводят её к «${right}».`,
-      `Здесь одна тема продолжает другую: от «${left}» к «${right}». Рядом ${neighbourName} меняет акцент ${cardName}.`,
-      `Если читать их вместе, ${cardName} напоминает о «${left}», а ${neighbourName} добавляет к этому «${right}».`,
-      `Рядом с ${neighbourName} ${cardName} звучит иначе: «${left}» получает продолжение в теме «${right}».`,
-      `Между этими картами есть разговор — «${left}» встречается с «${right}», и от этого меняется общий тон.`,
-    ];
-    return patterns[index % patterns.length] ?? patterns[0];
+    return `Эти карты показывают два связанных момента. ${cardName}: ${left} ${neighbourName}: ${right}`;
   }
   if (locale === 'uk')
     return `${card.name.uk} і ${neighbour.name.uk} поєднують теми «${card.light.uk}» та «${neighbour.light.uk}» у позиції «${position.label.uk}».`;
@@ -436,16 +358,9 @@ export function createCardConnection(input: {
 
 export function createCardPracticalFocus(card: TarotCard, locale: Locale) {
   if (locale === 'ru') {
-    const action = russianAction(card);
-    const variants = [
-      `Попробуйте ${action}.`,
-      `Один возможный шаг — ${action}.`,
-      `Если это откликается, ${action}.`,
-      `Здесь уместно ${action}.`,
-    ];
-    return variants[copyVariant(card.id, variants.length)] ?? variants[0];
+    return plainCardAction(card);
   }
-  return card.advice[locale];
+  return completeSentence(card.advice[locale]);
 }
 
 export function interpretationWordCount(value: string) {

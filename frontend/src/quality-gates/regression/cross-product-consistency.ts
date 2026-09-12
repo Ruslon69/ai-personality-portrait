@@ -17,6 +17,11 @@ export function runCrossProductConsistencyGate(rootDir: string) {
   const globals = read(rootDir, 'src/styles/globals.css');
   const layout = read(rootDir, 'src/app/layout/Layout.tsx');
   const layoutCss = read(rootDir, 'src/app/layout/Layout.module.css');
+  const home = read(rootDir, 'src/pages/home/HomePage.tsx');
+  const homeCss = read(rootDir, 'src/pages/home/HomePage.module.css');
+  const header = read(rootDir, 'src/widgets/header/Header.tsx');
+  const headerCss = read(rootDir, 'src/widgets/header/Header.module.css');
+  const favicon = read(rootDir, 'public/favicon.svg');
   const sidebar = read(rootDir, 'src/widgets/sidebar/Sidebar.tsx');
   const notFound = read(rootDir, 'src/pages/not-found/NotFoundPage.tsx');
   const userSettings = read(rootDir, 'src/features/user-settings/components/UserSettings.tsx');
@@ -36,6 +41,61 @@ export function runCrossProductConsistencyGate(rootDir: string) {
       code: 'shared-application-shell',
       message:
         'All application routes must retain the shared header, main, sidebar and footer shell.',
+    },
+  );
+
+  assertions.assert(
+    header.includes('className={styles.logoCard}') &&
+      header.includes('className={styles.logoFlame}') &&
+      header.includes('className={styles.logoOrbit}') &&
+      headerCss.includes('@keyframes logo-flame-awaken') &&
+      headerCss.includes('@media (prefers-reduced-motion: reduce)') &&
+      favicon.includes('<rect') &&
+      favicon.includes('stroke="#f5c77d"'),
+    {
+      code: 'soul-arkana-card-flame-brand-contract',
+      message:
+        'The header and favicon must retain the shared Tarot-card, flame and celestial Soul Arkana mark with restrained motion.',
+    },
+  );
+
+  assertions.assert(
+    layout.includes('showSettings={!isMarketing || currentPath === ROUTES.tarotReading}') &&
+      header.includes('(showSettings ?? !isMarketing)') &&
+      !headerCss.includes('.settingsAction {\n    display: none;'),
+    {
+      code: 'tarot-reading-header-tools-contract',
+      message:
+        'The immersive Tarot reading header must retain language, theme and settings access at desktop and mobile sizes.',
+    },
+  );
+
+  assertions.assert(
+    header.includes('href={ROUTES.home}') &&
+      header.includes('navigate(ROUTES.home)') &&
+      sidebar.includes('href={item.path}') &&
+      sidebar.includes('navigate(item.path)') &&
+      !home.includes('navigate(ROUTES.profile') &&
+      !home.includes('hasResults'),
+    {
+      code: 'public-home-navigation-contract',
+      message:
+        'Brand and sidebar Home links must resolve to the public landing page without a saved-results redirect.',
+    },
+  );
+
+  assertions.assert(
+    home.includes('className={styles.heroCardFrame}') &&
+      home.includes('className={styles.heroFlame}') &&
+      home.includes('className={styles.heroOrbit}') &&
+      !home.includes('className={styles.heroNumber}') &&
+      homeCss.includes('.heroCardFrame') &&
+      homeCss.includes('.heroFlame') &&
+      homeCss.includes('.heroOrbit'),
+    {
+      code: 'landing-tarot-candle-visual-language',
+      message:
+        'The landing visual must share the Tarot-card, candle and orbital language of the reading experience.',
     },
   );
 

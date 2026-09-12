@@ -9,6 +9,7 @@ export {
 } from './expert-interpretation-adapter';
 export type { TarotAuthorPresentation } from './expert-interpretation-adapter';
 export {
+  createActiveCardGuidance,
   createActiveCardInterpretation,
   createCardConnection,
   createCardPracticalFocus,

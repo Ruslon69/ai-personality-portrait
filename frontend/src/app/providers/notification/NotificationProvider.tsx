@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Toast } from '@shared/ui';
 import { useI18n } from '@shared/i18n';
@@ -12,6 +12,22 @@ import type {
 } from './NotificationProvider.types';
 
 let notificationSequence = 0;
+const notificationLifetimeMs = 6_000;
+
+function NotificationToast({
+  dismiss,
+  notification,
+}: {
+  dismiss: (id: string) => void;
+  notification: Notification;
+}) {
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => dismiss(notification.id), notificationLifetimeMs);
+    return () => window.clearTimeout(timeoutId);
+  }, [dismiss, notification.id]);
+
+  return <Toast tone={notification.tone}>{notification.message}</Toast>;
+}
 
 export function NotificationProvider({ children }: NotificationProviderProps) {
   const { locale } = useI18n();
@@ -21,7 +37,11 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     notificationSequence += 1;
     const id = `notification-${notificationSequence}`;
 
-    setNotifications((current) => [...current, { id, message, tone }]);
+    setNotifications((current) =>
+      current.some((notification) => notification.message === message && notification.tone === tone)
+        ? current
+        : [...current, { id, message, tone }],
+    );
     return id;
   }, []);
 
@@ -49,9 +69,7 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
         role="region"
       >
         {notifications.map((notification) => (
-          <Toast key={notification.id} tone={notification.tone}>
-            {notification.message}
-          </Toast>
+          <NotificationToast dismiss={dismiss} key={notification.id} notification={notification} />
         ))}
       </div>
     </NotificationContext.Provider>

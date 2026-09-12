@@ -13,7 +13,7 @@ const items = {
     ['energy', 'What restores you'],
     ['contrasts', 'Where you shift'],
     ['recommendations', 'What to try'],
-    ['interpretations', 'Extra lenses'],
+    ['interpretations', 'Birth-date insights'],
   ],
   ru: [
     ['summary', 'Главное'],
@@ -22,7 +22,7 @@ const items = {
     ['energy', 'Что вас заряжает'],
     ['contrasts', 'Где вы меняетесь'],
     ['recommendations', 'Что попробовать'],
-    ['interpretations', 'Дополнительные линзы'],
+    ['interpretations', 'По дате рождения'],
   ],
   uk: [
     ['summary', 'Головне'],
@@ -31,7 +31,7 @@ const items = {
     ['energy', 'Що вас заряджає'],
     ['contrasts', 'Де ви змінюєтеся'],
     ['recommendations', 'Що спробувати'],
-    ['interpretations', 'Додаткові лінзи'],
+    ['interpretations', 'За датою народження'],
   ],
 } as const;
 export function ReportSectionNav({

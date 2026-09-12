@@ -103,13 +103,9 @@ export function TarotResult({
                 <Typography className={styles.resultSupportingLine} variant="lead">
                   {heroPresentation.heroSummary}
                 </Typography>
-                <div className={styles.resultSignals}>
-                  {(heroPresentation.motifs.length
-                    ? heroPresentation.motifs
-                    : heroPresentation.metadata
-                  ).map((item) => (
-                    <span key={item}>{item}</span>
-                  ))}
+                <div className={styles.resultHeroTakeaway}>
+                  <span>{copy.practicalDirection}</span>
+                  <strong>{reading.practicalFocus}</strong>
                 </div>
                 <div className={styles.resultHeroActions}>
                   <Button onClick={beginReading} prominence="primary" size="large">
@@ -161,21 +157,11 @@ export function TarotResult({
                 ))}
               </div>
             </section>
-            <section className={styles.resultDirection}>
+            <section className={styles.resultReflection}>
+              <span aria-hidden="true">?</span>
               <div>
-                <Typography as="p" variant="eyebrow">
-                  {copy.practicalDirection}
-                </Typography>
-                <Typography as="h2" variant="heading-md">
-                  {reading.practicalFocus}
-                </Typography>
-              </div>
-              <div className={styles.resultReflection}>
-                <span aria-hidden="true">?</span>
-                <div>
-                  <strong>{copy.reflectionQuestion}</strong>
-                  <p>{heroPresentation.reflectionQuestion}</p>
-                </div>
+                <strong>{copy.reflectionQuestion}</strong>
+                <p>{heroPresentation.reflectionQuestion}</p>
               </div>
             </section>
             <section aria-labelledby="supporting-cards-title" className={styles.resultDetails}>

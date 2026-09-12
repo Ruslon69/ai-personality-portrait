@@ -32,7 +32,7 @@ export function HistoryItemCard({ item, onDelete, onOpen }: HistoryItemCardProps
             </Typography>
             <Typography className={styles.keyPhrase}>{item.revealHeadline}</Typography>
           </Stack>
-          <div aria-label="Использованные модули" className={styles.moduleList}>
+          <div aria-label="Использованные источники" className={styles.moduleList}>
             {item.sourceDetails
               .filter((source) => source.status !== 'omitted')
               .map((source) => (

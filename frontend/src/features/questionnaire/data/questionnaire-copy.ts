@@ -36,7 +36,7 @@ export const questionnaireCopy: Record<
     },
     building: (category) => `Now assembling: ${category}`,
     remaining: (count) => `${count} situations left`,
-    confirming: 'Adding this facet…',
+    confirming: 'Adding your answer…',
     checkpointAria: 'Portrait checkpoint',
     checkpoints: [
       'Your decision style is beginning to take shape.',
@@ -51,7 +51,7 @@ export const questionnaireCopy: Record<
     reactions: [
       'This context has been added.',
       'We understand how you tend to act here.',
-      'Another facet is now part of the portrait.',
+      'Another answer is now part of the portrait.',
     ],
     required: 'Required question',
     selected: (count) => `${count} selected`,
@@ -73,7 +73,7 @@ export const questionnaireCopy: Record<
     },
     building: (category) => `Сейчас собираем: ${category}`,
     remaining: (count) => `Осталось ситуаций: ${count}`,
-    confirming: 'Добавляем эту грань…',
+    confirming: 'Добавляем ваш ответ…',
     checkpointAria: 'Промежуточный результат',
     checkpoints: [
       'Ваш стиль решений начинает проявляться.',
@@ -88,7 +88,7 @@ export const questionnaireCopy: Record<
     reactions: [
       'Этот контекст добавлен.',
       'Поняли, как вы чаще действуете в такой ситуации.',
-      'Ещё одна грань портрета готова.',
+      'Ещё один ответ добавлен в портрет.',
     ],
     required: 'Обязательный вопрос',
     selected: (count) => `Выбрано: ${count}`,
@@ -110,7 +110,7 @@ export const questionnaireCopy: Record<
     },
     building: (category) => `Зараз збираємо: ${category}`,
     remaining: (count) => `Залишилося ситуацій: ${count}`,
-    confirming: 'Додаємо цю грань…',
+    confirming: 'Додаємо вашу відповідь…',
     checkpointAria: 'Проміжний результат',
     checkpoints: [
       'Ваш стиль рішень починає проявлятися.',
@@ -125,7 +125,7 @@ export const questionnaireCopy: Record<
     reactions: [
       'Цей контекст додано.',
       'Зрозуміли, як ви частіше дієте в такій ситуації.',
-      'Ще одна грань портрета готова.',
+      'Ще одну відповідь додано до портрета.',
     ],
     required: 'Обов’язкове запитання',
     selected: (count) => `Обрано: ${count}`,

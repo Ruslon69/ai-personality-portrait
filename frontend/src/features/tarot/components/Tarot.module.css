@@ -63,12 +63,21 @@
 }
 
 .heroActions,
+.utilityActions,
 .resultHeroActions,
 .resultHeroBadges {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: var(--space-3);
+}
+
+.utilityActions {
+  gap: var(--space-1);
+}
+
+.utilityActions button {
+  padding-inline: var(--space-2);
 }
 
 .readingConfirmActions {
@@ -140,9 +149,7 @@
     var(--color-marketing-surface-raised);
   box-shadow: var(--tarot-shadow-rest);
   transform-origin: 50% 120%;
-  transition:
-    transform var(--motion-card-return-duration) var(--motion-easing-connect),
-    box-shadow var(--motion-return-duration);
+  transition: box-shadow var(--motion-return-duration);
 }
 
 .heroCards i:first-child {
@@ -155,21 +162,14 @@
 .heroCards i:nth-child(3) {
   transform: translate(-22%, -43%) rotate(16deg);
 }
-.heroCards:hover i:first-child {
-  transform: translate(-92%, -44%) rotate(-22deg);
-}
-.heroCards:hover i:nth-child(2) {
-  transform: translate(-50%, -56%);
-}
-.heroCards:hover i:nth-child(3) {
-  transform: translate(-8%, -44%) rotate(22deg);
-}
 .heroCards b {
   position: absolute;
   z-index: 4;
   inset: 50% auto auto 50%;
   color: var(--color-marketing-accent-warm);
+  font-family: var(--font-family-display);
   font-size: var(--font-size-3xl);
+  font-synthesis: none;
   transform: translate(-50%, -50%);
 }
 .heroCards span {
@@ -216,7 +216,6 @@
   overflow: hidden;
   text-align: start;
   transition:
-    transform var(--motion-return-duration) var(--motion-interaction-easing),
     border-color var(--motion-return-duration),
     box-shadow var(--motion-card-return-duration);
 }
@@ -225,7 +224,6 @@
 .spreadCard[data-selected] {
   border-color: var(--color-marketing-border-strong);
   box-shadow: var(--tarot-shadow-rest);
-  transform: translateY(var(--motion-surface-lift-distance));
 }
 
 .spreadCard:has(.spreadRadio:focus-visible) {
@@ -265,10 +263,6 @@
   transition: transform var(--motion-return-duration) var(--motion-interaction-easing);
 }
 
-.spreadCard:hover .spreadIllustration::before {
-  transform: scale(1.08);
-}
-
 .spreadIllustration i {
   position: absolute;
   inline-size: 4.8rem;
@@ -288,12 +282,6 @@
 }
 .spreadIllustration i:nth-child(3) {
   transform: translateX(58%) rotate(10deg);
-}
-.spreadCard:hover .spreadIllustration i:first-child {
-  transform: translateX(-76%) rotate(-15deg);
-}
-.spreadCard:hover .spreadIllustration i:nth-child(3) {
-  transform: translateX(76%) rotate(15deg);
 }
 .spreadIllustration b {
   position: absolute;
@@ -403,8 +391,9 @@
   gap: var(--space-1);
 }
 .flowLocation span {
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-body);
   font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
 }
 .flowLocation small {
   color: var(--color-text-muted);
@@ -443,6 +432,26 @@
   box-shadow: 0 1rem 3rem color-mix(in srgb, var(--color-text) 6%, transparent);
 }
 
+.flowPage[data-reading-step='reveal'] {
+  scroll-margin-block-start: 4.5rem;
+  background:
+    radial-gradient(circle at 12% 18%, rgb(70 74 128 / 14%), transparent 28rem),
+    radial-gradient(circle at 88% 78%, rgb(178 132 60 / 9%), transparent 32rem), #050812;
+}
+.flowPage[data-reading-step='reveal'] .readingContainer {
+  inline-size: 100%;
+}
+.flowPage[data-reading-step='reveal'] .flowHeader {
+  display: none;
+}
+.flowSurface[data-reading-step='reveal'] {
+  max-inline-size: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
 .questionList {
   display: grid;
   gap: var(--space-6);
@@ -473,10 +482,11 @@
   transition:
     border-color var(--motion-focus-duration),
     background var(--motion-focus-duration),
-    transform var(--motion-return-duration);
+    box-shadow var(--motion-focus-duration);
 }
 .optionGrid label:hover {
-  transform: translateY(var(--motion-surface-lift-distance));
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-low);
 }
 .optionGrid label[data-selected] {
   border-color: var(--color-marketing-accent);
@@ -548,9 +558,7 @@
   background: var(--color-marketing-surface-raised);
   box-shadow: var(--tarot-shadow-rest);
   transform-origin: 50% 110%;
-  transition:
-    transform var(--motion-transform-duration) var(--motion-interaction-easing),
-    background var(--motion-discover-duration);
+  transition: background var(--motion-discover-duration);
 }
 .previewCard:first-child {
   transform: translate(-82%, -44%) rotate(-13deg);
@@ -563,15 +571,6 @@
 .previewCard:nth-child(3) {
   transform: translate(-18%, -44%) rotate(13deg);
   opacity: 0.66;
-}
-.themePreview:hover .previewCard:first-child {
-  transform: translate(-91%, -44%) rotate(-17deg);
-}
-.themePreview:hover .previewCard:nth-child(2) {
-  transform: translate(-50%, -58%);
-}
-.themePreview:hover .previewCard:nth-child(3) {
-  transform: translate(-9%, -44%) rotate(17deg);
 }
 .previewCard::before {
   position: absolute;
@@ -601,21 +600,23 @@
   padding: var(--space-4);
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--color-marketing-surface-raised) 70%, transparent);
+  background: color-mix(in srgb, var(--color-marketing-surface-raised) 52%, transparent);
   gap: var(--space-3);
   text-align: center;
   cursor: pointer;
   transition:
     border-color var(--motion-focus-duration),
-    transform var(--motion-return-duration),
-    background var(--motion-return-duration);
+    background var(--motion-return-duration),
+    box-shadow var(--motion-return-duration);
 }
 .themeChoice:hover {
-  transform: translateY(var(--motion-surface-lift-distance));
+  border-color: var(--color-border-strong);
+  background: color-mix(in srgb, var(--color-marketing-surface-raised) 76%, transparent);
 }
 .themeChoice:has(input:checked) {
   border-color: var(--color-marketing-accent);
   background: var(--surface-accent-subtle);
+  box-shadow: 0 0 0 0.18rem color-mix(in srgb, var(--color-marketing-accent) 16%, transparent);
 }
 .themeChoice:has(input:focus-visible) {
   outline: 0.1875rem solid var(--color-focus);
@@ -632,7 +633,7 @@
 }
 .themeChoice small {
   color: var(--color-text-muted);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   line-height: var(--line-height-normal);
 }
 .themePattern {
@@ -757,6 +758,9 @@
   scroll-snap-align: center;
   transform: rotate(calc(var(--card-distance) * 0.55deg));
   transform-origin: 50% 120%;
+  transition:
+    transform 240ms var(--motion-interaction-easing),
+    filter 200ms var(--transition-easing-standard);
 }
 .cardFan .tarotCardButton:first-child {
   margin-inline-start: 0;
@@ -765,7 +769,14 @@
 .cardFan .tarotCardButton:not([aria-disabled='true']):focus-visible,
 .cardFan .tarotCardButton[data-selected] {
   z-index: 30;
-  transform: translateY(var(--tarot-card-lift));
+  filter: brightness(1.04);
+}
+.cardFan .tarotCardButton:not([aria-disabled='true'], [data-selected]):hover,
+.cardFan .tarotCardButton:not([aria-disabled='true'], [data-selected]):focus-visible {
+  transform: translateY(-0.125rem) rotate(calc(var(--card-distance) * 0.48deg));
+}
+.cardFan .tarotCardButton[data-selected] {
+  transform: translateY(-0.4rem) rotate(calc(var(--card-distance) * 0.38deg));
 }
 
 .tarotCardButton {
@@ -852,12 +863,13 @@
   margin-inline: auto;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
+  will-change: transform;
   transition: transform var(--tarot-card-flip-duration) var(--transition-easing-reveal);
 }
 .tarotCardButton[data-selected] .tarotCardInner {
   --tarot-card-shadow: var(--tarot-shadow-active);
 }
-.tarotCardButton[data-revealed] .tarotCardInner {
+.tarotCardButton:is([data-visual-face='flipping'], [data-visual-face='front']) .tarotCardInner {
   transform: rotateY(180deg);
 }
 .tarotCardButton[data-instant-reveal] .tarotCardInner {
@@ -869,21 +881,6 @@
 }
 .tarotCardButton[data-reveal-phase='preparing'] {
   animation: tarot-card-lift var(--motion-tarot-card-lift-duration) ease-out both;
-}
-.tarotCardButton[data-reveal-phase='flipping']::before {
-  position: absolute;
-  z-index: 8;
-  inset: 0.45rem auto auto 50%;
-  inline-size: 0.22rem;
-  block-size: calc(var(--tarot-card-height) - 0.9rem);
-  border-radius: 50%;
-  background: linear-gradient(90deg, #37281d, #c6a45d 52%, #2b2019);
-  box-shadow: 0 0 0.35rem rgb(4 7 12 / 55%);
-  content: '';
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-50%);
-  animation: tarot-card-edge var(--motion-tarot-card-flip-duration) ease-in-out both;
 }
 .tarotCardButton[data-reveal-phase='flipping'] .tarotCardInner {
   --tarot-card-shadow: var(--tarot-shadow-revealing);
@@ -914,7 +911,9 @@
   overflow: hidden;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  transition: box-shadow var(--motion-return-duration);
+  transition:
+    border-color 220ms var(--transition-easing-standard),
+    box-shadow 220ms var(--transition-easing-standard);
 }
 .cardBackFace {
   transform: rotateY(0deg);
@@ -1073,6 +1072,9 @@
   background: #eee3c7;
   color: #2c261e;
   text-align: center;
+}
+.tarotCardButton[data-visual-face='front'] .cardBackFace {
+  display: none;
 }
 .cardFrontFace::before {
   position: absolute;
@@ -1306,7 +1308,7 @@
   position: relative;
   z-index: 1;
   color: #77542e;
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
   font-size: clamp(3rem, 5vw, 5rem);
   font-weight: 400;
 }
@@ -1316,7 +1318,7 @@
   inset: 0.75rem auto auto 0.7rem;
   display: grid;
   color: #552c2c;
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
   font-size: 0.68rem;
   line-height: 1;
 }
@@ -1363,8 +1365,7 @@
 .cardRank {
   color: #684d36;
   font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.025em;
 }
 .cardPosition {
   display: block;
@@ -1394,6 +1395,7 @@
   font-weight: var(--font-weight-bold);
   line-height: 1;
   pointer-events: none;
+  animation: tarot-selection-number 220ms var(--motion-easing-discover) both;
 }
 .tarotCardButton[data-selected] .cardBackFace {
   border-color: var(--color-marketing-accent-warm);
@@ -1403,37 +1405,139 @@
 }
 
 .revealExperience {
+  --reading-gold: #c9a867;
+  --reading-gold-soft: #e2cca0;
+  --reading-ivory: #f2ecdf;
+  --reading-muted: #a9abba;
+  --reading-border: rgb(118 119 162 / 42%);
   position: relative;
   box-sizing: border-box;
   display: grid;
   min-inline-size: 0;
-  max-inline-size: 72rem;
+  max-inline-size: 92rem;
   margin-inline: auto;
-  gap: clamp(var(--space-5), 5vw, var(--space-8));
-  padding: clamp(var(--space-4), 4vw, var(--space-7));
-  border: 0.0625rem solid rgb(191 153 82 / 35%);
-  border-radius: var(--tarot-surface-radius);
+  gap: clamp(var(--space-4), 3vw, var(--space-6));
+  padding: clamp(var(--space-4), 3vw, var(--space-7));
+  border: 0.0625rem solid var(--reading-border);
+  border-radius: clamp(1.25rem, 2vw, 1.75rem);
   background:
-    radial-gradient(circle at 50% 58%, rgb(184 133 62 / 15%), transparent 31rem),
-    linear-gradient(145deg, rgb(16 23 36 / 98%), rgb(5 9 16 / 99%));
+    radial-gradient(circle at 23% 59%, rgb(191 147 74 / 17%), transparent 29rem),
+    radial-gradient(circle at 78% 15%, rgb(78 84 150 / 18%), transparent 32rem),
+    radial-gradient(circle at 88% 88%, rgb(57 64 119 / 12%), transparent 25rem),
+    linear-gradient(145deg, rgb(16 23 40 / 99%), rgb(5 9 18 / 100%) 72%);
   box-shadow:
-    inset 0 0 0 0.35rem rgb(187 145 72 / 5%),
-    0 1.5rem 3.5rem rgb(2 5 10 / 24%);
-  color: #eee7d7;
+    inset 0 0 0 0.0625rem rgb(229 222 239 / 8%),
+    inset 0 -6rem 9rem rgb(0 0 0 / 27%),
+    inset 0 2rem 4rem rgb(95 101 164 / 4%),
+    0 1.75rem 4.5rem rgb(0 2 9 / 42%);
+  color: var(--reading-ivory);
   overflow: hidden;
 }
+.revealExperience::before,
+.revealExperience::after {
+  position: absolute;
+  z-index: 0;
+  inline-size: 23rem;
+  aspect-ratio: 1.65;
+  border: 0.0625rem solid rgb(206 177 116 / 16%);
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 32% 62%, rgb(79 85 148 / 18%), transparent 46%),
+    radial-gradient(ellipse at 70% 48%, rgb(180 135 66 / 10%), transparent 52%);
+  content: '';
+  filter: blur(0.15rem);
+  opacity: 0.72;
+  pointer-events: none;
+}
+.revealExperience::before {
+  inset: auto auto -5.5rem -6rem;
+  box-shadow:
+    0 0 5rem rgb(178 132 60 / 10%),
+    5rem -2rem 0 -0.03rem rgb(87 92 153 / 8%);
+}
+.revealExperience::after {
+  inset: auto -7rem -6rem auto;
+  border-color: rgb(133 140 199 / 16%);
+  box-shadow: 0 0 5rem rgb(82 88 153 / 11%);
+}
 .revealIntro {
-  display: grid;
+  position: absolute;
+  overflow: hidden;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.revealTopBar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding-block-end: var(--space-4);
+  border-block-end: 0.0625rem solid rgb(139 141 179 / 20%);
   gap: var(--space-4);
 }
+.revealContext,
+.revealTopProgress,
+.revealProgressDots {
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
+}
+.revealContext {
+  gap: var(--space-3);
+}
+.revealContext > [data-tone='warning'] {
+  border-color: rgb(201 168 103 / 48%);
+  background: rgb(201 168 103 / 7%);
+  color: var(--reading-gold-soft);
+}
+.revealContext > span:last-child {
+  color: rgb(242 236 223 / 84%);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+.revealTopProgress {
+  flex: none;
+  gap: var(--space-3);
+  color: rgb(226 220 210 / 68%);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.02em;
+}
+.revealProgressDots {
+  gap: 0.42rem;
+}
+.revealProgressDots i {
+  inline-size: 0.42rem;
+  aspect-ratio: 1;
+  border: 0.0625rem solid rgb(174 177 202 / 32%);
+  border-radius: 50%;
+  background: rgb(24 29 48 / 90%);
+}
+.revealProgressDots i[data-state='complete'] {
+  border-color: rgb(201 168 103 / 62%);
+  background: rgb(201 168 103 / 62%);
+}
+.revealProgressDots i[data-state='current'] {
+  border-color: var(--reading-gold-soft);
+  background: var(--reading-gold-soft);
+  box-shadow: 0 0 0.65rem rgb(226 204 160 / 62%);
+}
 .revealSequence {
+  position: relative;
+  z-index: 2;
   display: flex;
   min-inline-size: 0;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--tarot-card-gap);
-  padding-block-end: var(--space-5);
-  border-block-end: 0.0625rem solid rgb(201 163 94 / 22%);
+  padding: var(--space-2) var(--space-1) var(--space-4);
+  border-block-end: 0.0625rem solid rgb(139 141 179 / 16%);
   overflow-x: auto;
   overscroll-behavior-inline: contain;
   scroll-snap-type: inline proximity;
@@ -1442,45 +1546,81 @@
 }
 .revealSequence .tarotCardButton {
   flex: 0 0 var(--tarot-card-width);
-  opacity: 0.48;
+  opacity: 0.34;
+  filter: saturate(0.72) brightness(0.82);
   scroll-snap-align: center;
   transition:
     opacity var(--motion-tarot-spread-progress-duration),
+    filter var(--motion-tarot-spread-progress-duration),
     transform var(--motion-tarot-spread-progress-duration) var(--motion-interaction-easing);
 }
-.revealSequence .tarotCardButton[data-reveal-status='revealed'],
+.revealSequence .tarotCardButton[data-reveal-status='revealed'] {
+  opacity: 0.76;
+  filter: saturate(0.9) brightness(0.9);
+}
 .revealSequence .tarotCardButton[data-reveal-status='revealing'],
-.revealSequence .tarotCardButton[data-reveal-status='ready'],
 .revealSequence .tarotCardButton[data-selected] {
   opacity: 1;
+  filter: saturate(1) brightness(1.04);
+  transform: translateY(-0.18rem);
+}
+.revealSequence .tarotCardButton[data-reveal-status='ready']:not([data-selected]) {
+  opacity: 0.5;
+  filter: saturate(0.82) brightness(0.9);
 }
 .revealSequence .tarotCardButton[data-reveal-status='ready'] .cardBackFace {
-  border-color: #c6a45d;
+  border-color: var(--reading-gold);
   box-shadow:
     var(--tarot-shadow-resting),
     0 0 0 0.12rem rgb(198 164 93 / 30%);
 }
+.revealSequence
+  .tarotCardButton[data-selected]
+  :is(.cardBackFace, .cardFrontFace[data-has-artwork]) {
+  border-color: var(--reading-gold-soft);
+  box-shadow:
+    0 0.75rem 1.4rem rgb(0 0 0 / 38%),
+    0 0 0 0.11rem rgb(214 182 116 / 35%),
+    0 0 1.2rem rgb(201 168 103 / 26%);
+}
+.revealSequence .tarotCardButton[data-selected] .cardPosition {
+  color: var(--reading-gold-soft);
+  font-weight: var(--font-weight-semibold);
+}
 .revealSequence .cardPosition,
 .revealStage .orientationLabel {
-  color: rgb(238 231 215 / 72%);
+  color: rgb(226 220 210 / 64%);
 }
 .revealStage {
   position: relative;
+  z-index: 2;
   display: grid;
   min-inline-size: 0;
   grid-template-columns: minmax(0, 1fr);
-  place-items: center;
-  gap: var(--space-4);
+  justify-items: center;
+  gap: clamp(var(--space-5), 6vw, var(--space-7));
+  padding-block: var(--space-2);
 }
 .revealDetails {
-  display: contents;
+  display: grid;
+  inline-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: 62ch;
+  align-content: start;
+  justify-items: start;
+  gap: var(--space-4);
 }
 .revealProgress {
   display: grid;
-  max-inline-size: 34rem;
-  justify-items: center;
+  max-inline-size: 62ch;
+  justify-items: start;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
   gap: var(--space-1);
-  text-align: center;
+  box-shadow: none;
+  text-align: start;
 }
 .revealProgress:focus {
   outline: none;
@@ -1491,19 +1631,32 @@
   outline-offset: 0.35rem;
 }
 .revealProgress span {
-  color: rgb(229 211 172 / 72%);
-  font-size: var(--font-size-sm);
-  letter-spacing: 0.06em;
+  color: rgb(226 204 160 / 72%);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.045em;
   text-transform: uppercase;
 }
-.revealProgress strong {
-  color: #f4ebd8;
-  font-family: var(--font-family-heading);
-  font-size: var(--font-size-xl);
+.revealProgress small {
+  color: rgb(226 220 210 / 68%);
+  font-size: var(--font-size-sm);
   overflow-wrap: break-word;
 }
 .revealStage > .tarotCardButton {
   z-index: 2;
+  filter: drop-shadow(0 1.2rem 1.8rem rgb(0 0 0 / 48%));
+}
+.revealStage > .tarotCardButton .orientationLabel {
+  display: none;
+}
+.revealStage > .tarotCardButton .cardArtworkLayer {
+  transform: translate3d(0, 0, 0);
+}
+.revealStage > .tarotCardButton .cardFrontFace[data-has-artwork] {
+  border-color: rgb(226 204 160 / 54%);
+  box-shadow:
+    0 1.2rem 2.4rem rgb(0 0 0 / 52%),
+    0 0 1.4rem rgb(201 168 103 / 13%),
+    inset 0 0 0 0.0625rem rgb(244 226 185 / 28%);
 }
 .revealStage > .tarotCardButton[aria-disabled='true'] {
   cursor: default;
@@ -1512,18 +1665,37 @@
 .revealLight {
   position: absolute;
   z-index: 1;
-  inline-size: min(28rem, 80%);
+  inset-block-start: 50%;
+  inline-size: min(30rem, 90%);
   aspect-ratio: 1;
-  border: 0.0625rem solid transparent;
+  justify-self: center;
+  border: 0.0625rem solid rgb(211 180 118 / 24%);
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--color-marketing-accent-warm) 22%, transparent),
-    transparent 66%
-  );
-  opacity: 0;
+  background:
+    radial-gradient(circle, rgb(184 133 62 / 21%), transparent 61%),
+    repeating-radial-gradient(circle, transparent 0 31%, rgb(123 127 174 / 13%) 31.5% 32%);
+  box-shadow:
+    0 0 5rem rgb(180 132 63 / 12%),
+    inset 0 0 4rem rgb(83 88 150 / 10%);
+  opacity: 0.78;
   pointer-events: none;
-  transform: scale(0.72);
+  transform: translateY(-50%) scale(0.84);
+}
+.revealLight::before,
+.revealLight::after {
+  position: absolute;
+  color: var(--reading-gold-soft);
+  content: '✦';
+  filter: drop-shadow(0 0 0.35rem rgb(226 204 160 / 52%));
+  line-height: 1;
+}
+.revealLight::before {
+  inset: 14% 15% auto auto;
+  font-size: 0.58rem;
+}
+.revealLight::after {
+  inset: auto auto 19% 9%;
+  font-size: 0.42rem;
 }
 .revealExperience[data-phase='flipping'] .revealStage > .tarotCardButton {
   transform: perspective(var(--tarot-card-perspective)) translateY(-0.16rem) rotateX(0.7deg);
@@ -1557,29 +1729,95 @@
 }
 .revealInterpretation {
   display: grid;
-  max-inline-size: 38rem;
+  inline-size: 100%;
+  max-inline-size: 60ch;
   min-block-size: 6.5rem;
+  gap: var(--space-4);
+  text-align: start;
+}
+.revealCardTitle[data-variant='heading-md'] {
+  max-inline-size: 20ch;
+  margin: 0;
+  color: var(--reading-ivory);
+  font-family: var(--font-family-display);
+  font-size: clamp(2.25rem, 3.3vw, 3.5rem);
+  font-synthesis: none;
+  font-weight: 400;
+  letter-spacing: -0.022em;
+  line-height: 1.07;
+  text-wrap: balance;
+}
+.revealMeaning,
+.revealTakeaway {
+  display: grid;
   gap: var(--space-2);
-  text-align: center;
+}
+.revealMeaning > strong,
+.revealTakeaway > strong {
+  color: rgb(226 204 160 / 82%);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.04em;
+}
+.revealMeaning p,
+.revealTakeaway p {
+  margin: 0;
+  color: rgb(242 236 223 / 84%);
+}
+.revealMeaning p {
+  font-size: clamp(1.08rem, 1.35vw, 1.22rem);
+  line-height: 1.52;
+}
+.revealTakeaway p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.revealTakeaway {
+  position: relative;
+  padding: calc(var(--space-4) + var(--space-1)) var(--space-6)
+    calc(var(--space-4) + var(--space-1)) calc(var(--space-6) + 0.85rem);
+  border: 0.0625rem solid rgb(201 168 103 / 16%);
+  border-inline-start: 0.1rem solid var(--reading-gold);
+  border-radius: 0 0.4rem 0.4rem 0;
+  background: linear-gradient(90deg, rgb(126 92 43 / 18%), rgb(11 17 29 / 50%));
+}
+.revealTakeaway::before {
+  position: absolute;
+  inset: calc(var(--space-4) + var(--space-1)) auto auto var(--space-4);
+  color: var(--reading-gold-soft);
+  content: '✦';
+  font-size: 0.72rem;
+  line-height: 1;
 }
 .revealInterpretation > * {
   animation: tarot-copy-reveal var(--motion-tarot-interpretation-reveal-duration)
     var(--motion-easing-discover) both;
 }
 .revealOrientation {
-  color: rgb(229 211 172 / 72%);
+  color: rgb(226 220 210 / 66%);
   font-size: var(--font-size-sm);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 .revealCta {
-  min-inline-size: min(100%, 18rem);
-  border-color: #c6a45d !important;
-  background: linear-gradient(145deg, #9a7337, #c19a53 52%, #8c652e) !important;
+  inline-size: min(100%, 23rem);
+  min-inline-size: 0;
+  border-color: var(--reading-gold) !important;
+  border-radius: 0.78rem !important;
+  background: linear-gradient(135deg, #dbc185, #b78c47 52%, #cfab65) !important;
   box-shadow:
-    0 0.7rem 1.5rem rgb(1 4 9 / 35%),
-    inset 0 0.0625rem 0 rgb(255 244 210 / 42%);
-  color: #110e0a !important;
+    0 0.8rem 1.7rem rgb(0 2 8 / 42%),
+    0 0 1.5rem rgb(201 168 103 / 12%),
+    inset 0 0.0625rem 0 rgb(255 246 219 / 52%);
+  color: #151108 !important;
+}
+.revealCta:hover:not(:disabled),
+.revealCta:focus-visible {
+  border-color: #ead39e !important;
+  background: linear-gradient(135deg, #e1c98f, #c09c58 52%, #dabd7e) !important;
+  box-shadow:
+    0 0.9rem 1.9rem rgb(0 2 8 / 46%),
+    0 0 1.8rem rgb(220 188 122 / 18%),
+    inset 0 0.0625rem 0 rgb(255 249 230 / 62%);
 }
 .skipReveal {
   min-block-size: 2.75rem;
@@ -1596,7 +1834,17 @@
   margin-block-start: var(--space-5);
 }
 .flowActions[data-reveal] {
-  justify-content: flex-start;
+  justify-content: space-between;
+  min-block-size: 4.5rem;
+  padding: var(--space-4) var(--space-2) var(--space-2);
+  border-block-start-color: rgb(139 141 179 / 18%);
+}
+.flowActions[data-reveal] button {
+  color: rgb(226 220 210 / 68%);
+}
+.flowActions[data-reveal] button:hover:not(:disabled),
+.flowActions[data-reveal] button:focus-visible {
+  color: var(--reading-ivory, #f2ecdf);
 }
 
 .resultHeroSurface {
@@ -1674,18 +1922,22 @@
   line-height: 1.5;
   white-space: normal;
 }
-.resultSignals {
-  display: flex;
-  min-inline-size: 0;
-  flex-wrap: wrap;
+.resultHeroTakeaway {
+  display: grid;
+  max-inline-size: 58ch;
+  padding: var(--space-4) var(--space-5);
+  border-inline-start: 0.1875rem solid var(--color-marketing-accent-warm);
+  background: var(--surface-accent-subtle);
   gap: var(--space-2);
 }
-.resultSignals span {
-  padding: var(--space-2) var(--space-3);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--color-marketing-surface-raised) 66%, transparent);
-  white-space: normal;
+.resultHeroTakeaway span {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.025em;
+}
+.resultHeroTakeaway strong {
+  line-height: 1.45;
 }
 .resultSavedNote {
   margin: 0;
@@ -1725,41 +1977,22 @@
   color: var(--color-marketing-accent-warm);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.025em;
 }
 .resultPatternItem p {
   margin: 0;
   color: var(--color-text-muted);
   line-height: 1.5;
 }
-.resultDirection {
-  display: grid;
-  min-inline-size: 0;
-  grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 0.95fr);
-  padding: clamp(var(--space-5), 3vw, var(--space-6));
-  border: 0.0625rem solid var(--color-marketing-border-strong);
-  border-radius: var(--tarot-surface-radius);
-  background: linear-gradient(120deg, var(--surface-accent-subtle), transparent 72%);
-  gap: clamp(var(--space-5), 4vw, var(--space-7));
-}
-.resultDirection > div:first-child {
-  display: grid;
-  align-content: center;
-  gap: var(--space-2);
-}
-.resultDirection h2 {
-  max-inline-size: 34ch;
-  margin: 0;
-  line-height: 1.25;
-}
 .resultReflection {
   display: grid;
   min-inline-size: 0;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
-  padding-inline-start: clamp(var(--space-4), 3vw, var(--space-6));
-  border-inline-start: 0.0625rem solid var(--color-marketing-border);
+  max-inline-size: 58rem;
+  padding: var(--space-5);
+  border: 0.0625rem solid var(--color-marketing-border);
+  border-radius: var(--radius-lg);
   gap: var(--space-3);
 }
 .resultReflection > span {
@@ -1770,7 +2003,7 @@
   border: 0.0625rem solid var(--color-marketing-accent-warm);
   border-radius: 50%;
   color: var(--color-marketing-accent-warm);
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
 }
 .resultReflection > div {
   display: grid;
@@ -1947,29 +2180,16 @@
   .tarotCardButton:not([role='img'], [aria-disabled='true']):hover,
   .tarotCardButton:not([role='img']):focus-visible {
     filter: brightness(1.025);
-    transform: perspective(var(--tarot-card-perspective)) translateY(var(--tarot-card-lift))
-      rotateX(2deg) rotateY(-2deg) scale(1.012);
   }
   .tarotCardButton[data-revealed]:not([data-reveal-status='revealing']):hover {
     filter: brightness(1.018);
-    transform: perspective(var(--tarot-card-perspective)) translateY(-0.25rem) rotateX(2.5deg)
-      rotateY(-2.5deg) scale(1.012);
   }
   .tarotCardButton[data-revealed]:not([data-reveal-status='revealing']):hover .tarotCardInner {
     --tarot-card-shadow: var(--tarot-shadow-hover);
-    transform: rotateY(180deg) rotateZ(-0.25deg);
-  }
-  .tarotCardButton[data-revealed]:not([data-reveal-status='revealing']):hover .cardArtworkLayer {
-    transform: translate3d(
-        calc(var(--artwork-layer-depth) * 0.16rem),
-        calc(var(--artwork-layer-depth) * -0.11rem),
-        0
-      )
-      scale(1.022);
+    transform: rotateY(180deg);
   }
   .tarotCardButton:is([data-variant='compact'], [data-variant='history'])[data-revealed]:hover {
-    transform: perspective(var(--tarot-card-perspective)) translateY(-0.125rem) rotateX(1deg)
-      rotateY(-1deg) scale(1.008);
+    filter: brightness(1.025);
   }
 }
 
@@ -1984,24 +2204,23 @@
     transform: translateY(-0.25rem) scale(1.004);
   }
 }
-@keyframes tarot-card-edge {
-  0%,
-  36%,
-  64%,
-  100% {
-    opacity: 0;
-  }
-  47%,
-  53% {
-    opacity: 1;
-  }
-}
 @keyframes tarot-card-settle {
   from {
     transform: translateY(-0.25rem) scale(1.006);
   }
   to {
     transform: translateY(-0.08rem);
+  }
+}
+
+@keyframes tarot-selection-number {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 @keyframes tarot-reveal-motes {
@@ -2027,14 +2246,14 @@
 @keyframes tarot-light {
   0% {
     opacity: 0;
-    transform: scale(0.72);
+    transform: translateY(-50%) scale(0.72);
   }
   45% {
     opacity: 1;
   }
   100% {
     opacity: 0.35;
-    transform: scale(1);
+    transform: translateY(-50%) scale(1);
   }
 }
 @keyframes tarot-copy-reveal {
@@ -2151,52 +2370,19 @@
 
 @media (min-width: 68.75rem) {
   .flowPage[data-reading-step='reveal'] {
-    min-block-size: 0;
-    block-size: calc(100dvh - 6.75rem);
-    padding-block: clamp(0.5rem, 1.4dvh, 0.75rem);
+    min-block-size: 100svh;
+    block-size: auto;
+    padding-block: clamp(1rem, 1.5vw, 1.5rem) clamp(var(--space-8), 5vw, var(--space-9));
   }
 
-  .flowPage[data-reading-step='reveal'] > div {
+  .flowPage[data-reading-step='reveal'] .readingContainer {
     display: grid;
+    inline-size: min(94%, 96rem);
+    max-inline-size: none;
     min-block-size: 0;
-    block-size: 100%;
-    grid-template-rows: auto minmax(0, 1fr);
-  }
-
-  .flowPage[data-reading-step='reveal'] .flowHeader {
-    align-items: center;
-    gap: var(--space-3);
-    margin-block-end: var(--space-1);
-  }
-
-  .flowPage[data-reading-step='reveal'] .flowHeader > div {
-    display: flex;
-    min-inline-size: 0;
-    align-items: center;
-    gap: var(--space-3);
-  }
-
-  .flowPage[data-reading-step='reveal'] .flowLocation {
-    display: flex;
-    align-items: baseline;
-    margin: 0;
-    gap: var(--space-2);
-  }
-
-  .flowPage[data-reading-step='reveal'] .flowLocation span {
-    font-size: var(--font-size-md);
-  }
-
-  .flowPage[data-reading-step='reveal'] .flowLocation small {
-    display: none;
-  }
-
-  .flowPage[data-reading-step='reveal'] .flowNodes {
-    gap: var(--space-1);
-  }
-
-  .flowPage[data-reading-step='reveal'] .flowNodes i {
-    inline-size: 0.5rem;
+    block-size: auto;
+    padding-inline: 0;
+    margin-inline: auto;
   }
 
   .flowSurface[data-reading-step='reveal'] {
@@ -2204,44 +2390,36 @@
     box-sizing: border-box;
     inline-size: 100%;
     min-block-size: 0;
-    block-size: 100%;
-    grid-template-rows: minmax(0, 1fr) auto;
-    padding: clamp(var(--space-2), 1.2dvh, var(--space-3));
+    block-size: auto;
+    grid-template-rows: auto;
+    padding: 0;
   }
 
   .revealFlow {
     display: grid;
     min-block-size: 0;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(0, 1fr);
+    grid-template-rows: auto;
     gap: 0 !important;
   }
 
   .revealIntro {
     position: absolute;
-    overflow: hidden;
-    inline-size: 1px;
-    block-size: 1px;
-    padding: 0;
-    border: 0;
-    margin: -1px;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
   }
 
   .revealExperience {
-    inline-size: auto;
+    inline-size: 100%;
     max-inline-size: none;
-    block-size: 100%;
+    block-size: auto;
     margin-inline: 0;
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto;
     min-block-size: 0;
-    gap: clamp(0.375rem, 0.7dvh, 0.5rem);
-    padding: clamp(var(--space-1), 0.8dvh, var(--space-2));
+    gap: clamp(var(--space-3), 1.6vw, var(--space-5));
+    padding: clamp(var(--space-5), 2vw, var(--space-7));
   }
 
   .revealSequence {
-    --tarot-strip-card-width: clamp(4.25rem, 5vw, 5rem);
+    --tarot-strip-card-width: clamp(3.3rem, 4vw, 4.25rem);
     --tarot-strip-label-height: calc(var(--font-size-xs) * 2.6);
     --tarot-strip-state-clearance: 0.625rem;
     box-sizing: border-box;
@@ -2250,7 +2428,7 @@
         var(--tarot-strip-state-clearance) + var(--tarot-strip-state-clearance) + 0.0625rem
     );
     align-self: start;
-    padding-block: var(--tarot-strip-state-clearance);
+    padding: var(--space-3) var(--space-2) var(--space-5);
     overflow: clip;
   }
 
@@ -2292,18 +2470,21 @@
   }
 
   .revealStage {
+    inline-size: min(100%, 76rem);
     min-block-size: 0;
     box-sizing: border-box;
     grid-template-areas: 'card details';
-    grid-template-columns: minmax(12rem, 0.82fr) minmax(18rem, 1.18fr);
-    grid-template-rows: minmax(min-content, 1fr);
-    align-items: stretch;
-    column-gap: clamp(var(--space-5), 4vw, var(--space-8));
+    grid-template-columns: minmax(17.5rem, 0.42fr) minmax(35rem, 0.54fr);
+    grid-template-rows: auto;
+    align-items: center;
+    column-gap: clamp(4.5rem, 6.5vw, 6.75rem);
     row-gap: 0;
+    margin-inline: auto;
+    padding: clamp(var(--space-3), 1vw, var(--space-4)) clamp(var(--space-2), 2vw, var(--space-5));
   }
 
   .revealStage > .tarotCardButton {
-    --tarot-card-width: clamp(9.5rem, calc((100dvh - 34.5rem) * 7 / 12), 13.25rem);
+    --tarot-card-width: clamp(17.5rem, 22vw, 20.5rem);
     grid-area: card;
     align-self: center;
     justify-self: center;
@@ -2317,8 +2498,9 @@
     grid-area: details;
     align-content: start;
     justify-items: start;
-    gap: clamp(0.5rem, 1dvh, 0.75rem);
-    padding-block: clamp(0.15rem, 0.8dvh, 0.5rem) clamp(1rem, 2.4dvh, 1.5rem);
+    max-inline-size: 60ch;
+    gap: clamp(var(--space-3), 1.5vw, var(--space-5));
+    padding-block: var(--space-2);
   }
 
   .revealDetails .revealProgress {
@@ -2329,7 +2511,8 @@
 
   .revealLight {
     grid-area: card;
-    inline-size: min(24rem, 100%);
+    inset-block-start: 50%;
+    inline-size: min(32rem, 112%);
     justify-self: center;
   }
 
@@ -2341,8 +2524,8 @@
   .revealDetails .revealInterpretation {
     grid-area: auto;
     min-block-size: 0;
-    gap: clamp(0.45rem, 1.2dvh, 0.75rem);
-    align-content: center;
+    gap: var(--space-4);
+    align-content: start;
     text-align: start;
   }
 
@@ -2357,8 +2540,126 @@
 
   .flowSurface[data-reading-step='reveal'] .flowActions {
     min-block-size: 0;
-    padding-block-start: var(--space-1);
-    margin-block-start: var(--space-1);
+    padding-block-start: var(--space-4);
+    margin-block-start: var(--space-2);
+  }
+}
+
+@media (min-width: 48rem) and (max-width: 68.749rem) {
+  .flowPage[data-reading-step='reveal'] {
+    min-block-size: 100svh;
+    block-size: auto;
+    padding-block: clamp(1rem, 2vw, 1.5rem) var(--space-9);
+  }
+
+  .flowPage[data-reading-step='reveal'] .readingContainer {
+    inline-size: min(96%, 72rem);
+    max-inline-size: none;
+    padding-inline: var(--space-4);
+    margin-inline: auto;
+  }
+
+  .flowSurface[data-reading-step='reveal'],
+  .revealFlow {
+    inline-size: 100%;
+    min-block-size: 0;
+    block-size: auto;
+  }
+
+  .revealExperience {
+    inline-size: 100%;
+    max-inline-size: none;
+    gap: var(--space-5);
+    padding: clamp(var(--space-5), 3vw, var(--space-7));
+  }
+
+  .revealSequence {
+    --tarot-strip-card-width: clamp(3.75rem, 7vw, 4.5rem);
+    padding: var(--space-3) var(--space-2) var(--space-5);
+    overflow: clip;
+  }
+
+  .revealSequence[data-count='5'],
+  .revealSequence[data-count='6'] {
+    display: grid;
+    gap: clamp(var(--space-2), 1.5vw, var(--space-4));
+  }
+
+  .revealSequence[data-count='5'] {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .revealSequence[data-count='6'] {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .revealSequence .tarotCardButton {
+    --tarot-card-width: var(--tarot-strip-card-width);
+    inline-size: 100%;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    justify-items: center;
+  }
+
+  .revealSequence .tarotCardButton > .tarotCardInner {
+    inline-size: var(--tarot-card-width);
+  }
+
+  .revealSequence .cardPosition {
+    inline-size: 100%;
+    max-inline-size: 100%;
+    min-block-size: 2.4em;
+    font-size: var(--font-size-xs);
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  .revealStage {
+    inline-size: min(100%, 58rem);
+    margin-inline: auto;
+    gap: var(--space-6);
+    padding-block: var(--space-4);
+  }
+
+  .revealStage > .tarotCardButton {
+    --tarot-card-width: clamp(15rem, 28vw, 17.5rem);
+  }
+
+  .revealDetails {
+    inline-size: min(100%, 48rem);
+    max-inline-size: 48rem;
+  }
+
+  .revealLight {
+    inline-size: min(30rem, 75vw);
+  }
+}
+
+@media (min-width: 56rem) and (max-width: 68.749rem) {
+  .revealStage {
+    grid-template-areas: 'card details';
+    grid-template-columns: minmax(15rem, 0.4fr) minmax(24rem, 0.6fr);
+    grid-template-rows: auto;
+    align-items: center;
+    column-gap: clamp(var(--space-6), 4vw, var(--space-8));
+    row-gap: 0;
+  }
+
+  .revealStage > .tarotCardButton {
+    grid-area: card;
+    align-self: center;
+    justify-self: center;
+  }
+
+  .revealDetails {
+    grid-area: details;
+    max-inline-size: 100%;
+  }
+
+  .revealLight {
+    grid-area: card;
+    inset-block-start: 50%;
+    justify-self: center;
   }
 }
 
@@ -2388,11 +2689,22 @@
 }
 
 @media (max-width: 47.99rem) {
+  .tarotHero {
+    padding-block: var(--space-5);
+  }
+
+  .heroGrid {
+    gap: var(--space-5);
+  }
+
+  .heroCards {
+    display: none;
+  }
+
   .spreadCollection,
   .optionGrid,
   .modeGrid,
   .interpretationDetail,
-  .resultDirection,
   .resultPatternGrid,
   .themeExperience {
     grid-template-columns: 1fr;
@@ -2401,14 +2713,8 @@
     border-block-start: 0.0625rem solid var(--color-marketing-border);
     border-inline-start: 0;
   }
-  .resultReflection {
-    padding-block-start: var(--space-4);
-    padding-inline-start: 0;
-    border-block-start: 0.0625rem solid var(--color-marketing-border);
-    border-inline-start: 0;
-  }
   .spreadCard {
-    min-block-size: 20rem;
+    min-block-size: 17rem;
   }
   .spreadAction {
     align-items: stretch;
@@ -2474,6 +2780,89 @@
     min-block-size: 8rem;
     padding: var(--space-4);
   }
+  .flowPage[data-reading-step='reveal'] {
+    padding-block: var(--space-4) var(--space-8);
+  }
+  .flowPage[data-reading-step='reveal'] .readingContainer {
+    padding-inline: var(--space-3);
+  }
+  .revealExperience {
+    gap: var(--space-4);
+    padding: var(--space-4);
+    border-radius: var(--radius-xl);
+    overflow-anchor: none;
+  }
+  .revealTopBar {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding-block-end: var(--space-3);
+    gap: var(--space-2);
+  }
+  .revealContext {
+    flex: 1 1 100%;
+    align-items: center;
+    flex-direction: row;
+    gap: var(--space-2);
+  }
+  .revealTopProgress {
+    inline-size: 100%;
+    justify-content: space-between;
+  }
+  .revealSequence {
+    --tarot-mobile-strip-card-width: clamp(2.9rem, 13vw, 3.5rem);
+    inline-size: 100%;
+    margin-inline: 0;
+    gap: var(--space-3);
+    padding: var(--space-2) 0 var(--space-3);
+  }
+  .revealSequence .tarotCardButton {
+    --tarot-card-width: var(--tarot-mobile-strip-card-width);
+  }
+  .revealSequence .cardPosition {
+    display: -webkit-box;
+    min-block-size: 2.35em;
+    max-block-size: 2.35em;
+    font-size: 0.68rem;
+    line-height: 1.16;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .revealStage {
+    justify-items: center;
+    gap: var(--space-5);
+    padding-block: var(--space-3);
+  }
+  .flowPage[data-reading-step='reveal'] .revealStage > .tarotCardButton {
+    --tarot-card-width: clamp(8.5rem, 38vw, 9.75rem);
+  }
+  .revealLight {
+    inline-size: min(19rem, 90%);
+  }
+  .revealDetails {
+    max-inline-size: none;
+  }
+  .revealInterpretation {
+    max-inline-size: none;
+  }
+  .revealCardTitle[data-variant='heading-md'] {
+    font-size: clamp(1.85rem, 8vw, 2.35rem);
+    line-height: 1.08;
+  }
+  .revealMeaning p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .revealTakeaway {
+    min-inline-size: 0;
+    padding: var(--space-4) var(--space-4) var(--space-4) calc(var(--space-4) + 0.8rem);
+  }
+  .revealCta {
+    inline-size: 100%;
+  }
+  .flowActions[data-reveal] button {
+    flex: 0 1 auto;
+  }
   .deckShowcase[data-count='1'] {
     padding-block: var(--space-3);
   }
@@ -2495,19 +2884,25 @@
   .themePreview {
     min-block-size: 16rem;
   }
-  .tarotCardButton[data-variant='leading'],
-  .tarotCardButton[data-variant='revealing'] {
-    --tarot-card-width: 11rem;
+  .tarotCardButton[data-variant='leading'] {
+    --tarot-card-width: 12.5rem;
   }
   .heroGrid h1 {
-    font-size: clamp(2.25rem, 12vw, 3.5rem);
+    max-inline-size: 17ch;
+    font-size: clamp(2.35rem, 9vw, 2.7rem);
+    line-height: 1.08;
   }
   .resultCopy h1[data-variant='display'] {
-    font-size: clamp(2rem, 10vw, 3rem);
+    font-size: clamp(2rem, 9vw, 2.65rem);
+    line-height: 1.08;
   }
   .flowActions {
     align-items: stretch;
     flex-direction: column-reverse;
+  }
+  .flowActions[data-reveal] {
+    align-items: center;
+    flex-direction: row;
   }
   .resultActions,
   .resultActions > *,
@@ -2516,6 +2911,11 @@
   .resultHeroActions,
   .resultHeroActions > * {
     inline-size: 100%;
+  }
+
+  .utilityActions,
+  .utilityActions > * {
+    inline-size: auto;
   }
   .readingConfirmActions,
   .readingConfirmActions > * {
@@ -2531,7 +2931,7 @@
     transform: none;
   }
   .cardFan .tarotCardButton[data-selected] {
-    transform: translateY(var(--tarot-card-lift));
+    transform: translateY(-0.4rem) rotate(calc(var(--card-distance) * 0.38deg));
   }
   .heroCards i:first-child {
     transform: translate(-84%, -44%) rotate(-19deg);
@@ -2554,17 +2954,18 @@
   .tarotCardInner,
   .interpretationCard,
   .revealInterpretation > *,
+  .selectionOrder,
   .readingSection[data-visible] {
     transition: none;
     animation: none;
   }
-  .tarotCardButton[data-revealed] .tarotCardInner {
+  .tarotCardButton:is([data-visual-face='flipping'], [data-visual-face='front']) .tarotCardInner {
     transform: none;
   }
-  .tarotCardButton[data-revealed] .cardBackFace {
+  .tarotCardButton:is([data-visual-face='flipping'], [data-visual-face='front']) .cardBackFace {
     display: none;
   }
-  .tarotCardButton[data-revealed] .cardFrontFace {
+  .tarotCardButton:is([data-visual-face='flipping'], [data-visual-face='front']) .cardFrontFace {
     transform: none;
   }
   .revealLight {

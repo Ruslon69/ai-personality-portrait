@@ -1,6 +1,8 @@
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { extname, join, relative, resolve } from 'node:path';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 
 import {
   RWS_CLASSIC_DECK_ID,
@@ -14,6 +16,8 @@ import {
 } from '../../assets/tarot';
 import rwsOrientationManifest from '../../assets/tarot/metadata/rws-orientation-manifest.json';
 import { rwsPublicDomainManifest } from '../../assets/tarot/metadata/rws-public-domain-manifest';
+import { TarotCardView } from '../../features/tarot/components/TarotCardView';
+import { resolveTarotCardVisualFace } from '../../features/tarot/components/tarot-card-visual-state';
 import { getTarotArtworkRotation } from '../../features/tarot/components/tarot-artwork-orientation';
 import { shouldLoadTarotFaceArtwork } from '../../features/tarot/components/tarot-artwork-loading';
 import { standardTarotDeck } from '../../features/tarot/data';
@@ -485,6 +489,9 @@ export function runTarotArtworkGate(rootDir: string) {
     revealMarkupStart,
   );
   const revealMarkupSource = readingFlowSource.slice(revealMarkupStart, revealMarkupEnd);
+  const revealActionStart = readingFlowSource.indexOf('function handleRevealAction()');
+  const revealActionEnd = readingFlowSource.indexOf('const canContinue', revealActionStart);
+  const revealActionSource = readingFlowSource.slice(revealActionStart, revealActionEnd);
   const resultSource = readFileSync(
     resolve(rootDir, 'src/features/tarot/components/TarotResult.tsx'),
     'utf8',
@@ -594,16 +601,17 @@ export function runTarotArtworkGate(rootDir: string) {
     resolve(rootDir, 'src/features/tarot/components/Tarot.module.css'),
     'utf8',
   );
+  const mobileRevealCssStart = cardBackCss.lastIndexOf('@media (max-width: 47.99rem)');
+  const mobileRevealCssEnd = cardBackCss.indexOf('@media (max-width: 27rem)', mobileRevealCssStart);
+  const mobileRevealCss = cardBackCss.slice(mobileRevealCssStart, mobileRevealCssEnd);
   const cardInnerRule = cardBackCss.match(/\.tarotCardInner\s*\{(?<body>[^}]*)\}/u)?.groups?.body;
   const cardFacesRule = cardBackCss.match(/\.cardBackFace,\s*\.cardFrontFace\s*\{(?<body>[^}]*)\}/u)
     ?.groups?.body;
-  const revealedCardRule = cardBackCss.match(
-    /\.tarotCardButton\[data-revealed\]\s+\.tarotCardInner\s*\{(?<body>[^}]*)\}/u,
-  )?.groups?.body;
   assertions.assert(
     Boolean(cardInnerRule?.includes('-webkit-transform-style: preserve-3d')) &&
       Boolean(cardInnerRule?.includes('transform-style: preserve-3d')) &&
-      !cardInnerRule?.includes('filter:'),
+      !cardInnerRule?.includes('filter:') &&
+      !cardInnerRule?.includes('isolation:'),
     {
       code: 'tarot-flip-preserve-3d-context',
       message:
@@ -615,7 +623,9 @@ export function runTarotArtworkGate(rootDir: string) {
       Boolean(cardFacesRule?.includes('backface-visibility: hidden')) &&
       cardBackCss.includes('.cardBackFace {\n  transform: rotateY(0deg);') &&
       cardBackCss.includes('.cardFrontFace {\n  transform: rotateY(180deg);') &&
-      Boolean(revealedCardRule?.includes('transform: rotateY(180deg)')),
+      cardBackCss.includes("[data-visual-face='flipping'], [data-visual-face='front']") &&
+      cardBackCss.includes(".tarotCardButton[data-visual-face='front'] .cardBackFace") &&
+      cardBackCss.includes('display: none'),
     {
       code: 'tarot-flip-face-visibility-contract',
       message:
@@ -631,6 +641,44 @@ export function runTarotArtworkGate(rootDir: string) {
         'The visible front must bind the provider artwork while reading orientation remains isolated from the Y-axis flip.',
     },
   );
+  const runtimeFaceCases = [
+    { cardId: 'swords-six', orientation: 'upright' },
+    { cardId: 'major-hermit', orientation: 'upright' },
+    { cardId: 'major-moon', orientation: 'upright' },
+    { cardId: 'major-sun', orientation: 'reversed' },
+    { cardId: 'cups-three', orientation: 'upright' },
+    { cardId: 'pentacles-ace', orientation: 'upright' },
+  ] as const;
+  runtimeFaceCases.forEach(({ cardId, orientation }) => {
+    const artwork = getTarotArtwork(cardId);
+    const markup = renderToStaticMarkup(
+      createElement(TarotCardView, {
+        isRevealed: true,
+        locale: 'ru',
+        revealStatus: 'revealed',
+        selection: { cardId, orientation, positionId: 'runtime-face-check' },
+        theme: 'cosmic-minimal',
+        variant: 'revealing',
+      }),
+    );
+    assertions.assert(
+      resolveTarotCardVisualFace(true, 'revealed') === 'front' &&
+        resolveTarotCardVisualFace(true, 'revealing') === 'flipping' &&
+        resolveTarotCardVisualFace(false, 'ready') === 'back' &&
+        markup.includes('data-visual-face="front"') &&
+        markup.includes('data-front-mounted="true"') &&
+        markup.includes(`data-card-id="${cardId}"`) &&
+        markup.includes(`data-orientation="${orientation}"`) &&
+        markup.includes('data-artwork-quality="premium"') &&
+        artwork.layers.length > 0 &&
+        artwork.layers.every((layer) => markup.includes(layer.asset)) &&
+        markup.includes('<img'),
+      {
+        code: `tarot-revealed-runtime-face-${cardId}-${orientation}`,
+        message: `${cardId} ${orientation} must render the resolved Premium front in an explicit final visual state.`,
+      },
+    );
+  });
   (['cosmic-minimal', 'solar-lines', 'midnight-geometry', 'deep-water'] as const).forEach((theme) =>
     assertions.assert(
       cardBackSource.includes(`theme === '${theme}'`) &&
@@ -650,34 +698,55 @@ export function runTarotArtworkGate(rootDir: string) {
   );
   assertions.assert(
     cardViewSource.includes('<TarotCardBack theme={theme} />') &&
-      !cardViewSource.includes('cardBackFrame'),
+      !cardViewSource.includes('cardBackFrame') &&
+      cardBackCss.includes('-webkit-backface-visibility: hidden') &&
+      cardBackCss.includes('transform: rotateY(0deg)') &&
+      cardBackCss.includes('transform: rotateY(180deg)') &&
+      !cardBackCss.includes('translateZ(0.01px)') &&
+      !cardBackCss.includes("[data-reveal-phase='flipping']::before") &&
+      !cardBackCss.includes('@keyframes tarot-card-edge'),
     {
       code: 'tarot-card-back-shared-renderer',
-      message: 'Every face-down card surface must use the shared original back renderer.',
+      message:
+        'Every face-down card must use the shared renderer, isolated 3D faces and no bright flip-edge overlay.',
     },
   );
   assertions.assert(
     readingFlowSource.includes('data-reading-step={step}') &&
       readingFlowSource.includes('className={styles.revealFlow}') &&
       cardBackCss.includes('@media (min-width: 68.75rem)') &&
-      cardBackCss.includes('block-size: calc(100dvh - 6.75rem)'),
+      cardBackCss.includes('min-block-size: 100svh') &&
+      cardBackCss.includes('block-size: auto'),
     {
       code: 'tarot-reading-desktop-viewport-shell',
       message:
-        'Desktop reveal must use a step-scoped, viewport-bounded shell without constraining mobile.',
+        'Desktop reveal must use a step-scoped, content-growing shell without constraining mobile.',
+    },
+  );
+  assertions.assert(
+    readingFlowSource.includes('className={styles.revealTopBar}') &&
+      readingFlowSource.includes('className={styles.revealContext}') &&
+      readingFlowSource.includes('className={styles.revealTopProgress}') &&
+      readingFlowSource.includes('className={styles.revealProgressDots}') &&
+      readingFlowSource.includes('data-state={') &&
+      cardBackCss.includes('inline-size: min(94%, 96rem)') &&
+      cardBackCss.includes('--reading-gold: #c9a867') &&
+      cardBackCss.includes('--reading-border: rgb(118 119 162 / 42%)'),
+    {
+      code: 'tarot-reading-approved-surface-hierarchy',
+      message:
+        'The approved reading surface must keep context, quiet progress and the wide dark-gold composition together.',
     },
   );
   assertions.assert(
     readingFlowSource.includes('className={styles.revealDetails}') &&
       cardBackCss.includes("grid-template-areas: 'card details'") &&
       cardBackCss.includes('grid-area: details') &&
-      cardBackCss.includes('align-items: stretch') &&
+      cardBackCss.includes('align-items: center') &&
       cardBackCss.includes('align-content: start') &&
-      cardBackCss.includes('grid-template-rows: auto minmax(0, 1fr)') &&
-      cardBackCss.includes('grid-template-rows: minmax(min-content, 1fr)') &&
-      cardBackCss.includes(
-        'padding-block: clamp(0.15rem, 0.8dvh, 0.5rem) clamp(1rem, 2.4dvh, 1.5rem)',
-      ),
+      cardBackCss.includes('grid-template-rows: auto') &&
+      cardBackCss.includes('max-inline-size: 60ch') &&
+      cardBackCss.includes('padding-block: var(--space-2)'),
     {
       code: 'tarot-reading-desktop-active-layout',
       message:
@@ -685,8 +754,9 @@ export function runTarotArtworkGate(rootDir: string) {
     },
   );
   assertions.assert(
-    readingFlowSource.includes('createActiveCardInterpretation({') &&
-      readingFlowSource.includes('<Typography>{currentInterpretation}</Typography>') &&
+    readingFlowSource.includes('createActiveCardGuidance({') &&
+      readingFlowSource.includes('{currentGuidance?.meaning}') &&
+      readingFlowSource.includes('{currentGuidance?.action}') &&
       resultSource.includes('{heroPresentation.heroSummary}') &&
       resultSource.includes('heroPresentation.pattern.repeated') &&
       resultSource.includes('reading.interpretations.map'),
@@ -697,9 +767,13 @@ export function runTarotArtworkGate(rootDir: string) {
     },
   );
   assertions.assert(
-    cardBackCss.includes('clamp(9.5rem, calc((100dvh - 34.5rem) * 7 / 12), 13.25rem)') &&
+    cardBackCss.includes('--tarot-card-width: clamp(17.5rem, 22vw, 20.5rem)') &&
       cardBackCss.includes('--tarot-card-ratio: 7 / 12') &&
-      cardBackCss.includes('clamp(4.25rem, 5vw, 5rem)') &&
+      cardBackCss.includes('clamp(3.3rem, 4vw, 4.25rem)') &&
+      cardBackCss.includes('inline-size: min(100%, 76rem)') &&
+      cardBackCss.includes(
+        'grid-template-columns: minmax(17.5rem, 0.42fr) minmax(35rem, 0.54fr)',
+      ) &&
       cardBackCss.includes(".revealSequence[data-count='6']") &&
       cardBackCss.includes('grid-template-columns: repeat(6, minmax(0, 1fr))') &&
       cardBackCss.includes('text-wrap: balance') &&
@@ -711,10 +785,85 @@ export function runTarotArtworkGate(rootDir: string) {
     },
   );
   assertions.assert(
-    cardBackCss.includes('--tarot-strip-card-width: clamp(4.25rem, 5vw, 5rem)') &&
+    mobileRevealCssStart >= 0 &&
+      mobileRevealCssEnd > mobileRevealCssStart &&
+      mobileRevealCss.includes('--tarot-card-width: clamp(8.5rem, 38vw, 9.75rem)') &&
+      mobileRevealCss.includes('--tarot-mobile-strip-card-width: clamp(2.9rem, 13vw, 3.5rem)') &&
+      mobileRevealCss.includes('-webkit-line-clamp: 2') &&
+      mobileRevealCss.includes('inline-size: 100%') &&
+      mobileRevealCss.includes('margin-inline: 0') &&
+      !mobileRevealCss.includes('margin-inline: calc(') &&
+      !mobileRevealCss.includes('position: absolute') &&
+      !mobileRevealCss.includes('inset-block-start: -'),
+    {
+      code: 'tarot-reading-mobile-reveal-bounds',
+      message:
+        'Mobile reveal cards must remain bounded in normal flow while the compact position strip keeps two-line labels.',
+    },
+  );
+  assertions.assert(
+    cardBackCss.includes('@media (min-width: 48rem) and (max-width: 68.749rem)') &&
+      cardBackCss.includes('inline-size: min(96%, 72rem)') &&
+      cardBackCss.includes('--tarot-card-width: clamp(15rem, 28vw, 17.5rem)') &&
+      cardBackCss.includes('@media (min-width: 56rem) and (max-width: 68.749rem)') &&
+      cardBackCss.includes('grid-template-columns: minmax(15rem, 0.4fr) minmax(24rem, 0.6fr)'),
+    {
+      code: 'tarot-reading-tablet-composition',
+      message:
+        'Tablet reveal must use the available reading width and promote the card above its mobile scale.',
+    },
+  );
+  assertions.assert(
+    readingFlowSource.includes('useLayoutEffect') &&
+      readingFlowSource.includes('const pendingRevealPositionRef = useRef<number | null>(null)') &&
+      readingFlowSource.includes("const isMobileReveal = useMediaQuery('(max-width: 47.99rem)')") &&
+      readingFlowSource.includes('const revealExperienceRef = useRef<HTMLDivElement>(null)') &&
+      readingFlowSource.includes("step !== 'reveal' || !isMobileReveal") &&
+      readingFlowSource.includes('pendingRevealPositionRef.current !== revealState.currentIndex') &&
+      readingFlowSource.includes("revealState.card !== 'preparing'") &&
+      readingFlowSource.includes("revealState.card !== 'settled'") &&
+      readingFlowSource.includes("document.querySelector('header')") &&
+      readingFlowSource.includes('revealExperience.getBoundingClientRect().top') &&
+      readingFlowSource.includes("behavior: 'auto'") &&
+      readingFlowSource.includes('revealTop - headerHeight - 16') &&
+      readingFlowSource.includes('function requestRevealStartPosition(index: number)') &&
+      readingFlowSource.includes('requestRevealStartPosition(revealState.currentIndex)') &&
+      readingFlowSource.includes('requestRevealStartPosition(revealState.currentIndex + 1)') &&
+      readingFlowSource.includes('data-reveal-scroll-anchor=""') &&
+      readingFlowSource.includes('ref={revealExperienceRef}') &&
+      readingFlowSource.includes('revealHeadingRef.current?.focus({ preventScroll: true })') &&
+      !readingFlowSource.includes('function positionRevealBelowHeader()') &&
+      (readingFlowSource.match(/window\.scrollTo/gu)?.length ?? 0) === 2 &&
+      revealActionStart >= 0 &&
+      revealActionEnd > revealActionStart &&
+      !revealActionSource.includes('scrollTo') &&
+      !revealActionSource.includes('scrollIntoView') &&
+      !revealActionSource.includes('.focus(') &&
+      mobileRevealCss.includes('overflow-anchor: none'),
+    {
+      code: 'tarot-reading-sticky-header-safe-position',
+      message:
+        'Mobile reveal must have one post-commit, sticky-header-safe scroll owner while focus and action handlers cannot move the viewport again.',
+    },
+  );
+  assertions.assert(
+    cardBackCss.includes(".flowPage[data-reading-step='reveal']") &&
+      cardBackCss.includes('padding-block: clamp(1rem, 1.5vw, 1.5rem)') &&
+      cardBackCss.includes('--tarot-card-ratio: 7 / 12') &&
+      cardBackCss.includes('overflow-x: auto') &&
+      !cardBackCss.includes('block-size: calc(100dvh - 6.75rem)') &&
+      !/^\s*block-size:\s*100(?:d|s|lv)?vh;/mu.test(cardBackCss),
+    {
+      code: 'tarot-reading-responsive-flow-contract',
+      message:
+        'Reveal must preserve desktop breathing room, full artwork ratio, horizontal containment and content-growing height.',
+    },
+  );
+  assertions.assert(
+    cardBackCss.includes('--tarot-strip-card-width: clamp(3.3rem, 4vw, 4.25rem)') &&
       cardBackCss.includes('--tarot-strip-label-height: calc(var(--font-size-xs) * 2.6)') &&
       cardBackCss.includes('--tarot-strip-state-clearance: 0.625rem') &&
-      cardBackCss.includes('padding-block: var(--tarot-strip-state-clearance)') &&
+      cardBackCss.includes('padding: var(--space-3) var(--space-2) var(--space-5)') &&
       cardBackCss.includes('overflow: clip') &&
       cardBackCss.includes(".revealSequence[data-count='5'],") &&
       cardBackCss.includes(".revealSequence[data-count='6'] {") &&
@@ -746,19 +895,36 @@ export function runTarotArtworkGate(rootDir: string) {
   );
   assertions.assert(
     cardBackCss.includes(".flowPage[data-reading-step='reveal'] .flowHeader") &&
-      cardBackCss.includes('margin-block-end: var(--space-1)') &&
-      cardBackCss.includes('gap: clamp(0.375rem, 0.7dvh, 0.5rem)') &&
-      cardBackCss.includes('padding: clamp(var(--space-1), 0.8dvh, var(--space-2))') &&
+      cardBackCss.includes('display: none') &&
+      readingFlowSource.includes('focus({ preventScroll: true })') &&
+      readingFlowSource.includes("if (steps[nextStepIndex] === 'reveal') window.scrollTo(0, 0)") &&
+      cardBackCss.includes('gap: clamp(var(--space-3), 1.6vw, var(--space-5))') &&
+      cardBackCss.includes('padding: clamp(var(--space-5), 2vw, var(--space-7))') &&
       cardBackCss.includes(".flowSurface[data-reading-step='reveal'] .flowActions") &&
       cardBackCss.includes('min-block-size: 0') &&
-      cardBackCss.includes('padding-block-start: var(--space-1)') &&
-      cardBackCss.includes('margin-block-start: var(--space-1)') &&
+      cardBackCss.includes('padding-block-start: var(--space-4)') &&
+      cardBackCss.includes('margin-block-start: var(--space-2)') &&
+      cardBackCss.includes('block-size: auto') &&
+      !cardBackCss.includes('block-size: calc(100dvh - 6.75rem)') &&
       cardBackCss.includes('--tarot-strip-state-clearance: 0.625rem') &&
-      cardBackCss.includes('padding-block: var(--tarot-strip-state-clearance)'),
+      cardBackCss.includes('overflow: clip'),
     {
       code: 'tarot-reading-combined-viewport-height-budget',
       message:
-        'The desktop reading shell must preserve the complete top strip while assigning the remaining viewport height to an unclipped reveal stage and CTA.',
+        'The desktop reading shell must preserve the compact top strip while allowing the reveal stage and CTA to grow without clipping.',
+    },
+  );
+  assertions.assert(
+    readingFlowSource.includes('className={styles.revealCardTitle}') &&
+      cardBackCss.includes(".revealCardTitle[data-variant='heading-md']") &&
+      cardBackCss.includes('font-size: clamp(2.25rem, 3.3vw, 3.5rem)') &&
+      cardBackCss.includes('font-family: var(--font-family-display)') &&
+      cardBackCss.includes('border-radius: 0') &&
+      cardBackCss.includes('background: none'),
+    {
+      code: 'tarot-reading-editorial-title-and-plain-position',
+      message:
+        'The active card needs the approved Prata title while progress and position metadata remain unboxed.',
     },
   );
   assertions.assert(
@@ -779,11 +945,12 @@ export function runTarotArtworkGate(rootDir: string) {
       cardBackCss.includes('max-inline-size: min(100%, 18ch)') &&
       cardBackCss.includes('font-size: clamp(2rem, 4vw, 3.375rem)') &&
       readingEngineSource.includes('headline: synthesis.headline') &&
-      interpretationCopySource.includes('headline: `В центре — ${domainLabel}`') &&
+      interpretationCopySource.includes('headline: domainHeadlines.ru[domain]') &&
       resultSource.includes('heroPresentation.headline') &&
-      resultSource.includes('heroPresentation.motifs') &&
+      resultSource.includes('className={styles.resultHeroTakeaway}') &&
+      resultSource.includes('{reading.practicalFocus}') &&
       cardBackCss.includes('.resultSupportingLine') &&
-      cardBackCss.includes('.resultSignals'),
+      cardBackCss.includes('.resultHeroTakeaway'),
     {
       code: 'tarot-result-russian-headline-presentation',
       message:
@@ -808,16 +975,16 @@ export function runTarotArtworkGate(rootDir: string) {
   assertions.assert(
     resultSource.includes('className={styles.resultSecondaryContext}') &&
       resultSource.includes('{heroPresentation.secondaryContext}') &&
-      resultSource.includes('heroPresentation.motifs.length') &&
       resultPresentationSource.includes('.slice(0, 4)') &&
       cardBackCss.includes('.resultPatternGrid') &&
-      cardBackCss.includes('.resultDirection') &&
+      cardBackCss.includes('.resultHeroTakeaway') &&
+      cardBackCss.includes('.resultReflection') &&
       cardBackCss.includes('.resultDetails') &&
       cardBackCss.includes('grid-template-columns: 1fr'),
     {
       code: 'tarot-result-progressive-hierarchy',
       message:
-        'Result motifs, pattern, practical direction, collapsible details and secondary numerology must remain hierarchically separated and mobile-safe.',
+        'Result takeaway, pattern, reflection, collapsible details and secondary numerology must remain hierarchically separated and mobile-safe.',
     },
   );
   assertions.assert(
@@ -917,7 +1084,7 @@ export function runTarotArtworkGate(rootDir: string) {
   assertions.assert(
     readingFlowSource.includes('previousStepIndexRef') &&
       readingFlowSource.includes("document.getElementById('tarot-reading-step-title')?.focus()") &&
-      readingFlowSource.includes('revealHeadingRef.current?.focus()') &&
+      readingFlowSource.includes('revealHeadingRef.current?.focus({ preventScroll: true })') &&
       readingFlowSource.includes('id="tarot-reading-step-title"') &&
       readingFlowSource.includes('tabIndex={-1}'),
     {

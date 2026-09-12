@@ -24,27 +24,27 @@ export function PortraitGenerating({ draft, locale, onComplete }: PortraitGenera
   });
   const copy = {
     en: {
-      eyebrow: 'Your signals are connected',
+      eyebrow: 'Your answers are connected',
       title: 'Assembling your portrait',
-      lead: 'Answers become patterns, differences remain context, and optional lenses stay separate.',
+      lead: 'We compare your answers and keep optional birth-date insights separate.',
       note: 'Your portrait will open automatically.',
       complete: 'Complete',
       current: 'In progress',
       pending: 'Waiting',
     },
     ru: {
-      eyebrow: 'Ваши сигналы соединяются',
+      eyebrow: 'Сопоставляем ваши ответы',
       title: 'Собираем ваш портрет',
-      lead: 'Ответы становятся паттернами, различия остаются контекстом, а добровольные линзы — отдельным ракурсом.',
+      lead: 'Мы ищем связи в ответах, а дополнение по дате рождения показываем отдельно.',
       note: 'Портрет откроется автоматически.',
       complete: 'Завершено',
       current: 'Выполняется',
       pending: 'Ожидает',
     },
     uk: {
-      eyebrow: 'Ваші сигнали поєднуються',
+      eyebrow: 'Зіставляємо ваші відповіді',
       title: 'Збираємо ваш портрет',
-      lead: 'Відповіді стають патернами, відмінності залишаються контекстом, а добровільні лінзи — окремим ракурсом.',
+      lead: 'Ми шукаємо зв’язки у відповідях, а доповнення за датою народження показуємо окремо.',
       note: 'Портрет відкриється автоматично.',
       complete: 'Завершено',
       current: 'Виконується',

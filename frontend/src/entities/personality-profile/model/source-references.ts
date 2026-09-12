@@ -28,19 +28,19 @@ export const personalitySourceReferences: Readonly<Record<PersonalitySourceId, S
   numerology: {
     category: 'interpretation',
     id: 'numerology',
-    label: 'Нумерологическая интерпретация',
+    label: 'Разбор по числам',
     shortLabel: 'Нумерология',
   },
   zodiac: {
     category: 'interpretation',
     id: 'zodiac',
-    label: 'Зодиакальная интерпретация',
+    label: 'Разбор по знаку зодиака',
     shortLabel: 'Зодиак',
   },
   astrology: {
     category: 'interpretation',
     id: 'astrology',
-    label: 'Астрологическая интерпретация',
+    label: 'Астрологический разбор',
     shortLabel: 'Астрология',
   },
 };
@@ -53,18 +53,18 @@ const localizedLabels: Readonly<
     interests: ['Interests', 'Interests'],
     voice: ['Current voice sample', 'Voice'],
     'birth-date': ['Birth date', 'Date'],
-    numerology: ['Numerology interpretation', 'Numerology'],
-    zodiac: ['Zodiac interpretation', 'Zodiac'],
-    astrology: ['Astrology interpretation', 'Astrology'],
+    numerology: ['Reading by numbers', 'Numerology'],
+    zodiac: ['Zodiac sign reading', 'Zodiac'],
+    astrology: ['Astrology reading', 'Astrology'],
   },
   uk: {
     answers: ['Відповіді', 'Відповіді'],
     interests: ['Інтереси', 'Інтереси'],
     voice: ['Поточний запис голосу', 'Голос'],
     'birth-date': ['Дата народження', 'Дата'],
-    numerology: ['Нумерологічна інтерпретація', 'Нумерологія'],
-    zodiac: ['Зодіакальна інтерпретація', 'Зодіак'],
-    astrology: ['Астрологічна інтерпретація', 'Астрологія'],
+    numerology: ['Розбір за числами', 'Нумерологія'],
+    zodiac: ['Розбір за знаком зодіаку', 'Зодіак'],
+    astrology: ['Астрологічний розбір', 'Астрологія'],
   },
 };
 

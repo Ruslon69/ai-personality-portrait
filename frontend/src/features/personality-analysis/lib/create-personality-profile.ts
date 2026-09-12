@@ -94,10 +94,10 @@ function createCompletion(
       answersCount: (count: number) => `${count} confirmed answers.`,
       answersEmpty: 'No answers added yet.',
       voice: 'Voice',
-      voiceIncluded: 'Technical metadata from this recording was included without storing audio.',
-      voiceSkipped: 'The optional voice layer was skipped.',
+      voiceIncluded: 'The recording passed a technical check. The audio was not stored.',
+      voiceSkipped: 'The optional voice step was skipped.',
       birth: 'Birth date',
-      birthIncluded: 'Used only for the selected interpretation layers.',
+      birthIncluded: 'Used only for the additional readings you selected.',
       birthSkipped: 'Birth date was not used.',
       interests: 'Interests',
       interestsCount: (count: number) => `${count} selected interests.`,
@@ -108,10 +108,10 @@ function createCompletion(
       answersCount: (count: number) => `Подтверждённых ответов: ${count}.`,
       answersEmpty: 'Ответы пока не добавлены.',
       voice: 'Голос',
-      voiceIncluded: 'Технические метаданные текущей записи учтены без сохранения аудио.',
-      voiceSkipped: 'Необязательный голосовой слой пропущен.',
+      voiceIncluded: 'Запись прошла техническую проверку. Само аудио не сохранено.',
+      voiceSkipped: 'Необязательный голосовой шаг пропущен.',
       birth: 'Дата рождения',
-      birthIncluded: 'Использована только для выбранных интерпретационных слоёв.',
+      birthIncluded: 'Использована только для дополнительных разборов, которые вы выбрали.',
       birthSkipped: 'Дата рождения не использовалась.',
       interests: 'Интересы',
       interestsCount: (count: number) => `Добавлено интересов: ${count}.`,
@@ -122,10 +122,10 @@ function createCompletion(
       answersCount: (count: number) => `Підтверджених відповідей: ${count}.`,
       answersEmpty: 'Відповіді ще не додано.',
       voice: 'Голос',
-      voiceIncluded: 'Технічні метадані поточного запису враховано без збереження аудіо.',
-      voiceSkipped: 'Необов’язковий голосовий шар пропущено.',
+      voiceIncluded: 'Запис пройшов технічну перевірку. Саме аудіо не збережено.',
+      voiceSkipped: 'Необов’язковий голосовий крок пропущено.',
       birth: 'Дата народження',
-      birthIncluded: 'Використано лише для обраних інтерпретаційних шарів.',
+      birthIncluded: 'Використано лише для додаткових розборів, які ви обрали.',
       birthSkipped: 'Дату народження не використано.',
       interests: 'Інтереси',
       interestsCount: (count: number) => `Додано інтересів: ${count}.`,
@@ -175,7 +175,7 @@ function createSourceDetails(
       answers: (count: number) => `${count} confirmed answers were included.`,
       answersDetails:
         'Answer choices reveal repeated preferences in described situations, but do not prove fixed traits.',
-      voiceIncluded: 'A technically usable current recording was present.',
+      voiceIncluded: 'The current recording passed a technical check.',
       voiceSkipped: 'The voice step was skipped.',
       voiceDetails:
         'Audio is not stored in the profile. Recording metadata is not used for identification, diagnosis or personality inference.',
@@ -187,19 +187,19 @@ function createSourceDetails(
         count ? `${count} selected interests were included.` : 'No interests were added.',
       interestsDetails:
         'Only interests chosen by the user are included; the system does not infer them.',
-      interpretation: 'Added as a separate optional interpretation.',
+      interpretation: 'Added as a separate optional reading.',
       interpretationDetails:
-        'This layer is for entertainment and self-reflection. It is not a scientific conclusion and does not confirm psychological observations.',
+        'This reading is for entertainment and reflection. It is not a scientific conclusion and does not confirm observations based on your answers.',
     },
     ru: {
       answers: (count: number) => `Учтено подтверждённых ответов: ${count}.`,
       answersDetails:
         'Готовые варианты позволяют находить повторяющиеся предпочтения в описанных ситуациях, но не доказывают неизменные черты.',
-      voiceIncluded: 'Учтён факт технически пригодной текущей записи.',
+      voiceIncluded: 'Текущая запись прошла техническую проверку.',
       voiceSkipped: 'Голосовой шаг пропущен.',
       voiceDetails:
         'Аудио не хранится в профиле. Технические метаданные записи не используются для идентификации, диагностики или определения личности.',
-      birthIncluded: 'Дата использована только в выбранных интерпретациях.',
+      birthIncluded: 'Дата использована только в выбранных дополнительных разборах.',
       birthSkipped: 'Дата рождения не использовалась.',
       birthDetails:
         'Дата рождения не повышает уверенность наблюдений по ответам и не используется для предсказаний.',
@@ -207,9 +207,9 @@ function createSourceDetails(
         count ? `Учтено выбранных интересов: ${count}.` : 'Интересы не были добавлены.',
       interestsDetails:
         'Учитываются только интересы, которые пользователь выбрал самостоятельно. Система не пытается вывести их из других данных.',
-      interpretation: 'Добавлен как отдельная добровольная интерпретация.',
+      interpretation: 'Добавлен как отдельный необязательный разбор.',
       interpretationDetails:
-        'Этот слой предназначен для развлечения и саморефлексии. Он не является научным выводом и не подтверждает психологические наблюдения.',
+        'Этот разбор предназначен для развлечения и размышления о себе. Он не является научным выводом и не подтверждает наблюдения по вашим ответам.',
     },
     uk: {
       answers: (count: number) => `Враховано підтверджених відповідей: ${count}.`,
@@ -219,7 +219,7 @@ function createSourceDetails(
       voiceSkipped: 'Голосовий крок пропущено.',
       voiceDetails:
         'Аудіо не зберігається у профілі. Метадані запису не використовуються для ідентифікації, діагностики чи визначення особистості.',
-      birthIncluded: 'Дату використано лише в обраних інтерпретаціях.',
+      birthIncluded: 'Дату використано лише в обраних додаткових розборах.',
       birthSkipped: 'Дату народження не використано.',
       birthDetails:
         'Дата народження не підвищує впевненість спостережень із відповідей і не використовується для передбачень.',
@@ -227,9 +227,9 @@ function createSourceDetails(
         count ? `Враховано обраних інтересів: ${count}.` : 'Інтереси не додано.',
       interestsDetails:
         'Враховуються лише інтереси, які користувач обрав самостійно; система не намагається їх вивести.',
-      interpretation: 'Додано як окрему добровільну інтерпретацію.',
+      interpretation: 'Додано як окремий необов’язковий розбір.',
       interpretationDetails:
-        'Цей шар призначений для розваги й саморефлексії. Він не є науковим висновком і не підтверджує психологічні спостереження.',
+        'Цей розбір призначений для розваги й роздумів про себе. Він не є науковим висновком і не підтверджує спостереження за вашими відповідями.',
     },
   }[locale];
   const sources: PersonalityProfileSource[] = [
@@ -340,7 +340,7 @@ export function createPersonalityProfile(
       energyTitle: 'What may restore clarity and energy',
       greeting: 'Your personal portrait',
       introduction:
-        'A connected portrait built from your answers and optional layers. Treat it as a set of hypotheses, not a diagnosis or a fixed identity.',
+        'This portrait is based on your answers and any optional readings you chose. Treat it as something to reflect on, not a diagnosis or a fixed description of you.',
       title: 'Personal portrait',
     },
     ru: {
@@ -350,7 +350,7 @@ export function createPersonalityProfile(
       energyTitle: 'Что может возвращать ясность и силы',
       greeting: 'Ваш персональный портрет',
       introduction:
-        'Связная картина собрана из ваших ответов и добровольных слоёв. Это гипотезы для саморефлексии, а не диагноз или окончательное определение личности.',
+        'Этот разбор основан на ваших ответах и дополнительных данных, которые вы выбрали. Используйте его для размышления о себе, а не как диагноз или окончательное описание личности.',
       title: 'Персональный портрет',
     },
     uk: {
@@ -360,7 +360,7 @@ export function createPersonalityProfile(
       energyTitle: 'Що може повертати ясність і сили',
       greeting: 'Ваш персональний портрет',
       introduction:
-        'Зв’язна картина зібрана з ваших відповідей і добровільних шарів. Це гіпотези для рефлексії, а не діагноз чи остаточне визначення особистості.',
+        'Цей розбір ґрунтується на ваших відповідях і додаткових даних, які ви обрали. Використовуйте його для роздумів про себе, а не як діагноз чи остаточний опис особистості.',
       title: 'Персональний портрет',
     },
   }[locale];

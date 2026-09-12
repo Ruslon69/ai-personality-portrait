@@ -129,11 +129,6 @@ export function Questionnaire({
             key={currentQuestion.id}
           >
             <Stack gap="lg">
-              <QuestionScene
-                active={selectedOptionIds.length > 0}
-                category={currentQuestion.category}
-                questionId={currentQuestion.id}
-              />
               <Stack gap="sm">
                 <Typography
                   as="h1"
@@ -150,6 +145,11 @@ export function Questionnaire({
                   </Typography>
                 ) : null}
               </Stack>
+              <QuestionScene
+                active={selectedOptionIds.length > 0}
+                category={currentQuestion.category}
+                questionId={currentQuestion.id}
+              />
 
               <fieldset
                 aria-describedby={

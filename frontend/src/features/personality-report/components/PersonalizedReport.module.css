@@ -312,9 +312,7 @@
   opacity: 0;
   transform: scaleX(0.4);
   transform-origin: left;
-  transition:
-    opacity var(--transition-duration-normal) var(--transition-easing-standard),
-    transform var(--transition-duration-slow) var(--transition-easing-reveal);
+  transition: opacity var(--transition-duration-normal) var(--transition-easing-standard);
 }
 .recommendation:hover::after,
 .recommendation:focus-within::after {
@@ -385,7 +383,6 @@
 .interpretationCard:hover .interpretationVisual,
 .interpretationCard:focus-within .interpretationVisual {
   opacity: 0.8;
-  transform: translateY(var(--space-1));
 }
 .futurePreview {
   margin-block-start: var(--space-4);

@@ -31,10 +31,10 @@ export function createConfidenceExplanation(
     return {
       description:
         locale === 'en'
-          ? 'Supported by several consistent signals'
+          ? 'This shows up in several of your answers'
           : locale === 'uk'
-            ? 'Підтримано кількома узгодженими сигналами'
-            : 'Поддержано несколькими согласованными сигналами',
+            ? 'Це видно одразу в кількох ваших відповідях'
+            : 'Это видно сразу в нескольких ваших ответах',
       label: locale === 'en' ? 'High' : locale === 'uk' ? 'Висока' : 'Высокая',
       level: 'high',
     };
@@ -44,10 +44,10 @@ export function createConfidenceExplanation(
     return {
       description:
         locale === 'en'
-          ? 'Supported by some related evidence'
+          ? 'This shows up in two related answers'
           : locale === 'uk'
-            ? 'Підтримано кількома пов’язаними спостереженнями'
-            : 'Поддержано несколькими связанными наблюдениями',
+            ? 'Це видно у двох пов’язаних відповідях'
+            : 'Это видно в двух связанных ответах',
       label: locale === 'en' ? 'Medium' : locale === 'uk' ? 'Середня' : 'Средняя',
       level: 'medium',
     };
@@ -56,10 +56,10 @@ export function createConfidenceExplanation(
   return {
     description:
       locale === 'en'
-        ? 'Interpretation based on limited signals'
+        ? 'Based on limited information'
         : locale === 'uk'
-          ? 'Інтерпретація спирається на обмежені сигнали'
-          : 'Интерпретация основана на ограниченных сигналах',
+          ? 'Висновок зроблено за обмеженою інформацією'
+          : 'Вывод сделан на основе ограниченной информации',
     label: locale === 'en' ? 'Low' : locale === 'uk' ? 'Низька' : 'Низкая',
     level: 'low',
   };

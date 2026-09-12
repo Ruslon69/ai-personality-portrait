@@ -56,10 +56,8 @@ export function createJourneyActions(
   store: Store<JourneyState>,
   dependencies: JourneyActionDependencies,
 ) {
-  let lastPersistenceSucceeded = true;
-
   function unchanged<T>(value: T): JourneyMutationResult<T> {
-    return { changed: false, persisted: lastPersistenceSucceeded, value };
+    return { changed: false, persisted: true, value };
   }
 
   function commit<T>(
@@ -70,7 +68,6 @@ export function createJourneyActions(
     const previous = store.getState();
     store.setState(update);
     const persistence = dependencies.persist(store.getState());
-    lastPersistenceSucceeded = persistence.persisted;
     if (!persistence.persisted && rollbackOnFailure) store.setState(previous);
     return { changed: true, persisted: persistence.persisted, value };
   }

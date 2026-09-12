@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useReducer, useRef, useState } from 'react';
 
 import { useMediaQuery } from '@hooks';
 import type { Locale } from '@shared/i18n';
@@ -17,7 +17,7 @@ import {
 } from '../data';
 import { useTarotPreferences, useTarotSession } from '../hooks';
 import {
-  createActiveCardInterpretation,
+  createActiveCardGuidance,
   createAutomaticSelections,
   createManualCandidates,
   createManualSelections,
@@ -84,8 +84,11 @@ export function TarotReadingFlow({
   );
   const [error, setError] = useState('');
   const previousStepIndexRef = useRef(stepIndex);
+  const pendingRevealPositionRef = useRef<number | null>(null);
+  const revealExperienceRef = useRef<HTMLDivElement>(null);
   const revealHeadingRef = useRef<HTMLDivElement>(null);
   const previousRevealIndexRef = useRef(revealState.currentIndex);
+  const isMobileReveal = useMediaQuery('(max-width: 47.99rem)');
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
   const instantReveal = prefersReducedMotion || !preferences.revealAnimations;
   const step = steps[stepIndex]!;
@@ -161,7 +164,7 @@ export function TarotReadingFlow({
     if (previousStepIndexRef.current === stepIndex) return;
     previousStepIndexRef.current = stepIndex;
     const frame = window.requestAnimationFrame(() => {
-      if (step === 'reveal') revealHeadingRef.current?.focus();
+      if (step === 'reveal') revealHeadingRef.current?.focus({ preventScroll: true });
       else document.getElementById('tarot-reading-step-title')?.focus();
     });
     return () => window.cancelAnimationFrame(frame);
@@ -170,13 +173,37 @@ export function TarotReadingFlow({
   useEffect(() => {
     if (step !== 'reveal' || revealState.currentIndex === previousRevealIndexRef.current) return;
     previousRevealIndexRef.current = revealState.currentIndex;
-    const frame = window.requestAnimationFrame(() => revealHeadingRef.current?.focus());
+    const frame = window.requestAnimationFrame(() =>
+      revealHeadingRef.current?.focus({ preventScroll: true }),
+    );
     return () => window.cancelAnimationFrame(frame);
   }, [revealState.currentIndex, step]);
+
+  useLayoutEffect(() => {
+    if (step !== 'reveal' || !isMobileReveal) {
+      pendingRevealPositionRef.current = null;
+      return;
+    }
+    if (
+      pendingRevealPositionRef.current !== revealState.currentIndex ||
+      (revealState.card !== 'preparing' && revealState.card !== 'settled')
+    )
+      return;
+
+    const revealExperience = revealExperienceRef.current;
+    if (!revealExperience) return;
+    const headerHeight = document.querySelector('header')?.getBoundingClientRect().height ?? 0;
+    const revealTop = window.scrollY + revealExperience.getBoundingClientRect().top;
+    window.scrollTo({ behavior: 'auto', left: 0, top: Math.max(0, revealTop - headerHeight - 16) });
+    pendingRevealPositionRef.current = null;
+  }, [isMobileReveal, revealState.card, revealState.currentIndex, step]);
 
   function previous() {
     if (stepIndex === 0) onBack();
     else setStepIndex((value) => value - 1);
+  }
+  function requestRevealStartPosition(index: number) {
+    if (isMobileReveal) pendingRevealPositionRef.current = index;
   }
   function next() {
     if (step === 'context') {
@@ -219,11 +246,14 @@ export function TarotReadingFlow({
       onComplete(reading);
       return;
     }
-    setStepIndex((value) => Math.min(value + 1, steps.length - 1));
+    const nextStepIndex = Math.min(stepIndex + 1, steps.length - 1);
+    if (steps[nextStepIndex] === 'reveal') window.scrollTo(0, 0);
+    setStepIndex(nextStepIndex);
   }
 
   function handleRevealAction() {
     if (revealState.sequence === 'waiting') {
+      requestRevealStartPosition(revealState.currentIndex);
       dispatchReveal({ reducedMotion: instantReveal, type: 'start' });
       return;
     }
@@ -232,6 +262,7 @@ export function TarotReadingFlow({
       return;
     }
     if (revealState.sequence === 'waiting-for-next') {
+      requestRevealStartPosition(revealState.currentIndex + 1);
       dispatchReveal({ reducedMotion: instantReveal, type: 'next-card' });
     }
   }
@@ -250,9 +281,9 @@ export function TarotReadingFlow({
   const currentCard = tarotCardById.get(currentSelection?.cardId ?? '');
   const currentSpreadPosition = spread.positions[revealState.currentIndex];
   const currentPosition = currentSpreadPosition?.label[locale];
-  const currentInterpretation =
+  const currentGuidance =
     currentCard && currentSelection && currentSpreadPosition
-      ? createActiveCardInterpretation({
+      ? createActiveCardGuidance({
           card: currentCard,
           index: revealState.currentIndex,
           locale,
@@ -260,9 +291,12 @@ export function TarotReadingFlow({
           position: currentSpreadPosition,
           ...(spread.topic ? { topic: spread.topic } : {}),
         })
-      : '';
+      : null;
   const currentCardVisible = isCurrentCardVisible(revealState);
   const revealCta = getRevealCta(revealState);
+  const currentCardProgress = copy.cardProgress
+    .replace('{current}', String(Math.min(revealState.currentIndex + 1, selections.length)))
+    .replace('{total}', String(selections.length));
   const activeCardAnnouncement = currentCardVisible
     ? `${copy.position} ${revealState.currentIndex + 1} / ${selections.length}. ${
         currentCard?.name[locale] ?? ''
@@ -272,7 +306,7 @@ export function TarotReadingFlow({
       }. ${copy.cardBack}.`;
   return (
     <div className={styles.flowPage} data-reading-step={step}>
-      <Container size="wide">
+      <Container className={styles.readingContainer} size="wide">
         <div className={styles.flowHeader}>
           <div>
             <Badge tone="warning">{spread.title[locale]}</Badge>
@@ -541,8 +575,33 @@ export function TarotReadingFlow({
               <div
                 className={styles.revealExperience}
                 data-phase={revealState.card}
+                data-reveal-scroll-anchor=""
                 data-sequence={revealState.sequence}
+                ref={revealExperienceRef}
               >
+                <div className={styles.revealTopBar}>
+                  <div className={styles.revealContext}>
+                    <Badge tone="warning">{spread.title[locale]}</Badge>
+                    <span>{copy.revealTitle}</span>
+                  </div>
+                  <div className={styles.revealTopProgress}>
+                    <span aria-hidden="true" className={styles.revealProgressDots}>
+                      {selections.map((selection, index) => (
+                        <i
+                          data-state={
+                            index === revealState.currentIndex
+                              ? 'current'
+                              : isPositionFaceUp(revealState, index)
+                                ? 'complete'
+                                : 'pending'
+                          }
+                          key={selection.cardId}
+                        />
+                      ))}
+                    </span>
+                    <span>{currentCardProgress}</span>
+                  </div>
+                </div>
                 <div
                   aria-label={copy.revealTitle}
                   className={styles.revealSequence}
@@ -590,11 +649,8 @@ export function TarotReadingFlow({
                   />
                   <div className={styles.revealDetails}>
                     <div className={styles.revealProgress} ref={revealHeadingRef} tabIndex={-1}>
-                      <span>
-                        {copy.position} {Math.min(revealState.currentIndex + 1, selections.length)}{' '}
-                        / {selections.length}
-                      </span>
-                      <strong>{currentPosition}</strong>
+                      <span>{currentCardProgress}</span>
+                      <small>{currentPosition}</small>
                     </div>
                     {isRevealActive(revealState) && !instantReveal ? (
                       <Button
@@ -608,7 +664,11 @@ export function TarotReadingFlow({
                     <div aria-live="polite" className={styles.revealInterpretation}>
                       {currentCardVisible && !isRevealActive(revealState) ? (
                         <>
-                          <Typography as="h2" variant="heading-md">
+                          <Typography
+                            as="h2"
+                            className={styles.revealCardTitle}
+                            variant="heading-md"
+                          >
                             {currentCard?.name[locale]}
                           </Typography>
                           <span className={styles.revealOrientation}>
@@ -616,7 +676,14 @@ export function TarotReadingFlow({
                               ? copy.reversed
                               : copy.upright}
                           </span>
-                          <Typography>{currentInterpretation}</Typography>
+                          <div className={styles.revealMeaning}>
+                            <strong>{copy.meaningForYou}</strong>
+                            <Typography>{currentGuidance?.meaning}</Typography>
+                          </div>
+                          <div className={styles.revealTakeaway}>
+                            <strong>{copy.practical}</strong>
+                            <Typography>{currentGuidance?.action}</Typography>
+                          </div>
                         </>
                       ) : null}
                     </div>
@@ -637,19 +704,32 @@ export function TarotReadingFlow({
                     ) : null}
                   </div>
                 </div>
+                <div className={styles.flowActions} data-reveal>
+                  <Button onClick={previous} prominence="quiet">
+                    <span aria-hidden="true">← </span>
+                    {copy.back}
+                  </Button>
+                  <Button
+                    disabled={revealState.sequence !== 'all-complete'}
+                    onClick={next}
+                    prominence="quiet"
+                  >
+                    {copy.saveToHistory}
+                  </Button>
+                </div>
               </div>
             </Stack>
           ) : null}
-          <div className={styles.flowActions} data-reveal={step === 'reveal' || undefined}>
-            <Button onClick={previous} prominence="quiet">
-              {copy.back}
-            </Button>
-            {step !== 'reveal' ? (
+          {step !== 'reveal' ? (
+            <div className={styles.flowActions}>
+              <Button onClick={previous} prominence="quiet">
+                {copy.back}
+              </Button>
               <Button disabled={!canContinue} onClick={next} prominence="primary" size="large">
                 {copy.continue}
               </Button>
-            ) : null}
-          </div>
+            </div>
+          ) : null}
         </Surface>
       </Container>
     </div>

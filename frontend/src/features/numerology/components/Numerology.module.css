@@ -21,10 +21,10 @@
   gap: clamp(var(--space-4), 2.5vw, var(--space-6));
 }
 .hero h1 {
-  --page-title-size: clamp(2.75rem, 4.4vw, 4.25rem);
+  --page-title-size: clamp(2.4rem, 4vw, 4.15rem);
 
   max-inline-size: 19ch;
-  line-height: 1.05;
+  line-height: 1.07;
   text-wrap: balance;
 }
 .resultHero h1 {
@@ -92,11 +92,12 @@
 .diagramFormula,
 .diagramValue {
   fill: var(--color-text);
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
+  font-synthesis: none;
 }
 .diagramNode text {
   font-size: 2rem;
-  font-weight: var(--font-weight-semibold);
+  font-weight: 400;
 }
 .diagramCore circle {
   fill: color-mix(in srgb, var(--color-marketing-accent-warm) 10%, var(--color-marketing-surface));
@@ -104,25 +105,23 @@
 }
 .diagramFormula {
   font-size: 1.1rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.035em;
   opacity: 0.72;
 }
 .diagramValue {
   font-size: 4rem;
-  font-weight: var(--font-weight-bold);
+  font-weight: 400;
 }
 .section {
   padding-block: var(--page-section-padding-block);
 }
-.formSection {
-  padding-block-start: 0;
-}
 .formSurface {
+  inline-size: min(100%, 38rem);
   max-inline-size: 38rem;
   padding: var(--page-hero-padding);
-  margin-inline: auto;
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-marketing-surface-raised) 84%, transparent);
 }
 .field {
   display: grid;
@@ -176,7 +175,10 @@
   transform: rotate(-18deg);
 }
 .personalSymbol strong {
+  font-family: var(--font-family-display);
   font-size: clamp(4rem, 14vw, 8rem);
+  font-synthesis: none;
+  font-weight: 400;
 }
 .heroNumbers {
   display: flex;
@@ -227,8 +229,10 @@
   align-self: start;
   min-inline-size: 1.2ch;
   color: color-mix(in srgb, var(--color-marketing-accent-warm) 26%, transparent);
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
   font-size: clamp(3rem, 6vw, 5rem);
+  font-synthesis: none;
+  font-weight: 400;
   line-height: 0.8;
   text-align: end;
   pointer-events: none;
@@ -339,8 +343,27 @@
   }
 }
 @media (max-width: 30rem) {
+  .hero {
+    padding-block: var(--space-5) var(--space-4);
+  }
+
+  .heroCopy {
+    gap: var(--space-4);
+  }
+
+  .hero h1 {
+    --page-title-size: clamp(2.1rem, 8.6vw, 2.5rem);
+
+    max-inline-size: 18ch;
+    line-height: 1.09;
+  }
+
   .numberHero {
-    min-block-size: 13rem;
+    display: none;
+  }
+
+  .formSurface {
+    padding: var(--space-5);
   }
   .numberDiagram {
     inline-size: min(115%, 28rem);

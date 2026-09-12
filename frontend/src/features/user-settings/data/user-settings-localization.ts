@@ -24,17 +24,15 @@ export const userSettingsCopy: Record<Locale, UserSettingsCopy> = {
       themeChanged: (theme) => `Theme changed: ${theme}.`,
     },
     appearance: {
-      description:
-        'The appearance changes immediately and stays synchronized with the header control.',
+      description: 'Changes apply immediately.',
       eyebrow: 'Appearance',
       legend: 'Interface theme',
       options: 'Light, dark and system themes are available.',
       title: 'Choose a comfortable theme',
     },
     hero: {
-      badge: 'Local settings',
-      description:
-        'Choose the interface appearance and reading preferences that are actually stored in this browser.',
+      badge: 'Your preferences',
+      description: 'Choose the appearance and Tarot reading options that suit you.',
       title: 'Settings',
     },
     themeLabels: { dark: 'dark', light: 'light', system: 'system' },
@@ -44,17 +42,15 @@ export const userSettingsCopy: Record<Locale, UserSettingsCopy> = {
       themeChanged: (theme) => `Тема изменена: ${theme}.`,
     },
     appearance: {
-      description:
-        'Оформление меняется сразу и остаётся синхронизировано с переключателем в шапке.',
+      description: 'Изменения применяются сразу.',
       eyebrow: 'Внешний вид',
       legend: 'Тема интерфейса',
       options: 'Доступны светлая, тёмная и системная темы.',
       title: 'Выберите удобную тему',
     },
     hero: {
-      badge: 'Локальные настройки',
-      description:
-        'Выберите оформление интерфейса и реально сохраняемые в этом браузере настройки чтения.',
+      badge: 'Ваши предпочтения',
+      description: 'Выберите оформление и параметры раскладов Таро, которые вам подходят.',
       title: 'Настройки',
     },
     themeLabels: { dark: 'тёмная', light: 'светлая', system: 'системная' },
@@ -64,17 +60,15 @@ export const userSettingsCopy: Record<Locale, UserSettingsCopy> = {
       themeChanged: (theme) => `Тему змінено: ${theme}.`,
     },
     appearance: {
-      description:
-        'Оформлення змінюється одразу й залишається синхронізованим із перемикачем у шапці.',
+      description: 'Зміни застосовуються одразу.',
       eyebrow: 'Вигляд',
       legend: 'Тема інтерфейсу',
       options: 'Доступні світла, темна й системна теми.',
       title: 'Виберіть зручну тему',
     },
     hero: {
-      badge: 'Локальні налаштування',
-      description:
-        'Оберіть оформлення інтерфейсу й налаштування читання, які справді зберігаються в цьому браузері.',
+      badge: 'Ваші налаштування',
+      description: 'Оберіть оформлення й параметри розкладів Таро, які вам підходять.',
       title: 'Налаштування',
     },
     themeLabels: { dark: 'темна', light: 'світла', system: 'системна' },

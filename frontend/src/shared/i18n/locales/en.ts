@@ -2,7 +2,7 @@ import type { I18nMessages } from '../types';
 
 export const en = {
   shell: {
-    footer: 'For self-reflection — not diagnosis or prediction',
+    footer: 'For personal reflection — not diagnosis or prediction',
     legal: {
       label: 'Legal information',
       privacy: 'Privacy',
@@ -41,10 +41,10 @@ export const en = {
   navigation: {
     compatibility: 'Compatibility',
     home: 'Home',
-    myPath: 'My Path',
-    numerology: 'Numerology',
-    portrait: 'Portrait',
-    profile: 'Journey',
+    myPath: 'History',
+    numerology: 'By birth date',
+    portrait: 'Personal reflection',
+    profile: 'My results',
     settings: 'Settings',
     tarot: 'Tarot',
   },
@@ -67,19 +67,19 @@ export const en = {
       items: [
         {
           description:
-            'Answers, interests and selected interpretations become one coherent view instead of a collection of isolated facts.',
+            'Answers, interests and the extras you choose form one clear picture instead of a collection of isolated facts.',
           eyebrow: 'Connected perspective',
           title: 'The details form a wider picture',
         },
         {
           description:
             'Your portrait reveals a combination of traits and contexts without defining you as one permanent type.',
-          eyebrow: 'Many-sided by design',
-          title: 'Not a type. Not a label. A blend of facets.',
+          eyebrow: 'Different sides of you',
+          title: 'Not a type or label, but a living mix of traits',
         },
         {
           description:
-            'Self-reflection, the current voice sample and interpretive layers remain clearly identified by source.',
+            'Answers, the current voice sample and birth-date insights are always shown separately.',
           eyebrow: 'Sources stay visible',
           title: 'More than one way to see yourself',
         },
@@ -91,7 +91,7 @@ export const en = {
         },
         {
           description:
-            'Optional parts can be skipped. You decide which information and interpretations belong in your portrait.',
+            'Optional parts can be skipped. You decide which information and additional readings to include.',
           eyebrow: 'Your choice',
           title: 'You choose the depth',
         },
@@ -100,20 +100,19 @@ export const en = {
     },
     emotion: {
       description:
-        'Not a hidden truth or a fixed label — simply a fresh angle that can make your own patterns easier to notice.',
-      eyebrow: 'A fresh perspective',
+        'This is not a hidden truth or a fixed label. It is a way to notice what repeats in your answers.',
+      eyebrow: 'An observation about you',
       title:
         'Sometimes the most interesting side of you is the one you have not put into words yet.',
     },
     final: {
-      description:
-        'Begin with a few short questions. You can choose every other layer along the way.',
+      description: 'Begin with a few short questions. You can choose the optional parts later.',
       title: 'Curious what connections may open up for you?',
     },
     hero: {
       description:
-        'Answer a few questions, choose the layers that feel relevant, and receive a personal portrait that connects your habits, interests and ways of expressing yourself.',
-      eyebrow: 'YOUR PERSONAL PORTRAIT',
+        'Answer a few questions and receive clear observations about your habits, interests and reactions.',
+      eyebrow: 'Your personal portrait',
       primaryCta: 'Create my portrait',
       secondaryCta: 'See how it works',
       title: ['There’s more to you', 'than meets the eye'],
@@ -125,7 +124,7 @@ export const en = {
       ],
       visual: {
         ariaLabel:
-          'Five displayed layers — answers, interests, zodiac, numerology and voice — connect into a personal portrait',
+          'Answers, interests, zodiac, birth-date calculations and voice combine into a personal reflection',
         coreLabel: 'Connected picture',
         coreStatus: 'Connecting your chosen facets',
         coreValue: 'Your portrait',
@@ -134,8 +133,7 @@ export const en = {
     },
     layers: {
       baseLabel: 'Foundation',
-      description:
-        'Self-reflection and connected analysis form the foundation. Every other layer is voluntary and clearly identified.',
+      description: 'Your answers form the foundation. Voice and birth-date details are optional.',
       eyebrow: 'You control the depth',
       items: [
         {
@@ -156,7 +154,7 @@ export const en = {
         },
         {
           badge: 'Interpretation',
-          description: 'A symbolic layer for reflection, never presented as an established fact.',
+          description: 'A symbolic reading for reflection, never presented as an established fact.',
           label: 'From your birth date',
           title: 'Numerology',
         },
@@ -170,16 +168,16 @@ export const en = {
           badge: 'Interpretation',
           description:
             'An optional perspective that neither validates nor replaces the psychological layer.',
-          label: 'Voluntary layer',
-          title: 'Astrological interpretations',
+          label: 'Optional',
+          title: 'Astrology reading',
         },
       ],
       optionalLabel: 'Optional',
-      title: 'Choose which facets to add',
+      title: 'Choose what to add',
     },
     process: {
       description:
-        'No technical jargon or hidden conclusions: each source becomes its own meaning layer, while the wider picture surfaces connections and differences.',
+        'We show what each observation is based on, so you can see connections and differences without hidden conclusions.',
       eyebrow: 'How the picture comes together',
       items: [
         {
@@ -187,8 +185,8 @@ export const en = {
           title: 'You tell us about yourself',
         },
         {
-          description: 'Voice and interpretive layers are included only when you choose them.',
-          title: 'You choose extra layers',
+          description: 'Voice and birth-date readings are included only when you choose them.',
+          title: 'You choose the extras',
         },
         {
           description:
@@ -204,8 +202,8 @@ export const en = {
       origins: [
         'From your answers',
         'From this voice sample',
-        'Numerological interpretation',
-        'Astrological interpretation',
+        'Reading by numbers',
+        'Astrology reading',
         'Personal suggestion',
       ],
       resultLabel: 'Portrait',
@@ -223,27 +221,27 @@ export const en = {
   },
   start: {
     essentials: {
-      description: 'Only what helps you begin calmly, with no surprises.',
+      description: 'A quick guide to the format.',
       eyebrow: 'Before you start',
       items: [
         {
-          description: 'The usual journey to the first part of your result.',
+          description: 'To reach your first result.',
           label: 'Time',
           title: '3–5 minutes',
         },
         {
-          description: 'Ready-made choices and your birth date; no long writing required.',
-          label: 'What you need',
-          title: 'Answers and a little context',
+          description: 'No long answers are required.',
+          label: 'Format',
+          title: 'Short questions',
         },
         {
           badge: 'In your control',
-          description: 'Date and interpretive layers are added only when you choose them.',
-          label: 'Privacy',
-          title: 'Optional stays optional',
+          description: 'You can skip every optional step.',
+          label: 'Your choice',
+          title: 'Only the details you want',
         },
       ],
-      title: 'Everything important, before the first question',
+      title: 'What to expect',
     },
     final: {
       description: 'The first screen shows one short question with ready-made choices.',
@@ -251,39 +249,38 @@ export const en = {
     },
     hero: {
       description:
-        'Short questions create the foundation. Every extra layer remains your choice, and the first meaningful result opens for free.',
-      eyebrow: 'YOUR PERSONAL JOURNEY',
-      note: 'One clear step at a time. You can go back or skip anything optional.',
-      primaryCta: 'Start',
-      title: ['Here is how the', 'journey unfolds.'],
+        'Answer a few short questions and receive observations about your habits, interests and reactions.',
+      eyebrow: 'Personal reflection',
+      note: '3–5 minutes. You can skip optional steps.',
+      primaryCta: 'Start the questions',
+      title: ['Get a personal', 'reflection'],
     },
     journey: {
-      eyebrow: 'Four steps',
+      eyebrow: 'Optional details',
       items: [
         {
           description: 'A few simple questions with ready-made choices.',
-          title: 'Your answers',
+          title: 'Answer the questions',
         },
         {
-          description: 'Interests, birth date, numerology and zodiac — only when you choose them.',
-          title: 'Optional layers',
+          description: 'Add interests, your birth date or a voice sample if you wish.',
+          title: 'Add details',
         },
         {
-          description: 'Your chosen sources connect into one portrait without definitive claims.',
-          title: 'Connected synthesis',
+          description: 'Receive personal observations without diagnoses or definitive claims.',
+          title: 'Get your result',
         },
         {
-          description: 'See meaningful observations before deciding whether to explore further.',
-          title: 'Your first result',
+          description: 'Open more detail only when it is useful to you.',
+          title: 'Explore further',
         },
       ],
-      title: 'Self-discovery without the questionnaire feeling',
+      title: 'How it works',
     },
     privacy: {
-      description:
-        'Every additional interpretive layer is optional and clearly separated from answer-based observations.',
+      description: 'Your birth date and voice are optional. You decide what to include.',
       eyebrow: 'A clear word on data',
-      title: 'You decide which layers to include',
+      title: 'Your details, your choice',
     },
     result: {
       description:

@@ -1,36 +1,28 @@
 import { PortraitMark, type PersonalityProfile } from '@entities/personality-profile';
 import { Badge, ButtonLink, Card, Container, Stack, Typography } from '@shared/ui';
-import { SourceChip } from './SourceChip';
 import styles from './PortraitSummary.module.css';
 
 export function PortraitSummary({ profile }: { profile: PersonalityProfile }) {
   const copy = {
     en: {
-      eyebrow: 'Your portrait on one screen',
-      title: 'The whole combination, before the details',
-      contrast: 'Context contrast',
-      interest: 'Main interest',
-      recommendation: 'One experiment',
-      open: 'Explore',
+      eyebrow: 'At a glance',
+      title: 'What are you like?',
+      recommendation: 'One useful next step',
+      open: 'See action',
     },
     ru: {
-      eyebrow: 'Ваш портрет на одном экране',
-      title: 'Вся комбинация — до подробностей',
-      contrast: 'Контраст контекста',
-      interest: 'Главный интерес',
-      recommendation: 'Один эксперимент',
-      open: 'Исследовать',
+      eyebrow: 'Коротко о вас',
+      title: 'Какой вы человек?',
+      recommendation: 'Один полезный шаг',
+      open: 'Посмотреть действие',
     },
     uk: {
-      eyebrow: 'Ваш портрет на одному екрані',
-      title: 'Уся комбінація — до подробиць',
-      contrast: 'Контраст контексту',
-      interest: 'Головний інтерес',
-      recommendation: 'Один експеримент',
-      open: 'Дослідити',
+      eyebrow: 'Коротко про вас',
+      title: 'Яка ви людина?',
+      recommendation: 'Один корисний крок',
+      open: 'Переглянути дію',
     },
   }[profile.locale];
-  const contrast = profile.contrasts[0];
   const recommendation = profile.recommendations[0];
   return (
     <section aria-labelledby="summary-title" className={styles.section} id="summary">
@@ -53,27 +45,15 @@ export function PortraitSummary({ profile }: { profile: PersonalityProfile }) {
                 <Typography as="h3" variant="heading-md">
                   {profile.revealHeadline}
                 </Typography>
+                <Typography>{profile.revealLead}</Typography>
                 <div className={styles.traits}>
-                  {profile.keyTraits.map((trait) => (
+                  {profile.keyTraits.slice(0, 3).map((trait) => (
                     <Badge key={trait} tone="info">
                       {trait}
                     </Badge>
                   ))}
                 </div>
               </div>
-              {contrast ? (
-                <ButtonLink className={styles.tile} href="#contrasts">
-                  <span>{copy.contrast}</span>
-                  <strong>{contrast.meaning}</strong>
-                  <small>{copy.open} →</small>
-                </ButtonLink>
-              ) : null}
-              {profile.primaryInterest ? (
-                <div className={styles.tile}>
-                  <span>{copy.interest}</span>
-                  <strong>{profile.primaryInterest}</strong>
-                </div>
-              ) : null}
               {recommendation ? (
                 <ButtonLink className={styles.tile} href="#recommendations">
                   <span>{copy.recommendation}</span>
@@ -81,13 +61,6 @@ export function PortraitSummary({ profile }: { profile: PersonalityProfile }) {
                   <small>{copy.open} →</small>
                 </ButtonLink>
               ) : null}
-              <div className={styles.sources}>
-                {profile.sourceDetails
-                  .filter((source) => source.status !== 'omitted')
-                  .map((source) => (
-                    <SourceChip key={source.id} locale={profile.locale} source={source} />
-                  ))}
-              </div>
             </div>
           </Card>
         </Stack>

@@ -35,7 +35,7 @@ const en: Readonly<Record<TraitId, LocalizedTraitCopy>> = {
     label: 'independence',
     strengthTitle: 'Independent grounding',
     strengthDescription: 'You value room to check decisions against your own criteria.',
-    growthTitle: 'Make independence visible',
+    growthTitle: 'Name your need for space',
     growthDescription: 'Others understand your space better when its boundaries are named.',
     energyTitle: 'Time at your own pace',
     energyDescription: 'A short pause without new demands can restore clarity.',
@@ -76,7 +76,7 @@ const en: Readonly<Record<TraitId, LocalizedTraitCopy>> = {
     strengthDescription: 'You can turn intention into a concrete first move.',
     growthTitle: 'Check the direction',
     growthDescription: 'A quick start becomes stronger with one short reality check.',
-    energyTitle: 'Energy from a first step',
+    energyTitle: 'Momentum after a first step',
     energyDescription: 'A small completed action can restore momentum.',
     recommendationTitle: 'Run a small experiment',
     recommendationDescription: 'Turn the nearest idea into a testable step.',
@@ -88,7 +88,7 @@ const en: Readonly<Record<TraitId, LocalizedTraitCopy>> = {
     strengthDescription: 'New approaches and perspectives can keep you engaged.',
     growthTitle: 'Give curiosity a direction',
     growthDescription: 'Variety is more useful when you know what you want to explore.',
-    energyTitle: 'A small change of perspective',
+    energyTitle: 'A small change of scene',
     energyDescription: 'A new setting or idea may gently reset your attention.',
     recommendationTitle: 'Change one element',
     recommendationDescription: 'Add one unfamiliar approach to a familiar task.',
@@ -97,7 +97,7 @@ const en: Readonly<Record<TraitId, LocalizedTraitCopy>> = {
   },
   practicality: {
     label: 'practicality',
-    strengthTitle: 'Practical focus',
+    strengthTitle: 'A practical approach',
     strengthDescription: 'You value choices that can be applied and checked in real life.',
     growthTitle: 'Reconnect action with meaning',
     growthDescription: 'A workable answer can still be checked against the wider purpose.',
@@ -116,7 +116,7 @@ const en: Readonly<Record<TraitId, LocalizedTraitCopy>> = {
     growthDescription: 'Reflection helps until it delays a useful real-world check.',
     energyTitle: 'Space to process',
     energyDescription: 'A pause without new decisions may bring clarity back.',
-    recommendationTitle: 'Set a boundary for reflection',
+    recommendationTitle: 'Limit the time for reflection',
     recommendationDescription: 'Give the next decision a clear thinking window.',
     recommendationDetails: 'Choose a deadline and two criteria that are enough for the next step.',
   },
@@ -152,7 +152,7 @@ const uk: Readonly<Record<TraitId, LocalizedTraitCopy>> = {
     label: 'самостійність',
     strengthTitle: 'Самостійна опора',
     strengthDescription: 'Ви цінуєте простір, де можна звірити рішення з власними критеріями.',
-    growthTitle: 'Робити самостійність видимою',
+    growthTitle: 'Називати потребу в особистому просторі',
     growthDescription: 'Іншим легше поважати ваш простір, коли його межі названі.',
     energyTitle: 'Час у своєму темпі',
     energyDescription: 'Коротка пауза без нових вимог може повертати ясність.',
@@ -192,7 +192,7 @@ const uk: Readonly<Record<TraitId, LocalizedTraitCopy>> = {
     strengthDescription: 'Ви можете перетворювати намір на конкретний перший крок.',
     growthTitle: 'Перевіряти напрям',
     growthDescription: 'Швидкий старт стає сильнішим після короткої перевірки реальністю.',
-    energyTitle: 'Енергія від першого кроку',
+    energyTitle: 'Сили після першого кроку',
     energyDescription: 'Невелика завершена дія може повертати відчуття руху.',
     recommendationTitle: 'Зробіть невеликий експеримент',
     recommendationDescription: 'Перетворіть найближчу ідею на крок, який можна перевірити.',
@@ -204,7 +204,7 @@ const uk: Readonly<Record<TraitId, LocalizedTraitCopy>> = {
     strengthDescription: 'Нові підходи й перспективи можуть підтримувати ваш інтерес.',
     growthTitle: 'Спрямовувати цікавість',
     growthDescription: 'Різноманіття корисніше, коли зрозуміло, що саме ви досліджуєте.',
-    energyTitle: 'Невелика зміна перспективи',
+    energyTitle: 'Невелика зміна обстановки',
     energyDescription: 'Нова обстановка чи ідея може м’яко перемикати увагу.',
     recommendationTitle: 'Змініть один елемент',
     recommendationDescription: 'Додайте один незвичний спосіб до знайомого завдання.',
@@ -212,7 +212,7 @@ const uk: Readonly<Record<TraitId, LocalizedTraitCopy>> = {
   },
   practicality: {
     label: 'практичність',
-    strengthTitle: 'Практичний фокус',
+    strengthTitle: 'Практичний підхід',
     strengthDescription: 'Ви цінуєте рішення, які можна застосувати й перевірити.',
     growthTitle: 'Звіряти дію зі змістом',
     growthDescription: 'Робоче рішення варто перевірити на відповідність ширшій меті.',
@@ -230,7 +230,7 @@ const uk: Readonly<Record<TraitId, LocalizedTraitCopy>> = {
     growthDescription: 'Роздуми допомагають, доки не відкладають перевірку в реальності.',
     energyTitle: 'Простір для осмислення',
     energyDescription: 'Пауза без нових рішень може повертати ясність.',
-    recommendationTitle: 'Окресліть межу роздумів',
+    recommendationTitle: 'Обмежте час на роздуми',
     recommendationDescription: 'Дайте найближчому рішенню зрозуміле вікно для обдумування.',
     recommendationDetails: 'Оберіть строк і два критерії, яких достатньо для наступного кроку.',
   },
@@ -254,8 +254,8 @@ function completeTemplate(
 ): TraitTemplate {
   const details =
     locale === 'en'
-      ? 'This pattern appears across more than one everyday choice and remains a hypothesis to check in context.'
-      : 'Цей патерн повторюється в кількох повсякденних виборах і залишається гіпотезою для перевірки в контексті.';
+      ? 'This preference appears in more than one everyday choice. Treat it as an observation to check in real life.'
+      : 'Ця схильність помітна в кількох повсякденних виборах. Перевірте, чи справді вона проявляється у вашому житті.';
 
   return {
     ...copy,

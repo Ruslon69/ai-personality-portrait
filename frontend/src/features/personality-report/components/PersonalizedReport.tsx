@@ -56,32 +56,35 @@ function PortraitMap({ profile }: { profile: PersonalityProfile }) {
           lead={copy.mapLead}
           title={copy.mapTitle}
         />
-        <div className={styles.map} role="list">
-          <div aria-hidden="true" className={styles.mapCore}>
-            <span>{copy.core}</span>
+        <details className={styles.morePatterns}>
+          <summary>{copy.mapOpen}</summary>
+          <div className={styles.map} role="list">
+            <div aria-hidden="true" className={styles.mapCore}>
+              <span>{copy.core}</span>
+            </div>
+            <svg aria-hidden="true" className={styles.mapLines} viewBox="0 0 800 440">
+              <path d="M400 220 175 88" />
+              <path d="M400 220 620 74" />
+              <path d="M400 220 690 230" />
+              <path d="M400 220 595 370" />
+              <path d="M400 220 220 370" />
+              <path d="M400 220 112 225" />
+            </svg>
+            {profile.portraitFacets.map((facet, index) => (
+              <a
+                className={styles.facet}
+                data-position={index + 1}
+                href={`#${facet.targetId}`}
+                key={facet.id}
+                role="listitem"
+              >
+                <span className={styles.facetLabel}>{facet.label}</span>
+                <strong>{facet.title}</strong>
+                <span className={styles.facetReveal}>{facet.description}</span>
+              </a>
+            ))}
           </div>
-          <svg aria-hidden="true" className={styles.mapLines} viewBox="0 0 800 440">
-            <path d="M400 220 175 88" />
-            <path d="M400 220 620 74" />
-            <path d="M400 220 690 230" />
-            <path d="M400 220 595 370" />
-            <path d="M400 220 220 370" />
-            <path d="M400 220 112 225" />
-          </svg>
-          {profile.portraitFacets.map((facet, index) => (
-            <a
-              className={styles.facet}
-              data-position={index + 1}
-              href={`#${facet.targetId}`}
-              key={facet.id}
-              role="listitem"
-            >
-              <span className={styles.facetLabel}>{facet.label}</span>
-              <strong>{facet.title}</strong>
-              <span className={styles.facetReveal}>{facet.description}</span>
-            </a>
-          ))}
-        </div>
+        </details>
       </Container>
     </section>
   );
@@ -97,8 +100,17 @@ function PatternSection({
   toggle: (id: string) => void;
 }) {
   const copy = reportCopy[profile.locale];
-  const primary = profile.strengths.slice(0, 3);
-  const more = [...profile.strengths.slice(3), ...profile.growthAreas];
+  const seen = new Set<string>();
+  const unique = [...profile.strengths, ...profile.growthAreas].filter((insight) => {
+    const key = insight.traitIds.length
+      ? [...insight.traitIds].sort().join(':')
+      : insight.title.trim().toLocaleLowerCase(profile.locale);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  const primary = unique.slice(0, 3);
+  const more = unique.slice(3);
   return (
     <section aria-labelledby="patterns-title" className={styles.section} id="patterns">
       <Container size="wide">
@@ -509,8 +521,8 @@ export function PersonalizedReport({ onShare, profile }: Props) {
             locale={profile.locale}
           />
           <PortraitSummary profile={profile} />
-          <PortraitMap profile={profile} />
           <PatternSection expanded={isExpanded} profile={profile} toggle={toggle} />
+          <PortraitMap profile={profile} />
           <ContrastSection profile={profile} />
           <Narrative
             eyebrow={copy.communicationEyebrow}

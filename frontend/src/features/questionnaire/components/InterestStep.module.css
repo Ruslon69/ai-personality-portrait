@@ -42,7 +42,7 @@
   transition:
     border-color var(--motion-focus-duration) var(--motion-easing-connect),
     background-color var(--motion-focus-duration) var(--motion-easing-connect),
-    transform var(--motion-confirm-duration) var(--motion-easing-discover);
+    box-shadow var(--motion-confirm-duration) var(--motion-easing-discover);
 }
 .interest input {
   position: absolute;
@@ -53,7 +53,7 @@
 .interest:has(input:checked) {
   border-color: var(--color-interactive);
   background: color-mix(in srgb, var(--color-interactive) 8%, var(--color-surface));
-  transform: translateY(calc(-1 * var(--motion-distance-sm)));
+  box-shadow: 0 0 0 0.1875rem color-mix(in srgb, var(--color-interactive) 12%, transparent);
 }
 .interest:has(input:focus-visible) {
   outline: var(--focus-ring-width) solid var(--color-focus);

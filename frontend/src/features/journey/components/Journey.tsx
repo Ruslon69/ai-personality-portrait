@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { useNotifications } from '@app/providers';
 import type { PersonalityProfile } from '@entities/personality-profile';
-import { createNumerologyProfile } from '@features/numerology';
 import { TarotCardView, tarotCardById } from '@features/tarot';
 import type { Locale } from '@shared/i18n';
 import { Button, Container, Stack, Typography } from '@shared/ui';
@@ -40,331 +39,161 @@ export function Journey({
     [locale, state.readings],
   );
   const currentChapter = chapters.at(-1);
-  const currentChapterCard = currentChapter?.record.reading.selections.find(
-    (selection) => selection.cardId === currentChapter.record.reading.leadingCardId,
-  );
-  const firstChapter = chapters[0];
   const candidate = useMemo(
     () => createDailyCard(state.identity, dateKey),
     [dateKey, state.identity],
   );
   const dailyCard = state.dailyCards[dateKey] ?? candidate;
   const card = tarotCardById.get(dailyCard.selection.cardId)!;
-  const birthDate = currentChapter?.record.reading.context.birthDate;
-  const numerology = useMemo(
-    () => (birthDate ? createNumerologyProfile(birthDate, locale) : null),
-    [birthDate, locale],
-  );
   const [announcement, setAnnouncement] = useState('');
-  const dateFormatter = useMemo(
-    () =>
-      new Intl.DateTimeFormat(locale === 'uk' ? 'uk-UA' : locale === 'en' ? 'en-GB' : 'ru-RU', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      }),
-    [locale],
-  );
 
   useEffect(() => {
     actions.ensureDailyCard(candidate);
   }, [actions, candidate]);
 
   function openDailyCard() {
-    actions.ensureDailyCard(candidate);
+    const ensured = actions.ensureDailyCard(candidate);
+    if (!ensured.persisted) {
+      notify(persistenceCopy.dailyCardFailed, 'error');
+      return;
+    }
+
     const result = actions.openDailyCard(dateKey);
     if (result.persisted) setAnnouncement(`${card.name[locale]}. ${copy.card.opened}`);
     else notify(persistenceCopy.dailyCardFailed, 'error');
   }
 
-  function toggleBookmark(record: JourneyReadingRecord) {
-    const result = actions.toggleFavorite(record.reading.id);
-    if (result.persisted) {
-      setAnnouncement(
-        `${record.reading.headline}. ${record.favorite ? copy.path.removedBookmark : copy.path.addedBookmark}`,
-      );
-    } else notify(persistenceCopy.favoriteFailed, 'error');
-  }
+  const hasPrimaryResult = Boolean(currentChapter || profile);
 
   return (
     <div className={styles.root}>
-      <section aria-labelledby="journey-title" className={styles.coverSection}>
+      <section aria-labelledby="results-title" className={styles.resultsHero}>
         <Container size="wide">
-          <div className={styles.bookCover}>
-            <span aria-hidden="true" className={styles.coverSpine} />
-            <span aria-hidden="true" className={styles.coverOrnament}>
-              <i />
-              <i />
-              <i />
-            </span>
-            <div className={styles.coverCopy}>
+          <div className={styles.resultsHeroFrame}>
+            <Stack align="start" className={styles.resultsHeroCopy} gap="lg">
               <Typography as="p" variant="eyebrow">
                 {copy.hero.eyebrow}
               </Typography>
-              <Typography as="h1" id="journey-title" tabIndex={-1} variant="display">
-                {copy.book.title}
+              <Typography as="h1" id="results-title" tabIndex={-1} variant="display">
+                {hasPrimaryResult ? copy.hero.title : copy.empty.title}
               </Typography>
-              <Typography className={styles.readerName}>{copy.book.reader}</Typography>
-              <Typography className={styles.coverLead} variant="lead">
-                {chapters.length ? copy.hero.lead : copy.empty.description}
+              <Typography className={styles.resultsLead} variant="lead">
+                {hasPrimaryResult ? copy.hero.lead : copy.empty.description}
               </Typography>
-            </div>
-            <dl className={styles.coverMeta}>
-              <div>
-                <dt>{copy.book.firstChapter}</dt>
-                <dd>
-                  {firstChapter
-                    ? dateFormatter.format(new Date(firstChapter.record.savedAt))
-                    : copy.book.noChapters}
-                </dd>
-              </div>
-              <div>
-                <dt>{copy.book.currentChapter}</dt>
-                <dd>
-                  {currentChapter
-                    ? `${currentChapter.number} · ${currentChapter.title}`
-                    : copy.book.noChapters}
-                </dd>
-              </div>
-            </dl>
-            <div className={styles.coverActions}>
-              {currentChapter ? (
-                <Button
-                  onClick={() => onOpenReading(currentChapter.record)}
-                  prominence="primary"
-                  size="large"
-                >
-                  {copy.latest.continue} <span aria-hidden="true">→</span>
-                </Button>
-              ) : (
-                <Button onClick={onExploreTarot} prominence="primary" size="large">
-                  {copy.empty.primary} <span aria-hidden="true">→</span>
-                </Button>
-              )}
-              <Button onClick={onOpenPath} prominence="quiet">
-                {copy.book.openPath}
-              </Button>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {chapters.length ? (
-        <nav aria-label={copy.book.chapterNavigation} className={styles.chapterNav}>
-          <Container size="wide">
-            <ol>
-              {chapters.map((chapter) => (
-                <li key={chapter.record.reading.id}>
-                  <button
-                    aria-current={
-                      chapter.record.reading.id === currentChapter?.record.reading.id
-                        ? 'true'
-                        : undefined
-                    }
-                    onClick={() => onOpenReading(chapter.record)}
-                    title={chapter.title}
-                    type="button"
+              <div className={styles.resultsActions}>
+                {currentChapter ? (
+                  <Button
+                    onClick={() => onOpenReading(currentChapter.record)}
+                    prominence="primary"
+                    size="large"
                   >
-                    <span>{chapter.number}</span>
-                    <strong>{chapter.title}</strong>
-                  </button>
-                </li>
-              ))}
-            </ol>
-          </Container>
-        </nav>
-      ) : null}
+                    {copy.latest.continue} <span aria-hidden="true">→</span>
+                  </Button>
+                ) : profile ? (
+                  <Button onClick={onOpenLatestPortrait} prominence="primary" size="large">
+                    {copy.quick.latestTitle} <span aria-hidden="true">→</span>
+                  </Button>
+                ) : (
+                  <Button onClick={onExploreTarot} prominence="primary" size="large">
+                    {copy.empty.primary} <span aria-hidden="true">→</span>
+                  </Button>
+                )}
+                {hasPrimaryResult ? (
+                  <Button onClick={onOpenPath} prominence="quiet">
+                    {copy.book.openPath}
+                  </Button>
+                ) : null}
+              </div>
+            </Stack>
 
-      <section aria-labelledby="today-title" className={styles.bookSection}>
-        <Container size="wide">
-          <div className={styles.openBook}>
-            <article className={styles.bookPage}>
-              <div className={styles.dailyCardVisual}>
-                <TarotCardView
-                  isRevealed={Boolean(dailyCard.openedAt)}
-                  locale={locale}
-                  onClick={dailyCard.openedAt ? undefined : openDailyCard}
-                  selection={dailyCard.selection}
-                  theme="cosmic-minimal"
-                  variant="history"
-                />
-              </div>
-              <div className={styles.pageCopy}>
-                <Typography as="p" variant="eyebrow">
-                  {copy.card.eyebrow}
-                </Typography>
-                <Typography as="h2" id="today-title" variant="heading-lg">
-                  {dailyCard.openedAt ? card.name[locale] : copy.card.title}
-                </Typography>
-                <div
-                  className={styles.dailyDetails}
-                  hidden={!dailyCard.openedAt}
-                  id="daily-card-details"
-                >
-                  {dailyCard.openedAt ? (
-                    <>
-                      <p>
-                        {dailyCard.selection.orientation === 'reversed'
-                          ? card.reversed[locale]
-                          : card.upright[locale]}
-                      </p>
-                      <p className={styles.dailyAction}>
-                        <strong>{copy.card.action}</strong>
-                        <span>{card.advice[locale]}</span>
-                      </p>
-                    </>
-                  ) : null}
-                </div>
-                <Button
-                  aria-controls="daily-card-details"
-                  aria-expanded={Boolean(dailyCard.openedAt)}
-                  disabled={Boolean(dailyCard.openedAt)}
-                  onClick={openDailyCard}
-                  prominence={dailyCard.openedAt ? 'secondary' : 'primary'}
-                >
-                  {dailyCard.openedAt ? copy.card.opened : copy.card.open}
-                </Button>
-              </div>
-            </article>
-
-            <article className={styles.bookPage}>
-              <div className={styles.pageNumber} aria-hidden="true">
-                {dateKey.slice(-2)}
-              </div>
-              <Typography as="p" variant="eyebrow">
-                {copy.numbers.title}
-              </Typography>
-              <Typography as="h2" variant="heading-lg">
-                {copy.hero.title}
-              </Typography>
-              <Typography className={styles.pageLead}>{copy.numbers.description}</Typography>
-              {numerology ? (
-                <dl className={styles.numberLines}>
-                  {[
-                    [copy.numbers.day, numerology.personalDay.value],
-                    [copy.numbers.month, numerology.personalMonth.value],
-                    [copy.numbers.year, numerology.personalYear.value],
-                  ].map(([label, value]) => (
-                    <div key={String(label)}>
-                      <dt>{label}</dt>
-                      <dd>{value}</dd>
-                    </div>
-                  ))}
-                </dl>
-              ) : (
-                <Typography className={styles.muted}>{copy.numbers.noDate}</Typography>
-              )}
-            </article>
+            <div aria-hidden="true" className={styles.resultsMark}>
+              <span />
+              <i />
+              <b>{chapters.length || (profile ? 1 : 0)}</b>
+            </div>
           </div>
         </Container>
       </section>
 
       {currentChapter ? (
-        <section aria-labelledby="current-chapter-title" className={styles.currentChapterSection}>
+        <section aria-labelledby="latest-result-title" className={styles.latestResultSection}>
           <Container size="wide">
-            <article className={styles.currentChapter}>
-              <div className={styles.chapterKicker}>
-                <span>{copy.book.currentChapter}</span>
-                <b>{currentChapter.number}</b>
-              </div>
-              <div className={styles.chapterEditorial}>
-                <Typography as="h2" id="current-chapter-title" variant="display">
+            <article className={styles.latestResult}>
+              <div>
+                <Typography as="p" variant="eyebrow">
+                  {copy.latest.title}
+                </Typography>
+                <Typography as="h2" id="latest-result-title" variant="heading-lg">
                   {currentChapter.title}
                 </Typography>
-                <div className={styles.chapterMetadata}>
-                  <span>{currentChapter.readingType}</span>
-                  <span>{currentChapter.dominantTheme}</span>
-                </div>
-                <blockquote>“{currentChapter.quote}”</blockquote>
-                <Typography className={styles.chapterSummary} variant="lead">
+                <Typography className={styles.resultsLead}>
                   {currentChapter.record.reading.summary}
                 </Typography>
-                <div className={styles.chapterActions}>
-                  <Button onClick={() => onOpenReading(currentChapter.record)} prominence="primary">
-                    {copy.path.open}
-                  </Button>
-                  <Button
-                    aria-pressed={currentChapter.record.favorite}
-                    className={styles.bookmarkButton}
-                    onClick={() => toggleBookmark(currentChapter.record)}
-                    prominence="quiet"
-                  >
-                    <span aria-hidden="true" className={styles.bookmarkShape} />
-                    {currentChapter.record.favorite
-                      ? copy.path.removeBookmark
-                      : copy.path.addBookmark}
-                  </Button>
-                </div>
               </div>
-              {currentChapterCard ? (
-                <div className={styles.chapterCardVisual}>
-                  <TarotCardView
-                    isRevealed
-                    locale={locale}
-                    selection={currentChapterCard}
-                    theme={currentChapter.record.reading.context.deckTheme}
-                    variant="history"
-                  />
-                </div>
-              ) : null}
+              <span className={styles.resultNumber} aria-hidden="true">
+                {currentChapter.number}
+              </span>
             </article>
           </Container>
         </section>
-      ) : (
-        <section className={styles.emptyChapter}>
-          <Container size="default">
-            <Stack align="center" gap="lg">
-              <span aria-hidden="true" className={styles.emptyMonogram}>
-                I
-              </span>
-              <Typography as="h2" variant="heading-lg">
-                {copy.empty.title}
-              </Typography>
-              <Typography>{copy.empty.description}</Typography>
-              <Button onClick={onExploreTarot} prominence="primary">
-                {copy.empty.primary}
-              </Button>
-            </Stack>
-          </Container>
-        </section>
-      )}
+      ) : null}
 
-      <section aria-labelledby="year-book-title" className={styles.yearBookSection}>
+      <section aria-labelledby="today-title" className={styles.todaySection}>
         <Container size="wide">
-          <div className={styles.yearBookPlaceholder}>
-            <span aria-hidden="true" className={styles.yearBookMark}>
-              MMXXVI
-            </span>
-            <Stack gap="md">
+          <div className={styles.todayGrid}>
+            <div className={styles.resultsDailyCardVisual}>
+              <TarotCardView
+                isRevealed={Boolean(dailyCard.openedAt)}
+                locale={locale}
+                onClick={dailyCard.openedAt ? undefined : openDailyCard}
+                selection={dailyCard.selection}
+                theme="cosmic-minimal"
+                variant="history"
+              />
+            </div>
+            <Stack align="start" gap="md">
               <Typography as="p" variant="eyebrow">
-                {copy.yearBook.eyebrow}
+                {copy.card.eyebrow}
               </Typography>
-              <Typography as="h2" id="year-book-title" variant="heading-lg">
-                {copy.yearBook.title}
+              <Typography as="h2" id="today-title" variant="heading-lg">
+                {dailyCard.openedAt ? card.name[locale] : copy.card.title}
               </Typography>
-              <Typography>{copy.yearBook.description}</Typography>
+              {dailyCard.openedAt ? (
+                <>
+                  <Typography className={styles.resultsLead}>
+                    {dailyCard.selection.orientation === 'reversed'
+                      ? card.reversed[locale]
+                      : card.upright[locale]}
+                  </Typography>
+                  <Typography className={styles.dailySuggestion}>
+                    <strong>{copy.card.action}</strong>
+                    <span>{card.advice[locale]}</span>
+                  </Typography>
+                </>
+              ) : (
+                <Button onClick={openDailyCard} prominence="secondary">
+                  {copy.card.open}
+                </Button>
+              )}
             </Stack>
           </div>
         </Container>
       </section>
 
-      <section aria-label={copy.quick.title} className={styles.closingNavigation}>
+      <nav aria-label={copy.quick.title} className={styles.simpleNavigation}>
         <Container size="wide">
           <div>
-            <Button onClick={onOpenPath} prominence="secondary">
-              {copy.quick.pathTitle}
-            </Button>
             <Button onClick={onExploreTarot} prominence="quiet">
               {copy.latest.explore}
             </Button>
-            {profile ? (
+            {profile && currentChapter ? (
               <Button onClick={onOpenLatestPortrait} prominence="quiet">
-                {profile.title}
+                {copy.quick.latestTitle}
               </Button>
             ) : null}
           </div>
         </Container>
-      </section>
+      </nav>
 
       <p aria-atomic="true" aria-live="polite" className={styles.srOnly} role="status">
         {announcement}

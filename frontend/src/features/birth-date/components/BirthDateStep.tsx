@@ -37,16 +37,16 @@ const copyByLocale: Record<
     errors: {
       future: 'Birth date cannot be in the future.',
       invalid: 'Check the date and try again.',
-      'minimum-age': 'This journey is currently available only to adults.',
+      'minimum-age': 'This feature is currently available only to adults.',
       required: 'Choose a birth date or opt out of using it.',
     },
     formLabel: 'Birth date',
     formLead:
-      'Astrological and numerological observations will be marked as separate interpretations, not established facts.',
+      'Astrology and numerology readings are shown separately and never presented as established facts.',
     formTitle: 'Choose a date',
     introduction: {
       badge: 'Final step',
-      lead: 'It is used only for the numerology and zodiac layers of the portrait. Birth time is not required.',
+      lead: 'It is used only for optional numerology and zodiac readings. Birth time is not required.',
       title: 'Add your birth date',
     },
     minimumAge: (years) => `The minimum age for this preview is ${years}.`,
@@ -55,7 +55,7 @@ const copyByLocale: Record<
       title: 'Your date stays under your control',
     },
     skip: {
-      description: 'The portrait will be created without astrology and numerology layers.',
+      description: 'Your portrait will be created without astrology and numerology readings.',
       title: 'I do not want to use my birth date',
     },
   },
@@ -65,16 +65,16 @@ const copyByLocale: Record<
     errors: {
       future: 'Дата рождения не может быть в будущем.',
       invalid: 'Проверьте дату и попробуйте ещё раз.',
-      'minimum-age': 'Сейчас пройти этот путь можно только совершеннолетним пользователям.',
+      'minimum-age': 'Сейчас этот раздел доступен только совершеннолетним пользователям.',
       required: 'Выберите дату рождения или отметьте отказ от её использования.',
     },
     formLabel: 'Дата рождения',
     formLead:
-      'Астрологические и нумерологические выводы будут помечены как отдельные интерпретации, а не как установленные факты.',
+      'Астрологический и нумерологический разборы будут показаны отдельно и не как установленные факты.',
     formTitle: 'Выберите дату',
     introduction: {
       badge: 'Последний шаг',
-      lead: 'Она нужна только для нумерологического и зодиакального слоёв портрета. Время рождения сейчас не требуется.',
+      lead: 'Она нужна только для дополнительных разборов по числам и знаку зодиака. Время рождения не требуется.',
       title: 'Добавьте дату рождения',
     },
     minimumAge: (years) => `Для текущей предварительной версии минимальный возраст — ${years} лет.`,
@@ -84,7 +84,7 @@ const copyByLocale: Record<
       title: 'Дата остаётся под вашим контролем',
     },
     skip: {
-      description: 'Портрет будет создан без астрологического и нумерологического слоёв.',
+      description: 'Портрет будет создан без астрологического и нумерологического разборов.',
       title: 'Я не хочу использовать дату рождения',
     },
   },
@@ -94,16 +94,16 @@ const copyByLocale: Record<
     errors: {
       future: 'Дата народження не може бути в майбутньому.',
       invalid: 'Перевірте дату й спробуйте ще раз.',
-      'minimum-age': 'Наразі цей шлях доступний лише повнолітнім користувачам.',
+      'minimum-age': 'Наразі цей розділ доступний лише повнолітнім користувачам.',
       required: 'Виберіть дату народження або відмовтеся від її використання.',
     },
     formLabel: 'Дата народження',
     formLead:
-      'Астрологічні та нумерологічні висновки будуть позначені як окремі інтерпретації, а не встановлені факти.',
+      'Астрологічний і нумерологічний розбори буде показано окремо, а не як встановлені факти.',
     formTitle: 'Виберіть дату',
     introduction: {
       badge: 'Останній крок',
-      lead: 'Вона потрібна лише для нумерологічного й зодіакального шарів портрета. Час народження зараз не потрібен.',
+      lead: 'Вона потрібна лише для додаткових розборів за числами й знаком зодіаку. Час народження не потрібен.',
       title: 'Додайте дату народження',
     },
     minimumAge: (years) => `Мінімальний вік для цієї попередньої версії — ${years} років.`,
@@ -113,7 +113,7 @@ const copyByLocale: Record<
       title: 'Дата залишається під вашим контролем',
     },
     skip: {
-      description: 'Портрет буде створено без астрологічного й нумерологічного шарів.',
+      description: 'Портрет буде створено без астрологічного й нумерологічного розборів.',
       title: 'Я не хочу використовувати дату народження',
     },
   },

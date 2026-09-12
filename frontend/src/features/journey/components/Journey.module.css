@@ -15,6 +15,226 @@
     var(--color-marketing-canvas);
 }
 
+.resultsHero {
+  padding-block: var(--page-hero-padding-block);
+}
+
+.resultsHeroFrame {
+  position: relative;
+  display: grid;
+  min-block-size: clamp(23rem, 42vw, 32rem);
+  align-items: center;
+  padding: var(--page-hero-padding);
+  border: var(--book-rule);
+  border-radius: var(--book-radius);
+  background:
+    radial-gradient(circle at 84% 20%, var(--color-marketing-glow-primary), transparent 32%),
+    var(--color-marketing-surface);
+  gap: var(--page-hero-gap);
+  overflow: hidden;
+}
+
+.resultsHeroCopy {
+  position: relative;
+  z-index: 1;
+  max-inline-size: 45rem;
+}
+
+.resultsHeroCopy h1 {
+  max-inline-size: 13ch;
+  text-wrap: balance;
+}
+
+.resultsLead {
+  max-inline-size: 58ch;
+  color: var(--color-text-muted);
+}
+
+.resultsActions,
+.simpleNavigation > div > div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.resultsMark {
+  position: relative;
+  display: grid;
+  inline-size: min(100%, 18rem);
+  aspect-ratio: 1;
+  place-items: center;
+  margin-inline: auto;
+  border: var(--book-rule);
+  border-radius: 50%;
+  color: var(--color-marketing-accent-warm);
+}
+
+.resultsMark::before,
+.resultsMark::after,
+.resultsMark span,
+.resultsMark i {
+  position: absolute;
+  content: '';
+}
+
+.resultsMark::before {
+  inline-size: 68%;
+  aspect-ratio: 0.7;
+  border: 0.0625rem solid currentColor;
+  border-radius: var(--radius-lg);
+  transform: rotate(-7deg);
+}
+
+.resultsMark::after {
+  inline-size: 78%;
+  aspect-ratio: 1;
+  border: 0.0625rem solid var(--color-marketing-accent-secondary);
+  border-radius: 44% 56% 50% 50%;
+  transform: rotate(18deg);
+}
+
+.resultsMark span,
+.resultsMark i {
+  inline-size: 0.6rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.resultsMark span {
+  inset: 12% auto auto 28%;
+}
+
+.resultsMark i {
+  inset: auto 18% 25% auto;
+}
+
+.resultsMark b {
+  font-family: var(--font-family-display);
+  font-size: clamp(3rem, 7vw, 5rem);
+  font-weight: 400;
+}
+
+.latestResultSection,
+.todaySection {
+  padding-block: var(--page-section-padding-block);
+}
+
+.latestResultSection + .todaySection {
+  padding-block-start: 0;
+}
+
+.latestResult {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  padding-block: var(--space-6);
+  border-block: var(--book-rule);
+  gap: var(--space-5);
+}
+
+.latestResult > div {
+  display: grid;
+  max-inline-size: 48rem;
+  gap: var(--space-3);
+}
+
+.resultNumber {
+  color: color-mix(in srgb, var(--color-marketing-accent-warm) 42%, transparent);
+  font-family: var(--font-family-display);
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.8;
+}
+
+.todayGrid {
+  display: grid;
+  align-items: center;
+  padding: var(--page-surface-padding);
+  border: var(--book-rule);
+  border-radius: var(--book-radius);
+  background: var(--color-marketing-surface);
+  gap: var(--page-hero-gap);
+}
+
+.resultsDailyCardVisual {
+  display: grid;
+  min-block-size: 16rem;
+  place-items: center;
+}
+
+.dailySuggestion {
+  display: grid;
+  padding-inline-start: var(--space-4);
+  border-inline-start: 0.125rem solid var(--color-marketing-accent-warm);
+  gap: var(--space-1);
+}
+
+.dailySuggestion span {
+  color: var(--color-text-muted);
+}
+
+.simpleNavigation {
+  padding-block: 0 var(--page-ending-padding-block);
+}
+
+@media (min-width: 56rem) {
+  .resultsHeroFrame,
+  .todayGrid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(17rem, 0.8fr);
+  }
+
+  .todayGrid {
+    grid-template-columns: minmax(15rem, 0.75fr) minmax(0, 1.25fr);
+  }
+}
+
+@media (max-width: 40rem) {
+  .resultsHero {
+    padding-block: var(--space-3) var(--space-5);
+  }
+
+  .resultsHeroFrame {
+    min-block-size: 0;
+    padding: var(--space-5);
+  }
+
+  .resultsHeroCopy {
+    gap: var(--space-4);
+  }
+
+  .resultsHeroCopy h1 {
+    max-inline-size: 17ch;
+    font-size: clamp(2.2rem, 9vw, 2.75rem);
+    line-height: 1.08;
+  }
+
+  .resultsMark {
+    display: none;
+  }
+
+  .latestResultSection,
+  .todaySection {
+    padding-block: var(--space-5);
+  }
+
+  .latestResult {
+    grid-template-columns: 1fr;
+  }
+
+  .resultNumber {
+    grid-row: 1;
+  }
+
+  .todayGrid {
+    padding: var(--space-5);
+  }
+
+  .resultsDailyCardVisual {
+    min-block-size: 13rem;
+  }
+}
+
 .coverSection,
 .pathHero {
   padding-block: var(--page-hero-padding-block);
@@ -148,15 +368,15 @@
   max-inline-size: 11ch;
   font-size: clamp(3rem, 10vw, 7rem);
   line-height: 0.9;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.018em;
 }
 
 .readerName {
   color: var(--color-marketing-accent-warm);
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-body);
   font-size: var(--font-size-lg);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.025em;
 }
 
 .coverLead,
@@ -245,7 +465,7 @@
   transition:
     background var(--motion-return-duration),
     color var(--motion-return-duration),
-    transform var(--motion-focus-duration) var(--motion-easing-discover);
+    border-color var(--motion-focus-duration);
 }
 
 .chapterNav button:hover,
@@ -254,7 +474,6 @@
   border-color: var(--color-marketing-border-strong);
   background: var(--surface-accent-subtle);
   color: var(--color-marketing-accent);
-  transform: translateY(var(--motion-surface-lift-distance));
 }
 
 .chapterNav button:focus-visible {
@@ -266,7 +485,7 @@
   padding-inline-end: var(--space-2);
   border-inline-end: var(--book-rule);
   color: var(--color-marketing-accent-warm);
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
 }
 
 .chapterNav button strong {
@@ -282,6 +501,11 @@
 .yearBookSection,
 .pathSection {
   padding-block: var(--page-section-padding-block);
+}
+
+.pathSection {
+  --history-frame-padding: clamp(var(--space-4), 3vw, var(--space-7));
+  padding-block-start: var(--space-4);
 }
 
 .openBook {
@@ -363,7 +587,7 @@
   inset: auto clamp(var(--space-4), 6vw, var(--space-8)) clamp(var(--space-3), 4vw, var(--space-6))
     auto;
   color: color-mix(in srgb, var(--color-marketing-accent-warm) 15%, transparent);
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
   font-size: clamp(7rem, 23vw, 15rem);
   line-height: 0.75;
   pointer-events: none;
@@ -392,7 +616,7 @@
 .numberLines dd {
   margin: 0;
   color: var(--color-marketing-accent-warm);
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
   font-size: var(--font-size-2xl);
 }
 
@@ -419,13 +643,12 @@
   align-content: start;
   color: var(--color-text-muted);
   gap: var(--space-2);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.025em;
 }
 
 .chapterKicker b {
   color: var(--color-marketing-accent-warm);
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
   font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 400;
   line-height: 1;
@@ -480,9 +703,9 @@
   border-inline-start: 0.125rem solid var(--color-marketing-accent-warm);
   margin: 0;
   color: var(--color-text);
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
   font-size: clamp(var(--font-size-xl), 3vw, var(--font-size-3xl));
-  font-style: italic;
+  font-style: normal;
   line-height: 1.35;
   overflow-wrap: break-word;
 }
@@ -498,14 +721,11 @@
   background: var(--color-marketing-accent-warm);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 72%, 0 100%);
   opacity: 0.62;
-  transition:
-    opacity var(--motion-return-duration),
-    transform var(--motion-transform-duration) var(--motion-easing-discover);
+  transition: opacity var(--motion-return-duration);
 }
 
 .bookmarkButton[aria-pressed='true'] .bookmarkShape {
   opacity: 1;
-  transform: translateY(var(--motion-distance-sm));
 }
 
 .emptyChapter,
@@ -527,7 +747,7 @@
   border: var(--book-rule);
   border-radius: 50%;
   color: var(--color-marketing-accent-warm);
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
   font-size: clamp(3rem, 10vw, 5rem);
   box-shadow: inset 0 0 0 var(--space-2) var(--color-marketing-canvas);
 }
@@ -557,9 +777,9 @@
 
 .yearBookMark {
   color: color-mix(in srgb, var(--color-marketing-accent-warm) 32%, transparent);
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
   font-size: clamp(3rem, 10vw, 8rem);
-  letter-spacing: 0.05em;
+  letter-spacing: 0;
   line-height: 0.8;
 }
 
@@ -580,16 +800,28 @@
 .bookTimeline {
   position: relative;
   display: grid;
-  max-inline-size: 74rem;
-  padding: 0;
+  inline-size: 100%;
+  max-inline-size: 78rem;
+  padding: 0 var(--history-frame-padding);
+  border: var(--book-rule);
+  border-radius: var(--book-radius);
   margin: 0 auto;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-marketing-accent) 5%, transparent),
+      transparent 42%
+    ),
+    var(--color-marketing-surface);
+  box-shadow: var(--shadow-low);
   gap: 0;
   list-style: none;
 }
 
 .bookTimeline::before {
   position: absolute;
-  inset: 0 auto 0 clamp(1.1rem, 4vw, 3.75rem);
+  inset: var(--space-7) auto var(--space-7)
+    calc(var(--history-frame-padding) + clamp(1.1rem, 4vw, 3.75rem));
   inline-size: 0.0625rem;
   background: linear-gradient(
     var(--color-marketing-accent-warm),
@@ -619,7 +851,7 @@
   gap: var(--space-5);
   transition:
     border-color var(--motion-return-duration),
-    transform var(--motion-card-hover-duration) var(--motion-interaction-easing);
+    background-color var(--motion-return-duration);
 }
 
 .chapterEntry:hover article,
@@ -627,7 +859,7 @@
 .interludeEntry:hover article,
 .interludeEntry:focus-within article {
   border-color: var(--color-marketing-border-strong);
-  transform: translateX(var(--motion-distance-sm));
+  background: var(--surface-accent-subtle);
 }
 
 .chapterEntry header {
@@ -662,7 +894,7 @@
   border-radius: 50%;
   background: var(--color-marketing-canvas);
   color: var(--color-marketing-accent-warm);
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
   font-size: var(--font-size-sm);
   box-shadow: 0 0 0 var(--space-2) var(--color-marketing-canvas);
 }
@@ -679,7 +911,7 @@
   grid-area: 1 / 2 / span 5 / 2;
   align-self: center;
   color: color-mix(in srgb, var(--color-marketing-accent) 15%, transparent);
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-display);
   font-size: clamp(5rem, 15vw, 10rem);
   line-height: 0.8;
   pointer-events: none;
@@ -791,6 +1023,10 @@
 }
 
 @media (max-width: 47.99rem) {
+  .pathSection {
+    --history-frame-padding: var(--space-3);
+  }
+
   .pathHeroGrid > button {
     justify-self: start;
   }
@@ -841,8 +1077,9 @@
   }
 
   .coverCopy h1 {
-    max-inline-size: 9ch;
-    font-size: clamp(2.7rem, 16vw, 4rem);
+    max-inline-size: 11ch;
+    font-size: clamp(2.35rem, 11.5vw, 3.25rem);
+    line-height: 1.02;
   }
 
   .coverMeta div {
@@ -885,7 +1122,7 @@
   }
 
   .chapterEntry h2 {
-    font-size: clamp(2rem, 10vw, 3rem);
+    font-size: clamp(1.875rem, 8.5vw, 2.5rem);
   }
 }
 

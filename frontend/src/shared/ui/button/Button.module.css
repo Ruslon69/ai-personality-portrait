@@ -13,31 +13,31 @@
   background: color-mix(in srgb, var(--color-surface-raised) 82%, transparent);
   color: var(--color-text);
   cursor: pointer;
+  font-size: 0.9375rem;
   font-weight: var(--font-weight-medium);
-  line-height: var(--line-height-tight);
+  letter-spacing: 0.005em;
+  line-height: 1.2;
   text-align: center;
   text-decoration: none;
   overflow-wrap: break-word;
   white-space: normal;
-  transform: scale(1);
+  -webkit-tap-highlight-color: transparent;
   transition:
     background-color var(--transition-duration-fast) var(--transition-easing-standard),
     border-color var(--transition-duration-fast) var(--transition-easing-standard),
     box-shadow var(--transition-duration-fast) var(--transition-easing-standard),
     color var(--transition-duration-fast) var(--transition-easing-standard),
-    transform var(--transition-duration-fast) var(--transition-easing-standard);
+    opacity var(--transition-duration-fast) var(--transition-easing-standard);
 }
 
 .root:hover:not(:disabled) {
   border-color: var(--color-border-strong);
-  background: var(--color-surface-raised);
-  box-shadow: var(--shadow-low);
-  transform: scale(1.008);
+  background: var(--color-action-secondary-hover);
 }
 
 .root:active:not(:disabled) {
   box-shadow: var(--shadow-none);
-  transform: scale(0.985);
+  opacity: 0.9;
 }
 
 .root:disabled {
@@ -51,20 +51,28 @@
   background: var(--color-action-primary);
   color: var(--color-on-action-primary);
   font-weight: var(--font-weight-semibold);
-  box-shadow: var(--shadow-marketing-glow);
+  box-shadow:
+    0 0.0625rem 0 color-mix(in srgb, var(--color-on-action-primary) 18%, transparent) inset,
+    0 0.5rem 1.25rem color-mix(in srgb, var(--color-action-primary) 20%, transparent);
 }
 
 .root[data-prominence='primary']:hover:not(:disabled) {
   border-color: var(--color-action-primary-hover);
   background: var(--color-action-primary-hover);
-  box-shadow: var(--shadow-marketing-glow);
-  transform: scale(1.012);
+  box-shadow:
+    0 0.0625rem 0 color-mix(in srgb, var(--color-on-action-primary) 20%, transparent) inset,
+    0 0.625rem 1.5rem color-mix(in srgb, var(--color-action-primary) 24%, transparent);
+}
+
+.root[data-prominence='primary']:active:not(:disabled) {
+  box-shadow: 0 0.25rem 0.75rem color-mix(in srgb, var(--color-action-primary) 18%, transparent);
+  opacity: 0.94;
 }
 
 .root[data-prominence='secondary'] {
-  border-color: color-mix(in srgb, var(--color-border-strong) 42%, var(--color-border));
-  background: var(--color-action-secondary);
-  box-shadow: 0 0.0625rem 0 color-mix(in srgb, var(--color-text) 5%, transparent);
+  border-color: color-mix(in srgb, var(--color-border-strong) 50%, var(--color-border));
+  background: transparent;
+  box-shadow: none;
 }
 
 .root[data-prominence='secondary']:hover:not(:disabled) {
@@ -86,15 +94,24 @@
 }
 
 .root[data-prominence='quiet'] {
+  min-block-size: 2.5rem;
+  padding: var(--space-2);
   border-color: transparent;
   background: transparent;
+  color: var(--color-text-muted);
   box-shadow: none;
 }
 
+.root[data-prominence='quiet']:hover:not(:disabled) {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--color-surface-raised) 64%, transparent);
+  color: var(--color-text);
+}
+
 .root[data-size='large'] {
-  min-block-size: 3.5rem;
+  min-block-size: 3.375rem;
   padding-inline: calc(var(--space-6) + var(--space-1));
-  font-size: var(--font-size-md);
+  font-size: 1rem;
   font-weight: var(--font-weight-semibold);
 }
 
@@ -108,14 +125,6 @@
 @media (max-width: 29.999rem) {
   .root[data-size='large'] {
     inline-size: 100%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .root,
-  .root:hover:not(:disabled),
-  .root:active:not(:disabled) {
-    transform: none;
   }
 }
 

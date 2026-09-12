@@ -33,7 +33,7 @@ const contextLabels: Readonly<Record<Locale, Readonly<Record<string, string>>>> 
     year: 'текущего цикла',
     building: 'постепенного движения',
     workFocus: 'текущих дел',
-    zodiac: 'символического зодиакального ракурса',
+    zodiac: 'данных о знаке зодиака',
     practical: 'небольшого проверяемого шага',
   },
   en: {
@@ -49,7 +49,7 @@ const contextLabels: Readonly<Record<Locale, Readonly<Record<string, string>>>> 
     year: 'the current cycle',
     building: 'gradual movement',
     workFocus: 'current work',
-    zodiac: 'the symbolic zodiac lens',
+    zodiac: 'the zodiac-sign details',
     practical: 'one small testable step',
   },
   uk: {
@@ -65,7 +65,7 @@ const contextLabels: Readonly<Record<Locale, Readonly<Record<string, string>>>> 
     year: 'поточного циклу',
     building: 'поступового руху',
     workFocus: 'поточних справ',
-    zodiac: 'символічного зодіакального ракурсу',
+    zodiac: 'відомостей про знак зодіаку',
     practical: 'невеликого кроку для перевірки',
   },
 };

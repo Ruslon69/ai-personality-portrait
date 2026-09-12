@@ -65,12 +65,12 @@ function phrase(
   hasInterpretations?: boolean,
 ) {
   if (locale === 'en') {
-    return `You combine ${primary} with ${secondary}${interest ? `, especially when exploring ${interest}` : ''}${hasInterpretations ? ' — with optional symbolic layers kept separate' : ''}.`;
+    return `You combine ${primary} with ${secondary}${interest ? `, especially when exploring ${interest}` : ''}${hasInterpretations ? ' — with optional birth-date insights shown separately' : ''}.`;
   }
   if (locale === 'uk') {
-    return `Ви поєднуєте ${primary} і ${secondary}${interest ? `, особливо коли досліджуєте ${interest}` : ''}${hasInterpretations ? ' — а символічні шари залишаються окремою перспективою' : ''}.`;
+    return `Ви поєднуєте ${primary} і ${secondary}${interest ? `, особливо коли досліджуєте ${interest}` : ''}${hasInterpretations ? ' — а доповнення за датою народження показано окремо' : ''}.`;
   }
-  return `Вы сочетаете ${primary} и ${secondary}${interest ? `, особенно когда речь идёт про ${interest}` : ''}${hasInterpretations ? ' — а символические слои остаются отдельным ракурсом' : ''}.`;
+  return `Вы сочетаете ${primary} и ${secondary}${interest ? `, особенно когда вас интересует ${interest}` : ''}${hasInterpretations ? ' — а дополнение по дате рождения показано отдельно' : ''}.`;
 }
 
 export function createHeroPhrase(input: PatternCompositionInput) {
@@ -91,60 +91,96 @@ export function createHeroPhrase(input: PatternCompositionInput) {
 
 const revealHeadlines: Record<ProfileLocale, Record<TraitId, string>> = {
   en: {
-    adaptability: 'You change course without losing direction',
-    autonomy: 'Freedom works with an inner compass',
-    connection: 'You notice connection before perfect words',
-    directness: 'Clarity is how you protect connection',
-    initiative: 'An idea quickly becomes your first move',
-    openness: 'You build your answer from new angles',
-    practicality: 'You test ideas where action begins',
-    reflection: 'You notice more before making your move',
-    structure: 'You turn uncertainty into a clear route',
+    adaptability: 'You can change your approach and keep the goal',
+    autonomy: 'You prefer to make decisions independently',
+    connection: 'Trust matters to you in relationships',
+    directness: 'Clear words help you protect relationships',
+    initiative: 'You turn ideas into first steps quickly',
+    openness: 'You consider more than one possible answer',
+    practicality: 'You prefer ideas that can be tested',
+    reflection: 'You take time to understand before acting',
+    structure: 'A clear plan helps with uncertainty',
   },
   ru: {
-    adaptability: 'Вы меняете маршрут, не теряя направления',
-    autonomy: 'Свобода работает вместе с внутренней опорой',
-    connection: 'Вы замечаете контакт раньше готовых формулировок',
-    directness: 'Ясность помогает вам беречь контакт',
-    initiative: 'Идея быстро становится вашим первым действием',
-    openness: 'Вы собираете свой ответ из новых ракурсов',
-    practicality: 'Вы проверяете идеи там, где начинается действие',
-    reflection: 'Вы замечаете больше, прежде чем сделать ход',
-    structure: 'Вы превращаете неопределённость в понятный маршрут',
+    adaptability: 'Вы умеете менять способ, сохраняя цель',
+    autonomy: 'Вам важно принимать решения самостоятельно',
+    connection: 'В отношениях вам особенно важно доверие',
+    directness: 'Ясные слова помогают вам беречь отношения',
+    initiative: 'Вы быстро превращаете идеи в первые шаги',
+    openness: 'Вы рассматриваете больше одного возможного ответа',
+    practicality: 'Вам ближе идеи, которые можно проверить',
+    reflection: 'Перед действием вам важно разобраться',
+    structure: 'Понятный план помогает вам при неопределённости',
   },
   uk: {
-    adaptability: 'Ви змінюєте маршрут, не втрачаючи напрямку',
-    autonomy: 'Свобода працює разом із внутрішньою опорою',
-    connection: 'Ви помічаєте контакт раніше за готові слова',
-    directness: 'Ясність допомагає вам берегти контакт',
-    initiative: 'Ідея швидко стає вашою першою дією',
-    openness: 'Ви збираєте власну відповідь із нових ракурсів',
-    practicality: 'Ви перевіряєте ідеї там, де починається дія',
-    reflection: 'Ви помічаєте більше, перш ніж діяти',
-    structure: 'Ви перетворюєте невизначеність на зрозумілий маршрут',
+    adaptability: 'Ви вмієте змінювати спосіб, зберігаючи мету',
+    autonomy: 'Для вас важливо приймати рішення самостійно',
+    connection: 'У стосунках для вас особливо важлива довіра',
+    directness: 'Чіткі слова допомагають вам берегти стосунки',
+    initiative: 'Ви швидко перетворюєте ідеї на перші кроки',
+    openness: 'Ви розглядаєте більше однієї можливої відповіді',
+    practicality: 'Вам ближчі ідеї, які можна перевірити',
+    reflection: 'Перед дією вам важливо розібратися',
+    structure: 'Зрозумілий план допомагає вам у невизначеності',
   },
 };
 
 const contrastHeadlines: Record<string, Record<ProfileLocale, string>> = {
   'adaptability:structure': {
-    en: 'Freedom meets a system that can still move',
-    ru: 'Свобода встречается с системой, которая умеет меняться',
-    uk: 'Свобода зустрічається із системою, що вміє змінюватися',
+    en: 'You combine a clear plan with flexibility',
+    ru: 'Вы сочетаете понятный план с гибкостью',
+    uk: 'Ви поєднуєте зрозумілий план із гнучкістю',
   },
   'initiative:reflection': {
-    en: 'You pause carefully — then move with purpose',
-    ru: 'Вы берёте паузу — а затем действуете точно',
-    uk: 'Ви берете паузу — а потім дієте точно',
+    en: 'You think first and then act',
+    ru: 'Сначала вы думаете, а затем действуете',
+    uk: 'Спочатку ви думаєте, а потім дієте',
   },
   'autonomy:connection': {
-    en: 'Independence and closeness both have a place',
-    ru: 'Самостоятельность и близость находят общий ритм',
-    uk: 'Самостійність і близькість знаходять спільний ритм',
+    en: 'You need both independence and closeness',
+    ru: 'Вам нужны и самостоятельность, и близость',
+    uk: 'Вам потрібні й самостійність, і близькість',
   },
   'openness:practicality': {
     en: 'Curiosity becomes useful through a small experiment',
     ru: 'Любопытство становится полезным через небольшой эксперимент',
     uk: 'Цікавість стає корисною через невеликий експеримент',
+  },
+};
+
+const traitSummaries: Record<ProfileLocale, Record<TraitId, string>> = {
+  en: {
+    adaptability: 'When circumstances change, you can adjust without losing sight of the goal.',
+    autonomy: 'You prefer to make your own decisions and need room to act independently.',
+    connection: 'You feel most comfortable in relationships with trust and genuine attention.',
+    directness: 'You value clear words and prefer to address important things openly.',
+    initiative: 'Once an idea feels worthwhile, you are ready to take the first step.',
+    openness: 'You consider several possibilities before settling on one answer.',
+    practicality: 'You trust ideas more when you can test them in real life.',
+    reflection: 'You tend to understand a situation before you act.',
+    structure: 'A clear plan helps you make decisions when there is uncertainty.',
+  },
+  ru: {
+    adaptability: 'Когда обстоятельства меняются, вы умеете перестроиться и не потерять цель.',
+    autonomy: 'Вы предпочитаете принимать решения сами и цените свободу действий.',
+    connection: 'В отношениях вам особенно важны доверие и искреннее внимание.',
+    directness: 'Вы цените ясные слова и предпочитаете говорить о важном прямо.',
+    initiative: 'Если идея кажется стоящей, вы готовы сделать первый шаг.',
+    openness: 'Перед выбором вы рассматриваете несколько возможных вариантов.',
+    practicality: 'Вы больше доверяете идеям, которые можно проверить на деле.',
+    reflection: 'Обычно вам важно сначала разобраться, а потом действовать.',
+    structure: 'Понятный план помогает вам принимать решения в неопределённости.',
+  },
+  uk: {
+    adaptability: 'Коли обставини змінюються, ви вмієте перебудуватися й не втратити мету.',
+    autonomy: 'Ви віддаєте перевагу самостійним рішенням і цінуєте свободу дій.',
+    connection: 'У стосунках для вас особливо важливі довіра та щира увага.',
+    directness: 'Ви цінуєте чіткі слова й волієте говорити про важливе прямо.',
+    initiative: 'Якщо ідея здається вартою уваги, ви готові зробити перший крок.',
+    openness: 'Перед вибором ви розглядаєте кілька можливих варіантів.',
+    practicality: 'Ви більше довіряєте ідеям, які можна перевірити на практиці.',
+    reflection: 'Зазвичай вам важливо спочатку розібратися, а потім діяти.',
+    structure: 'Зрозумілий план допомагає вам приймати рішення в невизначеності.',
   },
 };
 
@@ -157,17 +193,12 @@ export function createRevealCopy(input: PatternCompositionInput, hasContextualCo
     hasContextualContrast && contrastHeadlines[pairKey]
       ? contrastHeadlines[pairKey][input.locale]
       : revealHeadlines[input.locale][primary.id];
-  const primaryLabel = getTraitTemplate(primary.id, input.locale).label;
-  const secondaryLabel = getTraitTemplate(secondary.id, input.locale).label;
-  const interest = input.interests[0]
-    ? getInterestLabel(input.interests[0], input.locale)
-    : undefined;
-  const lead =
-    input.locale === 'en'
-      ? `${primaryLabel} and ${secondaryLabel} repeat across your choices${interest ? `, while ${interest} gives the examples a personal direction` : ''}. Open the portrait to see where they reinforce each other and where context changes the picture.`
-      : input.locale === 'uk'
-        ? `${primaryLabel} і ${secondaryLabel} повторюються у ваших виборах${interest ? `, а ${interest} надає прикладам особистого напрямку` : ''}. Відкрийте портрет, щоб побачити, де вони підсилюють одне одного, а де важливий контекст.`
-        : `${primaryLabel} и ${secondaryLabel} повторяются в ваших выборах${interest ? `, а ${interest} задаёт примерам личное направление` : ''}. Откройте портрет, чтобы увидеть, где они усиливают друг друга, а где важен контекст.`;
+  const lead = [
+    traitSummaries[input.locale][primary.id],
+    secondary.id === primary.id ? '' : traitSummaries[input.locale][secondary.id],
+  ]
+    .filter(Boolean)
+    .join(' ');
   return { headline, lead };
 }
 

@@ -6,7 +6,7 @@
   padding: var(--space-4);
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
-  background: var(--color-surface);
+  background: color-mix(in srgb, var(--color-surface) 78%, var(--color-background));
   cursor: pointer;
   gap: var(--space-3);
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -24,12 +24,6 @@
 .root[data-presentation='branch']::after {
   color: var(--color-text-muted);
   content: '→';
-  transition: transform var(--transition-duration-fast) var(--transition-easing-standard);
-}
-
-.root[data-presentation='branch']:hover::after,
-.root[data-presentation='branch']:has(.control:focus-visible)::after {
-  transform: translateX(var(--space-1));
 }
 
 .root[data-presentation='ranked'] {
@@ -44,9 +38,7 @@
 .root:has(.control:checked) {
   border-color: var(--color-interactive);
   background: color-mix(in srgb, var(--color-interactive) 9%, var(--color-surface));
-}
-.root:has(.control:checked) .label {
-  animation: option-confirm var(--motion-confirm-duration) var(--motion-easing-discover) both;
+  box-shadow: 0 0 0 0.1875rem color-mix(in srgb, var(--color-interactive) 14%, transparent);
 }
 .root:has(.control:checked)::before {
   position: absolute;
@@ -54,7 +46,7 @@
   block-size: 0.1rem;
   background: linear-gradient(90deg, var(--color-interactive), transparent);
   content: '';
-  animation: option-connect var(--motion-connect-duration) var(--motion-easing-connect) both;
+  opacity: 0.7;
 }
 
 .root:has(.control:focus-visible) {
@@ -89,8 +81,14 @@
 }
 
 .label {
+  color: var(--color-text-muted);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-normal);
+}
+.root:has(.control:checked) .label,
+.root:hover .label,
+.root:has(.control:focus-visible) .label {
+  color: var(--color-text);
 }
 
 .order {
@@ -104,36 +102,9 @@
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
 }
-@keyframes option-confirm {
-  from {
-    opacity: 0.72;
-    transform: translateX(calc(-1 * var(--motion-distance-sm)));
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-@keyframes option-connect {
-  from {
-    opacity: 0;
-    transform: scaleX(0.1);
-    transform-origin: left;
-  }
-  to {
-    opacity: 0.65;
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .root,
   .root[data-presentation='branch']::after {
     transition: none;
-  }
-  .root:has(.control:checked) .label,
-  .root:has(.control:checked)::before {
-    animation: none;
   }
 }

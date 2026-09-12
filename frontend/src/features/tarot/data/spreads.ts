@@ -26,9 +26,9 @@ export const tarotSpreads: readonly TarotSpread[] = [
     positions: [
       position(
         'day-energy',
-        'Энергия дня',
-        'Day energy',
-        'Енергія дня',
+        'Главная тема дня',
+        'Main theme of the day',
+        'Головна тема дня',
         'Что полезно заметить сегодня',
         'What may be useful to notice today',
         'Що корисно помітити сьогодні',
@@ -42,9 +42,9 @@ export const tarotSpreads: readonly TarotSpread[] = [
     access: 'preview',
     title: text('Неделя в фокусе', 'Week in focus', 'Тиждень у фокусі'),
     description: text(
-      'Пять позиций для ритма, препятствия, поддержки и итога недели.',
-      'Five positions for the week’s rhythm, obstacle, support and outcome.',
-      'П’ять позицій для ритму, перешкоди, підтримки й підсумку тижня.',
+      'Пять карт о начале недели, возможной трудности, поддержке и итоге.',
+      'Five cards about the start of the week, a possible obstacle, support and outcome.',
+      'П’ять карт про початок тижня, можливу складність, підтримку й підсумок.',
     ),
     positions: [
       position(
@@ -88,9 +88,9 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Итог',
         'Outcome',
         'Підсумок',
-        'Какой вектор может сложиться',
-        'What direction may emerge',
-        'Який напрям може скластися',
+        'К чему может привести такой подход',
+        'Where this approach may lead',
+        'До чого може привести такий підхід',
       ),
     ],
   },
@@ -167,7 +167,7 @@ export const tarotSpreads: readonly TarotSpread[] = [
     kind: 'period',
     period: 'year',
     access: 'preview',
-    title: text('Годовой путь', 'Year path', 'Річний шлях'),
+    title: text('Год в фокусе', 'Year in focus', 'Рік у фокусі'),
     description: text(
       'Компактный расклад по четырём кварталам; 12-карточная версия остаётся расширенным форматом.',
       'A compact four-quarter reading; the 12-card version remains an expanded format.',
@@ -196,9 +196,9 @@ export const tarotSpreads: readonly TarotSpread[] = [
       ),
       position(
         'year-integration',
-        'Интеграция',
-        'Integration',
-        'Інтеграція',
+        'Общий итог',
+        'Overall picture',
+        'Загальний підсумок',
         'Что важно соединить',
         'What matters to integrate',
         'Що важливо поєднати',
@@ -212,9 +212,9 @@ export const tarotSpreads: readonly TarotSpread[] = [
     access: 'preview',
     title: text('Любовь и отношения', 'Love and relationships', 'Любов і стосунки'),
     description: text(
-      'Динамика контакта без чтения мыслей другого человека.',
-      'Relationship dynamics without claiming to read another person’s mind.',
-      'Динаміка контакту без заяв про читання думок іншої людини.',
+      'Что происходит в отношениях — без попытки угадать мысли другого человека.',
+      'What is happening in the relationship, without claiming to read another person’s mind.',
+      'Що відбувається у стосунках — без спроби вгадати думки іншої людини.',
     ),
     positions: [
       position(
@@ -228,12 +228,12 @@ export const tarotSpreads: readonly TarotSpread[] = [
       ),
       position(
         'love-dynamic',
-        'Другая сторона или динамика',
-        'Other side or dynamic',
-        'Інша сторона або динаміка',
-        'Что можно наблюдать в динамике',
-        'What can be observed in the dynamic',
-        'Що можна спостерігати в динаміці',
+        'Что происходит между вами',
+        'What is happening between you',
+        'Що відбувається між вами',
+        'Что можно заметить в отношениях',
+        'What can be observed in the relationship',
+        'Що можна помітити у стосунках',
       ),
       position(
         'love-link',
@@ -330,9 +330,9 @@ export const tarotSpreads: readonly TarotSpread[] = [
     access: 'preview',
     title: text('Деньги', 'Money', 'Гроші'),
     description: text(
-      'Символический взгляд на подход, ресурс, риск и практический фокус — не финансовый совет.',
-      'A symbolic view of approach, resources, risk and practical focus — not financial advice.',
-      'Символічний погляд на підхід, ресурс, ризик і практичний фокус — не фінансова порада.',
+      'Поможет подумать о вашем подходе, ресурсах и рисках. Это не финансовый совет.',
+      'A way to reflect on your approach, resources and risks. This is not financial advice.',
+      'Допоможе обміркувати ваш підхід, ресурси й ризики. Це не фінансова порада.',
     ),
     positions: [
       position(
@@ -373,9 +373,9 @@ export const tarotSpreads: readonly TarotSpread[] = [
       ),
       position(
         'money-focus',
-        'Практический фокус',
-        'Practical focus',
-        'Практичний фокус',
+        'Что можно сделать',
+        'What you can do',
+        'Що можна зробити',
         'Какой безопасный шаг проверить',
         'What safe step could be tested',
         'Який безпечний крок перевірити',
@@ -389,9 +389,9 @@ export const tarotSpreads: readonly TarotSpread[] = [
     access: 'preview',
     title: text('Решение ситуации', 'Situation decision', 'Рішення ситуації'),
     description: text(
-      'Пять ракурсов для ясности, а не готовый ответ вместо вас.',
-      'Five perspectives for clarity, not a decision made for you.',
-      'П’ять ракурсів для ясності, а не готове рішення замість вас.',
+      'Пять сторон ситуации, которые помогут принять собственное решение.',
+      'Five sides of the situation to help you make your own decision.',
+      'П’ять сторін ситуації, які допоможуть прийняти власне рішення.',
     ),
     positions: [
       position(
@@ -417,9 +417,9 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что не учтено',
         'What may be missed',
         'Що не враховано',
-        'Какой ракурс легко пропустить',
-        'What perspective may be missed',
-        'Який ракурс легко пропустити',
+        'Что легко не заметить',
+        'What may be easy to miss',
+        'Що легко не помітити',
       ),
       position(
         'decision-action',

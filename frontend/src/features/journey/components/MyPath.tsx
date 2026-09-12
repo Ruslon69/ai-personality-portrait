@@ -71,7 +71,7 @@ export function MyPath({
                 {copy.path.lead}
               </Typography>
             </Stack>
-            <Button onClick={onBack} prominence="secondary">
+            <Button onClick={onBack} prominence="quiet">
               {copy.path.back}
             </Button>
           </div>
@@ -121,7 +121,7 @@ export function MyPath({
                       {chapter.record.reading.summary}
                     </Typography>
                     <footer className={styles.chapterActions}>
-                      <Button onClick={() => onOpenReading(chapter.record)} prominence="primary">
+                      <Button onClick={() => onOpenReading(chapter.record)} prominence="secondary">
                         {copy.path.open}
                       </Button>
                       <Button
@@ -158,21 +158,6 @@ export function MyPath({
                   </article>
                 </li>
               ))}
-
-              <li className={styles.futureChapter}>
-                <div aria-hidden="true" className={styles.chapterRail}>
-                  <span>∞</span>
-                </div>
-                <article>
-                  <Typography as="p" variant="eyebrow">
-                    {copy.yearBook.eyebrow}
-                  </Typography>
-                  <Typography as="h2" variant="heading-lg">
-                    {copy.yearBook.title}
-                  </Typography>
-                  <Typography>{copy.yearBook.description}</Typography>
-                </article>
-              </li>
             </ol>
           ) : (
             <div className={styles.bookEmpty}>

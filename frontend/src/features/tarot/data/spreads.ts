@@ -1,6 +1,12 @@
+import { productContractCopy } from '@shared/i18n/product-contract-copy';
 import type { LocalizedText, TarotSpread } from '../types';
 
-const text = (ru: string, en: string, uk: string): LocalizedText => ({ ru, en, uk });
+const text = (ru: string, en: string, uk: string, es: string): LocalizedText => ({
+  ru,
+  en,
+  uk,
+  es,
+});
 const position = (
   id: string,
   ru: string,
@@ -9,7 +15,9 @@ const position = (
   ruPrompt: string,
   enPrompt: string,
   ukPrompt: string,
-) => ({ id, label: text(ru, en, uk), prompt: text(ruPrompt, enPrompt, ukPrompt) });
+  es: string,
+  esPrompt: string,
+) => ({ id, label: text(ru, en, uk, es), prompt: text(ruPrompt, enPrompt, ukPrompt, esPrompt) });
 
 export const tarotSpreads: readonly TarotSpread[] = [
   {
@@ -17,11 +25,17 @@ export const tarotSpreads: readonly TarotSpread[] = [
     kind: 'period',
     period: 'day',
     access: 'free',
-    title: text('Карта дня', 'Card of the day', 'Карта дня'),
+    title: text(
+      productContractCopy.ru.dailyTitle,
+      productContractCopy.en.dailyTitle,
+      productContractCopy.uk.dailyTitle,
+      productContractCopy.es.dailyTitle,
+    ),
     description: text(
-      'Одна тема, один фокус и небольшой совет.',
-      'One theme, one focus and one small piece of advice.',
-      'Одна тема, один фокус і невелика порада.',
+      productContractCopy.ru.dailyDescription,
+      productContractCopy.en.dailyDescription,
+      productContractCopy.uk.dailyDescription,
+      productContractCopy.es.dailyDescription,
     ),
     positions: [
       position(
@@ -32,6 +46,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что полезно заметить сегодня',
         'What may be useful to notice today',
         'Що корисно помітити сьогодні',
+        'Tema principal del día',
+        'Qué puede ser útil observar hoy',
       ),
     ],
   },
@@ -40,11 +56,12 @@ export const tarotSpreads: readonly TarotSpread[] = [
     kind: 'period',
     period: 'week',
     access: 'preview',
-    title: text('Неделя в фокусе', 'Week in focus', 'Тиждень у фокусі'),
+    title: text('Неделя в фокусе', 'Week in focus', 'Тиждень у фокусі', 'La semana en perspectiva'),
     description: text(
       'Пять карт о начале недели, возможной трудности, поддержке и итоге.',
       'Five cards about the start of the week, a possible obstacle, support and outcome.',
       'П’ять карт про початок тижня, можливу складність, підтримку й підсумок.',
+      'Cinco cartas sobre el comienzo de la semana, un posible obstáculo, el apoyo y el resultado.',
     ),
     positions: [
       position(
@@ -55,6 +72,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'С чего начинается неделя',
         'How the week begins',
         'Із чого починається тиждень',
+        'Comienzo',
+        'Cómo empieza la semana',
       ),
       position(
         'week-tone',
@@ -64,6 +83,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что задаёт ритм',
         'What sets the rhythm',
         'Що задає ритм',
+        'Tono principal',
+        'Qué marca el ritmo',
       ),
       position(
         'week-obstacle',
@@ -73,6 +94,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Где нужна ясность',
         'Where clarity is needed',
         'Де потрібна ясність',
+        'Obstáculo',
+        'Dónde hace falta claridad',
       ),
       position(
         'week-support',
@@ -82,6 +105,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'На что можно опереться',
         'What may support you',
         'На що можна спертися',
+        'Apoyo',
+        'En qué puedes apoyarte',
       ),
       position(
         'week-outcome',
@@ -91,6 +116,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'К чему может привести такой подход',
         'Where this approach may lead',
         'До чого може привести такий підхід',
+        'Resultado',
+        'Adónde puede llevar este enfoque',
       ),
     ],
   },
@@ -99,11 +126,17 @@ export const tarotSpreads: readonly TarotSpread[] = [
     kind: 'period',
     period: 'month',
     access: 'preview',
-    title: text('Месяц и решения', 'Month and decisions', 'Місяць і рішення'),
+    title: text(
+      'Месяц и решения',
+      'Month and decisions',
+      'Місяць і рішення',
+      'El mes y sus decisiones',
+    ),
     description: text(
       'Шесть связанных тем месяца без обещаний конкретных событий.',
       'Six connected monthly themes without promises of specific events.',
       'Шість пов’язаних тем місяця без обіцянок конкретних подій.',
+      'Seis temas del mes conectados, sin prometer acontecimientos concretos.',
     ),
     positions: [
       position(
@@ -114,6 +147,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что проходит через месяц',
         'What runs through the month',
         'Що проходить крізь місяць',
+        'Tema principal',
+        'Qué atraviesa el mes',
       ),
       position(
         'month-relations',
@@ -123,6 +158,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Какой контакт важен',
         'What kind of connection matters',
         'Який контакт важливий',
+        'Relaciones',
+        'Qué tipo de conexión importa',
       ),
       position(
         'month-work',
@@ -132,6 +169,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Где направить усилие',
         'Where to direct effort',
         'Куди спрямувати зусилля',
+        'Trabajo',
+        'Adónde dirigir el esfuerzo',
       ),
       position(
         'month-inner',
@@ -141,6 +180,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что происходит внутри',
         'What is happening within',
         'Що відбувається всередині',
+        'Estado interior',
+        'Qué ocurre en tu interior',
       ),
       position(
         'month-advice',
@@ -150,6 +191,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Какой шаг можно попробовать',
         'What step could be tried',
         'Який крок можна спробувати',
+        'Orientación',
+        'Qué paso puedes probar',
       ),
       position(
         'month-outcome',
@@ -159,6 +202,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Какая тема может завершить цикл',
         'What may complete the cycle',
         'Яка тема може завершити цикл',
+        'Resultado',
+        'Qué puede completar el ciclo',
       ),
     ],
   },
@@ -167,11 +212,12 @@ export const tarotSpreads: readonly TarotSpread[] = [
     kind: 'period',
     period: 'year',
     access: 'preview',
-    title: text('Год в фокусе', 'Year in focus', 'Рік у фокусі'),
+    title: text('Год в фокусе', 'Year in focus', 'Рік у фокусі', 'El año en perspectiva'),
     description: text(
       'Компактный расклад по четырём кварталам; 12-карточная версия остаётся расширенным форматом.',
       'A compact four-quarter reading; the 12-card version remains an expanded format.',
       'Компактний розклад за чотирма кварталами; версія на 12 карт залишається розширеним форматом.',
+      'Una lectura breve de los cuatro trimestres; la versión de 12 cartas sigue siendo un formato ampliado.',
     ),
     positions: [
       position(
@@ -182,6 +228,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что задаёт основу',
         'What sets the foundation',
         'Що задає основу',
+        'Base del año',
+        'Qué establece la base',
       ),
       ...['1', '2', '3', '4'].map((quarter) =>
         position(
@@ -192,6 +240,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
           'Главная тема периода',
           'The period’s main theme',
           'Головна тема періоду',
+          `Trimestre ${quarter}`,
+          'Tema principal del periodo',
         ),
       ),
       position(
@@ -202,6 +252,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что важно соединить',
         'What matters to integrate',
         'Що важливо поєднати',
+        'Visión de conjunto',
+        'Qué importa conectar',
       ),
     ],
   },
@@ -210,11 +262,17 @@ export const tarotSpreads: readonly TarotSpread[] = [
     kind: 'topic',
     topic: 'love',
     access: 'preview',
-    title: text('Любовь и отношения', 'Love and relationships', 'Любов і стосунки'),
+    title: text(
+      'Любовь и отношения',
+      'Love and relationships',
+      'Любов і стосунки',
+      'Amor y relaciones',
+    ),
     description: text(
       'Что происходит в отношениях — без попытки угадать мысли другого человека.',
       'What is happening in the relationship, without claiming to read another person’s mind.',
       'Що відбувається у стосунках — без спроби вгадати думки іншої людини.',
+      'Lo que ocurre en la relación, sin pretender leer la mente de otra persona.',
     ),
     positions: [
       position(
@@ -225,6 +283,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Ваш текущий способ быть в контакте',
         'Your current way of relating',
         'Ваш поточний спосіб бути в контакті',
+        'Tú',
+        'Tu forma actual de relacionarte',
       ),
       position(
         'love-dynamic',
@@ -234,6 +294,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что можно заметить в отношениях',
         'What can be observed in the relationship',
         'Що можна помітити у стосунках',
+        'Qué ocurre entre ambas personas',
+        'Qué puedes observar en la relación',
       ),
       position(
         'love-link',
@@ -243,6 +305,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Где возникает связь',
         'Where connection appears',
         'Де виникає зв’язок',
+        'Qué une',
+        'Dónde surge la conexión',
       ),
       position(
         'love-tension',
@@ -252,6 +316,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Где возможна разница ожиданий',
         'Where expectations may differ',
         'Де можуть різнитися очікування',
+        'Tensión',
+        'Dónde pueden diferir las expectativas',
       ),
       position(
         'love-advice',
@@ -261,6 +327,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Какой разговор или шаг можно попробовать',
         'What conversation or step could be tried',
         'Яку розмову чи крок можна спробувати',
+        'Orientación',
+        'Qué conversación o paso puedes probar',
       ),
     ],
   },
@@ -269,11 +337,17 @@ export const tarotSpreads: readonly TarotSpread[] = [
     kind: 'topic',
     topic: 'work',
     access: 'preview',
-    title: text('Работа и учёба', 'Work and learning', 'Робота й навчання'),
+    title: text(
+      'Работа и учёба',
+      'Work and learning',
+      'Робота й навчання',
+      'Trabajo y aprendizaje',
+    ),
     description: text(
       'Ситуация, сильная сторона, препятствие, возможность и следующий шаг.',
       'Situation, strength, obstacle, opportunity and next step.',
       'Ситуація, сильна сторона, перешкода, можливість і наступний крок.',
+      'Situación, punto fuerte, obstáculo, oportunidad y siguiente paso.',
     ),
     positions: [
       position(
@@ -284,6 +358,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что важно увидеть сейчас',
         'What matters now',
         'Що важливо побачити зараз',
+        'Situación actual',
+        'Qué importa ahora',
       ),
       position(
         'work-strength',
@@ -293,6 +369,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Какой ресурс уже есть',
         'What resource is available',
         'Який ресурс уже є',
+        'Punto fuerte',
+        'Qué recurso está disponible',
       ),
       position(
         'work-obstacle',
@@ -302,6 +380,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что требует внимания',
         'What needs attention',
         'Що потребує уваги',
+        'Obstáculo',
+        'Qué necesita atención',
       ),
       position(
         'work-opportunity',
@@ -311,6 +391,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Какой вариант можно исследовать',
         'What option may be explored',
         'Який варіант можна дослідити',
+        'Oportunidad',
+        'Qué opción puedes explorar',
       ),
       position(
         'work-step',
@@ -320,6 +402,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что можно сделать небольшим действием',
         'What small action is possible',
         'Що можна зробити невеликою дією',
+        'Siguiente paso',
+        'Qué pequeña acción es posible',
       ),
     ],
   },
@@ -328,11 +412,12 @@ export const tarotSpreads: readonly TarotSpread[] = [
     kind: 'topic',
     topic: 'money',
     access: 'preview',
-    title: text('Деньги', 'Money', 'Гроші'),
+    title: text('Деньги', 'Money', 'Гроші', 'Dinero'),
     description: text(
       'Поможет подумать о вашем подходе, ресурсах и рисках. Это не финансовый совет.',
       'A way to reflect on your approach, resources and risks. This is not financial advice.',
       'Допоможе обміркувати ваш підхід, ресурси й ризики. Це не фінансова порада.',
+      'Una forma de reflexionar sobre tu enfoque, recursos y riesgos. No es asesoramiento financiero.',
     ),
     positions: [
       position(
@@ -343,6 +428,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Как вы сейчас смотрите на ресурсы',
         'How you currently view resources',
         'Як ви зараз дивитеся на ресурси',
+        'Enfoque actual',
+        'Cómo miras ahora tus recursos',
       ),
       position(
         'money-resource',
@@ -352,6 +439,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что уже можно использовать',
         'What may already be used',
         'Що вже можна використати',
+        'Recurso',
+        'Qué puedes aprovechar ya',
       ),
       position(
         'money-risk',
@@ -361,6 +450,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Где нужна проверка фактами',
         'Where facts are needed',
         'Де потрібна перевірка фактами',
+        'Riesgo',
+        'Dónde conviene comprobar los hechos',
       ),
       position(
         'money-opportunity',
@@ -370,6 +461,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что можно исследовать без обещания результата',
         'What can be explored without promising an outcome',
         'Що можна дослідити без обіцянки результату',
+        'Oportunidad',
+        'Qué puedes explorar sin prometer un resultado',
       ),
       position(
         'money-focus',
@@ -379,6 +472,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Какой безопасный шаг проверить',
         'What safe step could be tested',
         'Який безпечний крок перевірити',
+        'Qué puedes hacer',
+        'Qué paso seguro puedes probar',
       ),
     ],
   },
@@ -387,11 +482,12 @@ export const tarotSpreads: readonly TarotSpread[] = [
     kind: 'topic',
     topic: 'decision',
     access: 'preview',
-    title: text('Решение ситуации', 'Situation decision', 'Рішення ситуації'),
+    title: text('Важный выбор', 'A decision to make', 'Важливий вибір', 'Una decisión importante'),
     description: text(
       'Пять сторон ситуации, которые помогут принять собственное решение.',
       'Five sides of the situation to help you make your own decision.',
       'П’ять сторін ситуації, які допоможуть прийняти власне рішення.',
+      'Cinco perspectivas de la situación para ayudarte a tomar tu propia decisión.',
     ),
     positions: [
       position(
@@ -402,6 +498,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что находится в центре',
         'What is at the centre',
         'Що перебуває в центрі',
+        'Lo esencial',
+        'Qué está en el centro',
       ),
       position(
         'decision-visible',
@@ -411,6 +509,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Какие факты уже заметны',
         'What facts are visible',
         'Які факти вже помітні',
+        'Lo que se ve',
+        'Qué hechos son visibles',
       ),
       position(
         'decision-hidden',
@@ -420,6 +520,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что легко не заметить',
         'What may be easy to miss',
         'Що легко не помітити',
+        'Lo que quizá falte',
+        'Qué puede pasar desapercibido',
       ),
       position(
         'decision-action',
@@ -429,6 +531,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Что можно проверить',
         'What can be tested',
         'Що можна перевірити',
+        'Acción posible',
+        'Qué puedes comprobar',
       ),
       position(
         'decision-direction',
@@ -438,6 +542,8 @@ export const tarotSpreads: readonly TarotSpread[] = [
         'Куда может вести выбранный подход',
         'Where the chosen approach may lead',
         'Куди може вести обраний підхід',
+        'Rumbo posible',
+        'Adónde puede llevar el enfoque elegido',
       ),
     ],
   },

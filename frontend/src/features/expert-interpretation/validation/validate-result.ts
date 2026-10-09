@@ -1,3 +1,4 @@
+import { localeDefinitions } from '@shared/i18n';
 import {
   EXPERT_INTERPRETATION_VERSIONS,
   INTERPRETATION_CONFIDENCE_LEVELS,
@@ -364,7 +365,7 @@ function validateAuthorContent(
     .map(([, text]) => text)
     .join(' ');
   const mixedLocale =
-    content.locale === 'en'
+    localeDefinitions[content.locale].script === 'latin'
       ? /[А-Яа-яЁёІіЇїЄєҐґ]/u.test(joined)
       : !/[А-Яа-яЁёІіЇїЄєҐґ]/u.test(joined);
   if (mixedLocale)

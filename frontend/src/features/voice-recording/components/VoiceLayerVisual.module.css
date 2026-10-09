@@ -3,15 +3,14 @@
   display: grid;
   min-block-size: 8rem;
   place-items: center;
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-block: 0.0625rem solid var(--portrait-line);
   background:
     radial-gradient(
       circle at center,
       color-mix(in srgb, var(--color-interactive) 10%, transparent),
       transparent 35%
     ),
-    var(--surface-accent-subtle);
+    transparent;
   overflow: hidden;
 }
 .wave {
@@ -25,7 +24,7 @@
   inline-size: 0.2rem;
   block-size: 3.4rem;
   border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--color-interactive) 72%, var(--color-border));
+  background: color-mix(in srgb, var(--portrait-gold) 72%, var(--portrait-line));
   transform: scaleY(var(--bar-level));
   transform-origin: center;
   transition:
@@ -43,15 +42,15 @@
   position: absolute;
   inline-size: 1rem;
   aspect-ratio: 1;
-  border: 0.12rem solid var(--color-interactive);
+  border: 0.12rem solid var(--portrait-gold);
   border-radius: 50%;
-  background: var(--color-surface);
+  background: var(--portrait-canvas);
 }
 .orbit {
   position: absolute;
   inline-size: 6.5rem;
   aspect-ratio: 1;
-  border: 0.0625rem dashed color-mix(in srgb, var(--color-interactive) 38%, transparent);
+  border: 0.0625rem dashed color-mix(in srgb, var(--portrait-gold) 38%, transparent);
   border-radius: 50%;
   opacity: 0.35;
   transform: scale(0.72);

@@ -1,3 +1,5 @@
+import { reportCopy } from '../data/report-copy';
+import { getSourceReference } from '@entities/personality-profile';
 import type { ProfileLocale, SourceReference } from '@entities/personality-profile';
 
 import styles from './Explainability.module.css';
@@ -84,14 +86,15 @@ export function SourceSymbol({ source }: SourceChipProps) {
 }
 
 export function SourceChip({ locale = 'ru', source }: SourceChipProps) {
-  const prefix = locale === 'en' ? 'Source' : locale === 'uk' ? 'Джерело' : 'Источник';
+  const label = getSourceReference(source.id, locale);
+  const prefix = reportCopy[locale].source;
   return (
     <span className={styles.sourceChip} data-category={source.category} data-source={source.id}>
       <SourceSymbol source={source} />
       <span className={styles.visuallyHidden}>
-        {prefix}: {source.label}.{' '}
+        {prefix}: {label.label}.{' '}
       </span>
-      <span aria-hidden="true">{source.shortLabel}</span>
+      <span aria-hidden="true">{label.shortLabel}</span>
     </span>
   );
 }

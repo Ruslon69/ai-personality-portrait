@@ -1,14 +1,23 @@
+import { pluralForm } from '@shared/i18n';
+import { tarotCardCountForms } from '../data/card-count-copy';
+import { productContractCopy } from '@shared/i18n/product-contract-copy';
 import { useRef, useState } from 'react';
 
 import { useMediaQuery } from '@hooks';
 import type { Locale } from '@shared/i18n';
-import { Badge, Button, Container, Modal, Stack, Typography } from '@shared/ui';
+import { Button, Container, Modal, Stack, Typography } from '@shared/ui';
 
 import { tarotCopy, tarotPreferencesCopy, tarotSpreads } from '../data';
 import type { TarotSpread } from '../types';
-import styles from './Tarot.module.css';
+import styles from './TarotEntry.module.css';
+import { TarotSpreadIcon } from './TarotSpreadIcon';
+import selectionStyles from './TarotSpreadSelector.module.css';
 
 const durationBySize: Readonly<Record<number, number>> = { 1: 2, 4: 6, 5: 7, 6: 9 };
+
+function cardCountLabel(count: number, locale: Locale) {
+  return `${count} ${pluralForm(count, locale, tarotCardCountForms[locale])}`;
+}
 
 export function TarotLanding({
   confirmNewReading,
@@ -35,7 +44,7 @@ export function TarotLanding({
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
 
   function requestStart(spread: TarotSpread) {
-    if (confirmNewReading && hasUnfinishedReading) {
+    if (spread.id !== 'day' && confirmNewReading && hasUnfinishedReading) {
       setPendingSpread(spread);
       return;
     }
@@ -47,8 +56,10 @@ export function TarotLanding({
       <section aria-labelledby="tarot-title" className={styles.tarotHero}>
         <Container size="wide">
           <div className={styles.heroGrid}>
-            <Stack align="start" gap="lg">
-              <Badge tone="warning">{copy.eyebrow}</Badge>
+            <Stack align="start" className={styles.heroCopy} gap="lg">
+              <Typography as="p" className={styles.eyebrow} variant="eyebrow">
+                {copy.eyebrow}
+              </Typography>
               <Typography as="h1" id="tarot-title" variant="display">
                 {copy.heroTitle}
               </Typography>
@@ -84,73 +95,104 @@ export function TarotLanding({
                 </Button>
               </div>
             </Stack>
-            <div aria-hidden="true" className={styles.heroCards}>
-              <i />
-              <i />
-              <i />
-              <b>7</b>
-              <span />
+            <div aria-hidden="true" className={styles.heroArtwork}>
+              <picture>
+                <source
+                  media="(max-width: 600px)"
+                  srcSet="/tarot-entry/tarot-entry-mobile-640.webp 640w, /tarot-entry/tarot-entry-mobile-960.webp 960w"
+                  sizes="100vw"
+                  width="960"
+                  height="931"
+                />
+                <img
+                  alt=""
+                  src="/tarot-entry/tarot-entry-960.webp"
+                  srcSet="/tarot-entry/tarot-entry-960.webp 960w, /tarot-entry/tarot-entry-1536.webp 1536w"
+                  sizes="(max-width: 1100px) 75vw, (max-width: 1600px) 70vw, 1100px"
+                  width="1536"
+                  height="1024"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              </picture>
             </div>
           </div>
         </Container>
       </section>
       <section
         aria-labelledby="spread-title"
-        className={styles.section}
+        className={selectionStyles.section}
         id="spreads"
         ref={selectionRef}
         tabIndex={-1}
       >
         <Container size="wide">
           <Stack gap="lg">
-            <div className={styles.sectionHeading}>
+            <div className={selectionStyles.sectionHeading}>
               <Typography as="p" variant="eyebrow">
                 {copy.reflection}
               </Typography>
               <Typography as="h2" id="spread-title" variant="heading-lg">
                 {copy.chooseDirection}
               </Typography>
-              <Typography>{copy.directionLead}</Typography>
+              <Typography>
+                {selectedSpread.id === 'day'
+                  ? productContractCopy[locale].dailyDescription
+                  : copy.directionLead}
+              </Typography>
             </div>
-            <fieldset className={styles.spreadFieldset}>
+            <fieldset className={selectionStyles.spreadFieldset}>
               <legend className={styles.srOnly}>{copy.chooseDirection}</legend>
-              <div className={styles.spreadCollection}>
+              <div className={selectionStyles.spreadCollection}>
                 {tarotSpreads.map((spread) => (
                   <label
-                    className={styles.spreadCard}
+                    className={selectionStyles.spreadCard}
+                    data-spread={spread.id}
                     data-selected={selectedSpread.id === spread.id || undefined}
                     key={spread.id}
                   >
                     <input
                       checked={selectedSpread.id === spread.id}
                       className={styles.spreadRadio}
+                      aria-labelledby={`spread-${spread.id}-title`}
+                      aria-describedby={`spread-${spread.id}-description spread-${spread.id}-meta`}
                       name="tarot-spread"
                       onChange={() => setSelectedSpread(spread)}
                       type="radio"
                     />
-                    <span aria-hidden="true" className={styles.spreadIllustration}>
-                      <i />
-                      <i />
-                      <i />
-                      <b>{String(spread.positions.length).padStart(2, '0')}</b>
+                    <span aria-hidden="true" className={selectionStyles.spreadIllustration}>
+                      <TarotSpreadIcon spreadId={spread.id} />
                     </span>
-                    <span className={styles.spreadCardContent}>
-                      <Badge tone={spread.access === 'free' ? 'success' : 'neutral'}>
-                        {spread.access === 'free' ? copy.free : copy.premium}
-                      </Badge>
-                      <strong className={styles.spreadTitle}>{spread.title[locale]}</strong>
-                      <span>{spread.description[locale]}</span>
-                      <span className={styles.positionCount}>
+                    <span className={selectionStyles.spreadCardContent}>
+                      <strong
+                        className={selectionStyles.spreadTitle}
+                        id={`spread-${spread.id}-title`}
+                      >
+                        {spread.title[locale]}
+                      </strong>
+                      <span id={`spread-${spread.id}-description`}>
+                        {spread.description[locale]}
+                      </span>
+                      <span
+                        className={selectionStyles.positionCount}
+                        id={`spread-${spread.id}-meta`}
+                      >
                         {durationBySize[spread.positions.length] ?? 6} {copy.minutes} ·{' '}
-                        {spread.positions.length} {copy.cards}
+                        {cardCountLabel(spread.positions.length, locale)}
+                        {spread.access === 'free' ? (
+                          <span className={selectionStyles.freeLabel}> · {copy.free}</span>
+                        ) : null}
                       </span>
                     </span>
-                    <span className={styles.selectionMark} aria-hidden="true" />
+                    <span className={selectionStyles.selectionMark} aria-hidden="true">
+                      {selectedSpread.id === spread.id ? '✓' : '→'}
+                    </span>
                   </label>
                 ))}
               </div>
             </fieldset>
-            <div className={styles.spreadAction}>
+            <div className={selectionStyles.spreadAction}>
               <div aria-live="polite">
                 <strong>{selectedSpread.title[locale]}</strong>
               </div>
@@ -159,7 +201,9 @@ export function TarotLanding({
                 prominence="primary"
                 size="large"
               >
-                {copy.continueWith.replace('{title}', selectedSpread.title[locale])}{' '}
+                {selectedSpread.id === 'day'
+                  ? productContractCopy[locale].dailyOpen
+                  : copy.continueWith.replace('{title}', selectedSpread.title[locale])}{' '}
                 <span aria-hidden="true">→</span>
               </Button>
             </div>

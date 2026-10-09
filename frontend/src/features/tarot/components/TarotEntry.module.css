@@ -1,0 +1,746 @@
+.page,
+.setup {
+  --entry-ink: var(--sa-text-primary);
+  --entry-muted: var(--sa-text-secondary);
+  --entry-gold: var(--sa-gold);
+  --entry-line: var(--sa-border-subtle);
+  --entry-base: var(--sa-bg-deep);
+
+  position: relative;
+  isolation: isolate;
+  min-inline-size: 0;
+  overflow-x: clip;
+  color: var(--entry-ink);
+  background:
+    radial-gradient(ellipse at 85% 20%, rgb(96 60 139 / 17%), transparent 45%),
+    radial-gradient(ellipse at 10% 65%, rgb(90 69 130 / 10%), transparent 50%), var(--entry-base);
+}
+
+.page::after {
+  position: absolute;
+  z-index: -1;
+  inset: auto 0 0;
+  block-size: 12rem;
+  pointer-events: none;
+  content: '';
+  background: linear-gradient(transparent, var(--color-surface));
+}
+
+.tarotHero {
+  padding-block: 1.5rem 0;
+}
+
+.heroGrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+  align-items: center;
+  min-block-size: clamp(34rem, 41vw, 43rem);
+}
+
+.page .heroCopy {
+  position: relative;
+  z-index: 2;
+  padding-block: 2rem;
+  gap: 1.5rem;
+}
+
+.page .eyebrow,
+.sectionHeading [data-variant='eyebrow'] {
+  color: var(--entry-gold);
+  font-size: 0.78rem;
+  letter-spacing: 0.13em;
+}
+
+.page .heroCopy h1 {
+  max-inline-size: 12ch;
+  color: var(--entry-ink);
+  font-family: var(--font-family-display);
+  font-size: clamp(2.7rem, 4.3vw, 4.4rem);
+  font-weight: 400;
+  line-height: 1.17;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.page .lead {
+  max-inline-size: 35ch;
+  color: var(--entry-muted);
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  line-height: 1.6;
+}
+
+.heroActions,
+.utilityActions,
+.readingConfirmActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.utilityActions {
+  gap: 0.2rem;
+}
+
+.page button[data-prominence='quiet'] {
+  color: var(--entry-muted);
+}
+
+.page button[data-prominence='primary'],
+.setup button[data-prominence='primary']:not(:disabled) {
+  min-block-size: 3.5rem;
+  min-inline-size: min(100%, 15rem);
+  padding-inline: 1.75rem;
+  border: 1px solid var(--sa-action-border);
+  border-radius: 0.7rem;
+  color: var(--sa-action-ink);
+  background: var(--sa-action-fill);
+  box-shadow:
+    inset 0 1px 0 rgb(255 247 218 / 60%),
+    0 6px 30px rgb(203 163 96 / 14%);
+  font-size: 1rem;
+  font-weight: 500;
+  transform: none;
+  transition:
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.heroArtwork {
+  position: relative;
+  align-self: stretch;
+  min-inline-size: 0;
+  pointer-events: none;
+}
+
+.heroArtwork picture {
+  position: absolute;
+  inset-block: -1rem -2rem;
+  inset-inline: -28% -13%;
+  display: block;
+  max-inline-size: none;
+  mask-image:
+    linear-gradient(90deg, transparent, #000 30%),
+    linear-gradient(180deg, transparent, #000 12%, #000 77%, transparent),
+    radial-gradient(ellipse 67% 65% at 54% 50%, #000 48%, transparent 88%);
+  mask-composite: intersect;
+}
+
+.heroArtwork img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: center 46%;
+}
+
+.heroArtwork::before {
+  position: absolute;
+  inset: 10%;
+  content: '';
+  background: radial-gradient(ellipse, rgb(222 168 88 / 16%), transparent 70%);
+  animation: chamber-light 4.5s ease-out both;
+}
+
+.section {
+  position: relative;
+  padding-block: 2rem 4rem;
+  scroll-margin-block-start: 5rem;
+}
+
+.sectionHeading {
+  display: grid;
+  gap: 0.75rem;
+  max-inline-size: 50rem;
+  margin-block-end: 1.5rem;
+}
+
+.page .sectionHeading h2 {
+  color: var(--entry-ink);
+  font-family: var(--font-family-display);
+  font-size: clamp(1.75rem, 2.8vw, 2.7rem);
+  font-weight: 400;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.sectionHeading > p:last-child {
+  color: var(--entry-muted);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.spreadFieldset {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.spreadCollection {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(4, auto);
+  grid-auto-flow: column;
+  column-gap: clamp(2rem, 5vw, 5rem);
+  row-gap: 0.6rem;
+  background: radial-gradient(ellipse at 45% 35%, rgb(114 80 156 / 7%), transparent 72%);
+}
+
+.spreadCard {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) 1.25rem;
+  align-items: start;
+  gap: 1rem;
+  min-inline-size: 0;
+  padding: 1.5rem 1rem;
+  border: 1px solid transparent;
+  border-inline-start-width: 2px;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition:
+    background 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.spreadCard[data-spread='day'] {
+  background: radial-gradient(ellipse at left, rgb(204 166 99 / 8%), transparent 85%);
+}
+
+.spreadCard[data-selected] {
+  border-color: var(--entry-line);
+  border-inline-start-color: var(--entry-gold);
+  background:
+    radial-gradient(ellipse at top left, rgb(188 151 96 / 12%), transparent 80%),
+    linear-gradient(100deg, rgb(112 83 155 / 7%), transparent);
+  box-shadow: inset 0 1px 0 rgb(228 201 154 / 8%);
+}
+
+.spreadCardContent {
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+  color: var(--entry-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.spreadCard .spreadTitle {
+  color: var(--entry-ink);
+  font-family: var(--font-family-display);
+  font-size: 1.3rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.spreadIllustration {
+  padding-block-start: 0.1rem;
+  color: var(--entry-gold);
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.spreadCard[data-spread='day'] .spreadIllustration {
+  font-size: 2rem;
+}
+
+.freeLabel {
+  color: var(--entry-gold);
+  font-size: 0.75rem;
+}
+
+.positionCount {
+  color: var(--entry-muted);
+  font-size: 0.8rem;
+}
+
+.selectionMark {
+  display: grid;
+  place-items: center;
+  inline-size: 1.25rem;
+  aspect-ratio: 1;
+  margin-block-start: 0.2rem;
+  border: 1px solid transparent;
+  border-radius: 50%;
+}
+
+.spreadCard[data-selected] .selectionMark {
+  color: var(--entry-gold);
+  border-color: currentcolor;
+}
+
+.spreadCard[data-selected] .selectionMark::after {
+  content: '✓';
+  font-size: 0.75rem;
+}
+
+.spreadRadio,
+.srOnly {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.spreadCard:has(input:focus-visible) {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.spreadAction {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 1.5rem 0;
+}
+
+.spreadAction strong {
+  color: var(--entry-muted);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/* This class is mounted only before reveal. No accepted reading selectors change. */
+.setup.setup {
+  --color-marketing-accent: var(--entry-gold);
+  --surface-accent-subtle: rgb(180 139 79 / 10%);
+  --color-on-accent: var(--sa-action-ink);
+
+  padding-block: 2rem 4rem;
+}
+
+.setup::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  max-block-size: 65rem;
+  content: '';
+  pointer-events: none;
+  opacity: 0.07;
+  background: url('/tarot-entry/tarot-entry-960.webp') center top / cover no-repeat;
+  mask-image: linear-gradient(#000, transparent);
+}
+
+.setup > div {
+  max-inline-size: 76rem;
+}
+
+.setup > div > div:first-child {
+  padding-inline: clamp(0rem, 2vw, 2rem);
+  margin-block-end: 1.75rem;
+}
+
+.setup.setup [data-elevation='low'] {
+  padding: clamp(1.5rem, 3vw, 3rem);
+  border: 1px solid var(--entry-line);
+  border-radius: 1rem;
+  background: light-dark(rgb(249 246 251 / 80%), rgb(12 17 33 / 76%));
+  box-shadow:
+    inset 0 1px 0 rgb(159 143 188 / 5%),
+    0 20px 60px rgb(0 0 0 / 6%);
+}
+
+.setup.setup h1 {
+  color: var(--entry-ink);
+  font-family: var(--font-family-display);
+  font-size: clamp(1.9rem, 3vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.25;
+  scroll-margin-block-start: 5rem;
+}
+
+.setup [data-setup-question] {
+  padding-block: 0.75rem 1rem;
+  border-block-end: 1px solid var(--entry-line);
+}
+
+.setup [data-setup-question] legend {
+  color: var(--entry-ink);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.setup [data-setup-options] {
+  gap: 0.5rem 1rem;
+}
+
+.setup [data-setup-options] label {
+  min-block-size: 3rem;
+  padding: 0.9rem 1rem;
+  border-color: transparent;
+  border-radius: 0.4rem;
+  color: var(--entry-muted);
+  background: light-dark(rgb(99 80 123 / 3%), rgb(155 142 185 / 3%));
+  box-shadow: none;
+}
+
+.setup [data-setup-options] label[data-selected] {
+  border-color: var(--entry-gold);
+  color: var(--entry-ink);
+  background: rgb(180 139 79 / 10%);
+}
+
+.setup [data-setup-options] label > span {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.setup input[type='radio'] {
+  accent-color: var(--entry-gold);
+}
+
+.setup [data-setup-mode] button {
+  min-block-size: 9rem;
+  justify-content: start;
+  padding: 1.4rem;
+  border-radius: 0.5rem;
+  border-color: var(--entry-line);
+  color: var(--entry-muted);
+  background: transparent;
+  font-size: 1rem;
+  line-height: 1.55;
+  transform: none;
+}
+
+.setup [data-setup-mode] button strong {
+  color: var(--entry-ink);
+  font-weight: 500;
+}
+
+.setup [data-setup-mode] button[aria-pressed='true'] {
+  border-color: var(--entry-gold);
+  background: rgb(180 139 79 / 10%);
+}
+
+.setup [data-setup-mode] button[aria-pressed='true'] strong::after {
+  content: ' ✓';
+}
+
+/* Deck-only gallery: the physical backs carry the selection, not outer panels. */
+.setup.setup[data-reading-step='theme'] [data-elevation='low'] {
+  border-color: transparent;
+  border-radius: 0;
+  background: radial-gradient(ellipse at 50% 48%, rgb(122 86 156 / 8%), transparent 75%);
+  box-shadow: none;
+}
+
+.setup[data-reading-step='theme'] [data-elevation='low'] > div:first-child {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+}
+
+.setup[data-reading-step='theme'] div[aria-hidden='true'][data-theme] {
+  display: none;
+}
+
+/* Keep selection announcements without repeating the gallery's visible copy. */
+.setup[data-reading-step='theme'] [aria-live='polite'] {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  min-block-size: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.setup[data-reading-step='theme'] fieldset > div {
+  gap: 2rem 1.5rem;
+}
+
+.setup[data-reading-step='theme'] label[data-theme] {
+  align-content: start;
+  grid-template-rows: auto 1fr;
+  padding: 0.75rem 0.25rem;
+  border: 0;
+  border-radius: 0.4rem;
+  background: none;
+  box-shadow: none;
+  gap: 1.25rem;
+}
+
+.setup[data-reading-step='theme'] label[data-theme] > span:first-of-type {
+  inline-size: min(100%, 10rem);
+  border-color: var(--entry-line);
+  box-shadow: 0 12px 25px rgb(0 0 0 / 18%);
+  transition:
+    transform 240ms ease,
+    box-shadow 240ms ease,
+    border-color 240ms ease;
+}
+
+.setup[data-reading-step='theme'] label[data-theme]:has(input:checked) > span:first-of-type {
+  border-color: var(--entry-gold);
+  box-shadow:
+    0 0 0 2px rgb(199 162 102 / 18%),
+    0 10px 35px rgb(199 162 102 / 18%);
+  transform: translateY(-3px);
+}
+
+.setup[data-reading-step='theme'] label[data-theme] strong {
+  color: var(--entry-ink);
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.setup[data-reading-step='theme'] label[data-theme] small {
+  max-inline-size: 25ch;
+  margin-inline: auto;
+  color: var(--entry-muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.setup[data-reading-step='theme'] label[data-theme] > span:last-child {
+  z-index: 2;
+  inset: 0.35rem calc(50% - 0.9rem) auto auto;
+  border-color: transparent;
+  background: transparent;
+}
+
+.setup[data-reading-step='theme'] label[data-theme]:has(input:checked) > span:last-child {
+  border-color: var(--entry-gold);
+  color: var(--sa-action-ink);
+  background: #dec394;
+}
+
+@media (max-width: 1100px) {
+  .setup[data-reading-step='theme'] fieldset > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .setup[data-reading-step='theme'] label[data-theme] > span:first-of-type {
+    inline-size: min(100%, 7.5rem);
+  }
+
+  .setup[data-reading-step='theme'] label[data-theme] small {
+    font-size: 0.9rem;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .page button[data-prominence='primary']:hover,
+  .setup button[data-prominence='primary']:hover:not(:disabled) {
+    border-color: var(--sa-action-border);
+    box-shadow:
+      inset 0 1px 0 rgb(255 247 218 / 70%),
+      0 8px 34px rgb(203 163 96 / 24%);
+    transform: none;
+  }
+
+  .spreadCard:hover,
+  .setup [data-setup-options] label:hover {
+    background: rgb(185 143 77 / 8%);
+  }
+
+  .setup[data-reading-step='theme'] label[data-theme]:hover > span:first-of-type {
+    border-color: var(--entry-gold);
+    box-shadow: 0 10px 30px rgb(199 162 102 / 14%);
+  }
+}
+
+@keyframes chamber-light {
+  from {
+    opacity: 0.2;
+    transform: translateY(0.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1100px) {
+  .heroGrid {
+    grid-template-columns: minmax(0, 47fr) minmax(0, 53fr);
+    min-block-size: 33rem;
+  }
+
+  .page .heroCopy h1 {
+    font-size: clamp(2.4rem, 4.7vw, 3.3rem);
+  }
+
+  .heroArtwork picture {
+    inset-inline: -40% -18%;
+  }
+
+  .spreadCollection {
+    column-gap: 1.5rem;
+  }
+
+  .spreadCard {
+    gap: 0.65rem;
+    padding-inline: 0.65rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .tarotHero {
+    padding-block-start: 1.25rem;
+  }
+
+  .heroGrid {
+    grid-template-columns: minmax(0, 1fr);
+    min-block-size: 0;
+  }
+
+  .page .heroCopy {
+    gap: 1rem;
+    padding-block: 0;
+  }
+
+  .page .heroCopy h1 {
+    max-inline-size: 15ch;
+    font-size: clamp(2rem, 8.5vw, 2.4rem);
+    line-height: 1.2;
+  }
+
+  .page .lead {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .heroActions {
+    inline-size: 100%;
+  }
+
+  .heroActions button {
+    inline-size: 100%;
+  }
+
+  .heroArtwork {
+    block-size: clamp(15rem, 70vw, 19rem);
+  }
+
+  .heroArtwork picture {
+    inset: -0.5rem -1rem -1.5rem;
+    mask-image:
+      linear-gradient(180deg, transparent, #000 14%, #000 80%, transparent),
+      radial-gradient(ellipse 67% 65% at 50% 50%, #000 50%, transparent 91%);
+  }
+
+  .heroArtwork img {
+    object-position: center 45%;
+  }
+
+  .section {
+    padding-block: 2rem 2.5rem;
+  }
+
+  .sectionHeading {
+    margin-block-end: 0.5rem;
+  }
+
+  .spreadCollection {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-flow: row;
+  }
+
+  .spreadCard {
+    gap: 0.6rem;
+    padding: 1.25rem 0.5rem;
+  }
+
+  .spreadAction {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-block-start: 0.75rem;
+  }
+
+  .spreadAction button {
+    inline-size: 100%;
+    white-space: normal;
+  }
+
+  .setup.setup {
+    padding-block: 1.25rem 2.5rem;
+  }
+
+  .setup.setup [data-elevation='low'] {
+    padding: 1.25rem 1rem;
+    border-radius: 0.7rem;
+  }
+
+  .setup [data-setup-options] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .setup [data-setup-mode] button {
+    min-block-size: 7rem;
+  }
+
+  .setup button[data-prominence='primary'] {
+    min-inline-size: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .setup[data-reading-step='theme'] label[data-theme] > span:first-of-type {
+    transition: none;
+  }
+
+  .setup[data-reading-step='theme'] label[data-theme]:has(input:checked) > span:first-of-type {
+    transform: none;
+  }
+
+  .page *,
+  .page *::before,
+  .setup *,
+  .setup *::before {
+    animation: none;
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .page,
+  .setup {
+    --entry-ink: CanvasText;
+    --entry-muted: CanvasText;
+    --entry-gold: LinkText;
+    --entry-line: CanvasText;
+    --entry-base: Canvas;
+
+    background: Canvas;
+  }
+
+  .page::after,
+  .heroArtwork::before,
+  .setup::before {
+    display: none;
+  }
+
+  .spreadCard[data-selected] {
+    border-inline-start: 3px solid Highlight;
+  }
+
+  .setup[data-reading-step='theme'] label[data-theme]:has(input:checked) {
+    outline: 2px solid Highlight;
+  }
+
+  .setup[data-reading-step='theme'] label[data-theme]:has(input:checked) > span:last-child {
+    color: HighlightText;
+    background: Highlight;
+  }
+
+  .page button[data-prominence='primary'],
+  .setup button[data-prominence='primary']:not(:disabled) {
+    color: ButtonText;
+    border-color: ButtonText;
+    background: ButtonFace;
+    box-shadow: none;
+  }
+}

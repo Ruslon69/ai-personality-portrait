@@ -15,7 +15,7 @@ function read(rootDir: string, path: string) {
 
 export function runProductionReadinessGate(rootDir: string) {
   const assertions = new QualityAssertions();
-  const locales: readonly Locale[] = ['ru', 'en', 'uk'];
+  const locales: readonly Locale[] = ['ru', 'en', 'uk', 'es'];
   const publicPaths = [
     ROUTES.home,
     ROUTES.tarot,
@@ -86,6 +86,7 @@ export function runProductionReadinessGate(rootDir: string) {
     read(rootDir, 'src/shared/i18n/locales/en.ts'),
     read(rootDir, 'src/shared/i18n/locales/ru.ts'),
     read(rootDir, 'src/shared/i18n/locales/uk.ts'),
+    read(rootDir, 'src/shared/i18n/locales/es.ts'),
     read(rootDir, 'src/widgets/header/Header.tsx'),
   ].join('\n');
   assertions.assert(
@@ -96,7 +97,7 @@ export function runProductionReadinessGate(rootDir: string) {
       html.includes('property="og:title"') &&
       html.includes('name="twitter:card"') &&
       html.includes('name="twitter:title"') &&
-      html.includes('href="/favicon.svg"') &&
+      html.includes('href="/favicon.svg?v=moon-star-1"') &&
       existsSync(resolve(rootDir, 'public/favicon.svg')),
     {
       code: 'production-document-metadata-assets',
@@ -138,10 +139,14 @@ export function runProductionReadinessGate(rootDir: string) {
         privacy.ownerNotice.length > 0 &&
         terms.ownerNotice.length > 0 &&
         privacy.sections.some((section) =>
-          section.paragraphs?.some((paragraph) => /microphone|микрофон|мікрофон/i.test(paragraph)),
+          section.paragraphs?.some((paragraph) =>
+            /microphone|микрофон|мікрофон|micrófono/i.test(paragraph),
+          ),
         ) &&
         privacy.sections.some((section) =>
-          section.paragraphs?.some((paragraph) => /analytics|аналитик|аналітик/i.test(paragraph)),
+          section.paragraphs?.some((paragraph) =>
+            /analytics|аналитик|аналітик|analítica/i.test(paragraph),
+          ),
         ) &&
         privacy.sections.some((section) =>
           section.paragraphs?.some((paragraph) => paragraph.includes('Cloudflare Pages')),

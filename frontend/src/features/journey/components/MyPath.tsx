@@ -1,21 +1,23 @@
 import { useMemo, useState } from 'react';
 
 import { useNotifications } from '@app/providers';
-import type { PersonalityProfile } from '@entities/personality-profile';
-import { TarotCardView } from '@features/tarot';
-import type { Locale } from '@shared/i18n';
-import { Badge, Button, Container, Stack, Typography } from '@shared/ui';
+import { PortraitMark, type PersonalityProfile } from '@entities/personality-profile';
+import { localeDefinitions, type Locale } from '@shared/i18n';
+import { Button, ButtonLink, Container, Stack, Typography } from '@shared/ui';
+import { ROUTES } from '@shared/config';
 
-import { journeyCopy, journeyPersistenceCopy } from '../data';
+import { journeyCopy, journeyPersistenceCopy, tarotHistoryCopy } from '../data';
 import { useJourney } from '../hooks';
-import { createJourneyChapters } from '../lib';
 import type { JourneyReadingRecord } from '../types';
-import styles from './Journey.module.css';
+import { SavedReading } from './SavedReading';
+import styles from './PersonalSpace.module.css';
 
 export function MyPath({
   locale,
   onBack,
   onExplore,
+  onExplorePortrait,
+  onManageReadings,
   onOpenPortrait,
   onOpenReading,
   profiles,
@@ -23,6 +25,8 @@ export function MyPath({
   locale: Locale;
   onBack: () => void;
   onExplore: () => void;
+  onExplorePortrait?: () => void;
+  onManageReadings: () => void;
   onOpenPortrait: (profile: PersonalityProfile) => void;
   onOpenReading: (record: JourneyReadingRecord) => void;
   profiles: readonly PersonalityProfile[];
@@ -30,149 +34,199 @@ export function MyPath({
   const { notify } = useNotifications();
   const { actions, state } = useJourney();
   const copy = journeyCopy[locale];
-  const persistenceCopy = journeyPersistenceCopy[locale];
   const [announcement, setAnnouncement] = useState('');
-  const chapters = useMemo(
-    () => createJourneyChapters(state.readings, locale),
-    [locale, state.readings],
-  );
-  const dateFormatter = useMemo(
+  const entries = useMemo(
     () =>
-      new Intl.DateTimeFormat(locale === 'uk' ? 'uk-UA' : locale === 'en' ? 'en-GB' : 'ru-RU', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      }),
-    [locale],
+      [
+        ...state.readings.map((record) => ({
+          kind: 'tarot' as const,
+          date: record.savedAt,
+          record,
+        })),
+        ...profiles.map((profile) => ({
+          kind: 'portrait' as const,
+          date: profile.createdAt,
+          profile,
+        })),
+      ].sort((a, b) => Date.parse(b.date) - Date.parse(a.date)),
+    [state.readings, profiles],
+  );
+
+  const groups = entries.reduce<{ key: string; date: string; entries: typeof entries }[]>(
+    (result, entry) => {
+      const date = new Date(entry.date);
+      const key = `${date.getFullYear()}-${date.getMonth()}`;
+      const previous = result.at(-1);
+      if (previous?.key === key) previous.entries.push(entry);
+      else result.push({ key, date: entry.date, entries: [entry] });
+      return result;
+    },
+    [],
   );
 
   function toggleBookmark(record: JourneyReadingRecord) {
     const result = actions.toggleFavorite(record.reading.id);
     if (result.persisted) {
-      setAnnouncement(
-        `${record.reading.headline}. ${record.favorite ? copy.path.removedBookmark : copy.path.addedBookmark}`,
-      );
-    } else notify(persistenceCopy.favoriteFailed, 'error');
+      setAnnouncement(record.favorite ? copy.path.removedBookmark : copy.path.addedBookmark);
+    } else notify((language) => journeyPersistenceCopy[language].favoriteFailed, 'error');
   }
 
   return (
     <div className={styles.root}>
-      <section aria-labelledby="path-title" className={styles.pathHero}>
+      <section aria-labelledby="path-title" className={styles.hero}>
         <Container size="wide">
-          <div className={styles.pathHeroGrid}>
-            <Stack gap="md">
+          <div className={styles.heroFrame}>
+            <Stack align="start" gap="md">
               <Typography as="p" variant="eyebrow">
                 {copy.path.eyebrow}
               </Typography>
               <Typography as="h1" id="path-title" tabIndex={-1} variant="display">
                 {copy.path.title}
               </Typography>
-              <Typography className={styles.heroLead} variant="lead">
+              <Typography className={styles.lead} variant="lead">
                 {copy.path.lead}
               </Typography>
+              <div className={styles.actions}>
+                {entries.length ? (
+                  <Button onClick={onExplore} prominence="quiet">
+                    {copy.latest.explore} <span aria-hidden="true">→</span>
+                  </Button>
+                ) : null}
+                <Button onClick={onBack} prominence="quiet">
+                  {copy.path.back}
+                </Button>
+              </div>
             </Stack>
-            <Button onClick={onBack} prominence="quiet">
-              {copy.path.back}
-            </Button>
+            <span aria-hidden="true" className={styles.celestialMark}>
+              ✧
+            </span>
           </div>
         </Container>
       </section>
 
-      <section aria-label={copy.book.chapterNavigation} className={styles.pathSection}>
+      <section aria-label={copy.book.chapterNavigation} className={styles.historySection}>
         <Container size="wide">
-          {chapters.length || profiles.length ? (
-            <ol className={styles.bookTimeline}>
-              {chapters.map((chapter) => (
-                <li className={styles.chapterEntry} key={chapter.record.reading.id}>
-                  <div aria-hidden="true" className={styles.chapterRail}>
-                    <span>{chapter.number}</span>
-                  </div>
-                  <article>
-                    <header>
-                      <div>
-                        <Typography as="p" variant="eyebrow">
-                          {copy.path.journeyMilestone} {chapter.number}
-                        </Typography>
-                        <Typography as="h2" variant="display">
-                          {chapter.title}
-                        </Typography>
-                      </div>
-                      <time dateTime={chapter.record.savedAt}>
-                        {dateFormatter.format(new Date(chapter.record.savedAt))}
-                      </time>
-                    </header>
-                    <div className={styles.chapterMetadata}>
-                      <span>{chapter.readingType}</span>
-                      <span>{chapter.dominantTheme}</span>
-                    </div>
-                    {chapter.record.reading.selections[0] ? (
-                      <div className={styles.timelineCardVisual}>
-                        <TarotCardView
-                          isRevealed
-                          locale={locale}
-                          selection={chapter.record.reading.selections[0]}
-                          theme={chapter.record.reading.context.deckTheme}
-                          variant="history"
-                        />
-                      </div>
-                    ) : null}
-                    <blockquote>“{chapter.quote}”</blockquote>
-                    <Typography className={styles.chapterSummary}>
-                      {chapter.record.reading.summary}
-                    </Typography>
-                    <footer className={styles.chapterActions}>
-                      <Button onClick={() => onOpenReading(chapter.record)} prominence="secondary">
-                        {copy.path.open}
-                      </Button>
-                      <Button
-                        aria-pressed={chapter.record.favorite}
-                        className={styles.bookmarkButton}
-                        onClick={() => toggleBookmark(chapter.record)}
-                        prominence="quiet"
-                      >
-                        <span aria-hidden="true" className={styles.bookmarkShape} />
-                        {chapter.record.favorite ? copy.path.removeBookmark : copy.path.addBookmark}
-                      </Button>
-                    </footer>
-                  </article>
-                </li>
+          {entries.length ? (
+            <>
+              {groups.map((group) => (
+                <section
+                  className={styles.archiveMonth}
+                  key={group.key}
+                  aria-labelledby={`archive-${group.key}`}
+                >
+                  <h2 id={`archive-${group.key}`} className={styles.monthHeading}>
+                    {new Intl.DateTimeFormat(localeDefinitions[locale].formatTag, {
+                      month: 'long',
+                      year: 'numeric',
+                    }).format(new Date(group.date))}
+                  </h2>
+                  <ol className={styles.timeline}>
+                    {group.entries.map((entry) =>
+                      entry.kind === 'tarot' ? (
+                        <li key={entry.record.reading.id}>
+                          <SavedReading
+                            isPersisted={actions.isReadingPersisted(entry.record.reading.id)}
+                            headingLevel="h3"
+                            record={entry.record}
+                            locale={locale}
+                            onOpen={onOpenReading}
+                          >
+                            <Button
+                              aria-describedby={`saved-reading-${entry.record.reading.id}`}
+                              aria-pressed={entry.record.favorite}
+                              onClick={() => toggleBookmark(entry.record)}
+                              prominence="quiet"
+                            >
+                              <span aria-hidden="true">{entry.record.favorite ? '◆' : '◇'}</span>
+                              {entry.record.favorite
+                                ? copy.path.removeBookmark
+                                : copy.path.addBookmark}
+                            </Button>
+                          </SavedReading>
+                        </li>
+                      ) : (
+                        <li key={entry.profile.id}>
+                          <article className={styles.savedPortrait}>
+                            <span aria-hidden="true" className={styles.portraitMark}>
+                              <PortraitMark identity={entry.profile.visualIdentity} size="sm" />
+                            </span>
+                            <div className={styles.readingCopy}>
+                              <div className={styles.metadata}>
+                                <span>{copy.path.portraitMilestone}</span>
+                                <time dateTime={entry.date}>
+                                  {new Intl.DateTimeFormat(localeDefinitions[locale].formatTag, {
+                                    dateStyle: 'medium',
+                                    timeStyle: 'short',
+                                  }).format(new Date(entry.date))}
+                                </time>
+                              </div>
+                              <Typography
+                                as="h3"
+                                id={`saved-portrait-${entry.profile.id}`}
+                                lang={entry.profile.locale}
+                                variant="heading-lg"
+                              >
+                                {entry.profile.revealHeadline}
+                              </Typography>
+                              <p className={styles.sessionNote}>{copy.path.session}</p>
+                              <div className={styles.actions}>
+                                <Button
+                                  aria-describedby={`saved-portrait-${entry.profile.id}`}
+                                  onClick={() => onOpenPortrait(entry.profile)}
+                                  prominence="secondary"
+                                >
+                                  {copy.quick.latestTitle} <span aria-hidden="true">→</span>
+                                </Button>
+                              </div>
+                            </div>
+                          </article>
+                        </li>
+                      ),
+                    )}
+                  </ol>
+                </section>
               ))}
-
-              {profiles.map((profile, index) => (
-                <li className={styles.interludeEntry} key={profile.id}>
-                  <div aria-hidden="true" className={styles.chapterRail}>
-                    <span>·</span>
-                  </div>
-                  <article>
-                    <Badge tone="info">{copy.path.portraitMilestone}</Badge>
-                    <Typography as="h2" variant="heading-lg">
-                      {profile.title}
-                    </Typography>
-                    <blockquote>“{profile.revealHeadline}”</blockquote>
-                    <Button onClick={() => onOpenPortrait(profile)} prominence="secondary">
-                      {copy.path.open}
-                    </Button>
-                    <span aria-hidden="true" className={styles.interludeNumber}>
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                  </article>
-                </li>
-              ))}
-            </ol>
+              {state.readings.length ? (
+                <div className={styles.utilityNavigation}>
+                  <Button onClick={onManageReadings} prominence="quiet">
+                    {copy.path.manage} <span aria-hidden="true">→</span>
+                  </Button>
+                </div>
+              ) : null}
+            </>
           ) : (
-            <div className={styles.bookEmpty}>
-              <span aria-hidden="true" className={styles.emptyMonogram}>
-                I
+            <div className={styles.empty}>
+              <span aria-hidden="true" className={styles.emptyMark}>
+                ✧
               </span>
-              <Stack align="center" gap="lg">
-                <Typography as="h2" variant="heading-lg">
-                  {copy.path.empty}
-                </Typography>
-                <Typography>{copy.empty.description}</Typography>
+              <Typography as="h2" variant="heading-lg">
+                {tarotHistoryCopy[locale].emptyTitle}
+              </Typography>
+              <Typography>{copy.path.empty}</Typography>
+              <div className={styles.actions}>
                 <Button onClick={onExplore} prominence="primary">
                   {copy.empty.primary}
                 </Button>
-              </Stack>
+                <ButtonLink
+                  href={ROUTES.portrait}
+                  onClick={(event) => {
+                    if (
+                      !onExplorePortrait ||
+                      event.button !== 0 ||
+                      event.metaKey ||
+                      event.ctrlKey ||
+                      event.shiftKey ||
+                      event.altKey
+                    )
+                      return;
+                    event.preventDefault();
+                    onExplorePortrait();
+                  }}
+                  prominence="secondary"
+                >
+                  {copy.empty.secondary}
+                </ButtonLink>
+              </div>
             </div>
           )}
         </Container>

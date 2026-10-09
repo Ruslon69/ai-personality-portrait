@@ -1,3 +1,4 @@
+import { reportCopy } from '../data/report-copy';
 import { Badge, Button, Card, Stack, Typography } from '@shared/ui';
 import type { ProfileLocale } from '@entities/personality-profile';
 
@@ -16,6 +17,7 @@ type ExpandableReportCardProps = {
   expanded: boolean;
   item: ExpandableReportContent;
   locale?: ProfileLocale;
+  contentLocale?: ProfileLocale;
   onToggle: (id: string) => void;
   variant?: 'default' | 'featured';
 };
@@ -26,15 +28,11 @@ export function ExpandableReportCard({
   expanded,
   item,
   locale = 'ru',
+  contentLocale = locale,
   onToggle,
   variant = 'default',
 }: ExpandableReportCardProps) {
-  const labels =
-    locale === 'en'
-      ? { collapse: 'Collapse', more: 'Details' }
-      : locale === 'uk'
-        ? { collapse: 'Згорнути', more: 'Докладніше' }
-        : { collapse: 'Свернуть', more: 'Подробнее' };
+  const labels = reportCopy[locale];
   const titleId = `${item.id}-title`;
   const detailsId = `${item.id}-details`;
   const classes = [styles.card, className].filter(Boolean).join(' ');
@@ -47,7 +45,7 @@ export function ExpandableReportCard({
             {badge}
           </Badge>
         ) : null}
-        <Stack gap="sm">
+        <Stack gap="sm" lang={contentLocale}>
           <Typography
             as="h3"
             id={titleId}
@@ -65,7 +63,9 @@ export function ExpandableReportCard({
           id={detailsId}
         >
           <div className={styles.detailsInner}>
-            <Typography className={styles.detailsCopy}>{item.details}</Typography>
+            <Typography className={styles.detailsCopy} lang={contentLocale}>
+              {item.details}
+            </Typography>
           </div>
         </div>
 

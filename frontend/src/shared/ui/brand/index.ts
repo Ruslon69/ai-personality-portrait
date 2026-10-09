@@ -1,0 +1,1 @@
+export { BrandIdentity } from './BrandIdentity';

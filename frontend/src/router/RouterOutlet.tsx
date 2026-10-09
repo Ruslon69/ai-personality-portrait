@@ -1,3 +1,4 @@
+import { routeCopy } from './route-copy';
 import { Suspense, useEffect, useLayoutEffect, useRef } from 'react';
 import type { ComponentType } from 'react';
 
@@ -25,6 +26,16 @@ export function RouterOutlet() {
   useLayoutEffect(() => {
     const metadata = resolveRouteDocumentMetadata(currentPath, locale);
     document.title = metadata.title;
+    for (const selector of [
+      'meta[name="description"]',
+      'meta[property="og:description"]',
+      'meta[name="twitter:description"]',
+    ])
+      document
+        .querySelector<HTMLMetaElement>(selector)
+        ?.setAttribute('content', metadata.description);
+    for (const selector of ['meta[property="og:title"]', 'meta[name="twitter:title"]'])
+      document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', metadata.title);
     document
       .querySelector<HTMLMetaElement>('meta[name="robots"]')
       ?.setAttribute('content', metadata.robots);
@@ -41,7 +52,8 @@ export function RouterOutlet() {
       const main = document.getElementById('app-content');
 
       if (main && !main.contains(document.activeElement)) {
-        main.focus();
+        // Route scroll restoration owns position; landmark focus must not move it.
+        main.focus({ preventScroll: true });
       }
     });
 
@@ -52,17 +64,7 @@ export function RouterOutlet() {
     <div className={styles.route} key={currentPath}>
       <Suspense
         fallback={
-          <div
-            aria-label={
-              locale === 'en'
-                ? 'Loading page'
-                : locale === 'uk'
-                  ? 'Завантаження сторінки'
-                  : 'Загрузка страницы'
-            }
-            className={styles.loading}
-            role="status"
-          >
+          <div aria-label={routeCopy[locale].loading} className={styles.loading} role="status">
             <Spinner />
           </div>
         }

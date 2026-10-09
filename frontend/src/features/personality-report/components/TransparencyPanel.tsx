@@ -4,6 +4,30 @@ import { Container, Stack, Surface, Typography } from '@shared/ui';
 import styles from './Explainability.module.css';
 
 const transparencyCopy = {
+  es: {
+    eyebrow: 'Transparencia',
+    title: 'Cómo se ha formado este retrato',
+    lead: 'El sistema compara las respuestas que has elegido compartir y propone pequeños pasos prácticos. No utiliza puntuaciones ocultas ni conclusiones al azar.',
+    flow: [
+      'Se han reunido tus respuestas',
+      'Se han comparado los temas recurrentes',
+      'Las lecturas opcionales se han mantenido aparte',
+      'Se han formado observaciones y siguientes pasos',
+    ],
+    points: [
+      [
+        'Busca repeticiones',
+        'Encuentra conexiones recurrentes en la información que has elegido compartir.',
+      ],
+      ['No diagnostica', 'No define tu personalidad como un hecho demostrado.'],
+      ['No predice', 'No predice acontecimientos ni promete un resultado futuro.'],
+      [
+        'Separa las fuentes',
+        'Las lecturas de numerología, zodiaco y astrología se identifican con claridad.',
+      ],
+      ['Tú tienes la última palabra', 'Tú decides qué observaciones te resultan útiles.'],
+    ],
+  },
   en: {
     eyebrow: 'Transparency',
     title: 'How this portrait was assembled',

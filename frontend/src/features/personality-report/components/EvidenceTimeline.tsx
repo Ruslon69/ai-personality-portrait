@@ -1,3 +1,4 @@
+import { getSourceReference } from '@entities/personality-profile';
 import type { ProfileLocale, SourceReference } from '@entities/personality-profile';
 
 import { SourceSymbol } from './SourceChip';
@@ -15,6 +16,7 @@ export function EvidenceTimeline({
   sources,
 }: EvidenceTimelineProps) {
   const copy = {
+    es: { insight: 'Observación', recommendation: 'Recomendación', rule: 'Regla de análisis' },
     en: { insight: 'Observation', recommendation: 'Recommendation', rule: 'Analysis rule' },
     ru: { insight: 'Наблюдение', recommendation: 'Рекомендация', rule: 'Правило анализа' },
     uk: { insight: 'Спостереження', recommendation: 'Рекомендація', rule: 'Правило аналізу' },
@@ -26,7 +28,7 @@ export function EvidenceTimeline({
           <span className={styles.timelineSymbol}>
             <SourceSymbol source={source} />
           </span>
-          <span>{source.shortLabel}</span>
+          <span>{getSourceReference(source.id, locale).shortLabel}</span>
         </div>
       ))}
       <div className={styles.timelineNode} data-node="engine">

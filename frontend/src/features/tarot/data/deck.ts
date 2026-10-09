@@ -1,8 +1,16 @@
 import type { Locale } from '@shared/i18n';
 
 import type { LocalizedText, TarotCard, TarotDeck, TarotSuit } from '../types';
+import { cardActionCopy } from './card-action-copy';
+import { cardMeaningCopy } from './card-meaning-copy';
+import { spanishMajorMetadata, spanishRanks } from './card-copy-es';
 
-const localized = (ru: string, en: string, uk: string): LocalizedText => ({ en, ru, uk });
+const localized = (ru: string, en: string, uk: string, es: string): LocalizedText => ({
+  en,
+  ru,
+  uk,
+  es,
+});
 
 const major = [
   [
@@ -55,7 +63,7 @@ const major = [
     'The Empress',
     'Імператриця',
     'рост и забота о форме',
-    'growth and care for form',
+    'growth and care for what you are creating',
     'зростання й турбота про форму',
     'избыточная опека',
     'overprotection',
@@ -86,7 +94,7 @@ const major = [
     'tradition and shared knowledge',
     'традиція й передавання досвіду',
     'следование форме без вопроса',
-    'following form without question',
+    'following convention without question',
     'дотримання форми без питання',
   ],
   [
@@ -209,7 +217,7 @@ const major = [
     'Temperance',
     'Помірність',
     'смешение и верная мера',
-    'integration and right measure',
+    'balance and moderation',
     'поєднання й правильна міра',
     'бесконечное сглаживание',
     'endless compromise',
@@ -328,62 +336,76 @@ const suitMeta: Record<
   wands: {
     accent: 'fire',
     glyph: '│',
-    name: localized('Жезлы', 'Wands', 'Жезли'),
+    name: localized('Жезлы', 'Wands', 'Жезли', 'Bastos'),
     theme: localized(
       'инициатива, энергия и способ начать',
       'initiative, energy and how action begins',
       'ініціатива, енергія та спосіб почати',
+      'la iniciativa, la energía y la forma de empezar',
     ),
-    shadow: localized('поспешность или выгорание', 'haste or burnout', 'поспіх або виснаження'),
+    shadow: localized(
+      'поспешность или выгорание',
+      'haste or burnout',
+      'поспіх або виснаження',
+      'la prisa o el agotamiento',
+    ),
   },
   cups: {
     accent: 'water',
     glyph: '∪',
-    name: localized('Кубки', 'Cups', 'Кубки'),
+    name: localized('Кубки', 'Cups', 'Кубки', 'Copas'),
     theme: localized(
       'чувства, отношения и внутренний отклик',
       'feelings, relationships and inner response',
       'почуття, стосунки й внутрішній відгук',
+      'los sentimientos, las relaciones y la respuesta interior',
     ),
     shadow: localized(
       'идеализация или уход от ясности',
       'idealisation or avoiding clarity',
       'ідеалізація або уникнення ясності',
+      'la idealización o evitar la claridad',
     ),
   },
   swords: {
     accent: 'air',
     glyph: '†',
-    name: localized('Мечи', 'Swords', 'Мечі'),
+    name: localized('Мечи', 'Swords', 'Мечі', 'Espadas'),
     theme: localized(
       'мысли, решения и честный разговор',
       'thought, decisions and honest conversation',
       'думки, рішення й чесна розмова',
+      'el pensamiento, las decisiones y la conversación honesta',
     ),
     shadow: localized(
       'перегрузка мыслями или резкость',
       'mental overload or sharpness',
       'перевантаження думками або різкість',
+      'la sobrecarga mental o la dureza',
     ),
   },
   pentacles: {
     accent: 'earth',
     glyph: '◇',
-    name: localized('Пентакли', 'Pentacles', 'Пентаклі'),
+    name: localized('Пентакли', 'Pentacles', 'Пентаклі', 'Oros'),
     theme: localized(
       'ресурсы, тело и практическая опора',
       'resources, the body and practical support',
       'ресурси, тіло й практична опора',
+      'los recursos, el cuerpo y el apoyo práctico',
     ),
     shadow: localized(
       'застой или чрезмерная фиксация на результате',
       'stagnation or over-fixation on outcome',
       'застій або надмірна фіксація на результаті',
+      'el estancamiento o la fijación excesiva en el resultado',
     ),
   },
 };
 
 const cardSuitForms = {
+  es: { cups: 'Copas', pentacles: 'Oros', swords: 'Espadas', wands: 'Bastos' },
+  en: { cups: 'Cups', pentacles: 'Pentacles', swords: 'Swords', wands: 'Wands' },
   ru: {
     cups: 'Кубков',
     pentacles: 'Пентаклей',
@@ -427,7 +449,7 @@ const ranks = [
     'Four',
     'Четвірка',
     'создание устойчивой формы',
-    'building a stable form',
+    'building lasting structure',
     'створення стійкої форми',
   ],
   [
@@ -477,7 +499,7 @@ const ranks = [
     'Nine',
     'Дев’ятка',
     'зрелая граница цикла',
-    'a mature edge of the cycle',
+    'maturity near the end of a cycle',
     'зріла межа циклу',
   ],
   [
@@ -490,7 +512,16 @@ const ranks = [
     'completion and transition',
     'підсумок і перехід далі',
   ],
-  ['page', 11, 'Паж', 'Page', 'Паж', 'любопытное обучение', 'curious learning', 'цікаве навчання'],
+  [
+    'page',
+    11,
+    'Паж',
+    'Page',
+    'Паж',
+    'любопытное обучение',
+    'learning through curiosity',
+    'навчання з цікавістю',
+  ],
   [
     'knight',
     12,
@@ -538,9 +569,11 @@ function majorCard(item: (typeof major)[number]): TarotCard {
     enShadow,
     ukShadow,
   ] = item;
-  const name = localized(ruName, enName, ukName);
-  const light = localized(ruTheme, enTheme, ukTheme);
-  const shadow = localized(ruShadow, enShadow, ukShadow);
+  const [esName, esTheme, esShadow] = spanishMajorMetadata[id]!;
+  const name = localized(ruName, enName, ukName, esName);
+  const light = localized(ruTheme, enTheme, ukTheme, esTheme);
+  const meaning = cardMeaningCopy[`major-${id}`]!;
+  const shadow = localized(ruShadow, enShadow, ukShadow, esShadow);
   return {
     id: `major-${id}`,
     number,
@@ -548,47 +581,60 @@ function majorCard(item: (typeof major)[number]): TarotCard {
     name,
     light,
     shadow,
-    baseThemes: { ru: [ruTheme], en: [enTheme], uk: [ukTheme] },
-    keywords: { ru: [ruTheme, ruShadow], en: [enTheme, enShadow], uk: [ukTheme, ukShadow] },
+    baseThemes: { ru: [ruTheme], en: [enTheme], uk: [ukTheme], es: [esTheme] },
+    keywords: {
+      ru: [ruTheme, ruShadow],
+      en: [enTheme, enShadow],
+      uk: [ukTheme, ukShadow],
+      es: [esTheme, esShadow],
+    },
     upright: localized(
       `Карта связана с темой «${ruTheme}». Посмотрите, как это уже проявляется в вашей ситуации.`,
-      `This card is about ${enTheme}. Notice how this is already showing up in your situation.`,
-      `Карта пов’язана з темою «${ukTheme}». Подивіться, як це вже проявляється у вашій ситуації.`,
+      meaning.en.upright,
+      meaning.uk.upright,
+      meaning.es.upright,
     ),
     reversed: localized(
       `Перевёрнутая карта предупреждает о возможном риске: ${ruShadow}.`,
-      `Reversed, this card points to a possible risk: ${enShadow}.`,
-      `Перевернута карта попереджає про можливий ризик: ${ukShadow}.`,
+      meaning.en.reversed,
+      meaning.uk.reversed,
+      meaning.es.reversed,
     ),
     relationship: localized(
       `В отношениях обратите внимание на тему «${ruTheme}».`,
-      `In relationships, pay attention to ${enTheme}.`,
-      `У стосунках зверніть увагу на тему «${ukTheme}».`,
+      `In relationships: ${meaning.en.upright}`,
+      `У стосунках: ${meaning.uk.upright}`,
+      `En las relaciones: ${meaning.es.upright}`,
     ),
     work: localized(
       `В делах карта предлагает проверить, как проявляется ${ruTheme}.`,
-      `In work, examine how ${enTheme} is showing up.`,
-      `У справах карта пропонує перевірити, як проявляється ${ukTheme}.`,
+      `At work: ${meaning.en.upright}`,
+      `У справах: ${meaning.uk.upright}`,
+      `En el trabajo: ${meaning.es.upright}`,
     ),
     money: localized(
       `В денежных решениях проверьте факты и не позволяйте риску «${ruShadow}» управлять выбором.`,
-      `With money, check the facts and do not let ${enShadow} drive the decision.`,
-      `У грошових рішеннях перевірте факти й не дозволяйте ризику «${ukShadow}» керувати вибором.`,
+      `${meaning.en.upright} Check the facts before committing money.`,
+      `${meaning.uk.upright} Перш ніж вкладати гроші, перевірте факти.`,
+      `${meaning.es.upright} Comprueba los hechos antes de comprometer dinero.`,
     ),
     personalGrowth: localized(
       `Для размышления спросите себя: где в вашей ситуации уже есть «${ruTheme}»?`,
-      `For reflection, ask yourself where ${enTheme} is already present in your situation.`,
-      `Для роздумів запитайте себе: де у вашій ситуації вже є «${ukTheme}»?`,
+      `${meaning.en.upright} Where do you notice this in your situation?`,
+      `${meaning.uk.upright} Де ви помічаєте це у своїй ситуації?`,
+      `${meaning.es.upright} ¿Dónde lo reconoces en tu situación?`,
     ),
     advice: localized(
       'Не ищите окончательный ответ. Выберите один небольшой шаг, который можно проверить на практике.',
-      'Do not look for a final answer. Choose one small step you can test in practice.',
-      'Не шукайте остаточної відповіді. Оберіть один невеликий крок, який можна перевірити на практиці.',
+      cardActionCopy[`major-${id}`]!.en,
+      cardActionCopy[`major-${id}`]!.uk,
+      cardActionCopy[`major-${id}`]!.es,
     ),
     caution: localized(
       `Не считайте это предсказанием. «${ruShadow}» — лишь один из возможных рисков.`,
       `Do not treat this as a prediction. ${enShadow} is only one possible risk.`,
       `Не сприймайте це як передбачення. «${ukShadow}» — лише один із можливих ризиків.`,
+      `No lo tomes como una predicción. ${esShadow} es solo uno de los posibles riesgos.`,
     ),
     visual: {
       accent: 'major',
@@ -601,7 +647,10 @@ function majorCard(item: (typeof major)[number]): TarotCard {
 function minorCard(suit: TarotSuit, rank: (typeof ranks)[number]): TarotCard {
   const [rankId, number, ruRank, enRank, ukRank, ruPhase, enPhase, ukPhase] = rank;
   const meta = suitMeta[suit];
+  const [esRank, esPhase] = spanishRanks[rankId]!;
+  const meaning = cardMeaningCopy[`${suit}-${rankId}`]!;
   const names = {
+    es: `${esRank} de ${cardSuitForms.es[suit]}`,
     ru: `${ruRank} ${cardSuitForms.ru[suit]}`,
     en: `${enRank} of ${meta.name.en}`,
     uk: `${ukRank} ${cardSuitForms.uk[suit]}`,
@@ -613,60 +662,71 @@ function minorCard(suit: TarotSuit, rank: (typeof ranks)[number]): TarotCard {
     suit,
     name: names,
     baseThemes: {
+      es: [esPhase, meta.theme.es],
       ru: [ruPhase, meta.theme.ru],
       en: [enPhase, meta.theme.en],
       uk: [ukPhase, meta.theme.uk],
     },
     keywords: {
+      es: [esPhase, ...meta.theme.es.split(', ')],
       ru: [ruPhase, ...meta.theme.ru.split(', ')],
       en: [enPhase, ...meta.theme.en.split(', ')],
       uk: [ukPhase, ...meta.theme.uk.split(', ')],
     },
     light: localized(
-      `${ruPhase} через ${meta.theme.ru}`,
-      `${enPhase} through ${meta.theme.en}`,
-      `${ukPhase} через ${meta.theme.uk}`,
+      `${ruPhase}: ${meta.theme.ru}`,
+      `${enPhase}: ${meta.theme.en}`,
+      `${ukPhase}: ${meta.theme.uk}`,
+      `${esPhase}: ${meta.theme.es}`,
     ),
     shadow: meta.shadow,
     upright: localized(
       `Карта показывает один из возможных этапов: ${ruPhase}. Он связан с темой «${meta.theme.ru}».`,
-      `This card shows a possible stage: ${enPhase}. It relates to ${meta.theme.en}.`,
-      `Карта показує один із можливих етапів: ${ukPhase}. Він пов’язаний із темою «${meta.theme.uk}».`,
+      meaning.en.upright,
+      meaning.uk.upright,
+      meaning.es.upright,
     ),
     reversed: localized(
       `Перевёрнутая карта предупреждает о возможном риске: ${meta.shadow.ru}.`,
-      `Reversed, this card points to a possible risk: ${meta.shadow.en}.`,
-      `Перевернута карта попереджає про можливий ризик: ${meta.shadow.uk}.`,
+      meaning.en.reversed,
+      meaning.uk.reversed,
+      meaning.es.reversed,
     ),
     relationship: localized(
       `В отношениях возможен этап «${ruPhase}». Опирайтесь на разговор, а не на догадки.`,
-      `In relationships, the current stage may be ${enPhase}. Rely on conversation, not assumptions.`,
-      `У стосунках можливий етап «${ukPhase}». Спирайтеся на розмову, а не на здогадки.`,
+      `In relationships: ${meaning.en.upright}`,
+      `У стосунках: ${meaning.uk.upright}`,
+      `En las relaciones: ${meaning.es.upright}`,
     ),
     work: localized(
       `В работе карта советует проверить, как этап «${ruPhase}» влияет на ваши действия.`,
-      `At work, check how the stage of ${enPhase} affects your actions.`,
-      `У роботі карта радить перевірити, як етап «${ukPhase}» впливає на ваші дії.`,
+      `At work: ${meaning.en.upright}`,
+      `У справах: ${meaning.uk.upright}`,
+      `En el trabajo: ${meaning.es.upright}`,
     ),
     money: localized(
       'В вопросах денег опирайтесь на конкретные суммы, сроки и ограничения.',
-      'For money matters, rely on concrete amounts, dates and limits.',
-      'У питаннях грошей спирайтеся на конкретні суми, строки й обмеження.',
+      `${meaning.en.upright} For money matters, rely on concrete amounts, dates and limits.`,
+      `${meaning.uk.upright} У питаннях грошей спирайтеся на конкретні суми, строки й обмеження.`,
+      `${meaning.es.upright} En cuestiones de dinero, apóyate en cantidades, fechas y límites concretos.`,
     ),
     personalGrowth: localized(
       `Для размышления спросите себя, как этап «${ruPhase}» меняет ваш привычный способ действовать.`,
-      `For reflection, ask how the stage of ${enPhase} changes your usual way of acting.`,
-      `Для роздумів запитайте себе, як етап «${ukPhase}» змінює ваш звичний спосіб діяти.`,
+      `${meaning.en.upright} Where do you notice this in your situation?`,
+      `${meaning.uk.upright} Де ви помічаєте це у своїй ситуації?`,
+      `${meaning.es.upright} ¿Dónde lo reconoces en tu situación?`,
     ),
     advice: localized(
       'Выберите один небольшой шаг и посмотрите, что изменится на практике.',
-      'Choose one small step and notice what changes in practice.',
-      'Оберіть один невеликий крок і подивіться, що зміниться на практиці.',
+      cardActionCopy[`${suit}-${rankId}`]!.en,
+      cardActionCopy[`${suit}-${rankId}`]!.uk,
+      cardActionCopy[`${suit}-${rankId}`]!.es,
     ),
     caution: localized(
       `Не принимайте ${meta.shadow.ru} за гарантированный исход.`,
       `Do not treat ${meta.shadow.en} as a guaranteed outcome.`,
       `Не сприймайте ${meta.shadow.uk} як гарантований результат.`,
+      `No tomes ${meta.shadow.es} como un resultado garantizado.`,
     ),
     visual: {
       accent: meta.accent,
@@ -690,12 +750,14 @@ export const standardTarotDeck: TarotDeck = {
     'Стандартная система 78 карт',
     'Standard 78-card system',
     'Стандартна система 78 карт',
+    'Sistema estándar de 78 cartas',
   ),
   cards,
 };
 export const tarotCardById = new Map(cards.map((card) => [card.id, card]));
 export const tarotSuitNames: Record<Locale, Record<TarotSuit, string>> = {
   ru: { wands: 'Жезлы', cups: 'Кубки', swords: 'Мечи', pentacles: 'Пентакли' },
+  es: { wands: 'Bastos', cups: 'Copas', swords: 'Espadas', pentacles: 'Oros' },
   en: { wands: 'Wands', cups: 'Cups', swords: 'Swords', pentacles: 'Pentacles' },
   uk: { wands: 'Жезли', cups: 'Кубки', swords: 'Мечі', pentacles: 'Пентаклі' },
 };

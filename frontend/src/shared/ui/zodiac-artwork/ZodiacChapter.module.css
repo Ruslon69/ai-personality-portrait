@@ -1,0 +1,139 @@
+.chapter {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding-block: clamp(1.5rem, 3vw, 3rem);
+  background:
+    radial-gradient(ellipse at 80% 50%, var(--sa-ambient-indigo), transparent 65%),
+    radial-gradient(ellipse at 40% 80%, var(--sa-gold-soft), transparent 65%);
+}
+.copy {
+  z-index: 1;
+  min-inline-size: 0;
+  max-inline-size: 48ch;
+}
+.chapter .copy :is(h2, h3)[data-variant],
+.chapter .copy > h3 {
+  font-family: var(--font-family-display);
+  font-size: clamp(2.25rem, 4vw, 4rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-block: 0.75rem 1.5rem;
+}
+.tradition {
+  color: var(--sa-gold);
+  font-size: 0.8125rem;
+  letter-spacing: 0.045em;
+  margin: 0 0 1rem;
+}
+.body {
+  min-inline-size: 0;
+}
+.visual {
+  position: relative;
+  min-inline-size: 0;
+}
+.visual > div {
+  position: relative;
+  /* Each edge reaches zero opacity; a farthest-corner ellipse leaves straight
+     top/side boundaries visible. The centre and subject remain fully sharp. */
+  mask-image:
+    radial-gradient(
+      ellipse 50% 50% at 50% 50%,
+      #000 62%,
+      rgb(0 0 0 / 95%) 74%,
+      rgb(0 0 0 / 60%) 88%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to right,
+      transparent,
+      rgb(0 0 0 / 12%) 4%,
+      rgb(0 0 0 / 75%) 13%,
+      #000 23%,
+      #000 77%,
+      rgb(0 0 0 / 75%) 88%,
+      rgb(0 0 0 / 12%) 97%,
+      transparent
+    ),
+    linear-gradient(
+      to bottom,
+      transparent,
+      rgb(0 0 0 / 12%) 4%,
+      rgb(0 0 0 / 85%) 13%,
+      #000 21%,
+      #000 77%,
+      rgb(0 0 0 / 85%) 87%,
+      rgb(0 0 0 / 12%) 97%,
+      transparent
+    );
+  mask-composite: intersect;
+}
+.orbit {
+  position: absolute;
+  inset: 12% -2%;
+  border: 1px solid var(--sa-border-subtle);
+  border-radius: 50%;
+  rotate: -22deg;
+  pointer-events: none;
+}
+.chapter[data-zodiac-chapter='chinese'] {
+  background:
+    radial-gradient(
+      ellipse at 75% 55%,
+      light-dark(rgb(151 64 61 / 9%), rgb(129 45 54 / 15%)),
+      transparent 65%
+    ),
+    radial-gradient(ellipse at 30% 80%, var(--sa-gold-soft), transparent 65%);
+}
+@media (max-width: 47.99rem) {
+  .chapter {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+  .copy {
+    display: contents;
+  }
+  .copy > .tradition {
+    grid-row: 1;
+    margin: 0;
+  }
+  .chapter .copy > h3 {
+    grid-row: 2;
+    margin: 0;
+  }
+  .body {
+    grid-row: 4;
+  }
+  .visual {
+    grid-row: 3;
+    max-inline-size: 30rem;
+    inline-size: 100%;
+    margin-inline: auto;
+  }
+  .visual > div {
+    /* Keep the same four-edge integration on narrow screens. */
+    mask-size: 100% 100%;
+  }
+  .orbit {
+    inset: 8% 0;
+  }
+}
+@media (forced-colors: active) {
+  .chapter,
+  .chapter[data-zodiac-chapter='chinese'] {
+    background: Canvas;
+  }
+  .orbit {
+    display: none;
+  }
+  .tradition {
+    color: CanvasText;
+  }
+  .visual > div {
+    mask-image: none;
+  }
+}

@@ -15,6 +15,7 @@ export function ProfilePrivacySection({
   reminder,
 }: ProfilePrivacySectionProps) {
   const copy = {
+    es: ['Privacidad', 'Tú decides sobre tus datos', 'Abrir ajustes'],
     en: ['Privacy', 'Your data stays under your control', 'Open settings'],
     ru: ['Приватность', 'Данные остаются под вашим контролем', 'Открыть настройки'],
     uk: ['Приватність', 'Дані залишаються під вашим контролем', 'Відкрити налаштування'],

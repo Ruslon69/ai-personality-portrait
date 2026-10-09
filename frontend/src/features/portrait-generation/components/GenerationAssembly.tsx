@@ -1,3 +1,4 @@
+import { assemblyCopy } from './../data/assembly-copy';
 import type { CSSProperties } from 'react';
 
 import type { DraftPortrait, ProfileLocale } from '@entities/personality-profile';
@@ -11,29 +12,7 @@ type Props = {
   stageCount: number;
 };
 export function GenerationAssembly({ draft, locale, stageIndex, stageCount }: Props) {
-  const labels = {
-    en: {
-      answers: 'Answers',
-      interests: 'Interests',
-      voice: 'Voice',
-      date: 'Birth date',
-      engine: 'Connections',
-    },
-    ru: {
-      answers: 'Ответы',
-      interests: 'Интересы',
-      voice: 'Голос',
-      date: 'Дата рождения',
-      engine: 'Связи',
-    },
-    uk: {
-      answers: 'Відповіді',
-      interests: 'Інтереси',
-      voice: 'Голос',
-      date: 'Дата народження',
-      engine: 'Зв’язки',
-    },
-  }[locale];
+  const labels = assemblyCopy[locale];
   const sources = [
     { id: 'answers', label: labels.answers, show: true },
     { id: 'interests', label: labels.interests, show: draft.interests.length > 0 },

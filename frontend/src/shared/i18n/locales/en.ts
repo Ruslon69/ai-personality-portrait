@@ -2,6 +2,7 @@ import type { I18nMessages } from '../types';
 
 export const en = {
   shell: {
+    notifications: 'Notifications',
     footer: 'For personal reflection — not diagnosis or prediction',
     legal: {
       label: 'Legal information',
@@ -43,14 +44,16 @@ export const en = {
     home: 'Home',
     myPath: 'History',
     numerology: 'By birth date',
-    portrait: 'Personal reflection',
+    portrait: 'Portrait',
     profile: 'My results',
     settings: 'Settings',
     tarot: 'Tarot',
   },
   system: {
     compatibility: {
-      description: 'The compatibility section is prepared without product functionality.',
+      action: 'Return home',
+      description:
+        'This section is not available yet. Return home to choose Tarot, a birth-date reading, or a personal reflection.',
       title: 'Compatibility',
     },
     notFound: {
@@ -250,10 +253,10 @@ export const en = {
     hero: {
       description:
         'Answer a few short questions and receive observations about your habits, interests and reactions.',
-      eyebrow: 'Personal reflection',
+      eyebrow: 'Your portrait',
       note: '3–5 minutes. You can skip optional steps.',
       primaryCta: 'Start the questions',
-      title: ['Get a personal', 'reflection'],
+      title: ['See yourself', 'more clearly'],
     },
     journey: {
       eyebrow: 'Optional details',

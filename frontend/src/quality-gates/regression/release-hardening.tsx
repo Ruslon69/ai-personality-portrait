@@ -29,8 +29,14 @@ import type { Locale } from '../../shared/i18n';
 import { FullResultPageContent } from '../../pages/full-result/FullResultPage';
 import { ResultPreviewPageContent } from '../../pages/result-preview/ResultPreviewPage';
 import { QualityAssertions } from '../assertions';
+import { checkPersonalSpace } from './personal-space';
+import { checkDailyCardPersistence } from './daily-card-persistence';
+import { checkNumerologyExperience } from './numerology-experience';
+import { checkZodiacArtwork } from './zodiac-artwork';
+import { checkPortraitExperience } from './portrait-experience';
+import { checkUtilityExperience } from './utility-experience';
 
-const locales: readonly Locale[] = ['ru', 'en', 'uk'];
+const locales: readonly Locale[] = ['ru', 'en', 'uk', 'es'];
 
 function writeResult(
   overrides: Partial<ProductStorageSectionWriteResult> = {},
@@ -79,6 +85,9 @@ function persistentWrite(write: ProductStorageSectionWriteResult, capability: St
 
 export function runReleaseHardeningGate() {
   const assertions = new QualityAssertions();
+  checkUtilityExperience(assertions);
+
+  checkPortraitExperience(assertions);
 
   const saved = journeyHarness(initialJourneyState(), [true]);
   const savedResult = saved.actions.recordReading(storageFixtureReading);
@@ -93,20 +102,23 @@ export function runReleaseHardeningGate() {
     },
   );
 
-  const failedSave = journeyHarness(initialJourneyState(), [false]);
+  const failedSave = journeyHarness(initialJourneyState(), [false, true]);
   const failedSaveResult = failedSave.actions.recordReading(storageFixtureReading);
+  const retryAfterFailedSave = failedSave.actions.recordReading(storageFixtureReading);
   const unchangedAfterFailedSave = failedSave.actions.recordReading(storageFixtureReading);
   assertions.assert(
     failedSaveResult.changed &&
       !failedSaveResult.persisted &&
+      retryAfterFailedSave.changed &&
+      retryAfterFailedSave.persisted &&
       !unchangedAfterFailedSave.changed &&
       unchangedAfterFailedSave.persisted &&
       failedSave.store.getState().readings.length === 1 &&
-      failedSave.attempts.length === 1,
+      failedSave.attempts.length === 2,
     {
       code: 'journey-failed-save-keeps-session-state',
       message:
-        'A failed permanent save must keep valid session data without leaking its stale failure into later no-op actions.',
+        'A failed permanent save keeps the current reading, retries the same snapshot and becomes a no-op only after successful persistence.',
     },
   );
 
@@ -255,5 +267,9 @@ export function runReleaseHardeningGate() {
     },
   );
 
-  return assertions.result({ fixtureCount: 10 });
+  checkPersonalSpace(assertions);
+  checkDailyCardPersistence(assertions);
+  checkNumerologyExperience(assertions);
+  checkZodiacArtwork(assertions);
+  return assertions.result({ fixtureCount: 37 });
 }

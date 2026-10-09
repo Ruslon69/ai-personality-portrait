@@ -2,25 +2,26 @@
   position: relative;
   z-index: var(--z-index-raised);
   border-block-end: 0.0625rem solid var(--color-border);
-  background: var(--color-surface);
+  background: color-mix(in srgb, var(--sa-bg-deep) 94%, transparent);
 }
 
 .root[data-variant='marketing'] {
   position: sticky;
   inset-block-start: 0;
   border-block-end-color: color-mix(in srgb, var(--color-border) 48%, transparent);
-  background: color-mix(in srgb, var(--color-marketing-canvas) 84%, transparent);
+  background: color-mix(in srgb, var(--sa-bg-deep) 94%, transparent);
   backdrop-filter: blur(0.65rem);
 }
 
 .inner {
   display: flex;
+  flex-wrap: wrap;
   min-inline-size: 0;
-  min-block-size: 4rem;
+  min-block-size: 3.5rem;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-2) var(--page-gutter);
+  padding: 0.375rem var(--page-gutter);
 }
 
 .root[data-variant='marketing'] .inner {
@@ -34,15 +35,18 @@
   gap: var(--space-2);
 }
 
-.root[data-variant='marketing'] .settingsAction {
+.root .settingsAction,
+.root .menuButton {
   border-color: transparent;
   background: transparent;
   box-shadow: none;
   color: var(--color-text-muted);
 }
 
-.root[data-variant='marketing'] .settingsAction:hover,
-.root[data-variant='marketing'] .settingsAction:focus-visible {
+.root .settingsAction:hover,
+.root .settingsAction:focus-visible,
+.root .menuButton:hover,
+.root .menuButton:focus-visible {
   border-color: color-mix(in srgb, var(--color-border) 42%, transparent);
   background: color-mix(in srgb, var(--color-surface-raised) 42%, transparent);
   color: var(--color-text);
@@ -61,9 +65,24 @@
   gap: var(--space-2);
 }
 
+.leading {
+  flex: 1 1 auto;
+  min-inline-size: 2.75rem;
+  container-type: inline-size;
+}
+
+.actions {
+  max-inline-size: 100%;
+  flex-wrap: wrap;
+}
+
+.actions,
+.menuButton {
+  flex-shrink: 0;
+}
+
 .brand {
-  gap: 0.7rem;
-  color: inherit;
+  min-block-size: 2.75rem;
   text-decoration: none;
 }
 
@@ -73,149 +92,17 @@
   outline-offset: 0.25rem;
 }
 
-.brand:hover .projectName,
-.brand:focus-visible .projectName {
-  color: var(--color-marketing-accent);
-}
-
-.projectName {
-  position: relative;
-  font-family: var(--font-family-display);
-  font-size: 0.92rem;
-  font-synthesis: none;
-  font-weight: 400;
-  letter-spacing: 0.145em;
-  line-height: 1;
-  text-transform: uppercase;
-  transition: color var(--transition-duration-fast) var(--transition-easing-standard);
-}
-
-.projectName::after {
-  position: absolute;
-  inset: calc(100% + 0.28rem) 0 auto;
-  block-size: 0.0625rem;
-  background: linear-gradient(
-    90deg,
-    var(--color-marketing-accent-warm, var(--color-marketing-accent)),
-    var(--color-marketing-accent) 58%,
-    transparent 92%
-  );
-  content: '';
-  opacity: 0.55;
-}
-
-.logo {
-  display: inline-flex;
-  flex: none;
-  block-size: 2.45rem;
-  inline-size: 2.55rem;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-marketing-accent);
-  filter: drop-shadow(0 0.35rem 0.7rem color-mix(in srgb, var(--color-text) 12%, transparent));
-}
-
-.logo svg {
-  inline-size: 100%;
-  block-size: 100%;
-  overflow: visible;
-}
-
-.logoCard,
-.logoPortal,
-.logoWick,
-.logoFlame,
-.logoOrbit {
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.logoCard {
-  stroke-width: 1.45;
-  transition:
-    stroke 520ms var(--transition-easing-standard),
-    filter 520ms var(--transition-easing-standard);
-}
-
-.logoPortal {
-  stroke-width: 1.3;
-  opacity: 0.58;
-}
-
-.logoWick {
-  stroke: var(--color-marketing-accent-warm, currentColor);
-  stroke-width: 1.7;
-  filter: drop-shadow(0 0 0.12rem currentColor);
-}
-
-.logoFlame {
-  fill: color-mix(in srgb, var(--color-marketing-accent-warm, currentColor) 38%, transparent);
-  stroke: var(--color-marketing-accent-warm, currentColor);
-  stroke-width: 1.6;
-  filter: drop-shadow(0 0 0.16rem currentColor);
-  transform-box: fill-box;
-  transform-origin: center bottom;
-  transition:
-    fill 620ms var(--transition-easing-standard),
-    filter 520ms var(--transition-easing-standard);
-}
-
-.logoOrbit {
-  stroke-width: 1.1;
-  stroke-dasharray: 30;
-  stroke-dashoffset: 7;
-  opacity: 0.68;
-  transform-origin: 24px 24px;
-  transition:
-    opacity 620ms var(--transition-easing-standard),
-    stroke-dashoffset 620ms var(--transition-easing-standard),
-    transform 620ms var(--transition-easing-standard);
-}
-
-.logoPoint {
-  fill: var(--color-marketing-accent-warm, currentColor);
-  transform-origin: 24px 24px;
-  transition:
-    filter 620ms var(--transition-easing-standard),
-    transform 620ms var(--transition-easing-standard);
-}
-
-.brand:hover .logoCard,
-.brand:focus-visible .logoCard,
-.brand:hover .logoPortal,
-.brand:focus-visible .logoPortal {
-  filter: drop-shadow(0 0 0.24rem currentColor);
-}
-
-.brand:hover .logoFlame,
-.brand:focus-visible .logoFlame {
-  fill: color-mix(in srgb, var(--color-marketing-accent-warm, currentColor) 58%, transparent);
-  filter: drop-shadow(0 0 0.22rem currentColor);
-  animation: logo-flame-awaken 680ms var(--transition-easing-standard) 1;
-}
-
-.brand:hover .logoOrbit,
-.brand:focus-visible .logoOrbit {
-  stroke-dashoffset: 0;
-  opacity: 1;
-  transform: rotate(4deg);
-}
-
-.brand:hover .logoPoint,
-.brand:focus-visible .logoPoint {
-  filter: drop-shadow(0 0 0.22rem currentColor);
-  transform: rotate(11deg);
-}
-
-.root[data-variant='marketing'] .logo {
-  block-size: 2.25rem;
-  inline-size: 2.35rem;
-}
-
 .menuButton {
-  display: none;
+  display: inline-flex;
+  gap: 0.5rem;
+  color: var(--sa-gold);
+}
+
+.menuButton::before {
+  content: '';
+  inline-size: 0.75rem;
+  block-size: 0.5rem;
+  border-block: 1px solid currentColor;
 }
 
 @media (max-width: 63.999rem) {
@@ -229,17 +116,6 @@
     padding-inline: var(--space-3);
   }
 
-  .projectName {
-    overflow: hidden;
-    max-inline-size: 8.5rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .root[data-variant='marketing'] .projectName {
-    max-inline-size: none;
-  }
-
   .actionLabel {
     position: absolute;
     overflow: hidden;
@@ -249,24 +125,16 @@
     clip-path: inset(50%);
     white-space: nowrap;
   }
-
-  .userAction {
-    display: none;
-  }
 }
 
-@media (max-width: 29.999rem) {
-  .brand {
-    gap: var(--space-2);
-  }
-
-  .projectName {
-    font-size: 0.78rem;
-    letter-spacing: 0.09em;
+@media (max-width: 600px) {
+  .root[data-variant='application'] .brand [data-brand-wordmark] {
+    display: none;
   }
 
   .menuButton,
   .actions > button {
+    min-inline-size: 2.75rem;
     padding-inline: var(--space-2);
   }
 
@@ -276,38 +144,18 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .logoCard,
-  .logoPortal,
-  .logoWick,
-  .logoFlame,
-  .logoOrbit,
-  .logoPoint {
-    transition-duration: 0ms;
-  }
-
-  .brand:hover .logoOrbit,
-  .brand:focus-visible .logoOrbit,
-  .brand:hover .logoPoint,
-  .brand:focus-visible .logoPoint {
-    transform: none;
-  }
-
-  .brand:hover .logoFlame,
-  .brand:focus-visible .logoFlame {
-    animation: none;
+@media (max-width: 416px) {
+  .root:has(.settingsAction) .brand [data-brand-wordmark] {
+    display: none;
   }
 }
 
-@keyframes logo-flame-awaken {
-  0%,
-  100% {
-    transform: none;
+@container (max-width: 19rem) {
+  .brand [data-brand-wordmark] {
+    display: none;
   }
-  38% {
-    transform: translateY(-0.035rem) scaleX(0.96) scaleY(1.08);
-  }
-  68% {
-    transform: translateY(0.015rem) scaleX(1.04) scaleY(0.98);
-  }
+}
+
+.root .brand [data-image-failed] [data-brand-wordmark] {
+  display: block;
 }

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { profileUiCopy } from '../data/profile-ui-copy';
 
 import type { ProfileCompletionItem } from '@entities/personality-profile';
 import type { ProfileLocale } from '@entities/personality-profile';
@@ -12,12 +13,7 @@ export function useProfileCompletion(
 
     return {
       completedCount,
-      summary:
-        locale === 'en'
-          ? `${completedCount} of ${items.length} sources included`
-          : locale === 'uk'
-            ? `Додано джерел: ${completedCount} із ${items.length}`
-            : `Добавлено источников: ${completedCount} из ${items.length}`,
+      summary: profileUiCopy[locale].sources(completedCount, items.length),
       totalCount: items.length,
     };
   }, [items, locale]);

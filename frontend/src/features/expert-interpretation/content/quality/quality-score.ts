@@ -1,3 +1,4 @@
+import { localeDefinitions } from '@shared/i18n';
 import type {
   AuthorInterpretationContent,
   ContentQualityIssue,
@@ -24,7 +25,8 @@ function allTexts(content: AuthorInterpretationContent) {
 
 function localizationScore(content: AuthorInterpretationContent) {
   const text = allTexts(content).join(' ');
-  if (content.locale === 'en') return /[А-Яа-яЁёІіЇїЄєҐґ]/u.test(text) ? 0 : 100;
+  if (localeDefinitions[content.locale].script === 'latin')
+    return /[А-Яа-яЁёІіЇїЄєҐґ]/u.test(text) ? 0 : 100;
   return /[А-Яа-яЁёІіЇїЄєҐґ]/u.test(text) ? 100 : 0;
 }
 

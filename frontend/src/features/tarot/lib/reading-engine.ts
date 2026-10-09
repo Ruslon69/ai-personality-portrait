@@ -1,3 +1,4 @@
+import { readingContextCopy } from '../data/reading-context-copy';
 import type { Locale } from '@shared/i18n';
 
 import { tarotCardById, tarotSpreadById } from '../data';
@@ -40,6 +41,16 @@ const contextLabels: Record<Locale, Record<string, string>> = {
     test: 'небольшой эксперимент',
     pause: 'пауза',
   },
+  es: {
+    relationship: 'las conversaciones y relaciones',
+    work: 'el trabajo y el rumbo',
+    resources: 'los recursos y la estabilidad',
+    change: 'el cambio',
+    facts: 'la comprobación de los hechos',
+    talk: 'el diálogo',
+    test: 'un pequeño experimento',
+    pause: 'una pausa',
+  },
   en: {
     relationship: 'conversations and relationships',
     work: 'work and direction',
@@ -78,12 +89,7 @@ function createInterpretation(
   if (!card) throw new Error(`Unknown tarot card: ${selection.cardId}`);
   if (!position) throw new Error(`Unknown tarot position: ${selection.positionId}`);
   const focus =
-    contextLabels[locale][focusAnswer(context)] ??
-    (locale === 'en'
-      ? 'your current context'
-      : locale === 'uk'
-        ? 'ваш поточний контекст'
-        : 'ваш текущий контекст');
+    contextLabels[locale][focusAnswer(context)] ?? readingContextCopy[locale].defaultContext;
   const positionLabel = position.label[locale];
   const naturalCardName = locale === 'ru' ? russianCardName(card) : card.name[locale];
   const meaning = createActiveCardInterpretation({
@@ -109,32 +115,12 @@ function createInterpretation(
     orientation: selection.orientation,
     headline: `${positionLabel} · ${card.name[locale]}`,
     meaningInPosition: meaning,
-    contextLink:
-      locale === 'en'
-        ? `For ${focus}, ${card.name.en} asks you to separate what is already happening from what you only expect.`
-        : locale === 'uk'
-          ? `У темі «${focus}» карта ${card.name.uk} допомагає відокремити реальні події від очікувань.`
-          : `Эта карта помогает посмотреть на происходящее трезво: что уже подтверждается фактами, а что пока держится на ожиданиях?`,
+    contextLink: readingContextCopy[locale].contextLink(focus, card),
     connections,
-    numerologyLink:
-      locale === 'en'
-        ? `Your birth-date reading adds the theme “${context.numerology.personalYear.strengths[0]}”. It does not change the card’s meaning.`
-        : locale === 'uk'
-          ? `Розбір за датою додає тему «${context.numerology.personalYear.strengths[0]}». Він не змінює значення карти.`
-          : `Разбор по дате добавляет тему «${context.numerology.personalYear.strengths[0]}». Он не меняет значение карты.`,
+    numerologyLink: readingContextCopy[locale].numerologyLink(context),
     practicalTheme: createCardPracticalFocus(card, locale),
-    reflectionQuestion:
-      locale === 'en'
-        ? `What supports the meaning of ${card.name.en} here, and what contradicts it?`
-        : locale === 'uk'
-          ? `Що тут підтверджує зміст карти ${card.name.uk}, а що йому суперечить?`
-          : `Что здесь подтверждает смысл карты ${naturalCardName}, а что ему противоречит?`,
-    uncertainty:
-      locale === 'en'
-        ? 'This is one possible symbolic reading, not a guaranteed event or instruction.'
-        : locale === 'uk'
-          ? 'Це лише один зі способів тлумачення, а не гарантована подія чи вказівка.'
-          : 'Это лишь один из способов толкования, а не гарантированное событие или указание.',
+    reflectionQuestion: readingContextCopy[locale].reflectionQuestion(card, naturalCardName),
+    uncertainty: readingContextCopy[locale].uncertainty,
   };
 }
 

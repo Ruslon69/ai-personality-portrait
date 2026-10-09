@@ -1,3 +1,4 @@
+import { productContractCopy } from '@shared/i18n/product-contract-copy';
 import type { Locale } from '@shared/i18n';
 
 export type JourneyCopy = {
@@ -21,6 +22,7 @@ export type JourneyCopy = {
   empty: {
     description: string;
     primary: string;
+    secondary: string;
     title: string;
   };
   hero: {
@@ -45,6 +47,9 @@ export type JourneyCopy = {
     year: string;
   };
   path: {
+    details: string;
+    manage: string;
+    session: string;
     addBookmark: string;
     addedBookmark: string;
     back: string;
@@ -63,6 +68,8 @@ export type JourneyCopy = {
     title: string;
   };
   quick: {
+    numerologyContinue: string;
+    numerologySession: string;
     exploreDescription: string;
     exploreTitle: string;
     latestDescription: string;
@@ -95,17 +102,17 @@ export const journeyCopy: Record<Locale, JourneyCopy> = {
       chapterNavigation: 'Сохранённые результаты',
     },
     hero: {
-      eyebrow: 'Сохранено в этом браузере',
+      eyebrow: 'Личное пространство',
       title: 'Ваши результаты',
       lead: 'Откройте последний разбор или посмотрите всё, что сохранили раньше.',
       welcome: 'С возвращением',
     },
     card: {
-      eyebrow: 'Карта сегодня',
-      title: 'Один символ для фокуса дня',
+      eyebrow: productContractCopy.ru.dailyTitle,
+      title: 'Один символ для размышления сегодня',
       meaning: 'Короткая мысль',
       action: 'Попробуйте сегодня',
-      open: 'Открыть карту дня',
+      open: productContractCopy.ru.dailyOpen,
       opened: 'Карта сохранена для сегодняшнего дня',
     },
     numbers: {
@@ -124,7 +131,9 @@ export const journeyCopy: Record<Locale, JourneyCopy> = {
       empty: 'Здесь появится ваш первый сохранённый результат.',
     },
     quick: {
-      title: 'Другие действия',
+      numerologyContinue: 'Вернуться к Нумерологии',
+      numerologySession: 'Можно снова открыть разбор в этой вкладке',
+      title: 'Продолжить исследование',
       latestTitle: 'Открыть личный разбор',
       latestDescription: 'Вернуться к последнему личному разбору.',
       exploreTitle: 'Новый расклад',
@@ -140,16 +149,20 @@ export const journeyCopy: Record<Locale, JourneyCopy> = {
     empty: {
       title: 'Здесь будут ваши результаты',
       description:
-        'Начните расклад или личный разбор. Готовый результат сохранится в этом браузере.',
+        'Начните с расклада или личного разбора. Здесь вы сможете вернуться к тому, что открыли для себя.',
       primary: 'Начать расклад',
+      secondary: 'Исследовать свой портрет',
     },
     path: {
-      eyebrow: 'Сохранено в этом браузере',
+      details: 'Краткий итог',
+      manage: 'Управлять сохранёнными раскладами',
+      session: 'Доступно до перезагрузки страницы',
+      eyebrow: 'Личный архив',
       title: 'История',
-      lead: 'Ваши сохранённые расклады и личные разборы — от новых к старым.',
+      lead: 'Расклады и личные разборы — от новых к старым.',
       back: 'К результатам',
       journeyMilestone: 'Расклад Таро',
-      portraitMilestone: 'Личный разбор',
+      portraitMilestone: 'Портрет',
       preview: 'Скоро',
       open: 'Открыть',
       addBookmark: 'Добавить закладку',
@@ -157,7 +170,8 @@ export const journeyCopy: Record<Locale, JourneyCopy> = {
       removeBookmark: 'Убрать закладку',
       removedBookmark: 'Закладка убрана',
       bookmark: 'С закладкой',
-      empty: 'Здесь появится ваше первое чтение.',
+      empty:
+        'Завершённые расклады останутся в этом браузере. Личные разборы доступны до обновления или закрытия страницы.',
       futureTitle: 'Новые результаты',
       futureDescription: 'Новые сохранённые расклады и разборы появятся здесь.',
     },
@@ -165,6 +179,98 @@ export const journeyCopy: Record<Locale, JourneyCopy> = {
       eyebrow: 'Скоро',
       title: 'Итоги года',
       description: 'Сохранённые результаты можно будет собрать в один обзор за год.',
+    },
+  },
+  es: {
+    book: {
+      title: 'Mis resultados',
+      reader: 'Visitante',
+      firstChapter: 'Primer resultado',
+      currentChapter: 'Último resultado',
+      noChapters: 'Aún no hay resultados',
+      openPath: 'Todos los resultados',
+      chapterNavigation: 'Resultados guardados',
+    },
+    hero: {
+      eyebrow: 'Espacio personal',
+      title: 'Tus resultados',
+      lead: 'Abre tu última lectura o revisa todo lo que has guardado.',
+      welcome: 'Qué bueno tenerte de vuelta',
+    },
+    card: {
+      eyebrow: productContractCopy.es.dailyTitle,
+      title: 'Un símbolo para reflexionar hoy',
+      meaning: 'Una idea para considerar',
+      action: 'Pruébalo hoy',
+      open: productContractCopy.es.dailyOpen,
+      opened: 'Guardada como carta de hoy',
+    },
+    numbers: {
+      title: 'El contexto numérico de hoy',
+      description:
+        'Tus ciclos personales se calculan a partir de tu fecha de nacimiento y del día actual.',
+      year: 'Año personal',
+      month: 'Mes personal',
+      day: 'Número de hoy',
+      noDate:
+        'Añade tu fecha de nacimiento en la primera lectura para ver tus ciclos personales aquí.',
+    },
+    latest: {
+      title: 'Última lectura',
+      description: 'Tu lectura está guardada en este navegador.',
+      continue: 'Abrir la última lectura',
+      explore: 'Nueva lectura',
+      empty: 'Tu primer resultado guardado aparecerá aquí.',
+    },
+    quick: {
+      numerologyContinue: 'Volver a Numerología',
+      numerologySession: 'Puedes volver a abrir la lectura en esta pestaña',
+      title: 'Sigue explorando',
+      latestTitle: 'Abrir mi retrato',
+      latestDescription: 'Vuelve a tu último retrato.',
+      exploreTitle: 'Nueva lectura',
+      exploreDescription: 'Elige otro tema o periodo.',
+      pathTitle: 'Historial',
+      pathDescription: 'Consulta tus resultados guardados y favoritos.',
+    },
+    upcoming: {
+      title: 'Más posibilidades con el tiempo',
+      description: 'Más adelante encontrarás nuevas formas de guardar y comparar resultados.',
+      items: ['Ritmo semanal', 'Colecciones personales', 'Nuevos temas de interpretación'],
+    },
+    empty: {
+      title: 'Tus resultados aparecerán aquí',
+      description:
+        'Empieza con una lectura o una reflexión personal. Vuelve aquí para revisar lo que has descubierto.',
+      primary: 'Empezar una lectura',
+      secondary: 'Explorar tu retrato',
+    },
+    path: {
+      details: 'Resumen de la lectura',
+      manage: 'Gestionar lecturas guardadas',
+      session: 'Disponible hasta que recargues la página',
+      eyebrow: 'Archivo personal',
+      title: 'Historial',
+      lead: 'Lecturas de Tarot y reflexiones personales, de la más reciente a la más antigua.',
+      back: 'Volver a los resultados',
+      journeyMilestone: 'Lectura de Tarot',
+      portraitMilestone: 'Retrato',
+      preview: 'Próximamente',
+      open: 'Abrir',
+      addBookmark: 'Añadir a favoritos',
+      addedBookmark: 'Añadido a favoritos',
+      removeBookmark: 'Quitar de favoritos',
+      removedBookmark: 'Quitado de favoritos',
+      bookmark: 'En favoritos',
+      empty:
+        'Las lecturas de Tarot completadas se conservan en este navegador. Los retratos están disponibles hasta que recargues o cierres la página.',
+      futureTitle: 'Nuevos resultados',
+      futureDescription: 'Aquí aparecerán las nuevas lecturas y reflexiones guardadas.',
+    },
+    yearBook: {
+      eyebrow: 'Más adelante',
+      title: 'Tu año en perspectiva',
+      description: 'Podrás reunir tus resultados guardados en una mirada al año.',
     },
   },
   en: {
@@ -178,17 +284,17 @@ export const journeyCopy: Record<Locale, JourneyCopy> = {
       chapterNavigation: 'Saved results',
     },
     hero: {
-      eyebrow: 'Saved in this browser',
+      eyebrow: 'Personal space',
       title: 'Your results',
       lead: 'Open your latest reading or see everything you saved before.',
       welcome: 'Welcome back',
     },
     card: {
-      eyebrow: "Today's card",
-      title: 'One symbol to focus the day',
-      meaning: 'A short perspective',
+      eyebrow: productContractCopy.en.dailyTitle,
+      title: 'One symbol to reflect on today',
+      meaning: 'A thought to consider',
       action: 'Try this today',
-      open: "Open today's card",
+      open: productContractCopy.en.dailyOpen,
       opened: "Saved as today's card",
     },
     numbers: {
@@ -207,10 +313,12 @@ export const journeyCopy: Record<Locale, JourneyCopy> = {
       empty: 'Your first saved result will appear here.',
     },
     quick: {
-      title: 'Other actions',
-      latestTitle: 'Open personal reflection',
-      latestDescription: 'Return to your latest interpretation.',
-      exploreTitle: 'New spread',
+      numerologyContinue: 'Return to Numerology',
+      numerologySession: 'You can reopen the reading in this tab',
+      title: 'Keep exploring',
+      latestTitle: 'Open my portrait',
+      latestDescription: 'Return to your latest portrait.',
+      exploreTitle: 'New reading',
       exploreDescription: 'Choose another theme or period.',
       pathTitle: 'History',
       pathDescription: 'See saved results and bookmarks.',
@@ -223,16 +331,20 @@ export const journeyCopy: Record<Locale, JourneyCopy> = {
     empty: {
       title: 'Your results will appear here',
       description:
-        'Start a Tarot reading or personal reflection. Your result will be saved in this browser.',
+        'Begin with a reading or personal reflection. Return here to revisit what you discovered.',
       primary: 'Start a reading',
+      secondary: 'Explore your portrait',
     },
     path: {
-      eyebrow: 'Saved in this browser',
+      details: 'Reading summary',
+      manage: 'Manage saved readings',
+      session: 'Available until you reload the page',
+      eyebrow: 'Personal archive',
       title: 'History',
-      lead: 'Your saved Tarot readings and personal reflections, newest first.',
+      lead: 'Tarot readings and personal reflections, newest first.',
       back: 'Back to results',
       journeyMilestone: 'Tarot reading',
-      portraitMilestone: 'Personal reflection',
+      portraitMilestone: 'Portrait',
       preview: 'Coming next',
       open: 'Open',
       addBookmark: 'Add bookmark',
@@ -240,7 +352,8 @@ export const journeyCopy: Record<Locale, JourneyCopy> = {
       removeBookmark: 'Remove bookmark',
       removedBookmark: 'Bookmark removed',
       bookmark: 'Bookmarked',
-      empty: 'Your first reading will appear here.',
+      empty:
+        'Completed Tarot readings stay in this browser. Portraits stay available until you reload or close the page.',
       futureTitle: 'New results',
       futureDescription: 'New saved readings and reflections will appear here.',
     },
@@ -261,17 +374,17 @@ export const journeyCopy: Record<Locale, JourneyCopy> = {
       chapterNavigation: 'Збережені результати',
     },
     hero: {
-      eyebrow: 'Збережено в цьому браузері',
+      eyebrow: 'Особистий простір',
       title: 'Ваші результати',
       lead: 'Відкрийте останній розбір або перегляньте все, що зберегли раніше.',
       welcome: 'З поверненням',
     },
     card: {
-      eyebrow: 'Карта сьогодні',
-      title: 'Один символ для фокуса дня',
-      meaning: 'Коротка перспектива',
+      eyebrow: productContractCopy.uk.dailyTitle,
+      title: 'Один символ для роздумів сьогодні',
+      meaning: 'Короткий погляд',
       action: 'Спробуйте сьогодні',
-      open: 'Відкрити карту дня',
+      open: productContractCopy.uk.dailyOpen,
       opened: 'Карту збережено для сьогоднішнього дня',
     },
     numbers: {
@@ -290,7 +403,9 @@ export const journeyCopy: Record<Locale, JourneyCopy> = {
       empty: 'Тут з’явиться ваш перший збережений результат.',
     },
     quick: {
-      title: 'Інші дії',
+      numerologyContinue: 'Повернутися до Нумерології',
+      numerologySession: 'Можна знову відкрити розбір у цій вкладці',
+      title: 'Продовжити дослідження',
       latestTitle: 'Відкрити особистий розбір',
       latestDescription: 'Повернутися до останнього особистого розбору.',
       exploreTitle: 'Новий розклад',
@@ -306,16 +421,20 @@ export const journeyCopy: Record<Locale, JourneyCopy> = {
     empty: {
       title: 'Тут будуть ваші результати',
       description:
-        'Почніть розклад або особистий розбір. Готовий результат збережеться в цьому браузері.',
+        'Почніть із розкладу або особистого розбору. Тут ви зможете повернутися до того, що відкрили для себе.',
       primary: 'Почати розклад',
+      secondary: 'Дослідити свій портрет',
     },
     path: {
-      eyebrow: 'Збережено в цьому браузері',
+      details: 'Короткий підсумок',
+      manage: 'Керувати збереженими розкладами',
+      session: 'Доступно до перезавантаження сторінки',
+      eyebrow: 'Особистий архів',
       title: 'Історія',
-      lead: 'Ваші збережені розклади й особисті розбори — від нових до старих.',
+      lead: 'Розклади й особисті розбори — від нових до старих.',
       back: 'До результатів',
       journeyMilestone: 'Розклад Таро',
-      portraitMilestone: 'Особистий розбір',
+      portraitMilestone: 'Портрет',
       preview: 'Незабаром',
       open: 'Відкрити',
       addBookmark: 'Додати закладку',
@@ -323,7 +442,8 @@ export const journeyCopy: Record<Locale, JourneyCopy> = {
       removeBookmark: 'Прибрати закладку',
       removedBookmark: 'Закладку прибрано',
       bookmark: 'Із закладкою',
-      empty: 'Тут з’явиться ваше перше читання.',
+      empty:
+        'Завершені розклади залишаться в цьому браузері. Особисті розбори доступні до оновлення або закриття сторінки.',
       futureTitle: 'Нові результати',
       futureDescription: 'Нові збережені розклади й розбори з’являться тут.',
     },

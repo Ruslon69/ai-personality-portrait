@@ -1,3 +1,4 @@
+import { productContractCopy } from '@shared/i18n/product-contract-copy';
 import { useNotifications } from '@app/providers';
 import type { PersonalityProfile } from '@entities/personality-profile';
 import { PersonalityReport, PortraitResultBoundary } from '@features/personality-report';
@@ -15,7 +16,9 @@ export function FullResultPageContent({
 }) {
   return (
     <PortraitResultBoundary locale={locale} profile={profile}>
-      {(availableProfile) => <PersonalityReport onShare={onShare} profile={availableProfile} />}
+      {(availableProfile) => (
+        <PersonalityReport locale={locale} onShare={onShare} profile={availableProfile} />
+      )}
     </PortraitResultBoundary>
   );
 }
@@ -28,16 +31,7 @@ export function FullResultPage() {
   return (
     <FullResultPageContent
       locale={locale}
-      onShare={() =>
-        notify(
-          locale === 'en'
-            ? 'Sharing is not available in the local version yet.'
-            : locale === 'uk'
-              ? 'Публікація поки недоступна в локальній версії.'
-              : 'Публикация пока недоступна в локальной версии.',
-          'info',
-        )
-      }
+      onShare={() => notify((language) => productContractCopy[language].shareUnavailable, 'info')}
       profile={currentProfile}
     />
   );

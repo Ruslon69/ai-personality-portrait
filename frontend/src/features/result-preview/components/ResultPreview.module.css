@@ -1,153 +1,311 @@
 .root {
+  min-inline-size: 0;
   overflow: clip;
+  background: radial-gradient(circle at 78% 10%, var(--portrait-gold-soft), transparent 34rem);
 }
-
 .hero {
-  padding-block: var(--page-hero-padding-block);
+  padding-block: clamp(2rem, 5vw, 5rem);
 }
-
 .heroSurface {
-  padding: var(--page-hero-padding);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--page-hero-background);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
-
+.heroSurface[data-elevation],
+.heroNote[data-elevation],
+.continueSurface[data-elevation] {
+  box-shadow: none;
+}
 .heroGrid {
+  position: relative;
   display: grid;
-  align-items: end;
-  gap: var(--result-hero-gap);
+  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
 }
-
 .heroMain {
   min-inline-size: 0;
   gap: var(--space-5);
 }
-
 .resultState {
   display: flex;
   inline-size: 100%;
   min-inline-size: 0;
   align-items: center;
-  justify-content: flex-start;
   gap: var(--space-3);
 }
-
-.mark {
-  flex: 0 0 auto;
-  max-inline-size: 4.5rem;
+.resultState > span:first-child {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--portrait-gold);
+  letter-spacing: 0.05em;
 }
-
+.signature {
+  display: grid;
+  justify-self: center;
+  inline-size: min(100%, 19rem);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--portrait-gold-soft), transparent 70%);
+}
+.signature .mark {
+  max-inline-size: 85%;
+  color: var(--portrait-gold);
+}
 .title {
-  --page-title-size: var(--result-hero-title-size);
-
+  --page-title-size: clamp(2rem, 4vw, 3.7rem);
   max-inline-size: var(--result-hero-title-max-width);
+  line-height: 1.06;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
-
-.title:focus {
+.title:focus:not(:focus-visible) {
   outline: none;
 }
-
-.lead {
-  max-inline-size: var(--result-hero-copy-width);
+.title:focus-visible {
+  outline: 2px solid transparent;
+  text-decoration: underline solid var(--color-focus) 2px;
+  text-underline-offset: 0.16em;
+  background: linear-gradient(90deg, var(--portrait-gold-soft), transparent);
 }
-
+.lead {
+  max-inline-size: 48ch;
+  color: var(--portrait-muted);
+  line-height: 1.65;
+}
 .heroNote {
   inline-size: 100%;
-  max-inline-size: 32rem;
-  padding: var(--page-aside-padding);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
+  max-inline-size: 70ch;
+  grid-column: 1 / -1;
+  padding: 0;
+  border: 0;
+  border-inline-start: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--portrait-muted);
+  font-size: var(--font-size-sm);
 }
-
+.heroNote p:first-child {
+  color: var(--portrait-gold);
+}
 .section {
-  padding-block: var(--page-section-padding-block);
+  padding-block: clamp(2rem, 4vw, 4rem);
 }
-
 .sectionIntroduction {
-  max-inline-size: var(--content-width-reading);
+  max-inline-size: 62ch;
 }
-
+.sectionIntroduction h2 {
+  font-family: var(--font-family-display);
+  font-weight: 400;
+  font-synthesis: none;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+}
 .observationGrid {
   display: grid;
-  gap: var(--space-4);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
 }
-
 .observationCard {
-  min-block-size: 100%;
-  padding: var(--page-card-padding);
-  background: var(--surface-accent-subtle);
+  min-inline-size: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow-wrap: anywhere;
 }
-
+.observationCard:first-child {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  padding-inline-start: clamp(1rem, 3vw, 2.5rem);
+  border-inline-start: 1px solid var(--portrait-gold);
+  background: linear-gradient(100deg, var(--portrait-gold-soft), transparent 65%);
+}
+.observationCard:first-child h3[data-variant] {
+  font-size: clamp(1.65rem, 2.8vw, 2.6rem);
+}
+.observationCard h3[data-variant] {
+  font-family: var(--font-family-display);
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  font-weight: 400;
+}
 .sourceBadge {
   align-self: flex-start;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--portrait-muted);
+  font-weight: 400;
 }
-
 .muted {
-  color: var(--color-text-muted);
+  color: var(--portrait-muted);
+  line-height: 1.65;
 }
-
 .recommendationsSurface {
-  padding: var(--page-surface-padding);
-  border-block: 0.0625rem solid var(--color-border);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
-
 .recommendationList {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-5);
 }
-
 .recommendation {
   display: grid;
   align-items: start;
-  padding-block-start: var(--space-4);
-  border-block-start: 0.0625rem solid var(--color-border);
+  padding-block: var(--space-5);
+  border-block-start: 1px solid var(--portrait-line);
   gap: var(--space-4);
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
 }
-
-.recommendationNumber {
-  display: inline-flex;
-  inline-size: 2rem;
-  block-size: 2rem;
-  align-items: center;
-  justify-content: center;
-  border: 0.0625rem solid var(--color-interactive);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-}
-
 .finalSection {
-  padding-block: var(--page-ending-padding-block);
+  padding-block: clamp(3rem, 7vw, 6rem);
 }
-
 .continueSurface {
-  padding: var(--page-ending-surface-padding);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
+  padding: clamp(2rem, 6vw, 4rem);
+  border: 0;
+  border-block-start: 1px solid var(--portrait-line);
+  border-radius: 0;
+  background: radial-gradient(circle at 50% 0, var(--portrait-gold-soft), transparent 70%);
   text-align: center;
 }
-
 .continueCopy {
-  max-inline-size: var(--content-width-reading);
+  min-inline-size: 0;
+  inline-size: 100%;
+  max-inline-size: 58ch;
 }
-
+.continueCopy :is(h2, p) {
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+.continueCopy h2 {
+  font-family: var(--font-family-display);
+  font-weight: 400;
+  font-synthesis: none;
+}
+.continueSurface button[data-prominence='primary'] {
+  min-block-size: 3.5rem;
+  border-color: #d7ba82;
+  border-radius: 0.75rem;
+  background: linear-gradient(115deg, #f0dfb7, #c7a468);
+  color: #2b2134;
+}
 @media (min-width: 48rem) {
+  .observationGrid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  }
+  .observationCard:first-child {
+    grid-row: span 2;
+    align-self: start;
+    min-block-size: 0;
+    padding-block: var(--space-5);
+  }
   .recommendationList {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-
-@media (min-width: 64rem) {
+@media (min-width: 48rem) {
   .heroGrid {
-    grid-template-columns: minmax(0, 1.35fr) minmax(17rem, 0.65fr);
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
+  }
+}
+@media (max-width: 47.99rem) {
+  .signature {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    inline-size: 4rem;
+  }
+  .resultState {
+    min-block-size: 4rem;
+    padding-inline-end: 5rem;
+  }
+  .observationCard + .observationCard {
+    padding-inline-start: var(--space-4);
+  }
+  .continueSurface button {
+    inline-size: 100%;
+  }
+}
+@media (forced-colors: active) {
+  .continueSurface button[data-prominence='primary'] {
+    border: 1px solid ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .root {
-    scroll-behavior: auto;
+/* The first facets appear as part of the reveal, not after an empty hero. */
+.hero {
+  padding-block: clamp(2rem, 4vw, 3.5rem) 1rem;
+}
+.heroGrid {
+  gap: 1.5rem;
+}
+.heroNote {
+  font-size: 0.875rem;
+  max-inline-size: 70ch;
+  border-color: var(--portrait-line);
+}
+.section {
+  padding-block: 2rem;
+}
+.observationGrid {
+  gap: 1.5rem 3rem;
+}
+.observationCard:first-child {
+  background: transparent;
+}
+@media (min-width: 48rem) {
+  .observationGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .observationCard:first-child {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    padding: 1.5rem 0;
+    border: 0;
+    border-block-start: 1px solid var(--portrait-line);
+  }
+  .observationCard:first-child > div {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 1rem 3rem;
+  }
+  .observationCard:first-child .sourceBadge {
+    grid-column: 1 / -1;
+  }
+  .observationCard:nth-child(n + 2) {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+  }
+  .observationCard:nth-child(n + 2) > div {
+    display: contents;
+  }
+}
+@media (forced-colors: active) {
+  .title:focus-visible {
+    outline-color: Highlight;
+    outline-offset: 0.25rem;
+    text-decoration-color: Highlight;
+    background: Canvas;
+  }
+}
+@media (max-width: 47.99rem) {
+  .observationCard:first-child {
+    padding: 1.25rem 0;
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--portrait-line);
+  }
+  .observationCard + .observationCard {
+    padding-inline-start: 0;
   }
 }

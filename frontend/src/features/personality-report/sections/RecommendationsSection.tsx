@@ -18,6 +18,11 @@ export function RecommendationsSection({
   onToggle,
 }: RecommendationsSectionProps) {
   const copy = {
+    es: [
+      'Propuestas prácticas',
+      'Pequeñas acciones para situaciones reales',
+      'Abre solo las ideas que te resulten útiles ahora. No necesitas probarlo todo.',
+    ],
     en: [
       'Practical suggestions',
       'Small actions for real situations',

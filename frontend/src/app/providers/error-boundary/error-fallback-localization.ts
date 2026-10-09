@@ -10,21 +10,28 @@ export type ErrorFallbackCopy = {
 };
 
 export const errorFallbackCopy: Record<Locale, ErrorFallbackCopy> = {
+  es: {
+    action: 'Recargar página',
+    description:
+      'Recarga la página para intentarlo de nuevo. Las respuestas y los retratos que no se hayan guardado se perderán. Las lecturas guardadas permanecerán en este navegador.',
+    title: 'No se pudo abrir la aplicación',
+  },
   en: {
     action: 'Reload page',
-    description: 'Reload the page to try again. Local data from the current session may be reset.',
+    description:
+      'Reload the page to try again. Unsaved Portrait answers and results will be lost. Saved readings stay in this browser.',
     title: 'The application could not be opened',
   },
   ru: {
     action: 'Обновить страницу',
     description:
-      'Обновите страницу и попробуйте ещё раз. Локальные данные текущей сессии могут быть сброшены.',
+      'Обновите страницу и попробуйте ещё раз. Несохранённые ответы и результат Портрета будут потеряны. Сохранённые расклады останутся в этом браузере.',
     title: 'Не удалось открыть приложение',
   },
   uk: {
     action: 'Оновити сторінку',
     description:
-      'Оновіть сторінку й спробуйте ще раз. Локальні дані поточної сесії можуть бути скинуті.',
+      'Оновіть сторінку й спробуйте ще раз. Незбережені відповіді й результат Портрета буде втрачено. Збережені розклади залишаться в цьому браузері.',
     title: 'Не вдалося відкрити застосунок',
   },
 };

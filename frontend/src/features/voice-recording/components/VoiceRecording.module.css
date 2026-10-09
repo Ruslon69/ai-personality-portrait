@@ -1,6 +1,19 @@
 .root {
+  position: relative;
   overflow: clip;
+  overflow-wrap: anywhere;
   padding-block-end: var(--page-hero-padding-block);
+  background:
+    radial-gradient(
+      circle at 88% 10%,
+      color-mix(in srgb, #67539b 18%, transparent),
+      transparent 28rem
+    ),
+    radial-gradient(
+      circle at 8% 62%,
+      color-mix(in srgb, var(--portrait-gold) 6%, transparent),
+      transparent 26rem
+    );
 }
 
 .introduction {
@@ -13,6 +26,8 @@
 
 .title {
   max-inline-size: var(--flow-title-max-width);
+  font-family: var(--font-family-display);
+  font-weight: var(--font-weight-regular);
 }
 
 .lead {
@@ -25,13 +40,14 @@
 
 .privacySurface {
   padding: var(--flow-surface-padding);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--surface-accent-subtle);
+  border-block: 0.0625rem solid var(--portrait-line);
+  background: transparent;
+  box-shadow: none;
 }
 
 .privacyGrid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-5);
 }
 
@@ -48,6 +64,7 @@
 
 .workspaceGrid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-items: start;
   gap: var(--space-5);
 }
@@ -55,7 +72,9 @@
 .scriptCard,
 .recordingCard {
   padding: var(--flow-surface-padding);
-  box-shadow: var(--shadow-low);
+  border-color: var(--portrait-line);
+  background: color-mix(in srgb, var(--portrait-surface) 74%, transparent);
+  box-shadow: none;
 }
 
 .readingText {
@@ -76,6 +95,7 @@
 
 .recordingMetrics {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
 }
 
@@ -83,9 +103,8 @@
   display: grid;
   min-inline-size: 0;
   padding: var(--space-4);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-surface-raised);
+  border-block-start: 0.0625rem solid var(--portrait-line);
+  background: transparent;
   gap: var(--space-2);
 }
 
@@ -105,8 +124,7 @@
 .playbackBlock,
 .qualityBlock {
   padding: var(--space-4);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-inline-start: 0.0625rem solid var(--portrait-gold-soft);
 }
 
 .audio {

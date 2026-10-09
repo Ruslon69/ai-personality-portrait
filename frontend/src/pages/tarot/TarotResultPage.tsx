@@ -11,7 +11,7 @@ export function TarotResultPage() {
   const { locale } = useI18n();
   const copy = tarotCopy[locale];
   const { navigate } = useRouter();
-  const { state: journeyState } = useJourney();
+  const { actions: journeyActions, state: journeyState } = useJourney();
   const { actions, state: sessionState } = useTarotSession();
   if (!sessionState.reading)
     return (
@@ -37,7 +37,7 @@ export function TarotResultPage() {
   const savedSnapshot = savedRecord ? historySnapshotForRecord(savedRecord) : null;
   return (
     <TarotResult
-      isSaved={Boolean(savedRecord)}
+      isSaved={journeyActions.isReadingPersisted(sessionState.reading.id)}
       locale={locale}
       onContinueJourney={() => navigate(ROUTES.profile)}
       onOpenHistory={() => navigate(ROUTES.tarotHistory)}

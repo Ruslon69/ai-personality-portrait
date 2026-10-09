@@ -1,3 +1,4 @@
+import { explanationCopy } from './../data/explanation-copy';
 import type { CSSProperties } from 'react';
 
 import type { Insight, ProfileLocale } from '@entities/personality-profile';
@@ -15,6 +16,7 @@ type ExplainCardProps = {
   expanded: boolean;
   insight: Insight;
   locale?: ProfileLocale;
+  contentLocale?: ProfileLocale;
   onToggle: (id: string) => void;
   order?: number;
   variant?: 'default' | 'featured';
@@ -26,6 +28,7 @@ export function ExplainCard({
   expanded,
   insight,
   locale = 'ru',
+  contentLocale = locale,
   onToggle,
   order = 0,
   variant = 'default',
@@ -37,44 +40,7 @@ export function ExplainCard({
   const recommendationTitleId = `${insight.id}-recommendation-title`;
   const classes = [styles.explainCard, className].filter(Boolean).join(' ');
   const style = { '--insight-delay': `${Math.min(order, 5) * 55}ms` } as CSSProperties;
-  const copy = {
-    en: {
-      collapse: 'Hide explanation',
-      deep: 'How this was formed',
-      evidence: 'Answers behind this observation',
-      evidenceMany: (count: number) => `Related answers: ${count}`,
-      evidenceOne: 'One related answer',
-      live: 'Explanation opened',
-      recommendation: 'A practical next step',
-      sourceLabel: 'Observation sources',
-      toggle: 'Why this observation?',
-      why: 'Why did this observation appear?',
-    },
-    ru: {
-      collapse: 'Скрыть объяснение',
-      deep: 'Как появился этот вывод',
-      evidence: 'Ответы, на которых основан вывод',
-      evidenceMany: (count: number) => `Связанных ответов: ${count}`,
-      evidenceOne: 'Один связанный ответ',
-      live: 'Объяснение раскрыто',
-      recommendation: 'Что можно попробовать',
-      sourceLabel: 'На чём основан вывод',
-      toggle: 'Почему такой вывод?',
-      why: 'Почему появилось это наблюдение?',
-    },
-    uk: {
-      collapse: 'Сховати пояснення',
-      deep: 'Як з’явився цей висновок',
-      evidence: 'Відповіді, на яких засновано висновок',
-      evidenceMany: (count: number) => `Пов’язаних відповідей: ${count}`,
-      evidenceOne: 'Одна пов’язана відповідь',
-      live: 'Пояснення відкрито',
-      recommendation: 'Що можна спробувати',
-      sourceLabel: 'На чому засновано висновок',
-      toggle: 'Чому такий висновок?',
-      why: 'Чому з’явилося це спостереження?',
-    },
-  }[locale];
+  const copy = explanationCopy[locale];
 
   return (
     <Card
@@ -85,20 +51,14 @@ export function ExplainCard({
       data-variant={variant}
       style={style}
     >
-      <Stack gap="md">
-        <div aria-hidden="true" className={styles.insightMotif}>
-          <i />
-          <i />
-          <i />
-          <span />
-        </div>
+      <Stack data-insight-layout gap="md">
         {badge ? (
           <Badge className={styles.cardBadge} tone="info">
             {badge}
           </Badge>
         ) : null}
 
-        <Stack gap="sm">
+        <Stack data-insight-intro gap="sm" lang={contentLocale}>
           <Typography
             as="h3"
             id={titleId}
@@ -108,15 +68,6 @@ export function ExplainCard({
           </Typography>
           <Typography className={styles.insightDescription}>{insight.description}</Typography>
         </Stack>
-
-        <div className={styles.insightMeta}>
-          <ConfidenceIndicator confidence={insight.confidence} locale={locale} />
-          <div aria-label={copy.sourceLabel} className={styles.sourceList} role="group">
-            {insight.sources.map((source) => (
-              <SourceChip key={source.id} locale={locale} source={source} />
-            ))}
-          </div>
-        </div>
 
         <Button
           aria-controls={detailsId}
@@ -132,7 +83,13 @@ export function ExplainCard({
         </Button>
 
         <span aria-atomic="true" aria-live="polite" className={styles.visuallyHidden} role="status">
-          {expanded ? `${copy.live}: «${insight.title}»` : ''}
+          {expanded ? (
+            <>
+              {copy.live}: <span lang={contentLocale}>{insight.title}</span>
+            </>
+          ) : (
+            ''
+          )}
         </span>
 
         <div
@@ -144,8 +101,20 @@ export function ExplainCard({
         >
           <div className={styles.explanationInner}>
             <div className={styles.explanationContent}>
+              <div className={styles.insightMeta} data-insight-meta="true">
+                <div lang={contentLocale}>
+                  <ConfidenceIndicator confidence={insight.confidence} locale={contentLocale} />
+                </div>
+                <div aria-label={copy.sourceLabel} className={styles.sourceList} role="group">
+                  {insight.sources.map((source) => (
+                    <SourceChip key={source.id} locale={locale} source={source} />
+                  ))}
+                </div>
+              </div>
               <ExplanationSection id={explanationTitleId} title={copy.why}>
-                <Typography className={styles.explanationCopy}>{insight.explanation}</Typography>
+                <Typography className={styles.explanationCopy} lang={contentLocale}>
+                  {insight.explanation}
+                </Typography>
               </ExplanationSection>
 
               <ExplanationSection id={evidenceTitleId} title={copy.evidence}>
@@ -160,7 +129,7 @@ export function ExplainCard({
                             : copy.evidenceMany(group.evidence.length)}
                         </Typography>
                       </div>
-                      <ul className={styles.evidenceList}>
+                      <ul className={styles.evidenceList} lang={contentLocale}>
                         {group.evidence.map((evidence) => (
                           <li key={evidence.id}>
                             <strong>{evidence.title}</strong>
@@ -186,7 +155,7 @@ export function ExplainCard({
 
               {insight.recommendation ? (
                 <ExplanationSection id={recommendationTitleId} title={copy.recommendation}>
-                  <div className={styles.recommendation}>
+                  <div className={styles.recommendation} lang={contentLocale}>
                     <Typography as="h5" variant="heading-sm">
                       {insight.recommendation.title}
                     </Typography>

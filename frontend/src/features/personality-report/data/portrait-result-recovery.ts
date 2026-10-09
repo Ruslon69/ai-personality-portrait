@@ -1,3 +1,4 @@
+import { productContractCopy } from '@shared/i18n/product-contract-copy';
 import { ROUTES } from '@shared/config';
 import type { Locale } from '@shared/i18n';
 
@@ -8,22 +9,24 @@ type PortraitRecoveryCopy = {
 };
 
 export const portraitRecoveryCopy: Record<Locale, PortraitRecoveryCopy> = {
+  es: {
+    action: 'Volver a Retrato',
+    description: productContractCopy.es.portraitMissing,
+    title: 'Tu retrato ya no está disponible',
+  },
   en: {
     action: 'Return to Portrait',
-    description:
-      'This result is no longer available in the current session. Your portrait stays private and is not stored after the session ends.',
+    description: productContractCopy.en.portraitMissing,
     title: 'Your portrait is no longer available',
   },
   ru: {
     action: 'Вернуться к Портрету',
-    description:
-      'Этот результат больше недоступен в текущей сессии. Портрет остаётся приватным и не сохраняется после завершения сессии.',
+    description: productContractCopy.ru.portraitMissing,
     title: 'Портрет больше недоступен',
   },
   uk: {
     action: 'Повернутися до Портрета',
-    description:
-      'Цей результат більше недоступний у поточній сесії. Портрет залишається приватним і не зберігається після завершення сесії.',
+    description: productContractCopy.uk.portraitMissing,
     title: 'Портрет більше недоступний',
   },
 };

@@ -1,7 +1,8 @@
+import { productContractCopy } from '@shared/i18n/product-contract-copy';
 import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
 import { useI18n } from '@shared/i18n';
-import { ButtonLink, Container, Stack, Surface, Typography } from '@shared/ui';
+import { ButtonLink, Container, Stack, Typography } from '@shared/ui';
 import { draftPortraitActions } from '@store';
 
 import styles from './PortraitPage.module.css';
@@ -12,7 +13,7 @@ function isModifiedClick(event: React.MouseEvent<HTMLAnchorElement>) {
 
 export function PortraitPage() {
   const { navigate } = useRouter();
-  const { messages } = useI18n();
+  const { messages, locale } = useI18n();
   const content = messages.start;
 
   const startQuestions = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -27,44 +28,55 @@ export function PortraitPage() {
     <div className={styles.root}>
       <section aria-labelledby="start-portrait-title" className={styles.hero}>
         <Container size="wide">
-          <div className={styles.heroFrame}>
-            <div className={styles.heroGrid}>
-              <Stack align="start" className={styles.heroContent} gap="lg">
-                <Typography as="p" className={styles.eyebrow} variant="eyebrow">
-                  {content.hero.eyebrow}
-                </Typography>
-                <Typography
-                  as="h1"
-                  className={styles.heroTitle}
-                  id="start-portrait-title"
-                  variant="display"
-                >
-                  {content.hero.title.join(' ')}
-                </Typography>
-                <Typography className={styles.heroDescription} variant="lead">
-                  {content.hero.description}
-                </Typography>
-                <ButtonLink
-                  aria-describedby="start-duration-note"
-                  href={ROUTES.portraitQuestions}
-                  onClick={startQuestions}
-                  prominence="primary"
-                  size="large"
-                >
-                  {content.hero.primaryCta}
-                  <span aria-hidden="true">→</span>
-                </ButtonLink>
-                <Typography className={styles.heroNote} id="start-duration-note" variant="caption">
-                  {content.hero.note}
-                </Typography>
-              </Stack>
+          <div className={styles.heroGrid}>
+            <Stack align="start" className={styles.heroContent} gap="lg">
+              <Typography as="p" className={styles.eyebrow} variant="eyebrow">
+                {content.hero.eyebrow}
+              </Typography>
+              <Typography
+                as="h1"
+                className={styles.heroTitle}
+                id="start-portrait-title"
+                variant="display"
+              >
+                {content.hero.title.join(' ')}
+              </Typography>
+              <Typography className={styles.heroDescription} variant="lead">
+                {content.hero.description}
+              </Typography>
+              <ButtonLink
+                aria-describedby="start-duration-note portrait-lifetime-note"
+                href={ROUTES.portraitQuestions}
+                onClick={startQuestions}
+                prominence="primary"
+                size="large"
+              >
+                {content.hero.primaryCta}
+                <span aria-hidden="true">→</span>
+              </ButtonLink>
+              <Typography className={styles.heroNote} id="start-duration-note" variant="caption">
+                {content.hero.note}
+              </Typography>
+              <Typography className={styles.heroNote} id="portrait-lifetime-note" variant="caption">
+                {productContractCopy[locale].portraitLifetime}
+              </Typography>
+            </Stack>
 
-              <div aria-hidden="true" className={styles.portraitVisual}>
-                <span className={styles.faceLine} />
-                <span className={styles.observationDot} />
-                <span className={styles.observationDot} />
-                <span className={styles.observationDot} />
-              </div>
+            <div aria-hidden="true" className={styles.portraitVisual}>
+              <picture>
+                <source media="(max-width: 47.99rem)" srcSet="/home/portrait-home-480.webp" />
+                <img
+                  alt=""
+                  decoding="async"
+                  fetchPriority="high"
+                  height="800"
+                  sizes="(min-width: 56rem) 48vw, 88vw"
+                  src="/home/portrait-home-960.webp"
+                  srcSet="/home/portrait-home-480.webp 480w, /home/portrait-home-960.webp 960w"
+                  width="960"
+                />
+              </picture>
+              <span className={styles.orbit} />
             </div>
           </div>
         </Container>
@@ -105,12 +117,12 @@ export function PortraitPage() {
                   </li>
                 ))}
               </ol>
-              <Surface className={styles.privacyNote}>
+              <div className={styles.privacyNote}>
                 <Typography as="h3" variant="heading-sm">
                   {content.privacy.title}
                 </Typography>
                 <Typography>{content.privacy.description}</Typography>
-              </Surface>
+              </div>
             </div>
           </details>
         </Container>

@@ -9,8 +9,6 @@ import { navigationItems } from './navigation';
 import styles from './Sidebar.module.css';
 import type { SidebarProps } from './Sidebar.types';
 
-const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
 function isModifiedClick(event: React.MouseEvent<HTMLAnchorElement>) {
   return event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
 }
@@ -18,128 +16,102 @@ function isModifiedClick(event: React.MouseEvent<HTMLAnchorElement>) {
 export function Sidebar({ isDrawer, isOpen, onClose }: SidebarProps) {
   const { currentPath, navigate } = useRouter();
   const { messages } = useI18n();
-  const sidebarRef = useRef<HTMLElement>(null);
-  const isVisible = !isDrawer || isOpen;
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    if (!isDrawer || !isOpen) {
+    const dialog = dialogRef.current;
+    if (!isDrawer || !dialog || !isOpen) {
       return;
     }
-
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    const focusTarget = sidebarRef.current?.querySelector<HTMLElement>(
-      '[aria-current="page"], button',
-    );
-    focusTarget?.focus();
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    window.addEventListener('keydown', handleEscape);
-
+    dialog.showModal();
+    dialog.querySelector<HTMLButtonElement>('button')?.focus();
     return () => {
+      dialog.close();
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleEscape);
     };
-  }, [isDrawer, isOpen, onClose]);
+  }, [isDrawer, isOpen]);
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (!isDrawer || !isOpen || event.key !== 'Tab') {
-      return;
-    }
-
-    const focusableElements = Array.from(
-      sidebarRef.current?.querySelectorAll<HTMLElement>(focusableSelector) ?? [],
-    );
-    const firstElement = focusableElements.at(0);
-    const lastElement = focusableElements.at(-1);
-
-    if (!firstElement || !lastElement) {
-      return;
-    }
-
-    if (event.shiftKey && document.activeElement === firstElement) {
-      event.preventDefault();
-      lastElement.focus();
-    } else if (!event.shiftKey && document.activeElement === lastElement) {
-      event.preventDefault();
-      firstElement.focus();
-    }
-  };
-
-  return (
+  const contents = (
     <>
-      {isDrawer && isOpen ? (
-        <button
-          aria-label={messages.shell.header.closeNavigation}
-          className={styles.backdrop}
-          onClick={onClose}
-          tabIndex={-1}
-          type="button"
-        />
-      ) : null}
-
-      <aside
-        aria-label={messages.shell.navigation.sectionsLabel}
-        aria-modal={isDrawer ? true : undefined}
-        className={styles.root}
-        data-drawer={isDrawer || undefined}
-        hidden={!isVisible}
-        id="app-sidebar"
-        onKeyDown={handleKeyDown}
-        ref={sidebarRef}
-        role={isDrawer ? 'dialog' : undefined}
-      >
-        <div className={styles.heading}>
-          <Typography as="span" variant="heading-sm">
-            {messages.shell.navigation.label}
-          </Typography>
-          {isDrawer ? (
-            <Button aria-label={messages.shell.navigation.closeLabel} onClick={onClose}>
-              {messages.shell.navigation.close}
-            </Button>
-          ) : null}
-        </div>
-
-        <nav aria-label={messages.shell.navigation.sectionsLabel}>
-          <ul className={styles.list}>
-            {navigationItems.map((item) => {
-              const isCurrent =
-                currentPath === item.path ||
-                (!('exact' in item) &&
-                  item.path !== ROUTES.home &&
-                  currentPath.startsWith(`${item.path}/`));
-
-              return (
-                <li key={item.path}>
-                  <a
-                    aria-current={isCurrent ? 'page' : undefined}
-                    className={styles.link}
-                    href={item.path}
-                    onClick={(event) => {
-                      if (isModifiedClick(event)) {
-                        return;
-                      }
-
-                      event.preventDefault();
-                      navigate(item.path);
-                      if (isDrawer) {
-                        onClose();
-                      }
-                    }}
-                  >
-                    {messages.navigation[item.labelKey]}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-      </aside>
+      <div className={styles.heading}>
+        <Typography as="span" variant="heading-sm">
+          {messages.shell.navigation.label}
+        </Typography>
+        {isDrawer ? (
+          <Button
+            aria-label={messages.shell.navigation.closeLabel}
+            onClick={onClose}
+            prominence="quiet"
+          >
+            {messages.shell.navigation.close}
+          </Button>
+        ) : null}
+      </div>
+      <nav aria-label={messages.shell.navigation.sectionsLabel}>
+        <ul className={styles.list}>
+          {navigationItems.map((item) => {
+            const isCurrent =
+              currentPath === item.path ||
+              (!('exact' in item) &&
+                item.path !== ROUTES.home &&
+                currentPath.startsWith(`${item.path}/`));
+            return (
+              <li key={item.path}>
+                <a
+                  aria-current={isCurrent ? 'page' : undefined}
+                  className={styles.link}
+                  href={item.path}
+                  onClick={(event) => {
+                    if (isModifiedClick(event)) return;
+                    event.preventDefault();
+                    navigate(item.path);
+                    if (isDrawer) onClose();
+                  }}
+                >
+                  {messages.navigation[item.labelKey]}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
     </>
+  );
+
+  return isDrawer ? (
+    <dialog
+      aria-label={messages.shell.navigation.sectionsLabel}
+      className={styles.root}
+      data-drawer="true"
+      id="app-sidebar"
+      ref={dialogRef}
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
+      onClick={(event) => {
+        if (event.target !== event.currentTarget) return;
+        const bounds = event.currentTarget.getBoundingClientRect();
+        if (
+          event.clientX < bounds.left ||
+          event.clientX > bounds.right ||
+          event.clientY < bounds.top ||
+          event.clientY > bounds.bottom
+        )
+          onClose();
+      }}
+    >
+      {contents}
+    </dialog>
+  ) : (
+    <aside
+      aria-label={messages.shell.navigation.sectionsLabel}
+      className={styles.root}
+      id="app-sidebar-rail"
+    >
+      {contents}
+    </aside>
   );
 }

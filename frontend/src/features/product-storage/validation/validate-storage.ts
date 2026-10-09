@@ -1,3 +1,4 @@
+import { isSupportedLocale } from '@shared/i18n';
 import { validateInterpretationResult } from '@features/expert-interpretation/validation';
 import { validateJourneyMemorySnapshot } from '@features/journey-memory/validation';
 import { validateReadingContinuityContext } from '@features/journey-memory/continuity';
@@ -526,7 +527,7 @@ function validatePreferences(value: unknown, errors: ProductStorageValidationErr
     );
     return;
   }
-  if (value.locale !== undefined && !['en', 'ru', 'uk'].includes(String(value.locale)))
+  if (value.locale !== undefined && !isSupportedLocale(value.locale))
     error(
       errors,
       'preferences',
@@ -821,7 +822,7 @@ export function validateProductStorageEnvelope(envelope: unknown): {
     );
   if (typeof envelope.checksum !== 'string' || envelope.checksum.length === 0)
     error(errors, 'envelope', 'invalid-checksum', '$.checksum', 'Checksum is required.', false);
-  if (!['en', 'ru', 'uk'].includes(String(envelope.locale)))
+  if (!isSupportedLocale(envelope.locale))
     error(errors, 'envelope', 'invalid-locale', '$.locale', 'Envelope locale is invalid.', false);
   if (!isRecord(envelope.data))
     error(errors, 'envelope', 'invalid-data', '$.data', 'Envelope data must be an object.', false);

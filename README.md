@@ -31,6 +31,7 @@
 - [Философия дизайна](docs/design-philosophy.md)
 - [Логика AI Engine](docs/ai-engine.md)
 - [Приватность и безопасность](docs/privacy-security.md)
+- [Архитектура монетизации](docs/monetization-architecture.md)
 - [Дизайн-система](docs/design-system.md)
 - [Текстовые спецификации экранов](docs/wireframes.md)
 - [Требования к production-развёртыванию](docs/release-readiness.md)

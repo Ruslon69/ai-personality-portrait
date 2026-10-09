@@ -8,7 +8,7 @@ export const enContent: ContentDictionary = {
   ],
   connection: {
     reinforcement: [
-      '{left} sets the main impulse, while {right} helps keep it in a chosen direction.',
+      '{left} suggests the first step, while {right} helps keep it in a chosen direction.',
       'The themes of {left} and {right} recur together, so they are best read as one motif.',
     ],
     contrast: [
@@ -17,15 +17,15 @@ export const enContent: ContentDictionary = {
     ],
     progression: [
       '{left} opens the theme, and {right} shows how it may develop from there.',
-      'The reading moves from {left} towards {right} without skipping the intermediate check.',
+      'The reading moves from {left} towards {right} with a pause to check what has changed.',
     ],
     blockage: [
-      '{left} and {right} together mark a place where effort has not yet become free movement.',
+      '{left} and {right} together mark a place where effort is not yet bringing progress.',
       'In this pairing, {left} meets a limitation connected with {right}.',
     ],
     opportunity: [
-      '{left} creates an entry point, while {right} suggests which resource could join it.',
-      'The link between {left} and {right} opens an option that can be tested through a small action.',
+      '{left} creates an entry point, while {right} suggests what support could help.',
+      'The link between {left} and {right} opens an option that can be tested with a small step.',
     ],
     'unresolved-tension': [
       '{left} and {right} pull in different directions; this difference is worth keeping visible.',
@@ -37,8 +37,8 @@ export const enContent: ContentDictionary = {
     ],
   },
   contextual: [
-    'Connect the card’s meaning with what is happening in {context} now.',
-    'For your question, what is actually happening in {context} matters most.',
+    'Connect the card’s meaning with what is happening around {context} now.',
+    'For your question, focus on what is actually happening around {context}.',
     'The topic of {context} helps apply the card’s meaning to your situation.',
   ],
   headline: {
@@ -76,12 +76,12 @@ export const enContent: ContentDictionary = {
   localeSignature: ['your', 'you'],
   numberThemes: {
     1: 'an independent beginning',
-    2: 'partnership and proportion',
+    2: 'partnership and balance',
     3: 'expression and exchange',
     4: 'structure and a stable form',
     5: 'change and freedom of choice',
     6: 'responsibility and care',
-    7: 'inquiry and inner checking',
+    7: 'reflection and checking your own response',
     8: 'stewardship of resources',
     9: 'completion and a wider view',
     11: 'heightened sensitivity to direction',
@@ -115,7 +115,7 @@ export const enContent: ContentDictionary = {
       'The weekly reading shows a beginning, a possible difficulty, support and an outcome.',
     ],
     month: [
-      'The monthly reading connects work, relationships, inner tone and practical guidance.',
+      'The monthly reading connects work, relationships, inner state and practical guidance.',
       'Six positions frame the month as a connected cycle rather than separate promises.',
     ],
     'compact-year': [
@@ -152,12 +152,8 @@ export const enContent: ContentDictionary = {
     revision: ['This card asks you to revise your usual way of approaching {focus}.'],
   },
   position: {
-    temporal: [
-      'In a temporal position, {focus} sets the rhythm of the stage rather than a fixed event.',
-    ],
-    supportive: [
-      'In a support position, {focus} points to a resource that is already available to notice.',
-    ],
+    temporal: ['At this stage, {focus} sets the rhythm of the stage rather than a fixed event.'],
+    supportive: ['In a support position, {focus} points to support you may already have.'],
     restrictive: [
       'In a limiting position, {focus} marks where slowing down and checking conditions may help.',
     ],
@@ -165,7 +161,7 @@ export const enContent: ContentDictionary = {
     relational: [
       'Here, {focus} describes what you can observe between you, not what another person may be thinking.',
     ],
-    directional: ['In a directional position, {focus} becomes an option to test through action.'],
+    directional: ['As guidance, {focus} becomes an option to test through action.'],
     reflective: ['This card invites you to pay closer attention to {focus}.'],
     'outcome-oriented': [
       'In an outcome position, {focus} describes a possible direction, not a guaranteed ending.',
@@ -178,7 +174,7 @@ export const enContent: ContentDictionary = {
   ],
   psychological: [
     'Your answers suggest that {context} matters more right now, without turning it into a permanent trait.',
-    'In the selected context, you more often chose options linked with {context}. This shapes the advice without defining your character.',
+    'Your choices point towards {context} in this situation. This helps tailor the advice without defining your character.',
     'Your answers connect the reading to {context}. Your response may differ in another situation.',
   ],
   reflection: [

@@ -30,3 +30,9 @@ body {
   background: var(--color-interactive);
   color: var(--color-on-interactive);
 }
+
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight !important;
+  }
+}

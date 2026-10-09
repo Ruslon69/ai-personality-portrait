@@ -1,4 +1,6 @@
+import { createNumerologyResultSession } from './numerology-result-session';
 import {
+  getProductStorageService,
   persistNumerologyBirthDateToProductStorage,
   readNumerologyBirthDateFromProductStorage,
 } from '@features/product-storage/runtime/browser-runtime';
@@ -9,10 +11,23 @@ export function normalizeNumerologyBirthDate(value: unknown) {
   return typeof value === 'string' && isValidNumerologyDate(value) ? value : '';
 }
 
-export function loadNumerologyBirthDate() {
+function readSavedDate() {
   return normalizeNumerologyBirthDate(readNumerologyBirthDateFromProductStorage());
 }
 
+export const numerologyResultSession = createNumerologyResultSession({
+  read: readSavedDate,
+  write: saveNumerologyBirthDate,
+});
+
+export function loadNumerologyBirthDate() {
+  return normalizeNumerologyBirthDate(numerologyResultSession.date());
+}
+
 export function saveNumerologyBirthDate(value: string) {
-  persistNumerologyBirthDateToProductStorage(value);
+  const result = persistNumerologyBirthDateToProductStorage(value);
+  return (
+    result.legacyWritten ||
+    (result.envelopeWritten && getProductStorageService().getCapability() === 'persistent')
+  );
 }

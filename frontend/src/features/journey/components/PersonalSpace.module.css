@@ -1,0 +1,631 @@
+.root {
+  --personal-gold: var(--sa-gold);
+  --personal-text: var(--sa-text-primary);
+  --personal-muted: var(--sa-text-secondary);
+  --personal-line: var(--sa-border-subtle);
+  min-inline-size: 0;
+  padding-block-end: clamp(2.5rem, 5vw, 5rem);
+  color: var(--personal-text);
+  background: transparent;
+  overflow-wrap: anywhere;
+}
+
+.root :is(button, a)[data-prominence] {
+  min-block-size: 2.75rem;
+  max-inline-size: 100%;
+  white-space: normal;
+}
+
+.root :is(button, a)[data-prominence='primary'] {
+  min-block-size: 3.5rem;
+  padding-inline: 1.5rem;
+  border: 1px solid var(--sa-action-border);
+  border-radius: 0.75rem;
+  color: var(--sa-action-ink);
+  background: var(--sa-action-fill);
+  box-shadow:
+    inset 0 1px rgb(255 247 218 / 55%),
+    0 0.4rem 1.4rem rgb(203 163 96 / 10%);
+}
+
+.root :is(button, a)[data-prominence='primary']:hover {
+  background: var(--sa-action-fill-hover);
+}
+
+.root :is(button, a)[data-prominence='secondary'] {
+  border-color: var(--personal-line);
+  background: light-dark(rgb(255 255 255 / 45%), rgb(220 195 149 / 5%));
+  color: var(--personal-gold);
+}
+
+.root :is(button, a)[data-prominence='quiet'] {
+  color: var(--personal-muted);
+}
+
+.root :is(button, a, summary, [tabindex='-1']):focus-visible {
+  outline: 2px solid var(--personal-gold);
+  outline-offset: 4px;
+}
+
+.hero {
+  padding-block: clamp(2rem, 4vw, 3.75rem) clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.heroFrame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+.heroFrame > div {
+  min-inline-size: 0;
+}
+
+.root .hero h1 {
+  max-inline-size: 23ch;
+  font-size: clamp(2rem, 3.7vw, 3.75rem);
+  line-height: 1.18;
+}
+
+.root p[data-variant='eyebrow'],
+.eyebrow {
+  margin: 0;
+  color: var(--personal-gold);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.root .lead {
+  max-inline-size: 58ch;
+  color: var(--personal-muted);
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.65;
+}
+
+.celestialMark {
+  position: relative;
+  display: grid;
+  inline-size: 8rem;
+  flex: 0 0 8rem;
+  aspect-ratio: 1;
+  place-items: center;
+  color: var(--personal-gold);
+  font-size: 2.5rem;
+}
+
+.celestialMark::before,
+.celestialMark::after {
+  position: absolute;
+  inset: 12%;
+  border: 1px solid var(--personal-line);
+  border-radius: 50%;
+  content: '';
+}
+
+.celestialMark::after {
+  inset: 38% -18%;
+  transform: rotate(-25deg);
+}
+
+.actions,
+.dialogActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.latestSection {
+  padding-block-end: var(--space-5);
+}
+
+.savedReading {
+  display: grid;
+  grid-template-columns: minmax(6rem, 8rem) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  padding-block: clamp(1.75rem, 3vw, 2.75rem);
+}
+
+.savedPortrait {
+  display: grid;
+  grid-template-columns: minmax(6rem, 8rem) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  padding-block: clamp(1.75rem, 3vw, 2.75rem);
+}
+
+.portraitMark {
+  display: grid;
+  min-block-size: 5rem;
+  place-items: center;
+  color: var(--personal-gold);
+  font-size: 3rem;
+}
+
+.sessionNote {
+  max-inline-size: 52ch;
+  margin: 0;
+  color: var(--personal-muted);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.savedReading[data-featured] {
+  grid-template-columns: minmax(10rem, 0.35fr) minmax(0, 0.65fr);
+  align-items: center;
+  padding-block: var(--space-6);
+  border-block-start: 1px solid var(--personal-line);
+}
+
+.readingArt,
+.dailyArt {
+  display: grid;
+  min-inline-size: 0;
+  justify-items: center;
+  padding-block: var(--space-2);
+  background: radial-gradient(ellipse at center, rgb(194 154 85 / 10%), transparent 68%);
+}
+
+.readingArt > [data-variant='history'] {
+  --tarot-card-width: clamp(6rem, 9vw, 8rem);
+  --tarot-card-height: auto;
+  max-inline-size: 100%;
+}
+
+.savedReading[data-featured] .readingArt > [data-variant='history'] {
+  --tarot-card-width: clamp(10rem, 16vw, 13rem);
+}
+
+.readingCopy {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-inline-size: 0;
+  max-inline-size: 46rem;
+  gap: var(--space-4);
+}
+
+.readingCopy :is(h2, h3) {
+  max-inline-size: 30ch;
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  line-height: 1.32;
+  text-wrap: pretty;
+  overflow-wrap: anywhere;
+}
+
+.savedReading[data-featured] h2 {
+  font-size: clamp(1.6rem, 2.6vw, 2.6rem);
+  line-height: 1.25;
+}
+
+.metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  color: var(--personal-muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.metadata > span {
+  color: var(--personal-gold);
+}
+
+.takeaway {
+  display: grid;
+  max-inline-size: 58ch;
+  padding-inline-start: var(--space-4);
+  border-inline-start: 1px solid var(--personal-gold);
+  margin: 0;
+  gap: var(--space-2);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.takeaway strong {
+  color: var(--personal-gold);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.details {
+  min-inline-size: 0;
+  color: var(--personal-muted);
+}
+
+.details summary {
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-block-size: 2.75rem;
+  padding-block: 0.65rem;
+  cursor: pointer;
+  font-size: 0.9375rem;
+}
+
+.details > div {
+  display: grid;
+  gap: var(--space-4);
+  padding-block: var(--space-3);
+}
+
+.synthesis {
+  max-inline-size: 62ch;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.motifs {
+  display: flex;
+  flex-wrap: wrap;
+  padding-inline-start: 1rem;
+  margin: 0;
+  gap: var(--space-2) var(--space-6);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.dailySection {
+  padding-block: var(--space-5) var(--space-6);
+}
+
+.dailyGrid {
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.35fr) minmax(0, 0.65fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.dailyArt > [data-variant='history'] {
+  --tarot-card-width: clamp(8rem, 12vw, 10rem);
+  --tarot-card-height: calc(var(--tarot-card-width) * 12 / 7);
+  max-inline-size: 100%;
+}
+
+.root .dailyGrid h2 {
+  max-inline-size: 25ch;
+  font-size: clamp(1.5rem, 2.6vw, 2.3rem);
+  line-height: 1.3;
+  text-wrap: pretty;
+}
+
+.utilityNavigation {
+  padding-block: var(--space-5);
+}
+
+.historySection {
+  padding-block: var(--space-3) var(--space-6);
+}
+
+.listHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.root .listHeading h2 {
+  color: var(--personal-muted);
+  font-family: var(--font-family-body);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.timeline {
+  padding: 0;
+  border-block-start: 1px solid var(--personal-line);
+  margin: 0;
+  list-style: none;
+}
+
+.timeline > li {
+  border-block-end: 1px solid var(--personal-line);
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 20rem;
+}
+
+.portraits,
+.portraits article {
+  display: grid;
+  justify-items: start;
+  padding-block: var(--space-5);
+  gap: var(--space-4);
+}
+
+.portraits p {
+  max-inline-size: 58ch;
+  line-height: 1.65;
+}
+
+.empty {
+  display: grid;
+  justify-items: start;
+  padding-block: var(--space-6) var(--space-8);
+  border-block-start: 1px solid var(--personal-line);
+  gap: var(--space-4);
+}
+
+.empty p {
+  max-inline-size: 48ch;
+  color: var(--personal-muted);
+  line-height: 1.65;
+}
+.emptyMark {
+  color: var(--personal-gold);
+  font-size: 3rem;
+  line-height: 1;
+}
+.dialogActions {
+  justify-content: flex-end;
+}
+.srOnly {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@media (max-width: 47.99rem) {
+  .celestialMark {
+    display: none;
+  }
+  .heroFrame {
+    align-items: start;
+    flex-direction: column;
+  }
+  .hero {
+    padding-block: var(--space-6);
+  }
+  .savedReading,
+  .savedPortrait {
+    grid-template-columns: min(16vw, 3.75rem) minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+  .readingArt > [data-variant='history'] {
+    --tarot-card-width: min(16vw, 3.75rem);
+  }
+  .readingCopy {
+    gap: var(--space-3);
+  }
+  .savedReading:not([data-featured]) .readingArt,
+  .portraitMark {
+    grid-area: 1 / 1;
+  }
+  .savedReading:not([data-featured]) .readingCopy,
+  .savedPortrait .readingCopy {
+    display: contents;
+  }
+  .savedReading:not([data-featured]) .metadata,
+  .savedPortrait .metadata {
+    grid-column: 2;
+    align-self: center;
+  }
+  .savedReading:not([data-featured]) :is(h2, h3, .actions, .details),
+  .savedPortrait :is(h2, h3, .actions, .sessionNote) {
+    grid-column: 1 / -1;
+  }
+  .readingCopy :is(h2, h3) {
+    font-size: 1.375rem;
+    line-height: 1.4;
+  }
+  .metadata {
+    font-size: 0.8125rem;
+    gap: var(--space-1);
+  }
+  .metadata time {
+    flex-basis: 100%;
+  }
+  .savedReading[data-featured] {
+    grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
+    align-items: start;
+    gap: var(--space-3) var(--space-4);
+  }
+  .savedReading[data-featured] .readingArt {
+    grid-area: 1 / 1 / span 3;
+  }
+  .savedReading[data-featured] .readingArt > [data-variant='history'] {
+    --tarot-card-width: min(32vw, 9rem);
+  }
+  .savedReading[data-featured] .readingCopy {
+    display: contents;
+  }
+  .savedReading[data-featured] :is(.eyebrow, .metadata, h2) {
+    grid-column: 2;
+  }
+  .savedReading[data-featured] h2 {
+    font-size: 1.5rem;
+    line-height: 1.35;
+  }
+  .savedReading[data-featured] :is(.takeaway, .actions, .details) {
+    grid-column: 1 / -1;
+    margin-block-start: var(--space-2);
+  }
+  .dailyGrid {
+    grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
+    gap: var(--space-3) var(--space-4);
+  }
+  .dailyArt {
+    grid-area: 1 / 1 / span 3;
+  }
+  .dailyCopy {
+    display: contents;
+  }
+  .dailyCopy > :is([data-variant='eyebrow'], h2, button) {
+    grid-column: 2;
+  }
+  .dailyCopy > :is(.lead, .takeaway) {
+    grid-column: 1 / -1;
+    margin-block-start: var(--space-3);
+  }
+  .dailyArt > [data-variant='history'] {
+    --tarot-card-width: clamp(7rem, 31vw, 9rem);
+  }
+  .root .dailyGrid h2 {
+    font-size: 1.45rem;
+  }
+  .actions {
+    gap: var(--space-2);
+  }
+  .hero .actions button[data-prominence='primary'],
+  .savedReading[data-featured] .actions button {
+    inline-size: 100%;
+  }
+  .hero .actions {
+    inline-size: 100%;
+  }
+  .savedReading:not([data-featured]) .actions {
+    align-items: center;
+  }
+  .savedReading:not([data-featured]) .actions button {
+    justify-content: start;
+    padding-inline: 0.65rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (forced-colors: active) {
+  .root {
+    --personal-text: CanvasText;
+    --personal-muted: CanvasText;
+    --personal-gold: LinkText;
+    --personal-line: CanvasText;
+    background: Canvas;
+  }
+  .root :is(button, a, summary, [tabindex='-1']):focus-visible {
+    outline-color: Highlight;
+  }
+  .root button[data-prominence] {
+    border: 1px solid ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+    box-shadow: none;
+  }
+  .root button[aria-pressed='true'] {
+    border: 2px solid Highlight;
+  }
+}
+
+.archiveSection {
+  padding-block: var(--space-3) var(--space-6);
+}
+.archiveGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  padding-block: var(--space-6);
+  border-block-start: 1px solid var(--personal-line);
+}
+.archivePortrait,
+.archiveIndex {
+  display: grid;
+  min-inline-size: 0;
+  justify-items: start;
+  align-content: start;
+  gap: var(--space-4);
+}
+.archivePortrait h2 {
+  max-inline-size: 30ch;
+  font-family: var(--font-family-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2.5vw, 2.3rem);
+  line-height: 1.35;
+}
+.archiveIndex button,
+.archiveIndex a {
+  justify-content: space-between;
+  inline-size: 100%;
+  padding-inline: 0;
+  border: 0;
+  border-block-end: 1px solid var(--personal-line);
+  border-radius: 0;
+  color: var(--personal-gold);
+  text-align: start;
+}
+@media (min-width: 64rem) {
+  .archiveGrid:has(.archivePortrait) {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.8fr);
+    column-gap: clamp(3rem, 8vw, 7rem);
+  }
+}
+
+.heroFrame {
+  padding-block-end: 1.5rem;
+  background: radial-gradient(ellipse at 82% 50%, var(--sa-ambient-indigo), transparent 60%);
+}
+.archiveMonth {
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  column-gap: clamp(2rem, 5vw, 4.5rem);
+  padding-block: 1.25rem 2.5rem;
+}
+.monthHeading {
+  margin: 0;
+  padding-block-start: 2rem;
+  color: var(--personal-gold);
+  font-family: var(--font-family-display);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-transform: capitalize;
+}
+.archiveMonth .timeline {
+  border-block-start: 0;
+}
+.archiveMonth .timeline > li {
+  border-block-end: 0;
+}
+.archiveMonth .timeline > li + li {
+  border-block-start: 1px solid var(--personal-line);
+}
+.archiveMonth .savedReading,
+.archiveMonth .savedPortrait {
+  grid-template-columns: 6rem minmax(0, 1fr);
+  gap: 2rem;
+}
+.archiveMonth .readingArt > [data-variant='history'] {
+  --tarot-card-width: 6rem;
+}
+.portraitMark svg {
+  inline-size: 100%;
+  block-size: auto;
+}
+.archiveSection {
+  background: radial-gradient(ellipse at 20% 45%, var(--sa-ambient-plum), transparent 65%);
+}
+@media (max-width: 63.99rem) {
+  .archiveMonth {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .monthHeading {
+    padding-block: 0.5rem 0;
+  }
+}
+@media (max-width: 47.99rem) {
+  .archiveMonth .savedReading,
+  .archiveMonth .savedPortrait {
+    grid-template-columns: 3.75rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+  .archiveMonth .readingArt > [data-variant='history'] {
+    --tarot-card-width: 3.75rem;
+  }
+  .archiveMonth {
+    padding-block-end: 1.5rem;
+  }
+}
+@media (forced-colors: active) {
+  .heroFrame,
+  .archiveSection {
+    background: Canvas;
+  }
+}

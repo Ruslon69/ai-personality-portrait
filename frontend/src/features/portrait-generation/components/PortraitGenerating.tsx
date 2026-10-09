@@ -1,3 +1,4 @@
+import { generatingCopy } from './../data/generating-copy';
 import { useEffect, useMemo } from 'react';
 
 import type { DraftPortrait, ProfileLocale } from '@entities/personality-profile';
@@ -22,35 +23,7 @@ export function PortraitGenerating({ draft, locale, onComplete }: PortraitGenera
     onComplete,
     stages: generationStages,
   });
-  const copy = {
-    en: {
-      eyebrow: 'Your answers are connected',
-      title: 'Assembling your portrait',
-      lead: 'We compare your answers and keep optional birth-date insights separate.',
-      note: 'Your portrait will open automatically.',
-      complete: 'Complete',
-      current: 'In progress',
-      pending: 'Waiting',
-    },
-    ru: {
-      eyebrow: 'Сопоставляем ваши ответы',
-      title: 'Собираем ваш портрет',
-      lead: 'Мы ищем связи в ответах, а дополнение по дате рождения показываем отдельно.',
-      note: 'Портрет откроется автоматически.',
-      complete: 'Завершено',
-      current: 'Выполняется',
-      pending: 'Ожидает',
-    },
-    uk: {
-      eyebrow: 'Зіставляємо ваші відповіді',
-      title: 'Збираємо ваш портрет',
-      lead: 'Ми шукаємо зв’язки у відповідях, а доповнення за датою народження показуємо окремо.',
-      note: 'Портрет відкриється автоматично.',
-      complete: 'Завершено',
-      current: 'Виконується',
-      pending: 'Очікує',
-    },
-  }[locale];
+  const copy = generatingCopy[locale];
 
   useEffect(() => focusElementByIdOnNextFrame('generating-title'), []);
 

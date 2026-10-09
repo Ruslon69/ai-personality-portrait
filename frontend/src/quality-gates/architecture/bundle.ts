@@ -47,7 +47,16 @@ export function bundleViolations(assets: readonly BundleAsset[]) {
     )
   )
     violations.push('test-or-quality-module-in-bundle');
-  if (/\/(?:Users|home)\/[^/\s]+|[A-Z]:\\Users\\/i.test(combined))
+  // /home/ is also the public artwork URL namespace. Exempt only an exact
+  // published WebP path, never a directory or an arbitrary filesystem path.
+  const homeArtworkPaths = new Set(
+    assets
+      .filter((asset) => /^home\/[a-z0-9-]+\.webp$/.test(asset.path))
+      .map((asset) => `/${asset.path}`),
+  );
+  const personalPaths =
+    combined.match(/\/(?:Users|home)\/[^\s"'\x60<>,;)}]+|[A-Z]:\\+Users\\+/gi) ?? [];
+  if (personalPaths.some((path) => !homeArtworkPaths.has(path)))
     violations.push('personal-path-in-bundle');
   if (/-----BEGIN [A-Z ]*PRIVATE KEY-----|\bsk-(?:proj-)?[A-Za-z0-9_-]{20,}/.test(combined))
     violations.push('secret-pattern-in-bundle');
@@ -96,6 +105,35 @@ export function runBundleBoundaryGate(rootDir: string) {
   const testModuleFixture = [
     { content: 'QUALITY GATES', path: 'assets/index-fixture.js', size: 10 },
   ];
+  for (const path of [
+    '/Users/developer/project',
+    '/home/developer/project',
+    '/home/tarot-hero.webp/private',
+    'C:\\Users\\developer',
+  ]) {
+    assertions.assert(
+      bundleViolations([
+        { content: JSON.stringify(path), path: 'assets/index-fixture.js', size: 100 },
+      ]).includes('personal-path-in-bundle'),
+      {
+        code: 'negative-personal-path-not-detected',
+        message: `Private filesystem path must remain rejected: ${path}`,
+      },
+    );
+  }
+  assertions.assert(
+    !bundleViolations([
+      { content: 'src="/home/tarot-hero.webp"', path: 'assets/index-fixture.js', size: 100 },
+      { content: '', path: 'home/tarot-hero.webp', size: 100 },
+    ]).includes('personal-path-in-bundle') &&
+      bundleViolations([
+        { content: 'src="/home/not-published.webp"', path: 'assets/index-fixture.js', size: 100 },
+      ]).includes('personal-path-in-bundle'),
+    {
+      code: 'published-home-artwork-url-not-filesystem-path',
+      message: 'Only an exact published Home artwork URL is exempt from private-path detection.',
+    },
+  );
   assertions.assert(
     bundleViolations(testModuleFixture).includes('test-or-quality-module-in-bundle'),
     {

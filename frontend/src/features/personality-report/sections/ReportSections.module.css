@@ -32,15 +32,24 @@
 
 .section,
 .sourcesSection {
-  padding-block: var(--page-section-padding-block);
+  padding-block: clamp(3rem, 7vw, 6rem);
 }
 
 .sectionIntroduction {
-  max-inline-size: var(--content-width-reading);
+  max-inline-size: 62ch;
+}
+.sectionIntroduction > p:first-child {
+  color: var(--portrait-gold);
+}
+.sectionIntroduction h2 {
+  font-family: var(--font-family-display);
+  font-size: clamp(1.9rem, 3.4vw, 3.15rem);
+  font-weight: 400;
+  font-synthesis: none;
 }
 
 .muted {
-  color: var(--color-text-muted);
+  color: var(--portrait-muted);
 }
 
 .cardGrid,
@@ -70,12 +79,12 @@
 
 .narrativeSurface,
 .sourcesSurface {
-  padding: var(--page-surface-padding);
-  border-block: 0.0625rem solid var(--color-border);
+  padding: 0;
+  border-block: 1px solid var(--portrait-line);
 }
 
 .narrativeSurface {
-  background: var(--surface-accent-subtle);
+  background: transparent;
 }
 
 .recommendationGrid {
@@ -83,13 +92,14 @@
 }
 
 .sourcesSection {
-  padding-block-end: var(--page-ending-padding-block);
+  padding-block-end: clamp(1.5rem, 3vw, 3rem);
 }
 
 .sourcesSurface {
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--surface-accent-subtle);
+  border: 0;
+  border-block: 1px solid var(--portrait-line);
+  border-radius: 0;
+  background: transparent;
 }
 
 .sourceItem {

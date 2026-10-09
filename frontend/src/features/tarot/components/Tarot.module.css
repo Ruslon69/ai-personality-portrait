@@ -512,12 +512,14 @@
 
 .contextNumbers {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 4.5rem), 1fr));
   gap: var(--space-4);
 }
 .contextNumbers span {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   min-inline-size: 0;
+  overflow-wrap: anywhere;
   padding: var(--space-5);
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -2727,6 +2729,19 @@
     align-items: flex-start;
     flex-direction: column;
   }
+  .flowPage[data-reading-step='cards'] {
+    inline-size: 100%;
+    max-inline-size: 100vw;
+  }
+  .flowPage[data-reading-step='cards'] .readingContainer,
+  .flowSurface[data-reading-step='cards'] {
+    inline-size: 100%;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+  }
+  .flowPage[data-reading-step='cards'] .flowSurface[data-reading-step='cards'] {
+    padding-inline: min(4vw, 1rem);
+  }
   .themePreview {
     grid-row: 2;
     min-block-size: 19rem;
@@ -2738,11 +2753,82 @@
   .cardFan {
     padding-inline: 0;
   }
-  .cardFan .tarotCardButton {
-    margin-inline-start: -2rem;
+  .flowPage[data-reading-step='cards'] .cardFan[data-selection-mode='manual'] {
+    display: grid;
+    inline-size: 100%;
+    min-block-size: 0;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: start;
+    justify-items: center;
+    padding: var(--space-5) 0 var(--space-4);
+    background:
+      radial-gradient(circle at 50% 45%, rgb(201 168 103 / 8%), transparent 46%),
+      radial-gradient(ellipse at 50% 78%, rgb(92 86 153 / 7%), transparent 62%);
+    column-gap: min(1.5vw, 0.5rem);
+    row-gap: clamp(0.75rem, 3vw, 1rem);
+    overflow: visible;
+    scrollbar-width: none;
   }
-  .cardFan .tarotCardButton:first-child {
+  .flowPage[data-reading-step='cards'] .cardFan[data-selection-mode='manual'] .tarotCardButton {
+    --tarot-card-width: min(17.5vw, 76px);
     margin-inline-start: 0;
+    justify-self: center;
+    transform: none;
+    transform-origin: center;
+  }
+  .flowPage[data-reading-step='cards']
+    .cardFan[data-selection-mode='manual']
+    .tarotCardButton[data-selected] {
+    z-index: 2;
+    filter: brightness(1.06);
+    transform: translateY(-0.2rem) scale(1.035);
+  }
+  .flowPage[data-reading-step='cards']
+    .cardFan[data-selection-mode='manual']
+    .tarotCardButton[data-selected]
+    .cardBackFace {
+    border-color: #d8ba78;
+    box-shadow:
+      0 0.8rem 1.5rem rgb(0 0 0 / 38%),
+      0 0 0 0.12rem rgb(226 204 160 / 42%),
+      0 0 1.15rem rgb(201 168 103 / 28%),
+      inset 0 0 0 0.08rem rgb(255 240 201 / 22%);
+  }
+  .flowPage[data-reading-step='cards'] .cardFan .selectionOrder {
+    inset: -0.42rem -0.34rem auto auto;
+    inline-size: 1.8rem;
+    border: 0.0625rem solid #e2cca0;
+    background: radial-gradient(circle at 38% 32%, #26304b, #090d18 72%);
+    box-shadow:
+      0 0 0 0.12rem rgb(10 14 25 / 88%),
+      0 0 0.85rem rgb(213 177 104 / 38%);
+    color: #f3dfb2;
+    font-family: var(--font-family-display);
+    font-size: 0.82rem;
+    font-weight: 400;
+  }
+  .flowPage[data-reading-step='cards'] .flowActions {
+    padding-block-start: var(--space-4);
+    border-block-start: 0;
+    margin-block-start: var(--space-4);
+  }
+  .flowPage[data-reading-step='cards'] .flowActions button[data-prominence='primary'] {
+    inline-size: 100%;
+    min-block-size: 3.5rem;
+    border-color: #d3b77f;
+    border-radius: 0.78rem;
+    background: linear-gradient(115deg, #efddb5, #c6a36b);
+    box-shadow:
+      inset 0 0.0625rem 0 rgb(255 247 218 / 60%),
+      0 0.5rem 1.5rem rgb(203 163 96 / 14%);
+    color: #292032;
+  }
+  .flowPage[data-reading-step='cards'] .flowActions button[data-prominence='primary']:disabled {
+    border-color: rgb(211 183 127 / 54%);
+    background: linear-gradient(115deg, #a8956c, #8b7148);
+    box-shadow: inset 0 0.0625rem 0 rgb(255 247 218 / 24%);
+    color: rgb(21 17 8 / 78%);
+    opacity: 0.58;
   }
   .resultOpening {
     text-align: start;
@@ -2781,13 +2867,16 @@
     padding: var(--space-4);
   }
   .flowPage[data-reading-step='reveal'] {
+    max-inline-size: 100vw;
     padding-block: var(--space-4) var(--space-8);
   }
   .flowPage[data-reading-step='reveal'] .readingContainer {
     padding-inline: var(--space-3);
   }
   .revealExperience {
-    gap: var(--space-4);
+    inline-size: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
     padding: var(--space-4);
     border-radius: var(--radius-xl);
     overflow-anchor: none;
@@ -2802,66 +2891,100 @@
     flex: 1 1 100%;
     align-items: center;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: var(--space-2);
   }
   .revealTopProgress {
     inline-size: 100%;
     justify-content: space-between;
+    font-size: 0.8125rem;
+    color: var(--reading-muted);
   }
+  /* The existing named progress/count remains above the card. Desktop keeps its gallery. */
   .revealSequence {
-    --tarot-mobile-strip-card-width: clamp(2.9rem, 13vw, 3.5rem);
-    inline-size: 100%;
-    margin-inline: 0;
-    gap: var(--space-3);
-    padding: var(--space-2) 0 var(--space-3);
-  }
-  .revealSequence .tarotCardButton {
-    --tarot-card-width: var(--tarot-mobile-strip-card-width);
-  }
-  .revealSequence .cardPosition {
-    display: -webkit-box;
-    min-block-size: 2.35em;
-    max-block-size: 2.35em;
-    font-size: 0.68rem;
-    line-height: 1.16;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    display: none;
   }
   .revealStage {
     justify-items: center;
-    gap: var(--space-5);
-    padding-block: var(--space-3);
+    gap: var(--space-6);
+    padding-block: var(--space-4);
   }
   .flowPage[data-reading-step='reveal'] .revealStage > .tarotCardButton {
-    --tarot-card-width: clamp(8.5rem, 38vw, 9.75rem);
+    --tarot-card-width: min(44vw, 12rem);
   }
   .revealLight {
     inline-size: min(19rem, 90%);
   }
   .revealDetails {
     max-inline-size: none;
+    gap: var(--space-5);
+  }
+  .revealProgress {
+    gap: var(--space-2);
+  }
+  .revealProgress span {
+    color: var(--reading-gold-soft);
+    font-size: 0.75rem;
+  }
+  .revealProgress small {
+    color: var(--reading-muted);
+    font-size: 0.9375rem;
   }
   .revealInterpretation {
+    min-inline-size: 0;
     max-inline-size: none;
+    grid-template-columns: minmax(0, 1fr);
+    overflow-wrap: anywhere;
+    gap: var(--space-5);
   }
-  .revealCardTitle[data-variant='heading-md'] {
-    font-size: clamp(1.85rem, 8vw, 2.35rem);
-    line-height: 1.08;
+  .revealDetails .revealCardTitle[data-variant='heading-md'] {
+    font-size: clamp(1.6875rem, 7.5vw, 2rem);
+    line-height: 1.2;
   }
-  .revealMeaning p {
-    font-size: 1rem;
+  .revealOrientation {
+    color: var(--reading-muted);
+    font-size: 0.8125rem;
     line-height: 1.5;
+  }
+  .revealMeaning,
+  .revealTakeaway {
+    gap: var(--space-3);
+  }
+  .revealMeaning > strong,
+  .revealTakeaway > strong {
+    color: var(--reading-gold-soft);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    letter-spacing: 0.025em;
+  }
+  .revealDetails .revealMeaning p {
+    font-size: clamp(1rem, 4.2vw, 1.0625rem);
+    line-height: 1.62;
+    color: var(--reading-ivory);
+  }
+  .revealDetails .revealTakeaway p {
+    font-size: 1rem;
+    line-height: 1.6;
   }
   .revealTakeaway {
     min-inline-size: 0;
-    padding: var(--space-4) var(--space-4) var(--space-4) calc(var(--space-4) + 0.8rem);
+    padding: var(--space-5) var(--space-4) var(--space-5) var(--space-6);
+  }
+  .revealTakeaway::before {
+    inset-block-start: calc(var(--space-5) + var(--space-1));
+    inset-inline-start: var(--space-3);
   }
   .revealCta {
     inline-size: 100%;
+    min-block-size: 3.5rem;
+    margin-block: var(--space-3) var(--space-4);
+    font-size: 1rem;
+    white-space: normal;
   }
   .flowActions[data-reveal] button {
     flex: 0 1 auto;
+    max-inline-size: 100%;
+    white-space: normal;
   }
   .deckShowcase[data-count='1'] {
     padding-block: var(--space-3);

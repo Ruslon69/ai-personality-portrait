@@ -4,21 +4,24 @@ import { tarotCardById, tarotSpreadById } from '../data';
 import type { TarotReading } from '../types';
 
 const headlineWordLimits: Record<Locale, { maximum: number; minimum: number }> = {
+  es: { maximum: 10, minimum: 4 },
   en: { maximum: 10, minimum: 4 },
   ru: { maximum: 10, minimum: 4 },
   uk: { maximum: 10, minimum: 4 },
 };
 
 const semanticHeadlineTemplates: Record<Locale, (concept: string) => string> = {
+  es: (concept) => `Lo que importa ahora: ${concept}`,
   en: (concept) => `What matters now: ${concept}`,
   ru: (concept) => `Сейчас важно: ${concept}`,
   uk: (concept) => `Зараз важливо: ${concept}`,
 };
 
 const repeatedThemeCopy: Record<Locale, (theme: string) => string> = {
-  en: (theme) => `The spread keeps returning to ${theme}.`,
-  ru: (theme) => `В раскладе снова появляется тема «${theme}».`,
-  uk: (theme) => `У розкладі знову з’являється тема «${theme}».`,
+  es: (theme) => `Un hilo de esta lectura es ${theme}.`,
+  en: (theme) => `One thread in this reading is ${theme}.`,
+  ru: (theme) => `Одна из тем расклада — «${theme}».`,
+  uk: (theme) => `Одна з тем розкладу — «${theme}».`,
 };
 
 type TarotResultPattern = {

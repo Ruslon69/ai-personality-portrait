@@ -17,10 +17,14 @@ import {
 import rwsOrientationManifest from '../../assets/tarot/metadata/rws-orientation-manifest.json';
 import { rwsPublicDomainManifest } from '../../assets/tarot/metadata/rws-public-domain-manifest';
 import { TarotCardView } from '../../features/tarot/components/TarotCardView';
+import { TarotResult } from '../../features/tarot/components/TarotResult';
+import { createNumerologyProfile } from '../../features/numerology/lib/numerology-engine';
+import { createTarotReading } from '../../features/tarot/lib/reading-engine';
+import { createAutomaticSelections } from '../../features/tarot/lib/selection-engine';
 import { resolveTarotCardVisualFace } from '../../features/tarot/components/tarot-card-visual-state';
 import { getTarotArtworkRotation } from '../../features/tarot/components/tarot-artwork-orientation';
 import { shouldLoadTarotFaceArtwork } from '../../features/tarot/components/tarot-artwork-loading';
-import { standardTarotDeck } from '../../features/tarot/data';
+import { standardTarotDeck, tarotSpreads } from '../../features/tarot/data';
 import { QualityAssertions } from '../assertions';
 import { QUALITY_BASELINE } from '../fixtures/baseline';
 
@@ -501,7 +505,11 @@ export function runTarotArtworkGate(rootDir: string) {
     'utf8',
   );
   const historyCss = readFileSync(
-    resolve(rootDir, 'src/features/journey/components/TarotHistory.module.css'),
+    resolve(rootDir, 'src/features/journey/components/PersonalSpace.module.css'),
+    'utf8',
+  );
+  const savedReadingSource = readFileSync(
+    resolve(rootDir, 'src/features/journey/components/SavedReading.tsx'),
     'utf8',
   );
   const historyPageSource = readFileSync(
@@ -601,12 +609,115 @@ export function runTarotArtworkGate(rootDir: string) {
     resolve(rootDir, 'src/features/tarot/components/Tarot.module.css'),
     'utf8',
   );
+  const resultCss = readFileSync(
+    resolve(rootDir, 'src/features/tarot/components/TarotResult.module.css'),
+    'utf8',
+  );
+  const entryCss = readFileSync(
+    resolve(rootDir, 'src/features/tarot/components/TarotEntry.module.css'),
+    'utf8',
+  );
+  assertions.assert(
+    layoutCss.includes(".root:has(> .body[data-tarot-result='true'])") &&
+      layoutCss.includes('grid-template-columns: minmax(0, 1fr)') &&
+      layoutCss.includes('min-inline-size: 2.75rem') &&
+      layoutCss.includes('grid-template-columns: 9.5rem minmax(0, 1fr)'),
+    {
+      code: 'tarot-result-navigation-width-contract',
+      message:
+        'Result must constrain the shell grid and preserve mobile control targets while using a route-scoped quiet rail.',
+    },
+  );
+  for (const locale of QUALITY_BASELINE.locales) {
+    const spread = tarotSpreads.find((item) => item.id === 'week')!;
+    const seed = 'result-render-continuity';
+    const timestamp = '2026-08-05T12:00:00.000Z';
+    const reading = createTarotReading(
+      {
+        birthDate: '1990-01-01',
+        deckTheme: 'cosmic-minimal',
+        interests: [],
+        locale,
+        numerology: createNumerologyProfile('1990-01-01', locale, new Date(timestamp)),
+        period: 'week',
+        psychologyAnswers: [],
+        seed,
+        selectionMode: 'automatic',
+        spreadId: spread.id,
+      },
+      createAutomaticSelections(standardTarotDeck.cards, spread, seed),
+      timestamp,
+    );
+    const before = JSON.stringify(reading);
+    const markup = renderToStaticMarkup(
+      createElement(TarotResult, {
+        reading,
+        locale,
+        isSaved: true,
+        savedPresentation: { headline: 'Saved conclusion', motifs: [] },
+        onContinueJourney() {},
+        onOpenHistory() {},
+        onRestart() {},
+      }),
+    );
+    assertions.assert(
+      (markup.match(/<h1\b/g) ?? []).length === 1 &&
+        markup.includes('Saved conclusion</h1>') &&
+        (markup.match(/aria-expanded="false"/g) ?? []).length === spread.positions.length &&
+        (markup.match(/data-artwork-quality="premium"/g) ?? []).length ===
+          spread.positions.length + 1 &&
+        reading.selections.every(({ cardId }) => markup.includes(`data-card-id="${cardId}"`)) &&
+        markup.includes('id="pattern-title"') &&
+        markup.includes('id="supporting-cards-title"') &&
+        before === JSON.stringify(reading),
+      {
+        code: `tarot-result-render-continuity-${locale}`,
+        message:
+          'Rendered Result must preserve saved presentation, Premium hero and spread cards, collapsed labelled disclosures, one heading and immutable reading data.',
+      },
+    );
+  }
+  assertions.assert(
+    entryCss.includes(".setup[data-reading-step='theme'] label[data-theme]") &&
+      entryCss.includes(':has(input:checked) > span:first-of-type') &&
+      entryCss.includes('label[data-theme]:has(input:checked) > span:last-child') &&
+      entryCss.includes('grid-template-columns: repeat(2, minmax(0, 1fr))') &&
+      entryCss.includes('@media (prefers-reduced-motion: reduce)') &&
+      entryCss.includes('@media (forced-colors: active)'),
+    {
+      code: 'tarot-deck-gallery-isolated-accessible-selection',
+      message:
+        'Deck gallery styling must stay scoped to setup with checked marks, compact mobile columns and motion/forced-color support.',
+    },
+  );
   const mobileRevealCssStart = cardBackCss.lastIndexOf('@media (max-width: 47.99rem)');
   const mobileRevealCssEnd = cardBackCss.indexOf('@media (max-width: 27rem)', mobileRevealCssStart);
   const mobileRevealCss = cardBackCss.slice(mobileRevealCssStart, mobileRevealCssEnd);
   const cardInnerRule = cardBackCss.match(/\.tarotCardInner\s*\{(?<body>[^}]*)\}/u)?.groups?.body;
   const cardFacesRule = cardBackCss.match(/\.cardBackFace,\s*\.cardFrontFace\s*\{(?<body>[^}]*)\}/u)
     ?.groups?.body;
+  assertions.assert(
+    mobileRevealCss.includes(".flowPage[data-reading-step='cards']") &&
+      mobileRevealCss.includes(".cardFan[data-selection-mode='manual']") &&
+      mobileRevealCss.includes('grid-template-columns: repeat(4, minmax(0, 1fr))') &&
+      mobileRevealCss.includes('--tarot-card-width: min(17.5vw, 76px)') &&
+      mobileRevealCss.includes('padding-inline: min(4vw, 1rem)') &&
+      mobileRevealCss.includes('max-inline-size: 100vw') &&
+      mobileRevealCss.includes('overflow: visible') &&
+      mobileRevealCss.includes('scrollbar-width: none') &&
+      mobileRevealCss.includes('.tarotCardButton[data-selected]') &&
+      mobileRevealCss.includes('.selectionOrder') &&
+      mobileRevealCss.includes('border-block-start: 0') &&
+      mobileRevealCss.includes("button[data-prominence='primary']") &&
+      mobileRevealCss.includes('min-block-size: 3.5rem') &&
+      readingFlowSource.includes('isSelected={manualIds.includes(card.id)}') &&
+      readingFlowSource.includes('selectionOrder={manualIds.indexOf(card.id) + 1 || undefined}'),
+    {
+      code: 'tarot-mobile-manual-selection-ritual',
+      message:
+        'Mobile manual selection must present twelve distinct tappable cards in a bounded four-column ritual grid, retain numbered semantic selection, remove strip artifacts and use a touch-sized gold next action.',
+    },
+  );
   assertions.assert(
     Boolean(cardInnerRule?.includes('-webkit-transform-style: preserve-3d')) &&
       Boolean(cardInnerRule?.includes('transform-style: preserve-3d')) &&
@@ -787,18 +898,40 @@ export function runTarotArtworkGate(rootDir: string) {
   assertions.assert(
     mobileRevealCssStart >= 0 &&
       mobileRevealCssEnd > mobileRevealCssStart &&
-      mobileRevealCss.includes('--tarot-card-width: clamp(8.5rem, 38vw, 9.75rem)') &&
-      mobileRevealCss.includes('--tarot-mobile-strip-card-width: clamp(2.9rem, 13vw, 3.5rem)') &&
-      mobileRevealCss.includes('-webkit-line-clamp: 2') &&
+      mobileRevealCss.includes('--tarot-card-width: min(44vw, 12rem)') &&
+      /\.revealSequence\s*\{\s*display: none;\s*\}/.test(mobileRevealCss) &&
+      revealMarkupSource.includes('className={styles.revealTopProgress}') &&
+      revealMarkupSource.includes('<span>{currentCardProgress}</span>') &&
+      revealMarkupSource.includes('<small>{currentPosition}</small>') &&
+      revealMarkupSource.includes('data-state={') &&
       mobileRevealCss.includes('inline-size: 100%') &&
-      mobileRevealCss.includes('margin-inline: 0') &&
+      mobileRevealCss.includes('overflow-anchor: none') &&
+      !/(?:^|\n)\s*(?:height|block-size|max-block-size):\s*[^;]*(?:vh|svh)/.test(mobileRevealCss) &&
       !mobileRevealCss.includes('margin-inline: calc(') &&
       !mobileRevealCss.includes('position: absolute') &&
       !mobileRevealCss.includes('inset-block-start: -'),
     {
       code: 'tarot-reading-mobile-reveal-bounds',
       message:
-        'Mobile reveal cards must remain bounded in normal flow while the compact position strip keeps two-line labels.',
+        'Mobile reveal cards must remain larger but bounded in normal flow, with the existing count, state dots and current position replacing the redundant thumbnail gallery without viewport-height clipping.',
+    },
+  );
+  assertions.assert(
+    mobileRevealCss.includes('.revealDetails .revealMeaning p') &&
+      mobileRevealCss.includes('font-size: clamp(1rem, 4.2vw, 1.0625rem)') &&
+      mobileRevealCss.includes('line-height: 1.62') &&
+      mobileRevealCss.includes('.revealDetails .revealCardTitle') &&
+      mobileRevealCss.includes('font-size: clamp(1.6875rem, 7.5vw, 2rem)') &&
+      mobileRevealCss.includes('min-block-size: 3.5rem') &&
+      mobileRevealCss.includes('grid-template-columns: minmax(0, 1fr)') &&
+      mobileRevealCss.includes('overflow-wrap: anywhere') &&
+      mobileRevealCss.includes('max-inline-size: 100vw') &&
+      mobileRevealCss.includes('white-space: normal') &&
+      mobileRevealCss.includes('gap: var(--space-6)'),
+    {
+      code: 'tarot-mobile-editorial-reading-rhythm',
+      message:
+        'Mobile reading needs readable scoped typography overriding generic UI text, generous card-to-identity spacing and a full-width touch-sized next action, without changing desktop rules.',
     },
   );
   assertions.assert(
@@ -931,26 +1064,30 @@ export function runTarotArtworkGate(rootDir: string) {
     resultSource.includes('className={styles.resultOpening}') &&
       resultSource.includes('variant="leading"') &&
       resultSource.includes('isRevealed') &&
-      cardBackCss.includes('grid-template-columns: minmax(15rem, 0.38fr) minmax(0, 0.62fr)') &&
-      cardBackCss.includes('min-block-size: calc(100dvh - 4rem)') &&
-      cardBackCss.includes('--tarot-card-width: clamp(15rem, 18vw, 18rem)'),
+      resultSource.includes("import styles from './TarotResult.module.css'") &&
+      resultCss.includes('grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr)') &&
+      !resultCss.includes('100dvh') &&
+      resultCss.includes('--tarot-card-height: auto') &&
+      resultCss.includes('max-inline-size: 100%') &&
+      resultCss.includes('--tarot-card-width: clamp(15rem, 21vw, 20rem)'),
     {
       code: 'tarot-result-desktop-viewport-hero',
       message:
-        'The desktop result must keep its leading card and complete conclusion together in a viewport-aware two-column hero.',
+        'The result must isolate its editorial styles from Reading and keep the leading card and conclusion together without fixed viewport clipping.',
     },
   );
   assertions.assert(
-    cardBackCss.includes(".resultCopy h1[data-variant='display']") &&
-      cardBackCss.includes('max-inline-size: min(100%, 18ch)') &&
-      cardBackCss.includes('font-size: clamp(2rem, 4vw, 3.375rem)') &&
+    resultCss.includes('.page .resultCopy h1') &&
+      resultCss.includes('max-inline-size: 21ch') &&
+      resultCss.includes('font-size: clamp(2.25rem, 3.4vw, 3.5rem)') &&
+      resultCss.includes('font-family: var(--font-family-display)') &&
       readingEngineSource.includes('headline: synthesis.headline') &&
-      interpretationCopySource.includes('headline: domainHeadlines.ru[domain]') &&
+      interpretationCopySource.includes('headline: domainHeadlines[locale][domain]') &&
       resultSource.includes('heroPresentation.headline') &&
       resultSource.includes('className={styles.resultHeroTakeaway}') &&
       resultSource.includes('{reading.practicalFocus}') &&
-      cardBackCss.includes('.resultSupportingLine') &&
-      cardBackCss.includes('.resultHeroTakeaway'),
+      resultCss.includes('.resultSupportingLine') &&
+      resultCss.includes('.resultHeroTakeaway'),
     {
       code: 'tarot-result-russian-headline-presentation',
       message:
@@ -959,13 +1096,18 @@ export function runTarotArtworkGate(rootDir: string) {
   );
   assertions.assert(
     resultSource.includes('useState<string | null>(null)') &&
-      resultSource.includes('aria-label={`${isOpen ? copy.showLess : copy.showMore}:') &&
+      resultSource.includes('aria-label={isOpen ? copy.showLess : copy.showMore}') &&
+      resultSource.includes('aria-describedby={`${triggerId}-title`}') &&
       resultSource.includes('aria-controls={detailId}') &&
       resultSource.includes('aria-expanded={isOpen}') &&
       resultSource.includes('aria-labelledby={triggerId}') &&
       resultSource.includes('role="region"') &&
       resultSource.includes('isOpen ? (') &&
-      resultSource.includes('variant="history"'),
+      resultSource.includes('variant="history"') &&
+      resultSource.includes('{interpretation.headline}') &&
+      resultCss.includes('.detailTrigger::after') &&
+      resultCss.includes('.interpretationHeader:has(button:focus-visible)') &&
+      resultCss.includes('--tarot-card-width: clamp(7rem, 11vw, 10rem)'),
     {
       code: 'tarot-result-accessible-card-details',
       message:
@@ -976,11 +1118,13 @@ export function runTarotArtworkGate(rootDir: string) {
     resultSource.includes('className={styles.resultSecondaryContext}') &&
       resultSource.includes('{heroPresentation.secondaryContext}') &&
       resultPresentationSource.includes('.slice(0, 4)') &&
-      cardBackCss.includes('.resultPatternGrid') &&
-      cardBackCss.includes('.resultHeroTakeaway') &&
-      cardBackCss.includes('.resultReflection') &&
-      cardBackCss.includes('.resultDetails') &&
-      cardBackCss.includes('grid-template-columns: 1fr'),
+      resultCss.includes('.resultPatternGrid') &&
+      resultCss.includes('.resultHeroTakeaway') &&
+      resultCss.includes('.resultReflection') &&
+      resultCss.includes('.resultDetails') &&
+      resultCss.includes('grid-template-columns: minmax(0, 1fr)') &&
+      resultCss.includes('overflow-x: clip') &&
+      resultCss.includes('@media (max-width: 700px)'),
     {
       code: 'tarot-result-progressive-hierarchy',
       message:
@@ -1001,7 +1145,9 @@ export function runTarotArtworkGate(rootDir: string) {
   assertions.assert(
     readingPageSource.includes('journeyActions.recordReading(reading)') &&
       readingPageSource.includes('tarotSessionActions.saveReading(result.value)') &&
-      readingPageSource.includes('if (!result.persisted)') &&
+      !readingPageSource.includes('notify(') &&
+      resultSource.includes("role={isSaved ? undefined : 'status'}") &&
+      resultSource.includes('productContractCopy[locale].tarotUnsaved') &&
       readingPageSource.includes('navigate(ROUTES.tarotResult, { replace: true })') &&
       historyPageSource.includes('tarotSessionActions.saveReading(record.reading)') &&
       historyPageSource.includes('navigate(ROUTES.tarotResult)') &&
@@ -1014,8 +1160,9 @@ export function runTarotArtworkGate(rootDir: string) {
   );
   assertions.assert(
     routeSource.includes('{ component: TarotHistoryPage, path: ROUTES.tarotHistory }') &&
-      historySource.includes('variant="history"') &&
-      historySource.includes('isRevealed') &&
+      historySource.includes('<SavedReading') &&
+      savedReadingSource.includes('variant="history"') &&
+      savedReadingSource.includes('isRevealed') &&
       historySource.includes('actions.deleteReading') &&
       historySource.includes('actions.clearReadings') &&
       historySource.includes('records.length ? (') &&
@@ -1046,7 +1193,8 @@ export function runTarotArtworkGate(rootDir: string) {
       tarotPreferencesSource.includes('aria-live="polite"') &&
       settingsPageSource.includes('<TarotPreferencesSection') &&
       settingsPageSource.includes('journeyActions.setHistoryLimit(limit)') &&
-      settingsPageSource.includes('if (!result.persisted)') &&
+      settingsPageSource.includes('return result.persisted') &&
+      tarotPreferencesSource.includes('setHistoryFailed(!historyPersisted)') &&
       settingsPageSource.includes('onBackToTarot={() => navigate(ROUTES.tarot)}'),
     {
       code: 'tarot-preferences-accessible-settings',

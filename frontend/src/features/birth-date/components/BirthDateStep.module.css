@@ -1,145 +1,199 @@
 .root {
   overflow: clip;
-  padding-block: var(--page-hero-padding-block);
+  padding-block: clamp(2rem, 5vw, 4rem);
+  background: radial-gradient(ellipse at 75% 35%, var(--sa-ambient-plum), transparent 38rem);
 }
-
-.introduction {
-  padding-block-end: var(--flow-content-gap);
-}
-
-.formSection {
-  padding-block: 0;
-}
-
-.introductionContent {
-  inline-size: min(100%, var(--content-width-flow));
-  margin-inline: auto;
-}
-
-.stepBadge {
-  align-self: flex-start;
-}
-
-.title {
-  max-inline-size: var(--flow-title-max-width);
-}
-
-.lead {
-  max-inline-size: var(--content-width-reading);
-}
-
 .form {
   display: grid;
-  inline-size: min(100%, var(--content-width-flow));
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'intro' 'field' 'preview' 'skip' 'privacy' 'actions';
+  gap: 1.25rem;
+  max-inline-size: 70rem;
   margin-inline: auto;
-  gap: var(--flow-content-gap);
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
 }
-
-.formSurface,
-.privacySurface {
-  padding: var(--flow-surface-padding);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
+.introduction {
+  grid-area: intro;
 }
-
-.formSurface {
-  background:
-    radial-gradient(
-      circle at 100% 0,
-      color-mix(in srgb, var(--color-interactive) 10%, transparent),
-      transparent 38%
-    ),
-    var(--color-surface);
+.introductionContent {
+  min-inline-size: 0;
 }
-
-.privacySurface {
-  background: var(--surface-accent-subtle);
+.stepBadge {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--portrait-gold);
+  letter-spacing: 0.06em;
 }
-
+.title {
+  max-inline-size: 16ch;
+  font-family: var(--font-family-display);
+  font-weight: 400;
+  font-synthesis: none;
+  text-wrap: balance;
+  scroll-margin-block-start: 7rem;
+}
+.lead {
+  max-inline-size: 46ch;
+}
 .field {
+  grid-area: field;
   display: grid;
-  gap: var(--space-2);
+  min-inline-size: 0;
+  gap: 0.5rem;
 }
-
-.label,
-.skipTitle {
-  font-weight: var(--font-weight-semibold);
+.field input {
+  min-inline-size: 0;
+  inline-size: 100%;
+  min-block-size: 3.75rem;
+  padding-inline: 0.75rem;
+  border: 0;
+  border-block-end: 1px solid var(--portrait-gold);
+  border-radius: 0;
+  background: var(--portrait-gold-soft);
+  color: var(--color-text);
+  font-family: var(--font-family-display);
+  font-size: clamp(1.35rem, 3vw, 2rem);
 }
-
-.muted,
-.skipDescription {
-  color: var(--color-text-muted);
+.field input:disabled {
+  opacity: 0.6;
 }
-
-.error {
-  min-block-size: 1.35rem;
-  color: var(--color-feedback-error);
-}
-
-.skipOption {
-  display: grid;
-  align-items: start;
-  padding: var(--space-4);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  gap: var(--space-3);
-  grid-template-columns: auto minmax(0, 1fr);
-  transition:
-    border-color var(--transition-duration-fast) var(--transition-easing-standard),
-    box-shadow var(--transition-duration-fast) var(--transition-easing-standard);
-}
-
-.skipOption:hover {
-  border-color: var(--color-border-strong);
-}
-
+.field input:focus-visible,
 .skipOption:has(.checkbox:focus-visible) {
   outline: var(--focus-ring-width) solid var(--color-focus);
   outline-offset: var(--focus-ring-offset);
 }
-
+.label,
+.skipTitle {
+  font-weight: var(--font-weight-semibold);
+}
+.muted,
+.skipDescription,
+.previewNote {
+  color: var(--portrait-muted);
+}
+.error {
+  color: var(--color-feedback-error);
+}
+.error:empty {
+  display: none;
+}
+.preview {
+  grid-area: preview;
+  min-inline-size: 0;
+  padding-block: 1rem;
+  border-block: 1px solid var(--sa-border-subtle);
+}
+.previewNote {
+  display: block;
+  max-inline-size: 45ch;
+  margin-block-start: 1rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+.skipOption {
+  grid-area: skip;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 0.75rem;
+  padding-block: 0.5rem;
+  min-block-size: 2.75rem;
+  cursor: pointer;
+}
 .checkbox {
   inline-size: 1.25rem;
   block-size: 1.25rem;
   margin: 0.125rem 0 0;
-  accent-color: var(--color-interactive);
+  accent-color: var(--portrait-gold);
 }
-
 .checkbox:focus-visible {
   outline: none;
 }
-
 .skipTitle,
 .skipDescription {
   display: block;
 }
-
 .skipDescription {
-  margin-block-start: var(--space-1);
-  font-size: var(--font-size-sm);
+  margin-block-start: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
 }
-
+.privacySurface {
+  grid-area: privacy;
+  padding-inline-start: 1rem;
+  border-inline-start: 1px solid var(--sa-border-subtle);
+  font-size: 0.875rem;
+}
+.privacySurface h2[data-variant] {
+  font-size: 1rem;
+}
 .actions {
+  grid-area: actions;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
-
+@media (min-width: 56rem) {
+  .form {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    grid-template-areas: 'intro preview' 'field preview' 'skip preview' 'privacy preview' 'actions preview';
+    column-gap: clamp(3rem, 7vw, 7rem);
+    row-gap: 1.5rem;
+    align-items: start;
+  }
+  .preview {
+    border: 0;
+    padding-block: 1.5rem 0;
+    align-self: center;
+  }
+  .previewNote {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .field {
+    margin-block-start: 0.5rem;
+  }
+}
 @media (max-width: 47.999rem) {
   .actions {
-    align-items: stretch;
     flex-direction: column-reverse;
+    align-items: stretch;
   }
-
   .actions > * {
     inline-size: 100%;
   }
+  .lead[data-variant] {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+}
+@media (forced-colors: active) {
+  .root {
+    background: Canvas;
+  }
+  .field input {
+    border: 1px solid FieldText;
+    background: Field;
+    color: FieldText;
+  }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .skipOption {
-    transition: none;
+@media (max-width: 47.999rem) {
+  .form {
+    gap: 1rem;
   }
+  .preview {
+    padding-block: 0.75rem;
+  }
+  .previewNote {
+    margin-block-start: 0.75rem;
+  }
+}
+.preview {
+  container-type: inline-size;
 }

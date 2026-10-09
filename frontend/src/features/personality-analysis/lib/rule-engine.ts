@@ -1,3 +1,4 @@
+import { portraitAssemblyCopy } from '../data/portrait-assembly-copy';
 import type {
   Evidence,
   Insight,
@@ -7,6 +8,7 @@ import type {
 } from '@entities/personality-profile';
 
 import { getInterestLabel, getTraitTemplate, recommendationCategoryByTrait } from '../data';
+import { recommendationSituations } from '../data/recommendation-context';
 import type { CollectedEvidence, RuleEngineResult, TraitId, TraitScore } from '../model';
 import {
   createConfidenceExplanation,
@@ -62,14 +64,6 @@ function createInsight(
   };
 }
 
-function overviewCopy(locale: ProfileLocale, primary: string, secondary: string) {
-  if (locale === 'en')
-    return `Your choices combine ${primary} with ${secondary}. The balance may shift with context rather than staying fixed.`;
-  if (locale === 'uk')
-    return `У ваших виборах поєднуються ${primary} і ${secondary}. Їхній баланс може змінюватися разом із контекстом.`;
-  return `В ваших выборах одновременно заметны ${primary} и ${secondary}. Их баланс может меняться вместе с контекстом.`;
-}
-
 function createOverview(
   ranked: readonly TraitScore[],
   evidence: readonly CollectedEvidence[],
@@ -83,7 +77,7 @@ function createOverview(
   return createInsight(
     'overview',
     `${primaryTemplate.strengthTitle} · ${secondaryTemplate.strengthTitle}`,
-    overviewCopy(locale, primaryTemplate.label, secondaryTemplate.label),
+    portraitAssemblyCopy[locale].overview(primaryTemplate.label, secondaryTemplate.label),
     `${primaryTemplate.strengthDetails} ${secondaryTemplate.strengthDetails}`,
     [...primary.evidence, ...secondary.evidence],
     evidence,
@@ -95,13 +89,6 @@ function createOverview(
       title: primaryTemplate.recommendationTitle,
     },
   );
-}
-
-function recommendationContext(locale: ProfileLocale, interest?: string) {
-  if (!interest) return '';
-  if (locale === 'en') return ` Try it in a situation connected with ${interest}.`;
-  if (locale === 'uk') return ` Спробуйте це в ситуації, пов’язаній із ${interest}.`;
-  return ` Попробуйте это в ситуации, связанной с ${interest}.`;
 }
 
 export function runRuleEngine(
@@ -189,7 +176,7 @@ export function runRuleEngine(
       ...createInsight(
         `recommendation:${id}`,
         template.recommendationTitle,
-        `${template.recommendationDescription}${recommendationContext(options.locale, interest)}`,
+        `${template.recommendationDescription}${interest ? portraitAssemblyCopy[options.locale].recommendationContext(interest) : ''}`,
         template.recommendationDetails,
         traitEvidence,
         evidence,
@@ -201,7 +188,7 @@ export function runRuleEngine(
       ),
       actionLabel: template.recommendationLabel,
       category: recommendationCategoryByTrait[id],
-      context: template.recommendationDescription,
+      context: recommendationSituations[options.locale][id],
     };
   });
 

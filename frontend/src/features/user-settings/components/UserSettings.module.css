@@ -1,5 +1,16 @@
 .root {
+  position: relative;
   overflow: clip;
+  padding-block-end: clamp(var(--space-7), 7vw, var(--space-9));
+}
+
+.root > * {
+  position: relative;
+  z-index: 1;
+}
+
+.root > section > div {
+  max-inline-size: 70rem;
 }
 
 .visuallyHidden {

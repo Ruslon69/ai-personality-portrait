@@ -1,4 +1,4 @@
-import { Container, Stack, Surface, Typography } from '@shared/ui';
+import { Container, Stack, Typography } from '@shared/ui';
 
 import type { LegalDocument } from './legal-copy';
 import styles from './LegalPage.module.css';
@@ -8,11 +8,21 @@ type LegalPageProps = {
 };
 
 export function LegalPage({ document }: LegalPageProps) {
+  useEffect(() => {
+    const id = window.location.hash.slice(1);
+    if (!/^legal-section-\d+$/.test(id)) return;
+    const frame = window.requestAnimationFrame(() => {
+      const heading = window.document.getElementById(id);
+      heading?.focus({ preventScroll: true });
+      heading?.scrollIntoView();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [document]);
   return (
     <div className={styles.root}>
       <Container>
         <article className={styles.article}>
-          <Stack align="start" gap="md">
+          <Stack align="start" className={styles.introduction} gap="md">
             <Typography as="p" variant="eyebrow">
               {document.eyebrow}
             </Typography>
@@ -22,16 +32,35 @@ export function LegalPage({ document }: LegalPageProps) {
             <Typography className={styles.intro} variant="lead">
               {document.intro}
             </Typography>
-            <Typography variant="caption">{document.effectiveDate}</Typography>
-            <Surface className={styles.notice}>
+            <Typography className={styles.effectiveDate} variant="caption">
+              {document.effectiveDate}
+            </Typography>
+            <aside className={styles.notice}>
               <Typography>{document.ownerNotice}</Typography>
-            </Surface>
+            </aside>
           </Stack>
 
+          <nav aria-label={document.title} className={styles.contents}>
+            {document.sections.map((section, index) => (
+              <a href={`#legal-section-${index + 1}`} key={section.title}>
+                <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                {section.title}
+              </a>
+            ))}
+          </nav>
+
           <div className={styles.sections}>
-            {document.sections.map((section) => (
+            {document.sections.map((section, index) => (
               <section className={styles.section} key={section.title}>
-                <Typography as="h2" variant="heading-md">
+                <span aria-hidden="true" className={styles.sectionNumber}>
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <Typography
+                  as="h2"
+                  id={`legal-section-${index + 1}`}
+                  tabIndex={-1}
+                  variant="heading-md"
+                >
                   {section.title}
                 </Typography>
                 {section.paragraphs?.map((paragraph) => (
@@ -54,3 +83,4 @@ export function LegalPage({ document }: LegalPageProps) {
     </div>
   );
 }
+import { useEffect } from 'react';

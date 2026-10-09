@@ -1,3 +1,4 @@
+import { profileUiCopy } from '../data/profile-ui-copy';
 import { Badge, Container, Stack, Typography } from '@shared/ui';
 import type { ProfileLocale } from '@entities/personality-profile';
 
@@ -15,11 +16,7 @@ export function ProfileHero({ greeting, introduction, locale }: ProfileHeroProps
       <Container size="wide">
         <Stack className={styles.heroContent} gap="lg">
           <Badge className={styles.badge} tone="info">
-            {locale === 'en'
-              ? 'Saved locally'
-              : locale === 'uk'
-                ? 'Локальний профіль'
-                : 'Локальный профиль'}
+            {profileUiCopy[locale].badge}
           </Badge>
           <Stack gap="sm">
             <Typography

@@ -1,3 +1,7 @@
+import {
+  navigateToDailyCard,
+  tarotStartDestination,
+} from '@features/journey/lib/daily-card-contract';
 import { TarotLanding, useTarotPreferences, useTarotSession } from '@features/tarot';
 import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
@@ -11,12 +15,16 @@ export function TarotPage() {
   return (
     <TarotLanding
       confirmNewReading={preferences.confirmNewReading}
-      hasUnfinishedReading={state.inProgress}
+      hasUnfinishedReading={state.inProgress && state.spreadId !== 'day'}
       locale={locale}
       onOpenHistory={() => navigate(ROUTES.tarotHistory)}
       onOpenSettings={() => navigate(ROUTES.settings)}
       onResume={() => navigate(ROUTES.tarotReading)}
       onStart={(spread) => {
+        if (tarotStartDestination(spread.id) === ROUTES.profile) {
+          navigateToDailyCard(navigate);
+          return;
+        }
         actions.chooseSpread(spread.id);
         navigate(ROUTES.tarotReading);
       }}

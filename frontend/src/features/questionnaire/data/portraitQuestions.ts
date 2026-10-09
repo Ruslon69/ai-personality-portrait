@@ -38,6 +38,16 @@ const specs: readonly QuestionSpec[] = [
           'Оставляю время совсем без планов',
         ],
       },
+      es: {
+        title: 'De pronto tienes una tarde libre. ¿Qué sueles hacer?',
+        options: [
+          'Elijo algo que llevaba tiempo posponiendo',
+          'Decido según cómo me sienta en ese momento',
+          'Busco a alguien con quien pasar el rato',
+          'Retomo un proyecto personal',
+          'Dejo ese tiempo completamente libre de planes',
+        ],
+      },
       en: {
         title: 'An evening unexpectedly opens up. What usually happens next?',
         options: [
@@ -52,7 +62,7 @@ const specs: readonly QuestionSpec[] = [
         title: 'У вас несподівано звільнився вечір. Що найчастіше відбувається далі?',
         options: [
           'Обираю справу, яку давно було відкладено',
-          'Вирішую за настроєм уже в моменті',
+          'Вирішую на місці за настроєм',
           'Шукаю можливість із кимось побачитися',
           'Повертаюся до особистого проєкту',
           'Залишаю час зовсім без планів',
@@ -77,12 +87,23 @@ const specs: readonly QuestionSpec[] = [
           'Зависит от цены ошибки',
         ],
       },
+      es: {
+        title:
+          'Tienes que elegir entre una opción fiable y otra nueva, pero incierta. ¿Qué te ayuda?',
+        options: [
+          'Reunir información y darme tiempo',
+          'Hablarlo con alguien de confianza',
+          'Escuchar mi primera intuición',
+          'Probar la opción nueva con un pequeño experimento',
+          'Depende de lo que costaría equivocarme',
+        ],
+      },
       en: {
         title: 'You must choose between a reliable option and a new but uncertain one. What helps?',
         options: [
           'Gather facts and give myself time',
           'Talk it through with someone I trust',
-          'Listen to my first internal response',
+          'Notice my first instinct',
           'Test the new option with a small experiment',
           'It depends on the cost of being wrong',
         ],
@@ -116,13 +137,23 @@ const specs: readonly QuestionSpec[] = [
           'Зависит от того, насколько это важно',
         ],
       },
+      es: {
+        title: 'Tu día cambia en el último momento. ¿Qué reacción te resulta más familiar?',
+        options: [
+          'Me adapto rápido y sigo adelante',
+          'Primero hago una pausa breve',
+          'Aclaro el nuevo orden de las tareas',
+          'Conservo al menos la parte importante del plan original',
+          'Depende de cuánto esté en juego',
+        ],
+      },
       en: {
         title: 'Your day changes at the last minute. Which response feels most familiar?',
         options: [
           'I adjust quickly and move on',
           'I take a short pause first',
           'I clarify the new order of actions',
-          'I preserve the most important part of the old plan',
+          'I keep at least the important part of the original plan',
           'It depends on how much is at stake',
         ],
       },
@@ -152,6 +183,15 @@ const specs: readonly QuestionSpec[] = [
           'Делаю быстрый черновик и показываю',
           'Прошу пример или похожую задачу',
           'Сначала самостоятельно исследую варианты',
+        ],
+      },
+      es: {
+        title: 'Te encargan una tarea cuyo resultado no está claro. ¿Por dónde empiezas?',
+        options: [
+          'Aclaro cómo sería un buen resultado',
+          'Hago un primer borrador y lo muestro',
+          'Pido un ejemplo o una tarea similar',
+          'Primero exploro las opciones por mi cuenta',
         ],
       },
       en: {
@@ -189,6 +229,16 @@ const specs: readonly QuestionSpec[] = [
           'Сначала формулирую мысль письменно',
           'Жду признака, что другой готов слушать',
           'Выбираю способ по ситуации',
+        ],
+      },
+      es: {
+        title: 'Después de una conversación, sientes que no te han entendido. ¿Qué sueles hacer?',
+        options: [
+          'Retomo el tema enseguida',
+          'Hago una pausa y acordamos seguir más tarde',
+          'Primero pongo por escrito lo que quiero decir',
+          'Espero a que la otra persona parezca dispuesta a hablar',
+          'Decido según la situación',
         ],
       },
       en: {
@@ -229,8 +279,18 @@ const specs: readonly QuestionSpec[] = [
           'Взять две минуты, чтобы выбрать порядок',
         ],
       },
+      es: {
+        title:
+          'Queda menos de una hora para la entrega y la tarea no está lista. ¿Qué te ayuda más?',
+        options: [
+          'Reducir el resultado a lo esencial',
+          'Empezar a actuar y ajustar sobre la marcha',
+          'Pedir a alguien una revisión rápida',
+          'Tomarme dos minutos para decidir el orden',
+        ],
+      },
       en: {
-        title: 'Less than an hour remains and the work is not together yet. What helps most?',
+        title: 'The deadline is less than an hour away and the task is not ready. What helps most?',
         options: [
           'Reduce the result to what matters most',
           'Start acting and refine along the way',
@@ -239,7 +299,7 @@ const specs: readonly QuestionSpec[] = [
         ],
       },
       uk: {
-        title: 'До дедлайну менш ніж година, а робота ще не зібрана. Що допомагає найбільше?',
+        title: 'До дедлайну менш ніж година, а завдання ще не готове. Що допомагає найбільше?',
         options: [
           'Скоротити результат до найважливішого',
           'Одразу діяти й уточнювати в процесі',
@@ -263,18 +323,29 @@ const specs: readonly QuestionSpec[] = [
         title: 'В небольшой группе какие роли вы берёте без особых усилий?',
         description: 'Можно выбрать до трёх.',
         options: [
-          'Собираю процесс и договорённости',
+          'Организую работу и договорённости',
           'Предлагаю новые направления',
           'Поддерживаю людей и атмосферу',
           'Замечаю детали и риски',
           'Сначала наблюдаю, затем включаюсь',
         ],
       },
+      es: {
+        title: 'En un grupo pequeño, ¿qué papeles asumes de forma natural?',
+        description: 'Elige hasta tres.',
+        options: [
+          'Organizar el trabajo y acordar los siguientes pasos',
+          'Proponer nuevas direcciones',
+          'Apoyar a las personas y cuidar el ambiente',
+          'Detectar detalles y riesgos',
+          'Observar primero y participar después',
+        ],
+      },
       en: {
         title: 'In a small group, which roles do you take on naturally?',
         description: 'Choose up to three.',
         options: [
-          'Organize the process and agreements',
+          'Organise the work and agree on next steps',
           'Suggest new directions',
           'Support people and the atmosphere',
           'Notice details and risks',
@@ -285,7 +356,7 @@ const specs: readonly QuestionSpec[] = [
         title: 'У невеликій групі які ролі ви берете без особливих зусиль?',
         description: 'Можна обрати до трьох.',
         options: [
-          'Організовую процес і домовленості',
+          'Організовую роботу й домовленості',
           'Пропоную нові напрями',
           'Підтримую людей і атмосферу',
           'Помічаю деталі й ризики',
@@ -311,8 +382,18 @@ const specs: readonly QuestionSpec[] = [
           'Подбирать ритм под задачу',
         ],
       },
+      es: {
+        title: 'Tienes todo el día para ti. ¿Qué ritmo te ayuda a concentrarte?',
+        options: [
+          'Dedicar un buen rato a una sola tarea',
+          'Alternar distintos tipos de tareas',
+          'Trabajar en periodos breves e intensos',
+          'Avanzar con pasos pequeños y constantes',
+          'Elegir el ritmo según la tarea',
+        ],
+      },
       en: {
-        title: 'You control the whole day. Which rhythm helps you stay engaged?',
+        title: 'You have the whole day to yourself. Which rhythm helps you stay focused?',
         options: [
           'Stay with one task for a long stretch',
           'Alternate between different kinds of tasks',
@@ -349,6 +430,15 @@ const specs: readonly QuestionSpec[] = [
           'Переключиться и вернуться со свежим взглядом',
         ],
       },
+      es: {
+        title: 'Un proyecto está casi listo, pero el último 10 % se alarga. ¿Qué suele ayudarte?',
+        options: [
+          'Reservar un rato para el último esfuerzo',
+          'Revisar los detalles con una lista',
+          'Compartir el borrador y recibir comentarios',
+          'Cambiar de actividad y volver con otra mirada',
+        ],
+      },
       en: {
         title: 'A project is almost ready, but the final 10% keeps stretching. What usually helps?',
         options: [
@@ -362,7 +452,7 @@ const specs: readonly QuestionSpec[] = [
         title: 'Проєкт майже готовий, але останні 10% тягнуться найдовше. Що допомагає?',
         options: [
           'Запланувати короткий фінальний ривок',
-          'Пройти деталі за списком',
+          'Перевірити деталі за списком',
           'Показати чернетку й отримати відгук',
           'Перемкнутися й повернутися зі свіжим поглядом',
         ],
@@ -386,6 +476,17 @@ const specs: readonly QuestionSpec[] = [
           'Дать время и личное пространство',
           'Помочь ненадолго переключиться',
           'Вместе собрать понятный план',
+        ],
+      },
+      es: {
+        title: 'Has tenido un día difícil. ¿Qué apoyo te ayuda de verdad?',
+        description: 'Elige hasta tres.',
+        options: [
+          'Que me escuchen sin apresurarse a resolverlo',
+          'Que me ofrezcan ayuda práctica',
+          'Que me den tiempo y espacio personal',
+          'Que me ayuden a pensar en otra cosa un rato',
+          'Preparar un plan claro juntos',
         ],
       },
       en: {
@@ -423,10 +524,20 @@ const specs: readonly QuestionSpec[] = [
         title: 'Вы приходите туда, где почти никого не знаете. Как обычно осваиваетесь?',
         options: [
           'Самостоятельно начинаю знакомиться',
-          'Сначала читаю обстановку',
-          'Нахожу одного комфортного человека',
+          'Сначала наблюдаю за обстановкой',
+          'Нахожу человека, с которым мне комфортно',
           'Сосредотачиваюсь на цели визита',
           'Каждый раз по-разному',
+        ],
+      },
+      es: {
+        title: 'Llegas a un lugar donde apenas conoces a nadie. ¿Cómo te acomodas?',
+        options: [
+          'Inicio conversaciones',
+          'Primero observo el ambiente',
+          'Busco a una persona con la que me sienta a gusto',
+          'Me centro en el motivo por el que he venido',
+          'Es distinto cada vez',
         ],
       },
       en: {
@@ -443,8 +554,8 @@ const specs: readonly QuestionSpec[] = [
         title: 'Ви приходите туди, де майже нікого не знаєте. Як освоюєтеся?',
         options: [
           'Самостійно починаю знайомитися',
-          'Спочатку зчитую обстановку',
-          'Знаходжу одну комфортну людину',
+          'Спочатку придивляюся до обстановки',
+          'Знаходжу людину, з якою мені комфортно',
           'Зосереджуюся на меті візиту',
           'Щоразу по-різному',
         ],
@@ -468,6 +579,17 @@ const specs: readonly QuestionSpec[] = [
           'Обязательства перед людьми',
           'Возможность менять подход',
           'Чёткий срок и план',
+        ],
+      },
+      es: {
+        title: '¿Qué mantiene tu interés en un proyecto largo?',
+        description: 'Elige hasta tres; conservaremos el orden de tus elecciones.',
+        options: [
+          'Ver avances',
+          'El sentido y la utilidad',
+          'El compromiso con otras personas',
+          'Poder cambiar el enfoque',
+          'Un plazo y un plan claros',
         ],
       },
       en: {
@@ -511,6 +633,17 @@ const specs: readonly QuestionSpec[] = [
           'Зависит от человека и ситуации',
         ],
       },
+      es: {
+        title:
+          'Alguien cercano te pide algo para lo que no tienes energía o tiempo. ¿Cómo respondes?',
+        options: [
+          'Digo directamente que ahora no puedo',
+          'Primero lo hago saber con delicadeza',
+          'Reduzco el contacto para recuperarme',
+          'Retomo la conversación más tarde',
+          'Depende de la persona y la situación',
+        ],
+      },
       en: {
         title: 'Someone close asks for something you do not have capacity for. How do you respond?',
         options: [
@@ -525,7 +658,7 @@ const specs: readonly QuestionSpec[] = [
         title: 'Близька людина просить про те, на що у вас зараз немає ресурсу. Як відповідаєте?',
         options: [
           'Прямо кажу, що зараз не можу',
-          'Спочатку позначаю це м’яко',
+          'Спочатку м’яко даю це зрозуміти',
           'Скорочую контакт, щоб відновитися',
           'Повертаюся до розмови пізніше',
           'Залежить від людини й ситуації',
@@ -544,10 +677,21 @@ const specs: readonly QuestionSpec[] = [
         title: 'Вам дают важную обратную связь. В каком формате её легче услышать?',
         options: [
           'Через конкретные примеры',
-          'Сначала опора, затем улучшения',
+          'Сначала сильные стороны, затем что улучшить',
           'Коротко и прямо',
           'С возможностью обдумать после',
           'Зависит от темы',
+        ],
+      },
+      es: {
+        title:
+          'Recibes comentarios importantes sobre algo que has hecho. ¿En qué formato te resulta más fácil escucharlos?',
+        options: [
+          'Con ejemplos concretos',
+          'Primero los puntos fuertes, después lo que se puede mejorar',
+          'De forma breve y directa',
+          'Con tiempo para reflexionar después',
+          'Depende del tema',
         ],
       },
       en: {
@@ -561,12 +705,12 @@ const specs: readonly QuestionSpec[] = [
         ],
       },
       uk: {
-        title: 'Ви отримуєте важливий зворотний зв’язок. Який формат легше почути?',
+        title: 'Ви отримуєте важливий зворотний зв’язок. У якому форматі його легше сприйняти?',
         options: [
           'Конкретні приклади',
-          'Спочатку опора, потім покращення',
+          'Спочатку сильні сторони, потім що поліпшити',
           'Коротко й прямо',
-          'Час обдумати після',
+          'Час на обдумування',
           'Залежить від теми',
         ],
       },
@@ -582,25 +726,34 @@ const specs: readonly QuestionSpec[] = [
       ru: {
         title: 'Вас заинтересовала новая тема. Как вы обычно входите в неё?',
         options: [
-          'Сначала собираю базовую карту',
-          'Сразу пробую что-то руками',
+          'Сначала разбираюсь в основах',
+          'Сразу пробую на практике',
           'Ищу человека для разговора',
           'Исследую широко без строгого маршрута',
         ],
       },
-      en: {
-        title: 'A new subject catches your interest. How do you usually enter it?',
+      es: {
+        title: 'Un tema nuevo despierta tu interés. ¿Cómo empiezas a explorarlo?',
         options: [
-          'Build a basic map first',
+          'Primero busco una visión general',
+          'Pruebo algo práctico enseguida',
+          'Busco a alguien con quien comentarlo',
+          'Exploro distintas posibilidades sin una ruta fija',
+        ],
+      },
+      en: {
+        title: 'A new subject catches your interest. How do you start exploring it?',
+        options: [
+          'Get an overview first',
           'Try something hands-on straight away',
           'Find someone to discuss it with',
           'Explore broadly without a strict route',
         ],
       },
       uk: {
-        title: 'Вас зацікавила нова тема. Як ви зазвичай входите в неї?',
+        title: 'Вас зацікавила нова тема. Із чого ви зазвичай починаєте?',
         options: [
-          'Спочатку складаю базову карту',
+          'Спочатку розбираюся в основах',
           'Одразу пробую щось на практиці',
           'Шукаю людину для розмови',
           'Досліджую широко без суворого маршруту',
@@ -629,6 +782,16 @@ const specs: readonly QuestionSpec[] = [
           'В движении или на прогулке',
           'В новой обстановке',
           'Каждый раз по-разному',
+        ],
+      },
+      es: {
+        title: 'Después de un día lleno de personas y tareas, ¿qué te ayuda a volver a ti?',
+        options: [
+          'Un rato de silencio a solas',
+          'Una conversación tranquila con alguien cercano',
+          'Moverme o dar un paseo',
+          'Cambiar de entorno',
+          'Es distinto cada vez',
         ],
       },
       en: {

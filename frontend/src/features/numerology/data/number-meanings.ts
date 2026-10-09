@@ -89,6 +89,80 @@ export const numberMeanings: Record<Locale, Record<number, NumberMeaning>> = {
       'Помогайте так, чтобы сохранять собственные границы и ресурс.',
     ),
   },
+  es: {
+    1: compact(
+      'Este número puede servir como una mirada al deseo de actuar con independencia y dar el primer paso.',
+      ['iniciativa', 'independencia', 'decisión'],
+      ['impaciencia', 'aislamiento'],
+      'Elige un paso que puedas empezar sin pedir más permiso.',
+    ),
+    2: compact(
+      'Este número invita a observar la atención a las relaciones, al ánimo de otras personas y a la reciprocidad.',
+      ['diálogo', 'sensibilidad', 'cooperación'],
+      ['indecisión', 'dependencia de las reacciones ajenas'],
+      'Expresa tu propia postura antes de adaptarte a otra persona.',
+    ),
+    3: compact(
+      'Este número invita a explorar la facilidad para comunicar, la curiosidad y el deseo de expresar ideas.',
+      ['creatividad', 'comunicación', 'ligereza'],
+      ['atención dispersa', 'tareas sin terminar'],
+      'Da forma concreta a una idea: una nota, una conversación o un borrador.',
+    ),
+    4: compact(
+      'Este número propone reflexionar sobre la preferencia por el orden, las reglas claras y el trabajo constante.',
+      ['organización', 'sentido práctico', 'constancia'],
+      ['rigidez', 'exceso de control'],
+      'Distingue el orden que te ayuda de las reglas que ya puedes cambiar.',
+    ),
+    5: compact(
+      'Este número invita a mirar el impulso hacia el cambio, las experiencias nuevas y la libertad de elección.',
+      ['flexibilidad', 'exploración', 'adaptación'],
+      ['impulsividad', 'inestabilidad'],
+      'Introduce un pequeño cambio sin deshacer todo lo que ya funciona.',
+    ),
+    6: compact(
+      'Este número propone observar el cuidado de otras personas y la disposición a contribuir al bienestar compartido.',
+      ['apoyo', 'buen gusto', 'fiabilidad'],
+      ['exceso de responsabilidad', 'idealización'],
+      'Comprueba dónde hace falta ayuda y dónde basta con estar presente.',
+    ),
+    7: compact(
+      'Este número invita a explorar la necesidad de profundizar y pensar las decisiones por tu cuenta.',
+      ['investigación', 'pensamiento independiente', 'precisión'],
+      ['retraimiento', 'reflexión demasiado larga'],
+      'Limita el tiempo de reflexión y anota una conclusión que puedas comprobar.',
+    ),
+    8: compact(
+      'Este número propone una mirada a la organización de recursos, la responsabilidad y la capacidad de llevar algo a término.',
+      ['organización', 'ambición', 'responsabilidad'],
+      ['presión por lograr resultados', 'rigidez'],
+      'Elige qué recurso fortalecer en lugar de gastar simplemente más.',
+    ),
+    9: compact(
+      'Este número invita a reflexionar sobre la empatía, una mirada amplia y el deseo de completar lo importante.',
+      ['empatía', 'visión de conjunto', 'cierre'],
+      ['límites difusos', 'dificultad para soltar'],
+      'Cierra un ciclo pendiente antes de abrir el siguiente.',
+    ),
+    11: compact(
+      'El número 11 invita a explorar una sensibilidad intensa a las impresiones y a las ideas nuevas.',
+      ['sensibilidad', 'visión', 'expresión con sentido'],
+      ['sobrecarga sensorial', 'tensión nerviosa'],
+      'Convierte una impresión intensa en una pregunta tranquila que puedas comprobar.',
+    ),
+    22: compact(
+      'El número 22 propone observar el deseo de convertir una gran idea en un sistema que funcione.',
+      ['amplitud', 'organización', 'construcción de bases'],
+      ['exigencias imposibles', 'sentir que el proyecto te supera'],
+      'Reduce la tarea grande al primer elemento que puedas construir ahora.',
+    ),
+    33: compact(
+      'El número 33 invita a reflexionar sobre el apoyo a otras personas y el uso responsable de la influencia.',
+      ['acompañamiento', 'compasión', 'integración'],
+      ['sacrificio personal', 'expectativas idealizadas'],
+      'Apoya a otras personas sin descuidar tus propios límites y recursos.',
+    ),
+  },
   en: {
     1: compact(
       'This number may show up as a wish to act independently and be the first to begin.',
@@ -99,13 +173,13 @@ export const numberMeanings: Record<Locale, Record<number, NumberMeaning>> = {
     2: compact(
       'This number may show up as attention to relationships, other people’s moods and reciprocity.',
       ['dialogue', 'awareness', 'cooperation'],
-      ['hesitation', 'reliance on response'],
+      ['hesitation', 'dependence on others’ reactions'],
       'Name your own position before adapting to someone else.',
     ),
     3: compact(
       'This number may show up as ease in communication, curiosity and a wish to express ideas.',
       ['creativity', 'communication', 'lightness'],
-      ['dispersion', 'unfinished work'],
+      ['scattered attention', 'unfinished work'],
       'Give one idea a concrete form: a note, conversation or draft.',
     ),
     4: compact(
@@ -135,7 +209,7 @@ export const numberMeanings: Record<Locale, Record<number, NumberMeaning>> = {
     8: compact(
       'This number may show up as an ability to organise resources, take responsibility and deliver results.',
       ['organisation', 'ambition', 'responsibility'],
-      ['result pressure', 'hardness'],
+      ['pressure to achieve', 'rigidity'],
       'Choose which resource to strengthen instead of simply spending more.',
     ),
     9: compact(
@@ -153,7 +227,7 @@ export const numberMeanings: Record<Locale, Record<number, NumberMeaning>> = {
     22: compact(
       'Number 22 may show up as a wish to turn a large idea into a working system.',
       ['scale', 'systems', 'foundation building'],
-      ['impossible standards', 'fear of scale'],
+      ['impossible standards', 'feeling overwhelmed by the scale'],
       'Reduce the large task to the first element you can build now.',
     ),
     33: compact(

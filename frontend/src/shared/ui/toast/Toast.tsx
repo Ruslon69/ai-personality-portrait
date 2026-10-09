@@ -7,6 +7,7 @@ export function Toast({ className, role, tone = 'neutral', ...props }: ToastProp
 
   return (
     <div
+      aria-atomic="true"
       aria-live={resolvedRole === 'alert' ? 'assertive' : 'polite'}
       className={classes}
       data-tone={tone}

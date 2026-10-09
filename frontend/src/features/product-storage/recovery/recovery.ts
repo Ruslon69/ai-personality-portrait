@@ -1,3 +1,4 @@
+import { resolveLocale } from '@shared/i18n';
 import { canonicalParse, parseProductStorageEnvelope } from '../serialization';
 import { createProductStorageEnvelope } from '../schemas';
 import type {
@@ -80,8 +81,7 @@ function salvage(
     createdAt: typeof parsed.value.createdAt === 'string' ? parsed.value.createdAt : input.now,
     data: result.validData,
     engineVersions,
-    locale:
-      parsed.value.locale === 'en' || parsed.value.locale === 'uk' ? parsed.value.locale : 'ru',
+    locale: resolveLocale(parsed.value.locale),
     migrationHistory: migrationHistory as never,
     productVersion:
       typeof parsed.value.productVersion === 'string' ? parsed.value.productVersion : 'unknown',

@@ -58,6 +58,119 @@ type VoiceRecordingCopy = {
 };
 
 export const voiceRecordingCopy: Record<Locale, VoiceRecordingCopy> = {
+  es: {
+    actions: {
+      allow: 'Permitir micrófono',
+      back: 'Volver',
+      checking: 'Revisando grabación',
+      continueWithout: 'Continuar sin voz',
+      recordAgain: 'Grabar de nuevo',
+      requestAgain: 'Comprobar el micrófono de nuevo',
+      skip: 'Omitir voz',
+      start: 'Empezar a grabar',
+      stop: 'Detener grabación',
+      use: 'Usar grabación',
+      waiting: 'Esperando permiso',
+    },
+    errors: {
+      deviceLost:
+        'El micrófono ha dejado de enviar audio. Revisa el dispositivo e inténtalo de nuevo.',
+      genericPermission:
+        'No se ha podido preparar el micrófono. Inténtalo de nuevo o continúa sin voz.',
+      noDevice: 'No se ha encontrado un micrófono. Revisa la conexión o continúa sin voz.',
+      permissionDenied:
+        'No se ha concedido acceso al micrófono. Permítelo en los ajustes del navegador o continúa sin voz.',
+      playback:
+        'El navegador no ha podido reproducir esta grabación. Grábala de nuevo u omite la voz.',
+      preparePlayback: 'No se ha podido preparar la reproducción. Graba de nuevo.',
+      recorder: 'Ha ocurrido un error al grabar. Inténtalo de nuevo o continúa sin voz.',
+      stop: 'La grabación no se ha detenido correctamente. Inténtalo de nuevo o continúa sin voz.',
+      unsupported: 'Este navegador no permite grabar en el dispositivo. Puedes continuar sin voz.',
+      unsupportedFormat:
+        'El navegador no ha podido iniciar un formato de grabación compatible. Prueba otro navegador u omite la voz.',
+    },
+    introduction: {
+      eyebrow: 'Paso opcional',
+      lead: 'Una grabación breve añade observaciones solo sobre el habla en esta muestra. No define tu personalidad ni se usa para identificarte.',
+      title: 'Añade voz a tu retrato',
+    },
+    issueMessages: {
+      empty: 'No se ha detectado audio. Revisa el micrófono e inténtalo de nuevo.',
+      'low-signal': 'La señal es muy baja. Prueba a hablar un poco más cerca del micrófono.',
+      'too-long':
+        'La grabación supera la duración máxima. Lee el texto de nuevo a tu ritmo natural.',
+      'too-short': 'La grabación es demasiado breve. Lee todo el texto preparado.',
+      'unsupported-format':
+        'El navegador ha creado un formato de audio no compatible. Prueba otro navegador u omite la voz.',
+    },
+    panel: {
+      currentDuration: (duration) => `Duración de la grabación actual: ${duration}`,
+      duration: 'Duración',
+      maximum: (duration) => `máximo ${duration}`,
+      playback: 'Reproducción',
+      playbackLabel: 'Reproducir la voz grabada',
+      qualityBad: 'Conviene repetir la grabación',
+      qualityGood: 'La grabación es adecuada',
+      qualityLabel: 'Calidad técnica de la grabación',
+      recording: 'Grabación',
+      signal: 'Nivel de señal',
+      spinnerPermission: 'Esperando permiso para el micrófono',
+      spinnerValidation: 'Revisando la calidad técnica de la grabación',
+    },
+    privacy: {
+      eyebrow: 'Privacidad',
+      items: [
+        'Puedes omitir la voz.',
+        'El audio no se envía a ningún servidor.',
+        'Por defecto, la grabación original se elimina después del análisis.',
+        'La grabación no se conserva al recargar la página.',
+      ],
+      title: 'Tú decides sobre la grabación',
+    },
+    qualitySuccess: 'La calidad de la grabación es adecuada para el siguiente paso.',
+    readingText:
+      'Hoy he decidido cambiar un rato mi ruta habitual y caminar por una calle que no conocía. Hacía buen tiempo, me rodeaban los sonidos familiares de la ciudad y en las ventanas empezaban a encenderse las luces. Por el camino he visto una pequeña cafetería, me he detenido junto al escaparate y he pensado que a veces viene bien dejar espacio para descubrimientos inesperados. Después he retomado mis planes con la sensación de haber hecho una breve pausa. Ese momento sencillo me ha recordado que prestar atención a los detalles permite ver más, incluso cuando el día parece completamente normal.',
+    script: {
+      duration: 'Tiempo estimado de lectura: 30–45 segundos.',
+      eyebrow: 'Texto para leer',
+      title: 'Lee a tu ritmo natural',
+    },
+    signal: {
+      detected: 'Señal detectada',
+      good: 'El nivel de señal es suficiente',
+      idle: 'El micrófono no está grabando',
+      quiet: 'La señal sigue siendo muy baja',
+      unavailable: 'No se puede medir la señal; la grabación continúa',
+    },
+    skipMessage: 'Continuando sin la parte de voz',
+    statusDescriptions: {
+      error: 'Puedes omitir la voz y continuar.',
+      idle: 'El permiso solo se solicita cuando eliges una acción.',
+      invalid: 'La grabación permanece solo en esta pestaña. Puedes intentarlo de nuevo.',
+      'permission-denied': 'Puedes omitir la voz y continuar.',
+      ready: 'El permiso está confirmado, pero la grabación aún no ha empezado.',
+      recorded: 'La duración, el formato y el nivel de señal se revisan en tu dispositivo.',
+      recording: 'Lee a tu ritmo natural. Puedes parar cuando quieras.',
+      'requesting-permission': 'Confirma el acceso en el aviso del navegador.',
+      unsupported: 'Puedes omitir la voz y continuar.',
+      valid: 'Puedes reproducir la grabación, usarla o grabar de nuevo.',
+      validating: 'La duración, el formato y el nivel de señal se revisan en tu dispositivo.',
+    },
+    statusLabels: {
+      error: 'Requiere atención',
+      idle: 'Micrófono apagado',
+      invalid: 'Inténtalo de nuevo',
+      'permission-denied': 'Acceso no concedido',
+      ready: 'Micrófono listo',
+      recorded: 'Grabación completada',
+      recording: 'Grabando',
+      'requesting-permission': 'Comprobando acceso',
+      unsupported: 'Grabación no disponible',
+      valid: 'Grabación lista',
+      validating: 'Revisando grabación',
+    },
+    workspaceLabel: 'Preparación y grabación de voz',
+  },
   en: {
     actions: {
       allow: 'Allow microphone',

@@ -1,4 +1,11 @@
-import { useCallback, useLayoutEffect, useMemo, useState, useSyncExternalStore } from 'react';
+import {
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
 
 import { ThemeContext } from './ThemeContext';
 import type { ResolvedTheme, ThemeMode, ThemeProviderProps } from './ThemeProvider.types';
@@ -56,20 +63,32 @@ export function ThemeProvider({
     () => 'light',
   );
   const resolvedTheme = resolveTheme(theme, systemTheme);
+  const initialTheme = useRef(theme);
 
   useLayoutEffect(() => {
     applyTheme(theme, document.documentElement);
+  }, [theme]);
 
+  useLayoutEffect(() => {
     try {
-      window.localStorage.setItem(storageKey, theme);
+      window.localStorage.setItem(storageKey, initialTheme.current);
     } catch {
       // The selected theme still applies when storage is unavailable.
     }
-  }, [storageKey, theme]);
+  }, [storageKey]);
 
-  const setTheme = useCallback((nextTheme: ThemeMode) => {
-    setThemeState(nextTheme);
-  }, []);
+  const setTheme = useCallback(
+    (nextTheme: ThemeMode) => {
+      setThemeState(nextTheme);
+      try {
+        window.localStorage.setItem(storageKey, nextTheme);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    [storageKey],
+  );
 
   const value = useMemo(
     () => ({ resolvedTheme, setTheme, theme }),

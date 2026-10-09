@@ -48,6 +48,15 @@ export const personalitySourceReferences: Readonly<Record<PersonalitySourceId, S
 const localizedLabels: Readonly<
   Record<Exclude<ProfileLocale, 'ru'>, Record<PersonalitySourceId, readonly [string, string]>>
 > = {
+  es: {
+    answers: ['Respuestas', 'Respuestas'],
+    interests: ['Intereses', 'Intereses'],
+    voice: ['Muestra de voz actual', 'Voz'],
+    'birth-date': ['Fecha de nacimiento', 'Fecha'],
+    numerology: ['Lectura de los números', 'Numerología'],
+    zodiac: ['Lectura del signo del zodiaco', 'Zodiaco'],
+    astrology: ['Lectura astrológica', 'Astrología'],
+  },
   en: {
     answers: ['Answers', 'Answers'],
     interests: ['Interests', 'Interests'],

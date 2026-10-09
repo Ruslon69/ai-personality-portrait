@@ -1,20 +1,17 @@
 .card {
   min-block-size: 100%;
-  padding: var(--page-card-padding);
-  background: var(--surface-accent-subtle);
+  padding: clamp(1.25rem, 3vw, 2rem) 0;
+  border: 0;
+  border-block-start: 1px solid var(--portrait-line);
+  border-radius: 0;
+  background: transparent;
 }
 
 .card[data-variant='featured'] {
   padding: clamp(var(--space-6), 5vw, var(--space-8));
-  border-color: color-mix(in srgb, var(--color-interactive) 38%, var(--color-border));
-  background:
-    radial-gradient(
-      circle at 100% 0,
-      color-mix(in srgb, var(--color-interactive) 10%, transparent),
-      transparent 42%
-    ),
-    var(--color-surface);
-  box-shadow: var(--shadow-low);
+  border-block: 1px solid var(--portrait-line);
+  background: linear-gradient(90deg, var(--portrait-gold-soft), transparent);
+  box-shadow: none;
 }
 
 .badge {
@@ -27,7 +24,12 @@
 }
 
 .summary {
-  color: var(--color-text-muted);
+  color: var(--portrait-muted);
+}
+.card h3 {
+  font-family: var(--font-family-display);
+  font-weight: 400;
+  font-synthesis: none;
 }
 
 .details {
@@ -50,7 +52,7 @@
 
 .detailsCopy {
   padding-block-start: var(--space-3);
-  border-block-start: 0.0625rem solid var(--color-border);
+  border-block-start: 1px solid var(--portrait-line);
   line-height: var(--line-height-relaxed);
 }
 

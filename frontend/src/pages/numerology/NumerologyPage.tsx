@@ -1,4 +1,8 @@
-import { NumerologyForm, saveNumerologyBirthDate } from '@features/numerology';
+import {
+  loadNumerologyBirthDate,
+  NumerologyForm,
+  numerologyResultSession,
+} from '@features/numerology';
 import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
 import { useI18n } from '@shared/i18n';
@@ -8,9 +12,10 @@ export function NumerologyPage() {
   const { navigate } = useRouter();
   return (
     <NumerologyForm
+      initialBirthDate={loadNumerologyBirthDate()}
       locale={locale}
       onSubmit={(date) => {
-        saveNumerologyBirthDate(date);
+        numerologyResultSession.submit(date, locale);
         navigate(ROUTES.numerologyResult);
       }}
     />

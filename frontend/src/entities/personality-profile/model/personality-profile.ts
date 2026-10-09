@@ -1,7 +1,9 @@
+import type { Locale } from '@shared/i18n/types';
+
 export type InsightConfidence = 'high' | 'medium' | 'low';
 export type InsightFormat =
   'featured' | 'paired' | 'context' | 'application' | 'hypothesis' | 'interpretation';
-export type ProfileLocale = 'en' | 'ru' | 'uk';
+export type ProfileLocale = Locale;
 export type PortraitMarkMotif =
   'constellation' | 'grid' | 'route' | 'rhythm' | 'pulse' | 'freeform';
 export type PortraitMarkShape = 'arc' | 'diamond' | 'ring';

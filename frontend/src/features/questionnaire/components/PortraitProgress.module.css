@@ -7,7 +7,7 @@
 .map {
   position: relative;
   display: grid;
-  inline-size: 7rem;
+  inline-size: 8rem;
   grid-template-columns: repeat(8, 1fr);
   gap: 0.22rem;
 }
@@ -18,20 +18,20 @@
   inline-size: 2rem;
   aspect-ratio: 1;
   translate: -50% -50%;
-  border: 0.0625rem solid color-mix(in srgb, var(--color-interactive) 35%, var(--color-border));
+  border: 1px solid color-mix(in srgb, var(--portrait-gold) 45%, var(--portrait-line));
   border-radius: 50%;
 }
 .node {
   z-index: 1;
   inline-size: 0.45rem;
   aspect-ratio: 1;
-  border: 0.0625rem solid var(--color-border-strong);
+  border: 1px solid var(--portrait-line);
   border-radius: 50%;
-  background: var(--color-surface);
+  background: var(--portrait-canvas);
 }
 .node[data-complete] {
-  border-color: var(--color-interactive);
-  background: var(--color-interactive);
+  border-color: var(--portrait-gold);
+  background: var(--portrait-gold);
   animation: progress-connect var(--motion-connect-duration) var(--motion-easing-discover) both;
 }
 .copy {
@@ -40,8 +40,12 @@
   gap: var(--space-1);
 }
 .copy span {
-  color: var(--color-text-muted);
+  color: var(--portrait-muted);
   font-size: var(--font-size-sm);
+}
+.copy strong {
+  color: var(--portrait-gold);
+  font-weight: 500;
 }
 @keyframes progress-connect {
   from {

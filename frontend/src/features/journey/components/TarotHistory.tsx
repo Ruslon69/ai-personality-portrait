@@ -1,15 +1,15 @@
 import { useMemo, useState } from 'react';
 
 import { useNotifications } from '@app/providers';
-import { TarotCardView, tarotCardById } from '@features/tarot';
 import type { Locale } from '@shared/i18n';
-import { Badge, Button, Container, Modal, Stack, Typography } from '@shared/ui';
+import { Button, Container, Modal, Stack, Typography } from '@shared/ui';
 
 import { journeyPersistenceCopy, tarotHistoryCopy } from '../data';
 import { useJourney } from '../hooks';
 import { historySnapshotForRecord } from '../lib';
 import type { JourneyReadingRecord } from '../types';
-import styles from './TarotHistory.module.css';
+import { SavedReading } from './SavedReading';
+import styles from './PersonalSpace.module.css';
 
 type PendingAction = { kind: 'clear' } | { kind: 'delete'; record: JourneyReadingRecord } | null;
 
@@ -27,7 +27,6 @@ export function TarotHistory({
   const { notify } = useNotifications();
   const { actions, state } = useJourney();
   const copy = tarotHistoryCopy[locale];
-  const persistenceCopy = journeyPersistenceCopy[locale];
   const [announcement, setAnnouncement] = useState('');
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
   const records = useMemo(
@@ -39,24 +38,16 @@ export function TarotHistory({
       ),
     [state.readings],
   );
-  const dateFormatter = useMemo(
-    () =>
-      new Intl.DateTimeFormat(locale === 'uk' ? 'uk-UA' : locale === 'en' ? 'en-GB' : 'ru-RU', {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      }),
-    [locale],
-  );
 
   function confirmAction() {
     if (pendingAction?.kind === 'delete') {
       const result = actions.deleteReading(pendingAction.record.reading.id);
       if (result.persisted) setAnnouncement(copy.removed);
-      else notify(persistenceCopy.deleteFailed, 'error');
+      else notify((language) => journeyPersistenceCopy[language].deleteFailed, 'error');
     } else if (pendingAction?.kind === 'clear') {
       const result = actions.clearReadings();
       if (result.persisted) setAnnouncement(copy.cleared);
-      else notify(persistenceCopy.clearFailed, 'error');
+      else notify((language) => journeyPersistenceCopy[language].clearFailed, 'error');
     }
     setPendingAction(null);
     window.requestAnimationFrame(() => document.getElementById('saved-readings-title')?.focus());
@@ -64,14 +55,17 @@ export function TarotHistory({
 
   const pendingTitle =
     pendingAction?.kind === 'delete'
-      ? historySnapshotForRecord(pendingAction.record).spreadTitle
+      ? historySnapshotForRecord(pendingAction.record).resultHeadline
       : '';
+
+  const deleteText = copy.deleteDescription(pendingTitle);
+  const titleOffset = deleteText.indexOf(pendingTitle);
 
   return (
     <div className={styles.root}>
       <section aria-labelledby="tarot-history-title" className={styles.hero}>
         <Container size="wide">
-          <div className={styles.heroGrid}>
+          <div className={styles.heroFrame}>
             <Stack gap="md">
               <Typography as="p" variant="eyebrow">
                 {copy.eyebrow}
@@ -79,18 +73,25 @@ export function TarotHistory({
               <Typography as="h1" id="tarot-history-title" variant="display">
                 {copy.title}
               </Typography>
-              <Typography className={styles.heroLead} variant="lead">
+              <Typography className={styles.lead} variant="lead">
                 {copy.localOnly}
               </Typography>
             </Stack>
-            <Button onClick={onBack} prominence="secondary">
-              {copy.back}
-            </Button>
+            <div className={styles.actions}>
+              {records.length ? (
+                <Button onClick={onCreate} prominence="quiet">
+                  {copy.create} <span aria-hidden="true">→</span>
+                </Button>
+              ) : null}
+              <Button onClick={onBack} prominence="quiet">
+                {copy.back}
+              </Button>
+            </div>
           </div>
         </Container>
       </section>
 
-      <section aria-labelledby="saved-readings-title" className={styles.section}>
+      <section aria-labelledby="saved-readings-title" className={styles.historySection}>
         <Container size="wide">
           {records.length ? (
             <Stack gap="lg">
@@ -102,73 +103,33 @@ export function TarotHistory({
                   {copy.clear}
                 </Button>
               </div>
-              <ol className={styles.list}>
-                {records.map((record) => {
-                  const snapshot = historySnapshotForRecord(record);
-                  const leadingSelection =
-                    record.reading.selections.find(
-                      (selection) => selection.cardId === record.reading.leadingCardId,
-                    ) ?? record.reading.selections[0];
-                  const leadingCard = tarotCardById.get(record.reading.leadingCardId);
-                  return (
-                    <li key={record.reading.id}>
-                      <article className={styles.item}>
-                        {leadingSelection ? (
-                          <div className={styles.thumbnail}>
-                            <TarotCardView
-                              isRevealed
-                              locale={locale}
-                              selection={leadingSelection}
-                              showPosition={false}
-                              theme={record.reading.context.deckTheme}
-                              variant="history"
-                            />
-                          </div>
-                        ) : null}
-                        <div className={styles.itemCopy}>
-                          <div className={styles.itemMeta}>
-                            <time dateTime={record.savedAt}>
-                              {dateFormatter.format(new Date(record.savedAt))}
-                            </time>
-                            <span>{snapshot.spreadTitle}</span>
-                            <span>{copy.cardCount(snapshot.selections.length)}</span>
-                            {snapshot.topic ? <span>{copy.topics[snapshot.topic]}</span> : null}
-                          </div>
-                          <Typography as="h3" variant="heading-md">
-                            {snapshot.resultHeadline}
-                          </Typography>
-                          <Typography className={styles.leadingCardName}>
-                            {leadingCard?.name[locale]}
-                          </Typography>
-                          <div className={styles.motifs}>
-                            {snapshot.motifs.slice(0, 3).map((motif) => (
-                              <Badge key={motif} tone="neutral">
-                                {motif}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                        <div className={styles.actions}>
-                          <Button onClick={() => onOpenReading(record)} prominence="primary">
-                            {copy.open}
-                          </Button>
-                          <Button
-                            aria-label={`${copy.delete}: ${snapshot.spreadTitle}`}
-                            onClick={() => setPendingAction({ kind: 'delete', record })}
-                            prominence="quiet"
-                          >
-                            {copy.delete}
-                          </Button>
-                        </div>
-                      </article>
-                    </li>
-                  );
-                })}
+              <ol className={styles.timeline}>
+                {records.map((record) => (
+                  <li key={record.reading.id}>
+                    <SavedReading
+                      isPersisted={actions.isReadingPersisted(record.reading.id)}
+                      record={record}
+                      locale={locale}
+                      onOpen={onOpenReading}
+                    >
+                      <Button
+                        aria-describedby={`saved-reading-${record.reading.id}`}
+                        onClick={() => setPendingAction({ kind: 'delete', record })}
+                        prominence="quiet"
+                      >
+                        {copy.delete}
+                      </Button>
+                    </SavedReading>
+                  </li>
+                ))}
               </ol>
             </Stack>
           ) : (
             <div className={styles.empty}>
-              <Stack align="center" gap="lg">
+              <span aria-hidden="true" className={styles.emptyMark}>
+                ✧
+              </span>
+              <Stack align="start" gap="lg">
                 <Typography as="h2" id="saved-readings-title" tabIndex={-1} variant="heading-lg">
                   {copy.emptyTitle}
                 </Typography>
@@ -187,6 +148,7 @@ export function TarotHistory({
       </p>
 
       <Modal
+        aria-describedby="history-confirmation-description"
         label={pendingAction?.kind === 'clear' ? copy.clearTitle : copy.deleteTitle}
         onClose={() => setPendingAction(null)}
         open={pendingAction !== null}
@@ -196,14 +158,28 @@ export function TarotHistory({
             <Typography as="h2" variant="heading-md">
               {pendingAction?.kind === 'clear' ? copy.clearTitle : copy.deleteTitle}
             </Typography>
-            <Typography>
-              {pendingAction?.kind === 'clear'
-                ? copy.clearDescription
-                : copy.deleteDescription(pendingTitle)}
+            <Typography id="history-confirmation-description">
+              {pendingAction?.kind === 'clear' ? (
+                copy.clearDescription
+              ) : (
+                <>
+                  {deleteText.slice(0, titleOffset)}
+                  <span
+                    lang={
+                      pendingAction?.kind === 'delete'
+                        ? pendingAction.record.reading.context.locale
+                        : locale
+                    }
+                  >
+                    {pendingTitle}
+                  </span>
+                  {deleteText.slice(titleOffset + pendingTitle.length)}
+                </>
+              )}
             </Typography>
           </Stack>
           <div className={styles.dialogActions}>
-            <Button autoFocus onClick={() => setPendingAction(null)}>
+            <Button autoFocus onClick={() => setPendingAction(null)} prominence="secondary">
               {copy.cancel}
             </Button>
             <Button onClick={confirmAction} prominence="danger">

@@ -1,3 +1,4 @@
+import { numerologyLabels } from '../data/numerology-labels';
 import type { Locale } from '@shared/i18n';
 
 import { numberMeanings } from '../data';
@@ -6,33 +7,6 @@ import { createZodiacProfile } from './zodiac';
 
 export const NUMEROLOGY_SYSTEM = 'pythagorean-date-v1' as const;
 export const MASTER_NUMBERS = [11, 22, 33] as const;
-
-const labels: Record<Locale, Record<NumerologyCalculationId, string>> = {
-  ru: {
-    'life-path': 'Число жизненного пути',
-    birthday: 'Число дня рождения',
-    attitude: 'Число первого впечатления',
-    'personal-year': 'Персональный год',
-    'personal-month': 'Персональный месяц',
-    'personal-day': 'Персональный день',
-  },
-  en: {
-    'life-path': 'Life-path number',
-    birthday: 'Birthday number',
-    attitude: 'Attitude number',
-    'personal-year': 'Personal year',
-    'personal-month': 'Personal month',
-    'personal-day': 'Personal day',
-  },
-  uk: {
-    'life-path': 'Число життєвого шляху',
-    birthday: 'Число дня народження',
-    attitude: 'Число першого враження',
-    'personal-year': 'Персональний рік',
-    'personal-month': 'Персональний місяць',
-    'personal-day': 'Персональний день',
-  },
-};
 
 function sumDigits(value: number) {
   return String(Math.abs(value))
@@ -69,7 +43,7 @@ function calculation(id: NumerologyCalculationId, values: readonly number[], loc
     ...reduced,
     ...meaning,
     id,
-    label: labels[locale][id],
+    label: numerologyLabels[locale][id],
   } satisfies NumerologyCalculation;
 }
 

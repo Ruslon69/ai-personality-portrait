@@ -1,8 +1,8 @@
+import { isSupportedLocale } from '@shared/i18n';
 import { tarotCardById, tarotSpreadById } from '../data';
 import type { TarotCardSelection, TarotReading } from '../types';
 
 const deckThemes = new Set(['cosmic-minimal', 'deep-water', 'midnight-geometry', 'solar-lines']);
-const locales = new Set(['en', 'ru', 'uk']);
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
@@ -82,7 +82,7 @@ export function isRenderableTarotReading(value: unknown): value is TarotReading 
     value.interpretations.length !== value.selections.length ||
     !hasRenderableExpertInterpretation(value.expertInterpretation) ||
     !isRecord(value.context) ||
-    !locales.has(String(value.context.locale)) ||
+    !isSupportedLocale(value.context.locale) ||
     !deckThemes.has(String(value.context.deckTheme)) ||
     !isString(value.context.seed) ||
     !hasRenderableNumerology(value.context.numerology)

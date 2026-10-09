@@ -13,6 +13,17 @@ type QuickActionsSectionProps = {
 };
 
 const copy = {
+  es: {
+    eyebrow: 'Más opciones',
+    title: '¿Qué te gustaría hacer ahora?',
+    actions: [
+      ['portrait', 'Abrir reflexión completa', 'Vuelve a tu resultado detallado.'],
+      ['create', 'Crear una nueva reflexión', 'Responde las preguntas de nuevo.'],
+      ['history', 'Abrir historial', 'Consulta tus resultados guardados.'],
+      ['compatibility', 'Explorar compatibilidad', 'Abre la experiencia para dos personas.'],
+      ['settings', 'Abrir ajustes', 'Gestiona la aplicación y tus datos.'],
+    ],
+  },
   en: {
     eyebrow: 'More options',
     title: 'What would you like to do next?',

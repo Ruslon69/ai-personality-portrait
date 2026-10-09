@@ -1,12 +1,15 @@
 .section {
-  padding-block: var(--page-section-padding-block);
+  padding-block: var(--space-4);
 }
 
 .surface {
-  padding: var(--page-surface-padding);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--surface-accent-subtle);
+  max-inline-size: 64rem;
+  padding: clamp(var(--space-5), 4vw, var(--space-7)) 0;
+  border: 0;
+  border-block-start: 0.0625rem solid var(--utility-line);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .introduction {
@@ -24,10 +27,9 @@
 
 .settingsList {
   display: grid;
-  overflow: hidden;
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
+  border-block: 0.0625rem solid var(--utility-line);
+  border-radius: 0;
+  background: transparent;
 }
 
 .toggleRow,
@@ -35,7 +37,8 @@
 .languageRow {
   display: grid;
   align-items: center;
-  padding: var(--space-4);
+  min-block-size: 5rem;
+  padding: var(--space-5) 0;
   gap: var(--space-4);
   grid-template-columns: minmax(0, 1fr) auto;
 }
@@ -48,7 +51,7 @@
 .toggleRow + .toggleRow,
 .toggleRow + .selectRow,
 .selectRow + .languageRow {
-  border-block-start: 0.0625rem solid var(--color-border);
+  border-block-start: 0.0625rem solid var(--utility-line);
 }
 
 .toggleRow input {
@@ -84,12 +87,12 @@
 }
 
 .toggleRow input:checked {
-  border-color: var(--color-action-primary);
-  background: color-mix(in srgb, var(--color-action-primary) 28%, var(--color-surface));
+  border-color: var(--utility-gold);
+  background: color-mix(in srgb, var(--utility-gold) 28%, var(--color-surface));
 }
 
 .toggleRow input:checked::after {
-  background: var(--color-action-primary);
+  background: var(--utility-gold);
   transform: translateX(1.25rem);
 }
 
@@ -103,16 +106,20 @@
 .selectRow label,
 .languageRow span {
   display: grid;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
   gap: var(--space-1);
 }
 
 .toggleRow small,
 .selectRow small,
 .languageRow small {
+  font-size: 0.875rem;
   line-height: 1.45;
 }
 
 .selectRow select {
+  min-block-size: 2.75rem;
   min-inline-size: 6rem;
   padding: var(--space-2) var(--space-3);
   border: 0.0625rem solid var(--color-border-strong);
@@ -124,10 +131,8 @@
 
 .languageRow output {
   padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-pill);
-  color: var(--color-text-muted);
-  background: var(--surface-accent-subtle);
-  font-weight: 700;
+  color: var(--utility-gold);
+  font-weight: 500;
 }
 
 .footer,
@@ -138,31 +143,68 @@
 }
 
 .footer {
-  justify-content: space-between;
+  align-items: start;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-block-start: var(--space-2);
+}
+
+.introduction > p[data-variant='eyebrow'] {
+  color: var(--utility-gold);
+}
+
+.resetGroup {
+  inline-size: 100%;
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid var(--utility-line);
+}
+
+.footer .resetAction[data-prominence='quiet'] {
+  min-block-size: 2.75rem;
+  color: var(--color-feedback-error);
+}
+
+.resetDialog {
+  border-color: var(--utility-line);
+  background:
+    radial-gradient(circle at 88% 5%, var(--utility-gold-soft), transparent 16rem),
+    var(--color-marketing-surface);
+}
+
+.resetDialog::backdrop {
+  background: rgb(4 5 14 / 78%);
+}
+
+.resetDialog h2[data-variant] {
+  font-family: var(--font-family-display);
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+dialog.resetDialog {
+  box-shadow: 0 1.5rem 5rem rgb(0 0 0 / 28%);
 }
 
 .dialogActions {
   justify-content: flex-end;
 }
 
-.srOnly {
-  position: absolute;
-  overflow: hidden;
-  inline-size: 0.0625rem;
-  block-size: 0.0625rem;
-  padding: 0;
-  border: 0;
-  margin: -0.0625rem;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  white-space: nowrap;
+.feedback {
+  margin: 0;
+  color: var(--utility-gold);
+  font-size: var(--font-size-sm);
+}
+
+.feedback:empty {
+  margin-block-start: calc(-1 * var(--space-5));
 }
 
 @media (max-width: 47.999rem) {
   .toggleRow,
   .selectRow,
   .languageRow {
-    padding: var(--space-3);
+    min-block-size: 4.75rem;
+    padding: var(--space-4) 0;
   }
 
   .selectRow,
@@ -187,6 +229,11 @@
 }
 
 @media (forced-colors: active) {
+  .resetDialog {
+    border-color: CanvasText;
+    background: Canvas;
+  }
+
   .toggleRow input {
     inline-size: 1.25rem;
     block-size: 1.25rem;

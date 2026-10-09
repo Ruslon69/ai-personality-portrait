@@ -1,10 +1,6 @@
-import {
-  createNumerologyProfile,
-  loadNumerologyBirthDate,
-  NumerologyForm,
-  NumerologyResult,
-  saveNumerologyBirthDate,
-} from '@features/numerology';
+import { useState } from 'react';
+
+import { NumerologyForm, NumerologyResult, numerologyResultSession } from '@features/numerology';
 import { useRouter } from '@router/navigation';
 import { ROUTES } from '@shared/config';
 import { useI18n } from '@shared/i18n';
@@ -12,22 +8,22 @@ import { useI18n } from '@shared/i18n';
 export function NumerologyResultPage() {
   const { locale } = useI18n();
   const { navigate } = useRouter();
-  const date = loadNumerologyBirthDate();
-  if (!date)
+  const [result, setResult] = useState(() => numerologyResultSession.get(locale));
+  if (!result)
     return (
       <NumerologyForm
         locale={locale}
-        onSubmit={(value) => {
-          saveNumerologyBirthDate(value);
-          navigate(ROUTES.numerologyResult, { replace: true });
-        }}
+        onSubmit={(date) => setResult(numerologyResultSession.submit(date, locale))}
       />
     );
   return (
     <NumerologyResult
       locale={locale}
       onBack={() => navigate(ROUTES.numerology)}
-      profile={createNumerologyProfile(date, locale)}
+      profile={result.profile}
+      referenceDate={result.referenceDate}
+      persistenceFailed={!result.persisted}
+      onRetrySave={() => setResult(numerologyResultSession.retry())}
     />
   );
 }

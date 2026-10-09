@@ -5,7 +5,7 @@
   justify-content: center;
   padding: var(--space-3) var(--page-gutter) max(var(--space-3), env(safe-area-inset-bottom));
   border-block-start: 0.0625rem solid var(--color-border);
-  background: var(--color-surface);
+  background: color-mix(in srgb, var(--sa-bg-deep) 94%, transparent);
   text-align: center;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-5);
@@ -13,10 +13,17 @@
 
 .legal {
   display: flex;
-  gap: var(--space-4);
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 var(--space-4);
 }
 
 .legal a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2.75rem;
+  min-inline-size: 2.75rem;
+  justify-content: center;
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
   text-underline-offset: 0.18em;
@@ -24,4 +31,26 @@
 
 .legal a:hover {
   color: var(--color-text);
+}
+
+.legal a:focus-visible {
+  color: var(--color-text);
+  text-decoration-thickness: 0.12em;
+}
+
+@media (max-width: 29.999rem) {
+  .root {
+    align-content: center;
+    padding-block: var(--space-4) max(var(--space-4), env(safe-area-inset-bottom));
+  }
+
+  .root > span {
+    inline-size: 100%;
+  }
+}
+
+@media (forced-colors: active) {
+  .root {
+    background: Canvas;
+  }
 }

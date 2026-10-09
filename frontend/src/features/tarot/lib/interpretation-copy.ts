@@ -1,4 +1,5 @@
-import type { Locale } from '@shared/i18n';
+import { readingConnectionCopy } from '../data/reading-connection-copy';
+import { localeDefinitions, type Locale } from '@shared/i18n';
 
 import type { TarotCard, TarotCardSelection, TarotSpreadPosition, TarotTopic } from '../types';
 import { getRussianTarotInterpretationProfile } from './russian-interpretation-profiles';
@@ -80,10 +81,10 @@ function russianAction(card: TarotCard) {
   return getRussianTarotInterpretationProfile(card.id)?.action ?? card.advice.ru;
 }
 
-function completeSentence(value: string) {
+function completeSentence(value: string, locale: Locale = 'ru') {
   const trimmed = value.trim();
   if (!trimmed) return trimmed;
-  const capitalized = `${trimmed.charAt(0).toLocaleUpperCase('ru-RU')}${trimmed.slice(1)}`;
+  const capitalized = `${trimmed.charAt(0).toLocaleUpperCase(localeDefinitions[locale].formatTag)}${trimmed.slice(1)}`;
   return /[.!?]$/u.test(capitalized) ? capitalized : `${capitalized}.`;
 }
 
@@ -128,21 +129,15 @@ export function createActiveCardGuidance(input: {
   if (locale === 'ru') {
     return {
       action: plainCardAction(card),
-      meaning: `${russianPositionLead[role]} ${plainCardMeaning(card, orientation)}`,
+      meaning: `${plainCardMeaning(card, orientation)} ${russianPositionLead[role]}`,
     };
   }
 
   const meaning =
     orientation === 'reversed' ? card.reversed[locale] : localizedTopicMeaning(card, locale, topic);
-  if (locale === 'uk') {
-    return {
-      action: completeSentence(card.advice.uk),
-      meaning: `${position.label.uk}: ${completeSentence(meaning)}`,
-    };
-  }
   return {
-    action: completeSentence(card.advice.en),
-    meaning: `${position.label.en}: ${completeSentence(meaning)}`,
+    action: completeSentence(card.advice[locale], locale),
+    meaning: `${position.label[locale]}: ${completeSentence(meaning, locale)}`,
   };
 }
 
@@ -189,12 +184,19 @@ function cardDomain(card: TarotCard): SemanticDomain {
 }
 
 const domainCopy: Record<Locale, Record<SemanticDomain, string>> = {
+  es: {
+    action: 'la iniciativa y la acción con rumbo',
+    emotion: 'la honestidad emocional y la conexión',
+    material: 'los recursos, los límites y el apoyo práctico',
+    mind: 'la claridad de pensamiento y las palabras honestas',
+    transition: 'dejar que un patrón anterior dé paso a algo nuevo',
+  },
   en: {
     action: 'initiative and directed action',
     emotion: 'emotional honesty and connection',
     material: 'resources, boundaries and practical support',
     mind: 'clarity of thought and honest language',
-    transition: 'the transition from an exhausted form to a new one',
+    transition: 'letting an old pattern give way to something new',
   },
   ru: {
     action: 'инициатива и движение',
@@ -208,11 +210,18 @@ const domainCopy: Record<Locale, Record<SemanticDomain, string>> = {
     emotion: 'емоційна чесність і якість зв’язку',
     material: 'ресурси, межі та практична опора',
     mind: 'ясність думки й чесне формулювання',
-    transition: 'перехід від вичерпаної форми до нової',
+    transition: 'перехід від звичного до нового',
   },
 };
 
 const domainHeadlines: Record<Locale, Record<SemanticDomain, string>> = {
+  es: {
+    action: 'Elige un paso claro y empieza',
+    emotion: 'Reconoce con honestidad lo que sientes',
+    material: 'Céntrate en los recursos y los límites claros',
+    mind: 'Aclara los hechos antes de decidir',
+    transition: 'Acepta el cambio y elige qué viene después',
+  },
   en: {
     action: 'Choose one clear step and begin',
     emotion: 'Be honest about what you feel',
@@ -304,28 +313,82 @@ export function createReadingSynthesis(input: {
     selections[opportunityIndex]?.orientation ?? 'upright',
     locale,
   );
-  const riskTheme = localizedCardTheme(risk, 'reversed', locale);
-  if (locale === 'ru') {
-    const action = plainCardAction(direction);
-    return {
-      headline: domainHeadlines.ru[domain],
-      practicalFocus: action,
-      summary: `Главная тема расклада — ${domainLabel}. ${opportunityTheme} На что обратить внимание. ${riskTheme} ${action}`,
-    };
-  }
-
-  const action = direction.advice[locale];
-  if (locale === 'uk') {
-    return {
-      headline: domainHeadlines.uk[domain],
-      practicalFocus: completeSentence(action),
-      summary: `Головна тема розкладу — ${domainLabel}. ${opportunityTheme} На що звернути увагу. ${riskTheme} ${completeSentence(action)}`,
-    };
-  }
+  const riskOrientation = selections[riskIndex]?.orientation ?? 'upright';
+  const riskTheme = localizedCardTheme(risk, riskOrientation, locale);
+  const hasDistinctContrast = riskIndex !== opportunityIndex && riskTheme !== opportunityTheme;
+  const introductions = {
+    ru: `Главная тема расклада — ${domainLabel}.`,
+    es: `La lectura se centra en ${domainLabel}.`,
+    en: `The reading centres on ${domainLabel}.`,
+    uk: `Головна тема розкладу — ${domainLabel}.`,
+  };
+  const contrastLabel = {
+    ru:
+      riskOrientation === 'reversed' ? 'На что обратить внимание:' : 'Ещё одна сторона этой темы:',
+    es: riskOrientation === 'reversed' ? 'También conviene observar:' : 'Otra faceta de este tema:',
+    en: riskOrientation === 'reversed' ? 'Also worth noticing:' : 'Another side of this theme:',
+    uk: riskOrientation === 'reversed' ? 'Водночас варто помітити:' : 'Ще один бік цієї теми:',
+  };
+  const reflection = {
+    ru: {
+      action:
+        'Сопоставьте этот импульс с вашей ситуацией: где уже можно действовать, а где сначала нужно выбрать направление?',
+      emotion:
+        'Посмотрите, как эта тема проявляется в вашем вопросе: что вы чувствуете сами и о чём ещё стоит поговорить?',
+      material:
+        'Сопоставьте эту тему с вашей ситуацией: на что вы можете опереться и какие обязательства стоит пересмотреть?',
+      mind: 'Сопоставьте эту тему с вашим вопросом: что уже известно, а где выводы пока опережают факты?',
+      transition:
+        'Посмотрите на вашу ситуацию через эту тему: что уже меняется и чему вы хотите дать место дальше?',
+    },
+    es: {
+      action:
+        'Piensa cómo encaja este impulso en tu situación: ¿qué está listo para actuar y qué necesita aún un rumbo?',
+      emotion:
+        'Relaciona este tema con tu pregunta: ¿qué sientes tú y qué necesita una conversación?',
+      material:
+        'Piensa cómo encaja este tema en tu situación: ¿en qué puedes apoyarte y qué compromisos conviene revisar?',
+      mind: 'Relaciona este tema con tu pregunta: ¿qué sabes y dónde podrías estar llegando a conclusiones antes de conocer los hechos?',
+      transition:
+        'Mira tu situación desde este tema: ¿qué está cambiando ya y a qué te gustaría hacer espacio?',
+    },
+    en: {
+      action:
+        'Consider where this impulse fits your situation: what is ready for action, and what still needs a direction?',
+      emotion:
+        'Consider how this theme fits your question: what do you feel yourself, and what still needs a conversation?',
+      material:
+        'Consider how this theme fits your situation: what can you rely on, and which commitments need another look?',
+      mind: 'Relate this theme to your question: what is known, and where might conclusions be running ahead of facts?',
+      transition:
+        'Look at your situation through this theme: what is already changing, and what would you like to make room for?',
+    },
+    uk: {
+      action:
+        'Співвіднесіть цей імпульс зі своєю ситуацією: де вже можна діяти, а де спочатку потрібно обрати напрям?',
+      emotion:
+        'Подивіться, як ця тема проявляється у вашому запитанні: що ви відчуваєте самі й про що ще варто поговорити?',
+      material:
+        'Співвіднесіть цю тему зі своєю ситуацією: на що ви можете спертися й які зобов’язання варто переглянути?',
+      mind: 'Співвіднесіть цю тему зі своїм запитанням: що вже відомо, а де висновки поки випереджають факти?',
+      transition:
+        'Подивіться на свою ситуацію через цю тему: що вже змінюється й чому ви хочете дати місце далі?',
+    },
+  };
+  // Advice has its own visible payoff. Keep synthesis focused on the actual drawn meanings.
   return {
-    headline: domainHeadlines.en[domain],
-    practicalFocus: completeSentence(action),
-    summary: `The reading’s main theme is ${domainLabel}. ${opportunityTheme} What to watch for. ${riskTheme} ${completeSentence(action)}`,
+    headline: domainHeadlines[locale][domain],
+    practicalFocus:
+      locale === 'ru'
+        ? plainCardAction(direction)
+        : completeSentence(direction.advice[locale], locale),
+    summary: [
+      introductions[locale],
+      opportunityTheme,
+      hasDistinctContrast ? `${contrastLabel[locale]} ${riskTheme}` : reflection[locale][domain],
+    ]
+      .filter(Boolean)
+      .join(' '),
   };
 }
 
@@ -337,12 +400,11 @@ export function createCardConnection(input: {
   orientation: TarotCardSelection['orientation'];
   position: TarotSpreadPosition;
 }) {
-  const { card, locale, neighbour, orientation, position } = input;
+  const { card, locale, neighbour, orientation } = input;
   if (!neighbour) {
     if (locale === 'ru')
       return `${russianCardName(card)} задаёт главную тему. ${plainCardMeaning(card, orientation)}`;
-    if (locale === 'uk') return `${card.name.uk} задає головну тему цього розкладу.`;
-    return `${card.name.en} sets the main theme of this reading.`;
+    return readingConnectionCopy[locale].single(card.name[locale]);
   }
   if (locale === 'ru') {
     const left = plainCardMeaning(card, orientation);
@@ -351,16 +413,19 @@ export function createCardConnection(input: {
     const neighbourName = russianCardName(neighbour);
     return `Эти карты показывают два связанных момента. ${cardName}: ${left} ${neighbourName}: ${right}`;
   }
-  if (locale === 'uk')
-    return `${card.name.uk} і ${neighbour.name.uk} поєднують теми «${card.light.uk}» та «${neighbour.light.uk}» у позиції «${position.label.uk}».`;
-  return `${card.name.en} and ${neighbour.name.en} connect “${card.light.en}” with “${neighbour.light.en}” in “${position.label.en}”.`;
+  return readingConnectionCopy[locale].pair(
+    card.name[locale],
+    orientation === 'reversed' ? card.reversed[locale] : card.upright[locale],
+    neighbour.name[locale],
+    neighbour.upright[locale],
+  );
 }
 
 export function createCardPracticalFocus(card: TarotCard, locale: Locale) {
   if (locale === 'ru') {
     return plainCardAction(card);
   }
-  return completeSentence(card.advice[locale]);
+  return completeSentence(card.advice[locale], locale);
 }
 
 export function interpretationWordCount(value: string) {

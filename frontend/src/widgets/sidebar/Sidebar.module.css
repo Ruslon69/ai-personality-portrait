@@ -41,23 +41,88 @@
   font-weight: var(--font-weight-semibold);
 }
 
-.backdrop {
-  position: fixed;
-  z-index: var(--z-index-overlay);
-  inset: 0;
-  border: 0;
-  background: var(--color-overlay);
-}
-
+/* One modal contents layer, shared with the accepted desktop reading rail. */
 .root[data-drawer='true'] {
   position: fixed;
-  z-index: var(--z-index-modal);
-  inset-block: 0;
-  inset-inline-start: 0;
-  overflow-y: auto;
-  inline-size: min(20rem, 88vw);
-  border-inline-end: 0.0625rem solid var(--color-border);
-  box-shadow: var(--shadow-high);
+  inset: 0 auto 0 0;
+  margin: 0;
+  overflow: auto;
+  inline-size: min(27rem, calc(100vw - 1rem));
+  block-size: 100dvh;
+  max-block-size: 100dvh;
+  max-inline-size: none;
+  padding: max(1.5rem, env(safe-area-inset-top)) clamp(1rem, 4vw, 2.5rem)
+    max(2rem, env(safe-area-inset-bottom));
+  border: 0;
+  border-inline-end: 1px solid var(--sa-border-gold);
+  border-radius: 0;
+  color: var(--sa-text-primary);
+  background:
+    radial-gradient(ellipse at 15% 10%, var(--sa-ambient-indigo), transparent 32rem),
+    radial-gradient(ellipse at 100% 65%, var(--sa-ambient-plum), transparent 28rem),
+    var(--sa-bg-deep);
+  box-shadow: var(--sa-shadow-depth);
+}
+.root[data-drawer='true']::backdrop {
+  background: var(--color-overlay);
+}
+.root[data-drawer='true'] .heading {
+  flex-wrap: wrap;
+  padding-block-end: 1.5rem;
+  margin-block-end: 1.5rem;
+  border-block-end: 1px solid var(--sa-border-subtle);
+}
+.root[data-drawer='true'] .heading > span {
+  flex: 1 0 auto;
+  max-inline-size: 100%;
+  font-family: var(--font-family-display);
+  font-weight: 400;
+  color: var(--sa-gold);
+  font-size: 1.5rem;
+}
+.root[data-drawer='true'] .heading button {
+  min-block-size: 2.75rem;
+  flex-shrink: 0;
+}
+.root[data-drawer='true'] .list {
+  gap: 0.25rem;
+}
+.root[data-drawer='true'] .link {
+  min-block-size: 3.25rem;
+  padding: 0.75rem 0.75rem 0.75rem 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--sa-text-secondary);
+  font-size: 1.125rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.root[data-drawer='true'] .link:is(:hover, [aria-current='page']) {
+  color: var(--sa-gold);
+  background: linear-gradient(90deg, var(--sa-gold-soft), transparent);
+}
+.root[data-drawer='true'] .link[aria-current='page'] {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.4em;
+  font-weight: 400;
+}
+.root[data-drawer='true'] .list li:nth-last-child(3) {
+  margin-block-start: 1.25rem;
+  padding-block-start: 1.25rem;
+  border-block-start: 1px solid var(--sa-border-subtle);
+}
+@media (forced-colors: active) {
+  .root[data-drawer='true'] {
+    border-inline-end-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    box-shadow: none;
+  }
+  .root[data-drawer='true'] .link[aria-current='page'] {
+    color: LinkText;
+    background: Canvas;
+  }
 }
 
 @media (min-width: 64rem) {

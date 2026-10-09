@@ -1,3 +1,4 @@
+import { confidenceCopy } from '../data/confidence-copy';
 import {
   getSourceReference,
   getSourceReferences,
@@ -29,38 +30,23 @@ export function createConfidenceExplanation(
 
   if (!includesInterpretation && evidence.length >= 3) {
     return {
-      description:
-        locale === 'en'
-          ? 'This shows up in several of your answers'
-          : locale === 'uk'
-            ? 'Це видно одразу в кількох ваших відповідях'
-            : 'Это видно сразу в нескольких ваших ответах',
-      label: locale === 'en' ? 'High' : locale === 'uk' ? 'Висока' : 'Высокая',
+      description: confidenceCopy[locale].highDescription,
+      label: confidenceCopy[locale].highLabel,
       level: 'high',
     };
   }
 
   if (!includesInterpretation && evidence.length === 2) {
     return {
-      description:
-        locale === 'en'
-          ? 'This shows up in two related answers'
-          : locale === 'uk'
-            ? 'Це видно у двох пов’язаних відповідях'
-            : 'Это видно в двух связанных ответах',
-      label: locale === 'en' ? 'Medium' : locale === 'uk' ? 'Середня' : 'Средняя',
+      description: confidenceCopy[locale].mediumDescription,
+      label: confidenceCopy[locale].mediumLabel,
       level: 'medium',
     };
   }
 
   return {
-    description:
-      locale === 'en'
-        ? 'Based on limited information'
-        : locale === 'uk'
-          ? 'Висновок зроблено за обмеженою інформацією'
-          : 'Вывод сделан на основе ограниченной информации',
-    label: locale === 'en' ? 'Low' : locale === 'uk' ? 'Низька' : 'Низкая',
+    description: confidenceCopy[locale].lowDescription,
+    label: confidenceCopy[locale].lowLabel,
     level: 'low',
   };
 }
@@ -106,25 +92,10 @@ export function createInsightExplanation(
   locale: ProfileLocale = 'ru',
 ) {
   const signalCount = evidence.length;
-  const sourceCount = new Set(evidence.map((item) => item.source)).size;
-  const lead =
-    locale === 'en'
-      ? signalCount > 1
-        ? sourceCount > 1
-          ? 'This observation is supported across several parts of your input.'
-          : 'This observation repeats across several of your answers.'
-        : 'This is a careful hypothesis based on one relevant choice.'
-      : locale === 'uk'
-        ? signalCount > 1
-          ? sourceCount > 1
-            ? 'Це спостереження підтримують кілька частин вашого контексту.'
-            : 'Це спостереження повторюється в кількох ваших відповідях.'
-          : 'Це обережна гіпотеза на основі одного доречного вибору.'
-        : signalCount > 1
-          ? sourceCount > 1
-            ? 'Этот вывод поддерживают несколько частей вашего контекста.'
-            : 'Этот вывод повторяется в нескольких ваших ответах.'
-          : 'Это осторожная гипотеза на основе одного связанного выбора.';
+  // The disclosure already shows source and confidence. Keep the explanation
+  // focused on the actual pattern; retain the caveat for a single choice.
+  if (signalCount > 1) return contextualExplanation;
+  const lead = confidenceCopy[locale].tentativeLead;
 
   return `${lead} ${contextualExplanation}`;
 }

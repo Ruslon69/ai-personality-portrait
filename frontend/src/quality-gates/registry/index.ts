@@ -12,6 +12,10 @@ import { runTarotRegressionGate } from '../determinism/tarot';
 import { QUALITY_BASELINE } from '../fixtures/baseline';
 import { runPrivacyGate } from '../privacy';
 import { runCrossProductConsistencyGate } from '../regression/cross-product-consistency';
+import { runProductRuntimeContractsGate } from '../regression/product-runtime-contracts';
+import { runPremiumProductUnificationGate } from '../regression/premium-product-unification';
+import { runLocalizationReadinessGate } from '../regression/localization-readiness';
+import { runProductLanguagePolishGate } from '../regression/product-language-polish';
 import { runProductionReadinessGate } from '../regression/production-readiness';
 import { runReleaseHardeningGate } from '../regression/release-hardening';
 import { runTarotArtworkGate } from '../regression/tarot-artwork';
@@ -73,6 +77,65 @@ function runBaselineGate() {
 }
 
 export const qualityGateRegistry: readonly QualityGateDefinition[] = [
+  {
+    affectedModules: ['i18n', 'tarot', 'personality-analysis', 'numerology'],
+    description:
+      'Locale registration, dictionary parity, interpolation, plural grammar, semantic question/sign/card coverage and direct JSX leakage.',
+    id: 'localization-readiness',
+    group: 'regression',
+    required: true,
+    runner: ({ rootDir }) => runLocalizationReadinessGate(rootDir),
+    severity: 'error',
+    timeout: 30_000,
+    tags: ['fast', 'full', 'localization', 'sprint20'],
+    title: 'Localization readiness',
+  },
+
+  {
+    affectedModules: ['tarot', 'numerology', 'zodiac-artwork'],
+    description:
+      'Actual-orientation synthesis, complete localized reading stress fixtures, responsive Zodiac chapters and honest Chinese calendar unavailability.',
+    id: 'premium-product-unification',
+    group: 'regression',
+    required: true,
+    runner: runPremiumProductUnificationGate,
+    severity: 'error',
+    timeout: 30_000,
+    tags: ['fast', 'full', 'regression', 'sprint19'],
+    title: 'Premium product unification',
+  },
+  {
+    affectedModules: ['i18n', 'tarot', 'personality-analysis', 'portrait-generation'],
+    description:
+      'Complete interaction copy, locale formatting, recommendation situations and card-specific practical language.',
+    id: 'product-language-polish',
+    group: 'regression',
+    required: true,
+    runner: runProductLanguagePolishGate,
+    severity: 'error',
+    timeout: 15_000,
+    tags: ['fast', 'full', 'localization', 'product-polish'],
+    title: 'Product language polish',
+  },
+  {
+    affectedModules: [
+      'journey',
+      'numerology',
+      'personality-analysis',
+      'personality-report',
+      'i18n',
+    ],
+    description:
+      'Canonical daily identity, exact localized answer evidence, original result language, and storage-independent calculation.',
+    group: 'regression',
+    id: 'product-runtime-contracts',
+    required: true,
+    runner: runProductRuntimeContractsGate,
+    severity: 'error',
+    tags: ['regression', 'fast', 'full', 'localization'],
+    timeout: 15_000,
+    title: 'Product Runtime Contracts',
+  },
   {
     affectedModules: ['premium-production', 'scripts/premium-tarot'],
     description:

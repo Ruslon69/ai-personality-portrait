@@ -16,6 +16,74 @@ export type LegalDocument = {
 };
 
 export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
+  es: {
+    effectiveDate: 'Estado de la implementación: 31 de agosto de 2026',
+    eyebrow: 'Información legal · Privacidad',
+    intro:
+      'Esta política explica cómo trata la información la aplicación web actual de Soul Arkana. El producto está diseñado para funcionar en tu navegador y actualmente no tiene cuentas, analítica ni almacenamiento de perfiles en un servidor.',
+    ownerNotice:
+      'Antes del lanzamiento público, esta política deberá indicar el operador legal aprobado, el contacto de privacidad y la jurisdicción aplicable.',
+    title: 'Política de privacidad',
+    sections: [
+      {
+        title: 'Información que eliges proporcionar',
+        items: [
+          'Fechas de nacimiento para Numerología opcional, contexto del zodiaco y contexto de Tarot.',
+          'Temas de Tarot, respuestas, selección de cartas, orientaciones y lecturas completadas.',
+          'Respuestas del retrato, intereses, fecha de nacimiento opcional y el retrato generado en tu dispositivo.',
+          'Resultados guardados de lecturas de Tarot y de la actividad de la carta del día.',
+          'Idioma de la interfaz, tema y preferencias de Tarot.',
+          'Una muestra de voz opcional, grabada solo cuando inicias el proceso del micrófono.',
+        ],
+      },
+      {
+        title: 'Dónde se procesa la información',
+        paragraphs: [
+          'La aplicación actual realiza sus cálculos e interpretaciones en tu navegador. No envía activamente tus datos introducidos, lecturas, retrato, fecha de nacimiento ni grabación de voz a un servicio externo.',
+          'Cloudflare Pages sirve la aplicación. Como infraestructura de alojamiento y distribución, Cloudflare puede procesar información habitual de las solicitudes, como la dirección IP, las cabeceras del navegador y del dispositivo, la URL solicitada, las marcas de tiempo y los registros de red o seguridad. Esto es distinto de que Soul Arkana envíe tus respuestas del retrato, selecciones de Tarot, datos de Numerología o grabación de voz: el código actual no envía esos datos a las API de Cloudflare ni a otro servicio externo.',
+          'Las respuestas y los resultados del retrato permanecen en la memoria de la aplicación. No se escriben en el almacenamiento del navegador y dejan de estar disponibles al recargar la página o reiniciar la sesión de la aplicación.',
+        ],
+      },
+      {
+        title: 'Almacenamiento del navegador y conservación',
+        items: [
+          'Los resultados guardados, el historial y las preferencias de Tarot, la elección de baraja, el idioma y el tema pueden conservarse en el almacenamiento persistente del navegador después de cerrarlo.',
+          'Una lectura de Tarot sin terminar, la información necesaria para retomar la selección de cartas y tu fecha de nacimiento de Numerología se conservan temporalmente en este navegador. Normalmente desaparecen al terminar la sesión del navegador.',
+          'El historial de Tarot guardado tiene el límite que elijas. Al reducirlo, se eliminan las lecturas más antiguas que lo superen una vez guardado el cambio.',
+          'Los modos privados del navegador, los límites de espacio, borrar los datos del sitio o cambiar de dispositivo pueden hacer que la información deje de estar disponible. Soul Arkana no puede recuperar desde un servidor los datos guardados solo en el navegador.',
+        ],
+      },
+      {
+        title: 'Voz y micrófono',
+        paragraphs: [
+          'El acceso al micrófono solo se solicita cuando eliges el paso de voz e inicias la acción de permiso o grabación. Puedes omitirlo.',
+          'La grabación se mantiene temporalmente en la página para reproducirla y revisar su calidad en tu dispositivo. No se guarda de forma persistente ni se envía a un servidor. Al salir del proceso o recargarlo, se libera la grabación temporal. El permiso del micrófono sigue bajo el control de tu navegador o dispositivo.',
+        ],
+      },
+      {
+        title: 'Analítica, seguimiento y cookies',
+        paragraphs: [
+          'El producto actual no usa analítica, publicidad, píxeles de seguimiento, contenido incrustado de terceros ni cookies. El almacenamiento del navegador solo se usa para el estado del producto descrito arriba. Por eso no se muestra un aviso genérico de consentimiento de cookies.',
+        ],
+      },
+      {
+        title: 'Tus controles en el dispositivo',
+        items: [
+          'Elimina una lectura de Tarot guardada o vacía todo el historial de lecturas desde el Historial de Tarot.',
+          'Restablece las preferencias de Tarot desde Ajustes o cambia el tema y el idioma cuando quieras.',
+          'Empieza de nuevo el retrato o recarga la página para descartar sus respuestas y resultado temporales.',
+          'Los datos temporales de Numerología y de Tarot sin terminar normalmente desaparecen al finalizar la sesión del navegador. Algunos navegadores restauran las sesiones; borrar los datos de este sitio en los ajustes del navegador también elimina esa información.',
+          'Usa los controles de datos del sitio de tu navegador para eliminar el resto de la información de Soul Arkana. También se borrarán las preferencias y Soul Arkana no podrá deshacerlo.',
+        ],
+      },
+      {
+        title: 'Cambios en esta política',
+        paragraphs: [
+          'Si Soul Arkana añade una API, analítica, cuentas, almacenamiento en la nube, pagos u otro tratamiento externo, esta política y las opciones necesarias deberán actualizarse antes de activar esos cambios.',
+        ],
+      },
+    ],
+  },
   en: {
     effectiveDate: 'Current implementation snapshot: 31 August 2026',
     eyebrow: 'Legal · Privacy',
@@ -48,7 +116,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
         title: 'Browser storage and retention',
         items: [
           'Saved results, Tarot history, Tarot preferences, deck choice, language and theme may remain in persistent browser storage after the browser closes.',
-          'Unfinished Tarot state, its random seed and Numerology birth date use session-only browser storage and normally disappear when the browser session ends.',
+          'An unfinished Tarot reading, the information needed to resume its card selection, and your Numerology birth date are kept temporarily in this browser. They normally disappear when the browser session ends.',
           'Saved Tarot history is limited by the history limit you select. Reducing the limit removes the oldest overflow after the change is saved successfully.',
           'Browser privacy modes, quota limits, clearing site data or changing devices can make local information unavailable. Soul Arkana cannot recover browser-local data from a server.',
         ],
@@ -72,7 +140,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
           'Delete one saved Tarot reading or clear the complete saved reading history from Tarot History.',
           'Reset Tarot preferences from Settings, or change theme and language at any time.',
           'Start the Portrait flow again or reload the page to discard its volatile answers and result.',
-          'Close the browser session to discard session-only Numerology and unfinished Tarot data.',
+          'Temporary Numerology and unfinished Tarot data normally disappear when the browser session ends. Some browsers restore sessions; clearing this site’s data in your browser settings also removes this information.',
           'Use your browser’s site-data controls to remove all remaining Soul Arkana browser storage. This also removes preferences and cannot be undone by Soul Arkana.',
         ],
       },
@@ -116,7 +184,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
         title: 'Хранилище браузера и срок доступности',
         items: [
           'Сохранённые результаты, история Таро, настройки Таро, выбранная колода, язык и тема могут оставаться в постоянном хранилище браузера после его закрытия.',
-          'Незавершённый расклад Таро, его случайный seed и дата для Нумерологии используют сессионное хранилище браузера и обычно исчезают после завершения браузерной сессии.',
+          'Незавершённый расклад Таро, данные для продолжения выбора карт и дата для Нумерологии временно хранятся в этом браузере. Обычно они исчезают после завершения сессии браузера.',
           'История Таро ограничена выбранным лимитом. При его уменьшении самые старые записи сверх лимита удаляются после успешного сохранения.',
           'Приватный режим, ограничение квоты, очистка данных сайта или смена устройства могут сделать локальные данные недоступными. Soul Arkana не может восстановить их с сервера.',
         ],
@@ -140,7 +208,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
           'Удалить отдельный расклад или очистить всю сохранённую историю можно в Истории Таро.',
           'Сбросить настройки Таро можно в Настройках; тему и язык можно изменить в любой момент.',
           'Чтобы отбросить временные ответы и результат личного разбора, начните его заново или перезагрузите страницу.',
-          'Закройте браузерную сессию, чтобы удалить session-only данные Нумерологии и незавершённого Таро.',
+          'Временные данные Нумерологии и незавершённого Таро обычно исчезают после завершения сессии браузера. Некоторые браузеры восстанавливают сессии; очистка данных этого сайта в настройках браузера также удаляет эту информацию.',
           'Через настройки браузера можно удалить все данные сайта Soul Arkana из хранилища браузера. Это также удалит настройки и не может быть отменено Soul Arkana.',
         ],
       },
@@ -184,7 +252,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
         title: 'Сховище браузера та строк доступності',
         items: [
           'Збережені результати, історія Таро, налаштування Таро, вибрана колода, мова й тема можуть залишатися в постійному сховищі браузера після його закриття.',
-          'Незавершений розклад Таро, його випадковий seed і дата для Нумерології використовують сесійне сховище браузера та зазвичай зникають після завершення браузерної сесії.',
+          'Незавершений розклад Таро, дані для продовження вибору карт і дата для Нумерології тимчасово зберігаються в цьому браузері. Зазвичай вони зникають після завершення сесії браузера.',
           'Історія Таро обмежена вибраним лімітом. Після його зменшення найстаріші записи понад ліміт видаляються за умови успішного збереження.',
           'Приватний режим, обмеження квоти, очищення даних сайту або зміна пристрою можуть зробити локальні дані недоступними. Soul Arkana не може відновити їх із сервера.',
         ],
@@ -208,7 +276,7 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
           'Видалити окремий розклад або очистити всю збережену історію можна в Історії Таро.',
           'Скинути налаштування Таро можна в Налаштуваннях; тему й мову можна змінити будь-коли.',
           'Щоб відкинути тимчасові відповіді й результат особистого розбору, почніть його знову або перезавантажте сторінку.',
-          'Закрийте браузерну сесію, щоб видалити session-only дані Нумерології та незавершеного Таро.',
+          'Тимчасові дані Нумерології та незавершеного Таро зазвичай зникають після завершення сесії браузера. Деякі браузери відновлюють сесії; очищення даних цього сайту в налаштуваннях браузера також видаляє цю інформацію.',
           'У налаштуваннях браузера можна видалити всі дані сайту Soul Arkana зі сховища браузера. Це також видалить налаштування й не може бути скасовано Soul Arkana.',
         ],
       },
@@ -223,6 +291,57 @@ export const privacyPolicyCopy: Record<Locale, LegalDocument> = {
 };
 
 export const termsCopy: Record<Locale, LegalDocument> = {
+  es: {
+    effectiveDate: 'Borrador para la revisión de lanzamiento: 30 de agosto de 2026',
+    eyebrow: 'Información legal · Condiciones',
+    intro:
+      'Estas condiciones describen el uso previsto de la aplicación web actual de Soul Arkana. Antes del lanzamiento público deberán aprobarlas el propietario y los responsables legales.',
+    ownerNotice:
+      'Antes del lanzamiento público, estas condiciones deberán indicar el operador legal aprobado, los datos de contacto, la jurisdicción y la fecha definitiva de entrada en vigor.',
+    title: 'Condiciones de uso',
+    sections: [
+      {
+        title: 'Un producto para la reflexión y la interpretación',
+        paragraphs: [
+          'Soul Arkana ofrece lecturas de Tarot, cálculos por fecha de nacimiento y reflexiones personales para la autoexploración y el entretenimiento. Los resultados son perspectivas y propuestas, no hechos comprobados sobre ti ni garantías sobre el futuro.',
+        ],
+      },
+      {
+        title: 'No es asesoramiento profesional',
+        items: [
+          'Soul Arkana no ofrece diagnósticos ni tratamientos médicos o psicológicos.',
+          'Soul Arkana no ofrece asesoramiento legal, financiero ni de inversión.',
+          'Soul Arkana no garantiza acontecimientos, resultados, compatibilidad ni certezas en las relaciones.',
+          'Consulta a un profesional con la cualificación adecuada cuando una decisión requiera asesoramiento especializado.',
+        ],
+      },
+      {
+        title: 'Tus decisiones y tu uso',
+        paragraphs: [
+          'Tú decides cómo interpretar y utilizar el producto. No uses una lectura o un retrato como única base para una decisión de salud, seguridad, legal, económica, laboral o de relaciones.',
+          'Usa el producto para tu propia reflexión. No grabes a otra persona ni introduzcas información sensible sobre ella sin el derecho y el permiso adecuados.',
+        ],
+      },
+      {
+        title: 'Limitaciones de los datos en el navegador',
+        paragraphs: [
+          'La versión actual guarda cierta información solo en tu navegador. Borrar los datos del sitio, usar navegación privada, cambiar de navegador o dispositivo, denegar el almacenamiento o un fallo del navegador puede eliminarla. Soul Arkana no tiene actualmente una copia en el servidor y no puede restaurar esos datos.',
+        ],
+      },
+      {
+        title: 'Disponibilidad',
+        paragraphs: [
+          'El servicio puede cambiar, pausarse o no estar disponible. No se promete un funcionamiento ininterrumpido ni libre de errores. Las acciones de recuperación y la conservación en el navegador se ofrecen en la medida que permite la implementación actual.',
+        ],
+      },
+      {
+        title: 'Materiales del producto',
+        paragraphs: [
+          'Usar Soul Arkana no transfiere la propiedad de su interfaz original, sus textos ni las obras aprobadas. El propietario legal deberá confirmar los avisos definitivos de titularidad y las atribuciones a terceros antes del lanzamiento público.',
+        ],
+      },
+    ],
+  },
   en: {
     effectiveDate: 'Draft for release review: 30 August 2026',
     eyebrow: 'Legal · Terms',

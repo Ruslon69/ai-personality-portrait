@@ -1,13 +1,85 @@
 .root {
+  --fallback-gold: light-dark(#795725, #dec394);
+  --fallback-line: light-dark(rgb(112 84 53 / 22%), rgb(204 177 128 / 18%));
+  position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  overflow: clip;
   min-block-size: 100dvh;
   padding: var(--page-gutter);
-  background: var(--color-background);
+  background:
+    radial-gradient(
+      circle at 82% 18%,
+      light-dark(rgb(108 78 137 / 10%), rgb(69 43 119 / 20%)),
+      transparent 32rem
+    ),
+    var(--color-marketing-canvas);
   color: var(--color-text);
   place-items: center;
 }
 
+.root::before {
+  position: absolute;
+  inset-block-start: 14%;
+  inset-inline-end: -5rem;
+  inline-size: clamp(14rem, 32vw, 30rem);
+  aspect-ratio: 1;
+  border: 1px solid var(--fallback-line);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4rem color-mix(in srgb, var(--fallback-line) 22%, transparent);
+  content: '';
+  pointer-events: none;
+}
+
 .panel {
+  position: relative;
   inline-size: min(100%, var(--content-width-reading));
-  padding: clamp(var(--space-5), 6vw, var(--space-8));
+  padding: clamp(var(--space-6), 6vw, var(--space-8)) 0;
+  border: 0;
+  border-block: 1px solid var(--fallback-line);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.content {
+  min-inline-size: 0;
+  max-inline-size: 38rem;
+}
+
+.content :is(h1, p) {
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+
+.content [data-prominence='primary'] {
+  border-color: #d7ba82;
+  background: linear-gradient(115deg, #f0dfb7, #c7a468);
+  color: #2b2134;
+}
+
+.content [data-prominence='primary']:hover {
+  background: linear-gradient(115deg, #f5e7c4, #d2af70);
+  color: #21192a;
+}
+
+.star {
+  inline-size: 0.8rem;
+  aspect-ratio: 1;
+  background: var(--fallback-gold);
+  box-shadow: 0 0 1.5rem color-mix(in srgb, var(--fallback-gold) 55%, transparent);
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+}
+
+@media (forced-colors: active) {
+  .content [data-prominence='primary'] {
+    border-color: ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+  }
+
+  .root::before,
+  .star {
+    display: none;
+  }
 }

@@ -12,6 +12,13 @@ type LatestPortraitSectionProps = {
 export function LatestPortraitSection({ onOpenPortrait, profile }: LatestPortraitSectionProps) {
   const includedSources = profile.sourceDetails.filter((source) => source.status !== 'omitted');
   const copy = {
+    es: {
+      eyebrow: 'Último resultado',
+      title: 'Vuelve a tu resultado principal',
+      created: 'Creado',
+      sources: 'Fuentes utilizadas',
+      open: 'Abrir reflexión personal',
+    },
     en: {
       eyebrow: 'Latest result',
       title: 'Return to your main result',

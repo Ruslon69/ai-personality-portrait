@@ -1,390 +1,794 @@
 .page {
-  overflow: clip;
-  background: var(--color-marketing-canvas);
+  --number-gold: var(--sa-gold);
+  --number-text: var(--sa-text-primary);
+  --number-muted: var(--sa-text-secondary);
+  --number-line: var(--sa-border-subtle);
+  min-inline-size: 0;
+  color: var(--number-text);
+  background: transparent;
+  overflow-wrap: anywhere;
 }
-.hero,
-.resultHero {
-  padding-block: var(--page-hero-padding-block);
+.page :is(p, h1, h2, h3, h4) {
+  margin: 0;
+}
+.page p {
+  font-size: 1rem;
+  line-height: 1.65;
+}
+.page h2 {
+  font-family: var(--font-family-display);
+  font-weight: 400;
+  font-synthesis: none;
+  font-size: clamp(1.55rem, 2.3vw, 2.2rem);
+  line-height: 1.3;
+}
+.page :is(h3, h4) {
+  font-family: var(--font-family-body);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.page :is(button, a, input):focus-visible {
+  outline: 2px solid var(--number-gold);
+  outline-offset: 4px;
+}
+.page :is(button, a) {
+  max-inline-size: 100%;
+  white-space: normal;
+}
+.page :is(button, a)[data-prominence] {
+  min-block-size: 2.75rem;
+}
+.page button[data-prominence='primary'],
+.primaryLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  min-block-size: 3.5rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid var(--sa-action-border);
+  border-radius: 0.75rem;
+  background: var(--sa-action-fill);
+  color: var(--sa-action-ink);
+  font-family: var(--font-family-body);
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow:
+    inset 0 1px rgb(255 248 225 / 55%),
+    0 0.4rem 1.4rem rgb(192 153 94 / 9%);
+  transition:
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+}
+.page button[data-prominence='primary']:hover:not(:disabled),
+.primaryLink:hover {
+  box-shadow:
+    inset 0 1px rgb(255 248 225 / 65%),
+    0 0.5rem 1.8rem rgb(192 153 94 / 20%);
+}
+.page button[data-prominence='primary']:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.page [data-prominence='secondary'] {
+  border-color: var(--number-line);
+  background: light-dark(rgb(255 255 255 / 50%), rgb(221 195 148 / 5%));
+  color: var(--number-gold);
+}
+.page [data-prominence='quiet'] {
+  color: var(--number-muted);
+  background: transparent;
+}
+.page .eyebrow {
+  color: var(--number-gold);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.55;
+  letter-spacing: 0.025em;
+}
+.hero {
+  padding-block: clamp(2rem, 5vw, 5rem) clamp(2.5rem, 6vw, 6rem);
 }
 .heroGrid,
 .resultHeroGrid {
   display: grid;
   min-inline-size: 0;
   align-items: center;
-  gap: var(--page-hero-gap);
+  gap: var(--space-7);
 }
 .heroGrid > *,
 .resultHeroGrid > * {
   min-inline-size: 0;
 }
 .heroCopy {
-  gap: clamp(var(--space-4), 2.5vw, var(--space-6));
+  display: grid;
+  gap: var(--space-5);
+  position: relative;
+  z-index: 1;
 }
 .hero h1 {
-  --page-title-size: clamp(2.4rem, 4vw, 4.15rem);
-
+  --page-title-size: clamp(2.1rem, 3.7vw, 3.85rem);
   max-inline-size: 19ch;
-  line-height: 1.07;
+  line-height: 1.18;
   text-wrap: balance;
 }
-.resultHero h1 {
-  --page-title-size: clamp(2rem, 4.25vw, 4.25rem);
-
-  max-inline-size: 16ch;
-  overflow-wrap: break-word;
-  word-break: normal;
-}
-.lead {
-  --typography-lead-line-height: 1.55;
-
+.page .lead {
   max-inline-size: 46ch;
-  color: var(--color-text-muted);
+  color: var(--number-muted);
+  font-size: clamp(1rem, 1.3vw, 1.125rem);
+  line-height: 1.65;
+}
+.form {
+  display: grid;
+  gap: var(--space-3);
+  max-inline-size: 27rem;
+  margin-block-start: var(--space-3);
+}
+.field {
+  color: var(--number-text);
+  font-size: 1rem;
+  font-weight: 500;
+}
+.page .dateInput {
+  inline-size: 100%;
+  min-inline-size: 0;
+  min-block-size: 3.5rem;
+  padding: 0.9rem 1rem;
+  color: var(--number-text);
+  border: 1px solid var(--number-line);
+  border-radius: 0.5rem;
+  background: light-dark(rgb(255 255 255 / 60%), rgb(255 255 255 / 3%));
+  font-size: 1.0625rem;
+}
+.dateInput::-webkit-date-and-time-value {
+  text-align: start;
+  min-block-size: 1.4em;
+}
+.form button {
+  margin-block-start: var(--space-3);
+  inline-size: 100%;
+}
+.page .hint {
+  color: var(--number-muted);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  max-inline-size: 52ch;
+}
+.page .error {
+  color: var(--color-feedback-error);
+  font-size: 0.9375rem;
 }
 .numberHero {
   position: relative;
+  min-block-size: clamp(12rem, 45vw, 36rem);
   display: grid;
-  min-block-size: clamp(19rem, 31vw, 25rem);
   place-items: center;
-  border: 0.0625rem solid var(--color-marketing-border);
-  border-radius: calc(var(--radius-lg) + var(--space-3));
-  background:
-    radial-gradient(
-      circle,
-      color-mix(in srgb, var(--color-marketing-accent-warm) 16%, transparent),
-      transparent 38%
-    ),
-    var(--color-marketing-surface);
-  overflow: hidden;
+  isolation: isolate;
+}
+.entryArtwork {
+  position: absolute;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: center;
+  mask-image: radial-gradient(ellipse at center, #000 35%, transparent 72%);
+  opacity: light-dark(0.7, 0.92);
 }
 .numberDiagram {
-  inline-size: min(100%, 34rem);
-  color: var(--color-marketing-accent-warm);
-  overflow: visible;
-}
-.diagramOrbit,
-.diagramOrbitSecondary,
-.diagramLink,
-.diagramNode circle,
-.diagramCore circle {
+  position: relative;
+  inline-size: min(100%, 36rem);
+  max-block-size: 100%;
   fill: none;
-  stroke: currentColor;
+  stroke: var(--number-gold);
+  stroke-width: 0.6;
+  opacity: 0.3;
+  pointer-events: none;
 }
-.diagramOrbit {
-  stroke-dasharray: 2 8;
-  stroke-width: 1.25;
-  opacity: 0.48;
+.resultHero {
+  padding-block: clamp(1.5rem, 4vw, 3.5rem) clamp(2.5rem, 5vw, 5rem);
 }
-.diagramOrbitSecondary {
-  stroke-width: 1;
-  opacity: 0.2;
-  transform: rotate(-12deg);
-  transform-origin: center;
+.resultTopline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-block-end: var(--space-4);
 }
-.diagramLink {
-  stroke-width: 1.25;
-  opacity: 0.34;
+.resultHero h1 {
+  --page-title-size: clamp(1.95rem, 3.5vw, 3.6rem);
+  max-inline-size: 26ch;
+  line-height: 1.22;
 }
-.diagramNode circle {
-  fill: color-mix(in srgb, var(--color-marketing-surface-raised) 92%, transparent);
-  stroke-width: 1.25;
-}
-.diagramNode text,
-.diagramFormula,
-.diagramValue {
-  fill: var(--color-text);
-  font-family: var(--font-family-display);
-  font-synthesis: none;
-}
-.diagramNode text {
-  font-size: 2rem;
-  font-weight: 400;
-}
-.diagramCore circle {
-  fill: color-mix(in srgb, var(--color-marketing-accent-warm) 10%, var(--color-marketing-surface));
-  stroke-width: 1.5;
-}
-.diagramFormula {
-  font-size: 1.1rem;
-  letter-spacing: 0.035em;
-  opacity: 0.72;
-}
-.diagramValue {
-  font-size: 4rem;
-  font-weight: 400;
-}
-.section {
-  padding-block: var(--page-section-padding-block);
-}
-.formSurface {
-  inline-size: min(100%, 38rem);
-  max-inline-size: 38rem;
-  padding: var(--page-hero-padding);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--color-marketing-surface-raised) 84%, transparent);
-}
-.field {
-  display: grid;
-  gap: var(--space-2);
-  font-weight: var(--font-weight-semibold);
-}
-.error {
-  color: var(--color-feedback-error);
-}
-.disclaimer {
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
-}
-.resultHeroSurface {
-  min-inline-size: 0;
-  padding: var(--page-hero-padding);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: calc(var(--radius-lg) + var(--space-2));
-  background:
-    radial-gradient(
-      circle at 15% 50%,
-      color-mix(in srgb, var(--color-marketing-accent-warm) 15%, transparent),
-      transparent 35%
-    ),
-    var(--page-hero-background);
+.resultHeroGrid {
+  margin-block-start: var(--space-5);
+  gap: var(--space-5);
 }
 .personalSymbol {
   position: relative;
   display: grid;
-  inline-size: min(18rem, 100%);
-  aspect-ratio: 1;
   place-items: center;
-  margin-inline: auto;
-}
-.personalSymbol i {
-  position: absolute;
-  inline-size: 42%;
-  aspect-ratio: 1;
-  border: 0.0625rem solid var(--color-marketing-accent-warm);
-  transform: rotate(45deg);
-}
-.personalSymbol i:nth-child(2) {
-  inline-size: 66%;
-  border-radius: 50%;
-  transform: rotate(20deg);
-}
-.personalSymbol i:nth-child(3) {
-  inline-size: 88%;
-  border-style: dashed;
-  border-radius: 42%;
-  transform: rotate(-18deg);
-}
-.personalSymbol strong {
-  font-family: var(--font-family-display);
-  font-size: clamp(4rem, 14vw, 8rem);
-  font-synthesis: none;
-  font-weight: 400;
-}
-.heroNumbers {
-  display: flex;
-  min-inline-size: 0;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-.heroNumbers span {
-  padding: var(--space-2) var(--space-3);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-full);
-  background: var(--color-surface);
-  white-space: normal;
-}
-.resultGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
-  gap: var(--space-4);
-}
-.calculationCard {
-  position: relative;
-  display: grid;
-  min-inline-size: 0;
-  grid-template-rows: auto minmax(0, 1fr);
-  padding: var(--page-card-padding);
-  gap: var(--space-4);
-  overflow: hidden;
-}
-.calculationCard > :last-child {
-  min-inline-size: 0;
-}
-.calculationHeader {
-  display: grid;
-  min-inline-size: 0;
-  min-block-size: clamp(3.5rem, 7vw, 5rem);
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  gap: var(--space-3);
-}
-.calculationHeader > :first-child {
-  min-inline-size: 0;
+  inline-size: clamp(11rem, 38vw, 23rem);
   max-inline-size: 100%;
-  overflow-wrap: break-word;
-  white-space: normal;
+  aspect-ratio: 1;
+  margin-inline: auto;
+  color: var(--number-gold);
+  background: radial-gradient(
+    circle,
+    light-dark(rgb(182 143 85 / 9%), rgb(200 164 101 / 9%)),
+    transparent 68%
+  );
 }
-.cardNumber {
-  position: relative;
-  align-self: start;
-  min-inline-size: 1.2ch;
-  color: color-mix(in srgb, var(--color-marketing-accent-warm) 26%, transparent);
+.personalSymbol svg {
+  position: absolute;
+  inline-size: 100%;
+  block-size: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.85;
+  opacity: 0.6;
+}
+.personalSymbol circle:nth-child(2) {
+  stroke-dasharray: 1 8;
+}
+.coreNumber {
   font-family: var(--font-family-display);
-  font-size: clamp(3rem, 6vw, 5rem);
   font-synthesis: none;
+  font-size: clamp(5rem, 15vw, 10rem);
   font-weight: 400;
-  line-height: 0.8;
-  text-align: end;
-  pointer-events: none;
+  line-height: 1;
+  padding-block-start: 0.12em;
 }
-.viewControls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
+.coreCopy {
+  display: grid;
+  gap: var(--space-4);
+  max-inline-size: 62ch;
+}
+.page .purpose {
+  color: var(--number-muted);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+.page .mainInterpretation {
+  font-size: clamp(1.0625rem, 1.45vw, 1.25rem);
+  line-height: 1.65;
+}
+.takeaway {
+  border-inline-start: 1px solid var(--number-gold);
+  padding: var(--space-4) var(--space-5);
+  margin-block: var(--space-2);
+  background: linear-gradient(
+    90deg,
+    light-dark(rgb(172 137 84 / 7%), rgb(201 164 101 / 7%)),
+    transparent
+  );
+}
+.page .takeaway h2 {
+  font-family: var(--font-family-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--number-gold);
+  margin-block-end: var(--space-2);
+}
+.primaryLink {
+  justify-self: start;
+}
+.section {
+  padding-block: clamp(2rem, 4vw, 3rem);
+  scroll-margin-block-start: 7rem;
+}
+.section > div {
+  border-block-start: 1px solid var(--number-line);
+  padding-block-start: clamp(1.75rem, 3vw, 2.75rem);
+}
+.sectionIntro {
+  display: grid;
+  gap: var(--space-3);
+  max-inline-size: 65ch;
+  margin-block-end: clamp(1.75rem, 3vw, 2.75rem);
+}
+.sectionIntro > p:last-child {
+  color: var(--number-muted);
+}
+.traits {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+.numberReading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-5);
+  min-inline-size: 0;
+  align-content: start;
+}
+.secondaryNumber {
+  font-family: var(--font-family-display);
+  font-weight: 400;
+  font-synthesis: none;
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  color: var(--number-gold);
+  line-height: 1.15;
+  min-inline-size: 1.3ch;
+  text-align: center;
+}
+.numberCopy {
+  display: grid;
+  min-inline-size: 0;
+  gap: var(--space-3);
+  align-content: start;
+}
+.page .numberCopy h3 {
+  font-family: var(--font-family-display);
+  font-weight: 400;
+  font-synthesis: none;
+  line-height: 1.3;
+  font-size: clamp(1.4rem, 2vw, 1.85rem);
+}
+.page .smallAction {
+  border-inline-start: 1px solid var(--number-line);
+  padding-inline-start: var(--space-4);
+  margin-block-start: var(--space-2);
+  font-size: 0.9375rem;
+}
+.smallAction strong {
+  display: block;
+  color: var(--number-gold);
+  font-weight: 500;
+  font-size: 0.8125rem;
+  margin-block-end: var(--space-2);
+}
+.disclosure,
+.equation,
+.zodiac {
+  min-inline-size: 0;
+}
+.page summary {
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-block-size: 2.75rem;
+  padding-block: 0.7rem;
+  cursor: pointer;
+  color: var(--number-gold);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+.page summary::marker {
+  color: var(--number-gold);
+  font-size: 0.75em;
+}
+.page summary:hover {
+  color: var(--number-text);
+}
+.page details[open] > summary {
+  color: var(--number-text);
+}
+.page summary:focus-visible {
+  /* A text-level focus cue preserves the open editorial layout. */
+  outline: none;
+  text-decoration-line: underline;
+  text-decoration-style: double;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.3em;
+}
+.disclosure[open] > .detailGrid {
+  border-block-start: 1px solid var(--number-line);
 }
 .detailGrid {
   display: grid;
-  gap: var(--space-4);
-  animation: number-detail var(--motion-discover-duration) var(--motion-easing-discover) both;
+  gap: var(--space-5);
+  padding-block: var(--space-4);
 }
 .detailGrid ul {
-  padding-inline-start: var(--space-5);
+  margin: var(--space-2) 0 0;
+  padding-inline-start: 1.25rem;
+  line-height: 1.75;
 }
 .equation {
+  border-block-start: 1px solid var(--number-line);
+}
+.equation ol {
   display: grid;
   gap: var(--space-2);
-  padding: var(--space-4);
-  border-inline-start: 0.2rem solid var(--color-marketing-accent-warm);
-  background: var(--surface-accent-subtle);
-  font-family: var(--font-family-mono);
-  animation: number-detail var(--motion-discover-duration) var(--motion-easing-discover) both;
+  margin-block: var(--space-3);
+  padding-inline-start: 1.5rem;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9375rem;
+  line-height: 1.65;
 }
-.zodiacSurface,
-.tarotBridge {
+.cycles {
   display: grid;
+  gap: var(--space-7);
+}
+.closing {
+  padding-block: var(--space-6) clamp(3rem, 6vw, 5rem);
+}
+.zodiac {
+  padding-block: var(--space-4);
+  border-block: 1px solid var(--number-line);
+}
+.zodiacName {
+  margin-inline-start: var(--space-4);
+  color: var(--number-muted);
+}
+.zodiac > p {
+  max-inline-size: 65ch;
+  margin-block: var(--space-3);
+}
+.zodiacContent {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   align-items: center;
-  gap: var(--page-hero-gap);
-  padding: var(--page-hero-padding);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-block: var(--space-5) var(--space-4);
+  max-inline-size: 68rem;
 }
-.zodiacRing {
-  display: grid;
-  inline-size: 10rem;
-  aspect-ratio: 1;
-  place-items: center;
-  margin-inline: auto;
-  border: 0.0625rem solid var(--color-marketing-accent-secondary);
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1.25rem
-    color-mix(in srgb, var(--color-marketing-accent-secondary) 8%, transparent);
+.zodiacCopy {
+  min-inline-size: 0;
+  max-inline-size: 42ch;
 }
-.zodiacRing span {
-  font-size: var(--font-size-3xl);
+.zodiacCopy p {
+  margin-block: var(--space-3);
+  line-height: 1.75;
 }
-.futureModule {
-  display: grid;
-  gap: var(--space-2);
-  padding: var(--space-4);
-  border: 0.0625rem dashed var(--color-border);
-  border-radius: var(--radius-md);
-  color: var(--color-text-muted);
-}
-.bridgeCards {
-  position: relative;
-  min-block-size: 12rem;
-}
-.bridgeCards i {
-  position: absolute;
-  inset: 50% auto auto 50%;
-  inline-size: 6rem;
-  aspect-ratio: 0.68;
-  border: 0.0625rem solid var(--color-marketing-accent);
-  border-radius: var(--radius-md);
-  background: var(--surface-accent-subtle);
-  transform: translate(-50%, -50%) rotate(calc((var(--card-index, 0) - 1) * 10deg));
-  transform-origin: bottom;
-}
-.bridgeCards i:first-child {
-  --card-index: 0;
-}
-.bridgeCards i:nth-child(2) {
-  --card-index: 1;
-}
-.bridgeCards i:nth-child(3) {
-  --card-index: 2;
+@media (max-width: 47.99rem) {
+  .zodiacContent {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
 }
 .bottomActions {
-  margin-block-start: var(--space-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  margin-block-start: var(--space-6);
 }
-@keyframes number-detail {
-  from {
-    opacity: 0;
-    transform: translateY(var(--motion-distance-sm));
+.srOnly {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+@media (min-width: 48rem) {
+  .traits {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  to {
-    opacity: 1;
-    transform: none;
+  .resultHeroGrid {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 5vw, 5rem);
+  }
+  .detailGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (min-width: 56rem) {
   .heroGrid {
-    grid-template-columns: minmax(0, 1.08fr) minmax(20rem, 0.92fr);
-    gap: clamp(var(--space-6), 5vw, var(--space-8));
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: var(--space-6);
   }
-  .zodiacSurface,
-  .tarotBridge {
-    grid-template-columns: minmax(12rem, 0.5fr) minmax(0, 1.5fr);
+  .heroCopy {
+    padding-block: var(--space-6);
+  }
+  .numberHero {
+    min-block-size: clamp(28rem, 43vw, 40rem);
   }
 }
-@media (min-width: 75rem) {
+@media (max-width: 47.99rem) {
   .resultHeroGrid {
-    grid-template-columns: minmax(14rem, 0.72fr) minmax(0, 1.28fr);
+    gap: var(--space-5);
   }
-}
-@media (max-width: 30rem) {
-  .hero {
-    padding-block: var(--space-5) var(--space-4);
+  .primaryLink {
+    inline-size: 100%;
   }
-
+  .numberHero {
+    max-block-size: 15rem;
+    min-block-size: 12rem;
+    overflow: hidden;
+  }
+  .numberDiagram {
+    inline-size: 18rem;
+    opacity: 0.25;
+  }
+  .entryArtwork {
+    object-position: 50% 48%;
+  }
+  .numberReading {
+    gap: var(--space-4);
+  }
+  .page .numberCopy p {
+    font-size: 1rem;
+  }
+  .page .numberCopy .purpose {
+    font-size: 0.9375rem;
+  }
+  .form {
+    max-inline-size: 100%;
+  }
   .heroCopy {
     gap: var(--space-4);
   }
-
-  .hero h1 {
-    --page-title-size: clamp(2.1rem, 8.6vw, 2.5rem);
-
-    max-inline-size: 18ch;
-    line-height: 1.09;
+  .heroGrid {
+    gap: var(--space-4);
   }
-
-  .numberHero {
-    display: none;
+  .personalSymbol {
+    inline-size: clamp(11rem, 48vw, 14rem);
   }
-
-  .formSurface {
-    padding: var(--space-5);
+  .coreNumber {
+    font-size: clamp(5rem, 22vw, 6.5rem);
   }
-  .numberDiagram {
-    inline-size: min(115%, 28rem);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .personalSymbol {
+    animation: number-arrive 500ms ease-out both;
   }
-  .calculationHeader {
-    min-block-size: 3rem;
+}
+@keyframes number-arrive {
+  from {
+    opacity: 0;
   }
-  .cardNumber {
-    font-size: clamp(2.5rem, 16vw, 3.5rem);
-  }
-  .viewControls button {
-    flex: 1 1 8rem;
-  }
-  .zodiacSurface,
-  .tarotBridge {
-    padding: var(--space-5);
+  to {
+    opacity: 1;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .detailGrid,
-  .equation {
+  .page *,
+  .page *::before,
+  .page *::after {
     animation: none;
+    transition: none;
+    scroll-behavior: auto;
+  }
+}
+@media (forced-colors: active) {
+  .page {
+    --number-gold: LinkText;
+    --number-text: CanvasText;
+    --number-muted: CanvasText;
+    --number-line: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+  .entryArtwork {
+    visibility: hidden;
+  }
+  .page :is(button, a)[data-prominence],
+  .primaryLink,
+  .page .dateInput {
+    border: 1px solid ButtonText;
+    background: Canvas;
+    color: ButtonText;
+    box-shadow: none;
+  }
+  .page button:disabled {
+    opacity: 1;
+    color: GrayText;
+    border-color: GrayText;
+  }
+}
+
+.persistenceNote {
+  max-width: 48rem;
+  margin-block-end: 1.5rem;
+  color: var(--sa-text-secondary);
+  border-inline-start: 1px solid var(--sa-border-subtle);
+  padding-inline-start: 1rem;
+}
+.persistenceNote p {
+  margin-block: 0 0.5rem;
+}
+
+/* The time reading narrows from an annual horizon into two nearer moments. */
+.resultHero {
+  background: radial-gradient(ellipse at 22% 48%, var(--sa-ambient-indigo), transparent 62%);
+}
+.personalSymbol {
+  inline-size: clamp(12rem, 35vw, 27rem);
+  background: radial-gradient(circle, var(--sa-gold-soft), transparent 66%);
+}
+.coreNumber {
+  text-shadow: 0 0 2.5rem var(--sa-gold-soft);
+}
+.section:has(.cycles) {
+  background: radial-gradient(ellipse at 72% 42%, var(--sa-ambient-plum), transparent 68%);
+}
+.numberReading {
+  grid-template-columns: 7rem minmax(0, 1fr);
+}
+.numberAnchor {
+  position: relative;
+  display: grid;
+  inline-size: 7rem;
+  aspect-ratio: 1;
+  align-self: start;
+  place-items: center;
+  color: var(--number-gold);
+}
+.numberAnchor svg {
+  position: absolute;
+  inline-size: 100%;
+  block-size: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.7;
+  opacity: 0.35;
+}
+.secondaryNumber {
+  position: relative;
+  font-size: clamp(3rem, 5vw, 4.25rem);
+  padding-block-start: 0.12em;
+}
+.cycles {
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+}
+.cycles .numberReading {
+  align-items: start;
+}
+.cycles [data-period-depth='year'] {
+  grid-template-columns: clamp(9rem, 19vw, 15rem) minmax(0, 1fr);
+  padding-block-end: clamp(2rem, 4vw, 3rem);
+  border-block-end: 1px solid var(--number-line);
+}
+.cycles [data-period-depth='year'] .numberAnchor {
+  inline-size: 100%;
+}
+.cycles [data-period-depth='year'] .secondaryNumber {
+  font-size: clamp(5rem, 10vw, 8rem);
+}
+.cycles [data-period-depth='year'] .numberCopy {
+  max-inline-size: 66ch;
+}
+.cycles [data-period-depth='year'] h3 {
+  font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+}
+.cycles [data-period-depth='today'] .numberAnchor {
+  background: radial-gradient(circle, var(--sa-gold-soft), transparent 70%);
+}
+@media (min-width: 64rem) {
+  .cycles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .cycles [data-period-depth='year'] {
+    grid-column: 1 / -1;
+  }
+  .traits .numberReading {
+    grid-template-columns: 7rem minmax(0, 1fr);
+  }
+}
+@media (max-width: 63.99rem) {
+  .traits {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 47.99rem) {
+  .numberReading,
+  .cycles [data-period-depth='year'] {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+  .numberAnchor {
+    inline-size: 4.5rem;
+  }
+  .secondaryNumber,
+  .cycles [data-period-depth='year'] .secondaryNumber {
+    font-size: 3rem;
+  }
+  .numberCopy {
+    display: contents;
+  }
+  .numberCopy > :is(.eyebrow, h3) {
+    grid-column: 2;
+  }
+  .numberCopy > :is(p:not(.eyebrow), details) {
+    grid-column: 1 / -1;
+  }
+  .numberAnchor {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+  .traits .numberAnchor {
+    grid-row: 1;
+  }
+}
+@media (forced-colors: active) {
+  .resultHero,
+  .section:has(.cycles),
+  .personalSymbol,
+  .cycles [data-period-depth='today'] .numberAnchor {
+    background: Canvas;
+  }
+  .coreNumber {
+    text-shadow: none;
+  }
+  .numberAnchor svg {
+    opacity: 1;
+  }
+}
+
+/* Chapters share an axis; the broad year narrows into month and today. */
+.section > div {
+  border-block-start: 0;
+  position: relative;
+}
+.sectionIntro {
+  padding-inline-start: 1.25rem;
+  border-inline-start: 1px solid var(--sa-border-gold);
+}
+.traits {
+  padding-block-end: 0.5rem;
+}
+.cycles {
+  column-gap: clamp(2rem, 5vw, 4rem);
+  row-gap: clamp(2rem, 4vw, 3rem);
+}
+.cycles [data-period-depth='year'] {
+  column-gap: clamp(2rem, 5vw, 4rem);
+}
+@media (min-width: 64rem) {
+  .traits {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .traits .numberReading {
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    column-gap: 1.5rem;
+  }
+  .traits .numberAnchor {
+    inline-size: 7.5rem;
+  }
+}
+@media (max-width: 47.99rem) {
+  .sectionIntro {
+    padding-inline-start: 1rem;
+  }
+  .cycles [data-period-depth='year'] {
+    column-gap: 1rem;
+  }
+}
+@media (forced-colors: active) {
+  .cycles [data-period-depth='year'] {
+    background: Canvas;
+  }
+}
+@media (max-width: 47.99rem) {
+  .cycles [data-period-depth='year'] {
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+  }
+  .cycles [data-period-depth='year'] .numberAnchor {
+    inline-size: 5.5rem;
+  }
+  .cycles [data-period-depth='year'] .secondaryNumber {
+    font-size: 3.75rem;
+  }
+}
+
+.cycles [data-period-depth='year'] .numberAnchor {
+  background: radial-gradient(circle, var(--sa-gold-soft), transparent 70%);
+}
+@media (forced-colors: active) {
+  .cycles [data-period-depth='year'] .numberAnchor {
+    background: Canvas;
+  }
+}
+.numberReading {
+  container-type: inline-size;
+}
+@container (max-width: 18rem) {
+  .numberCopy {
+    display: contents;
+  }
+  .numberAnchor {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+  .numberCopy > :is(.eyebrow, h3, p, details) {
+    grid-column: 1 / -1;
   }
 }

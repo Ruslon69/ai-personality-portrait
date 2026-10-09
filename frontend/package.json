@@ -51,7 +51,8 @@
     "tarot:premium:integrity:test": "node scripts/premium-tarot/test-production-integrity.mjs",
     "tarot:premium:supersede": "node scripts/premium-tarot/supersede.mjs",
     "tarot:premium:supersede:test": "node scripts/premium-tarot/test-supersede.mjs",
-    "tarot:premium:validate": "node scripts/premium-tarot/validate.mjs"
+    "tarot:premium:validate": "node scripts/premium-tarot/validate.mjs",
+    "quality:localization": "npm run quality:bundle && node node_modules/.tmp/quality-gates/index.js --tag=localization"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.4",

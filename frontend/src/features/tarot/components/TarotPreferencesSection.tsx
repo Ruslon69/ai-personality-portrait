@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { localeOptions, type Locale } from '@shared/i18n';
-import { Button, Container, Modal, Stack, Surface, Typography } from '@shared/ui';
+import { Button, Container, Modal, Stack, Toast, Typography } from '@shared/ui';
 
 import { tarotPreferencesCopy } from '../data';
 import { useTarotPreferences } from '../hooks';
@@ -15,35 +15,45 @@ export function TarotPreferencesSection({
 }: {
   locale: Locale;
   onBackToTarot: () => void;
-  onHistoryLimitChange: (limit: TarotHistoryLimit) => void;
+  onHistoryLimitChange: (limit: TarotHistoryLimit) => boolean;
 }) {
   const copy = tarotPreferencesCopy[locale];
   const { actions, preferences } = useTarotPreferences();
   const [announcement, setAnnouncement] = useState('');
   const [resetPending, setResetPending] = useState(false);
+  const [pendingLimit, setPendingLimit] = useState<TarotHistoryLimit | null>(null);
+  const [saveFailed, setSaveFailed] = useState(false);
+  const [historyFailed, setHistoryFailed] = useState(false);
   const language = localeOptions.find((option) => option.locale === locale)?.label ?? locale;
 
   function update(patch: Parameters<typeof actions.update>[0]) {
-    actions.update(patch);
-    setAnnouncement(copy.saved);
+    const persisted = actions.update(patch);
+    setSaveFailed(!persisted);
+    setAnnouncement(persisted ? copy.saved : '');
+    return persisted;
   }
 
   function changeHistoryLimit(historyLimit: TarotHistoryLimit) {
-    update({ historyLimit });
-    onHistoryLimitChange(historyLimit);
+    const persisted = update({ historyLimit });
+    const historyPersisted = onHistoryLimitChange(historyLimit);
+    setHistoryFailed(!historyPersisted);
+    if (!historyPersisted) setAnnouncement('');
+    if (persisted && historyPersisted) setPendingLimit(null);
   }
 
   function restoreDefaults() {
-    actions.restoreDefaults();
-    onHistoryLimitChange(75);
-    setAnnouncement(copy.restored);
-    setResetPending(false);
+    const persisted = actions.restoreDefaults();
+    const historyPersisted = onHistoryLimitChange(75);
+    setHistoryFailed(!historyPersisted);
+    setSaveFailed(!persisted);
+    setAnnouncement(persisted && historyPersisted ? copy.restored : '');
+    if (persisted && historyPersisted) setResetPending(false);
   }
 
   return (
     <section aria-labelledby="tarot-settings-title" className={styles.section} id="tarot-settings">
       <Container size="wide">
-        <Surface className={styles.surface} elevation="low">
+        <div className={styles.surface}>
           <Stack gap="lg">
             <div className={styles.introduction}>
               <Typography as="p" variant="eyebrow">
@@ -95,13 +105,16 @@ export function TarotPreferencesSection({
               <div className={styles.selectRow}>
                 <label htmlFor="tarot-history-limit">
                   <strong>{copy.historyLimit}</strong>
-                  <small>{copy.historyDescription}</small>
+                  <small id="tarot-history-description">{copy.historyDescription}</small>
                 </label>
                 <select
+                  aria-describedby="tarot-history-description"
                   id="tarot-history-limit"
-                  onChange={(event) =>
-                    changeHistoryLimit(Number(event.target.value) as TarotHistoryLimit)
-                  }
+                  onChange={(event) => {
+                    const limit = Number(event.target.value) as TarotHistoryLimit;
+                    if (limit < preferences.historyLimit) setPendingLimit(limit);
+                    else changeHistoryLimit(limit);
+                  }}
                   value={preferences.historyLimit}
                 >
                   {TAROT_HISTORY_LIMIT_OPTIONS.map((option) => (
@@ -125,32 +138,84 @@ export function TarotPreferencesSection({
               <Button onClick={onBackToTarot} prominence="secondary">
                 {copy.backToTarot}
               </Button>
-              <Button onClick={() => setResetPending(true)} prominence="quiet">
-                {copy.reset}
-              </Button>
+              <div className={styles.resetGroup}>
+                <Button
+                  className={styles.resetAction}
+                  onClick={() => setResetPending(true)}
+                  prominence="quiet"
+                >
+                  {copy.reset}
+                </Button>
+              </div>
             </div>
+            {(saveFailed || historyFailed) && !resetPending && pendingLimit === null ? (
+              <Toast tone="error">
+                <p>{saveFailed ? copy.saveFailed : copy.historyFailed}</p>
+                <Button
+                  onClick={() =>
+                    historyFailed
+                      ? changeHistoryLimit(preferences.historyLimit)
+                      : update(preferences)
+                  }
+                  prominence="secondary"
+                >
+                  {copy.retry}
+                </Button>
+              </Toast>
+            ) : null}
+            <p aria-atomic="true" aria-live="polite" className={styles.feedback} role="status">
+              {announcement}
+            </p>
           </Stack>
-        </Surface>
+        </div>
       </Container>
 
-      <p aria-atomic="true" aria-live="polite" className={styles.srOnly} role="status">
-        {announcement}
-      </p>
-
-      <Modal label={copy.resetTitle} onClose={() => setResetPending(false)} open={resetPending}>
+      <Modal
+        aria-describedby={
+          saveFailed || historyFailed
+            ? 'tarot-reset-description tarot-reset-error'
+            : 'tarot-reset-description'
+        }
+        className={styles.resetDialog}
+        label={pendingLimit === null ? copy.resetTitle : copy.reduceTitle}
+        onClose={() => {
+          setResetPending(false);
+          setPendingLimit(null);
+        }}
+        open={resetPending || pendingLimit !== null}
+      >
         <Stack gap="lg">
           <Stack gap="sm">
             <Typography as="h2" variant="heading-md">
-              {copy.resetTitle}
+              {pendingLimit === null ? copy.resetTitle : copy.reduceTitle}
             </Typography>
-            <Typography>{copy.resetDescription}</Typography>
+            <Typography id="tarot-reset-description">
+              {pendingLimit === null ? copy.resetDescription : copy.reduceDescription(pendingLimit)}
+            </Typography>
           </Stack>
+          {saveFailed || historyFailed ? (
+            <Toast id="tarot-reset-error" tone="error">
+              {saveFailed ? copy.saveFailed : copy.historyFailed}
+            </Toast>
+          ) : null}
           <div className={styles.dialogActions}>
-            <Button autoFocus onClick={() => setResetPending(false)}>
+            <Button
+              autoFocus
+              prominence="secondary"
+              onClick={() => {
+                setResetPending(false);
+                setPendingLimit(null);
+              }}
+            >
               {copy.cancel}
             </Button>
-            <Button onClick={restoreDefaults} prominence="primary">
-              {copy.resetConfirm}
+            <Button
+              onClick={() =>
+                pendingLimit === null ? restoreDefaults() : changeHistoryLimit(pendingLimit)
+              }
+              prominence="danger"
+            >
+              {pendingLimit === null ? copy.resetConfirm : copy.reduceConfirm}
             </Button>
           </div>
         </Stack>

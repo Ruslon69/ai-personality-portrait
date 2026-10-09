@@ -3,6 +3,14 @@ import type { Locale } from '@shared/i18n';
 import { chapterTitleVariants, type ChapterTitleKey } from '../data';
 
 const continuityFrames: Record<Locale, readonly string[]> = {
+  es: [
+    'Una nueva perspectiva',
+    'El siguiente giro',
+    'Profundizar en el tema',
+    'Otro ritmo',
+    'La siguiente parte',
+    'Un cambio de perspectiva',
+  ],
   en: [
     'A New Perspective',
     'The Next Turn',

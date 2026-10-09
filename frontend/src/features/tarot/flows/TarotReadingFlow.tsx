@@ -31,6 +31,7 @@ import {
   toggleManualCardSelection,
 } from '../components/manual-selection-state';
 import styles from '../components/Tarot.module.css';
+import entryStyles from '../components/TarotEntry.module.css';
 import {
   createRevealState,
   getRevealCta,
@@ -82,7 +83,7 @@ export function TarotReadingFlow({
       canResumeReveal ? state.revealedCount : 0,
     ),
   );
-  const [error, setError] = useState('');
+  const [hasDateError, setHasDateError] = useState(false);
   const previousStepIndexRef = useRef(stepIndex);
   const pendingRevealPositionRef = useRef<number | null>(null);
   const revealExperienceRef = useRef<HTMLDivElement>(null);
@@ -109,6 +110,15 @@ export function TarotReadingFlow({
                   ? copy.chooseCards
                   : copy.deal
                 : copy.revealTitle;
+  const continueLabel = {
+    context: copy.toDate,
+    date: copy.toNumerology,
+    numerology: copy.toTheme,
+    theme: copy.toMode,
+    mode: state.selectionMode === 'manual' ? copy.pickCards : copy.reviewCards,
+    cards: copy.revealCards,
+    reveal: copy.seeReading,
+  }[step];
   const numerology = useMemo(
     () => (isValidNumerologyDate(date) ? createNumerologyProfile(date, locale) : null),
     [date, locale],
@@ -212,11 +222,11 @@ export function TarotReadingFlow({
     }
     if (step === 'date') {
       if (!isValidNumerologyDate(date)) {
-        setError(copy.invalidDate);
+        setHasDateError(true);
         return;
       }
       actions.saveBirthDate(date);
-      setError('');
+      setHasDateError(false);
     }
     if (step === 'cards') {
       if (
@@ -305,7 +315,10 @@ export function TarotReadingFlow({
         currentPosition ?? ''
       }. ${copy.cardBack}.`;
   return (
-    <div className={styles.flowPage} data-reading-step={step}>
+    <div
+      className={step === 'reveal' ? styles.flowPage : `${styles.flowPage} ${entryStyles.setup}`}
+      data-reading-step={step}
+    >
       <Container className={styles.readingContainer} size="wide">
         <div className={styles.flowHeader}>
           <div>
@@ -332,9 +345,9 @@ export function TarotReadingFlow({
               <Typography>{copy.contextLead}</Typography>
               <div className={styles.questionList}>
                 {tarotContextQuestions.map((question) => (
-                  <fieldset className={styles.question} key={question.id}>
+                  <fieldset className={styles.question} data-setup-question key={question.id}>
                     <legend>{question.title[locale]}</legend>
-                    <div className={styles.optionGrid}>
+                    <div className={styles.optionGrid} data-setup-options>
                       {question.options.map((option) => {
                         const checked = answers.some(
                           (answer) =>
@@ -372,21 +385,19 @@ export function TarotReadingFlow({
               <label className={styles.dateField}>
                 <span>{copy.birthDate}</span>
                 <Input
-                  aria-describedby={error ? 'tarot-date-error' : undefined}
-                  aria-invalid={Boolean(error)}
+                  aria-describedby={hasDateError ? 'tarot-date-error' : undefined}
+                  aria-invalid={hasDateError}
                   autoComplete="bday"
                   max={new Date().toISOString().slice(0, 10)}
-                  onBlur={() =>
-                    setError(date && !isValidNumerologyDate(date) ? copy.invalidDate : '')
-                  }
+                  onBlur={() => setHasDateError(Boolean(date && !isValidNumerologyDate(date)))}
                   onChange={(event) => setDate(event.target.value)}
                   type="date"
                   value={date}
                 />
               </label>
-              {error ? (
+              {hasDateError ? (
                 <Typography className={styles.error} id="tarot-date-error" role="alert">
-                  {error}
+                  {copy.invalidDate}
                 </Typography>
               ) : null}
             </Stack>
@@ -473,7 +484,7 @@ export function TarotReadingFlow({
               <Typography as="h1" id="tarot-reading-step-title" tabIndex={-1} variant="heading-lg">
                 {copy.chooseMode}
               </Typography>
-              <div className={styles.modeGrid}>
+              <div className={styles.modeGrid} data-setup-mode>
                 <Button
                   aria-pressed={state.selectionMode === 'automatic'}
                   onClick={() => actions.setSelectionMode('automatic')}
@@ -726,7 +737,7 @@ export function TarotReadingFlow({
                 {copy.back}
               </Button>
               <Button disabled={!canContinue} onClick={next} prominence="primary" size="large">
-                {copy.continue}
+                {continueLabel}
               </Button>
             </div>
           ) : null}

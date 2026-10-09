@@ -1,3 +1,4 @@
+import { productContractCopy } from '@shared/i18n/product-contract-copy';
 import { useEffect, useId, useRef, useState } from 'react';
 
 import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
@@ -115,6 +116,16 @@ export function Questionnaire({
               value={answeredCount}
             />
           </Stack>
+
+          {isFirstQuestion ? (
+            <Typography
+              className={styles.questionDescription}
+              variant="caption"
+              id="questionnaire-lifetime-note"
+            >
+              {productContractCopy[locale].portraitLifetime}
+            </Typography>
+          ) : null}
 
           {checkpoint ? (
             <div aria-label={copy.checkpointAria} className={styles.checkpoint} role="note">

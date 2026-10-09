@@ -1,28 +1,18 @@
+import { summaryCopy } from './../data/summary-copy';
+import type { ProfileLocale } from '@entities/personality-profile';
 import { PortraitMark, type PersonalityProfile } from '@entities/personality-profile';
-import { Badge, ButtonLink, Card, Container, Stack, Typography } from '@shared/ui';
+import { Badge, Card, Container, Stack, Typography } from '@shared/ui';
+import { navigateToPortraitSection } from './navigate-to-portrait-section';
 import styles from './PortraitSummary.module.css';
 
-export function PortraitSummary({ profile }: { profile: PersonalityProfile }) {
-  const copy = {
-    en: {
-      eyebrow: 'At a glance',
-      title: 'What are you like?',
-      recommendation: 'One useful next step',
-      open: 'See action',
-    },
-    ru: {
-      eyebrow: 'Коротко о вас',
-      title: 'Какой вы человек?',
-      recommendation: 'Один полезный шаг',
-      open: 'Посмотреть действие',
-    },
-    uk: {
-      eyebrow: 'Коротко про вас',
-      title: 'Яка ви людина?',
-      recommendation: 'Один корисний крок',
-      open: 'Переглянути дію',
-    },
-  }[profile.locale];
+export function PortraitSummary({
+  profile,
+  locale = profile.locale,
+}: {
+  profile: PersonalityProfile;
+  locale?: ProfileLocale;
+}) {
+  const copy = summaryCopy[locale];
   const recommendation = profile.recommendations[0];
   return (
     <section aria-labelledby="summary-title" className={styles.section} id="summary">
@@ -32,7 +22,7 @@ export function PortraitSummary({ profile }: { profile: PersonalityProfile }) {
             <Typography as="p" variant="eyebrow">
               {copy.eyebrow}
             </Typography>
-            <Typography as="h2" id="summary-title" variant="heading-lg">
+            <Typography as="h2" id="summary-title" tabIndex={-1} variant="heading-lg">
               {copy.title}
             </Typography>
           </Stack>
@@ -41,7 +31,7 @@ export function PortraitSummary({ profile }: { profile: PersonalityProfile }) {
               <div className={styles.mark}>
                 <PortraitMark identity={profile.visualIdentity} size="lg" />
               </div>
-              <div className={styles.statement}>
+              <div className={styles.statement} lang={profile.locale}>
                 <Typography as="h3" variant="heading-md">
                   {profile.revealHeadline}
                 </Typography>
@@ -55,11 +45,27 @@ export function PortraitSummary({ profile }: { profile: PersonalityProfile }) {
                 </div>
               </div>
               {recommendation ? (
-                <ButtonLink className={styles.tile} href="#recommendations">
+                <div className={styles.actionBridge}>
                   <span>{copy.recommendation}</span>
-                  <strong>{recommendation.actionLabel}</strong>
-                  <small>{copy.open} →</small>
-                </ButtonLink>
+                  <strong id="summary-action-title" lang={profile.locale}>
+                    {recommendation.actionLabel}
+                  </strong>
+                  <p>{copy.bridgeLead}</p>
+                  <a
+                    aria-describedby="summary-action-title"
+                    className={styles.actionLink}
+                    href="#recommendations"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      navigateToPortraitSection('recommendations', true);
+                    }}
+                  >
+                    <span>{copy.open}</span>
+                    <span aria-hidden="true" className={styles.actionArrow}>
+                      →
+                    </span>
+                  </a>
+                </div>
               ) : null}
             </div>
           </Card>

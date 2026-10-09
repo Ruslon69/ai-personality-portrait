@@ -1,0 +1,13 @@
+.artwork {
+  min-inline-size: 0;
+  inline-size: 100%;
+  aspect-ratio: 1;
+  isolation: isolate;
+}
+.artwork img {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+}

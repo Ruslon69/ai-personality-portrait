@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Button, Stack, Surface, Typography } from '@shared/ui';
+import { Button, Stack, Typography } from '@shared/ui';
 import type { Locale } from '@shared/i18n/types';
 
 import { errorFallbackCopy, getErrorFallbackLocale } from './error-fallback-localization';
@@ -15,15 +15,14 @@ export function ErrorFallback({ locale = getErrorFallbackLocale() }: { locale?: 
 
   return (
     <main className={styles.root}>
-      <Surface
-        aria-labelledby="application-error-title"
-        className={styles.panel}
-        elevation="low"
-        role="alert"
-      >
-        <Stack align="start" gap="lg">
+      <section aria-labelledby="application-error-title" className={styles.panel} role="alert">
+        <Stack align="start" className={styles.content} gap="lg">
+          <Typography as="p" variant="eyebrow">
+            Soul Arkana
+          </Typography>
+          <span aria-hidden="true" className={styles.star} />
           <Stack gap="sm">
-            <Typography as="h1" id="application-error-title" variant="heading-lg">
+            <Typography as="h1" id="application-error-title" variant="display">
               {copy.title}
             </Typography>
             <Typography>{copy.description}</Typography>
@@ -32,7 +31,7 @@ export function ErrorFallback({ locale = getErrorFallbackLocale() }: { locale?: 
             {copy.action}
           </Button>
         </Stack>
-      </Surface>
+      </section>
     </main>
   );
 }

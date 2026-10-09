@@ -1,8 +1,10 @@
+import { resolveLocale } from '@shared/i18n';
 import { appConfig } from '@shared/config';
 import { logger } from '@shared/lib/logger';
 import type { NumerologyProfile } from '@features/numerology/types';
 
 import { journeyStorageAdapter } from '../adapters';
+import { restoreDailyCardState } from '../adapters/journey-adapter';
 import { createBrowserProductStorageLegacyBridge } from '../compatibility';
 import { LEGACY_STORAGE_KEYS } from '../constants';
 import { createBrowserProductStorageRepository } from '../repositories';
@@ -33,7 +35,7 @@ function browserEventTarget(): ProductStorageEventTarget | null {
 
 function storedLocale(legacy: ReturnType<typeof createBrowserProductStorageLegacyBridge>) {
   const value = legacy.readValues(LEGACY_STORAGE_KEYS.locale)[LEGACY_STORAGE_KEYS.locale[0]];
-  return value === 'en' || value === 'uk' ? value : 'ru';
+  return resolveLocale(value);
 }
 
 function createRuntimeService() {
@@ -79,9 +81,11 @@ export function readJourneyStateFromProductStorage() {
   const envelopeState = journeyStorageAdapter.fromEnvelope(
     runtime.getSection('journey') ?? undefined,
   );
-  if (envelopeState) return envelopeState;
   const legacy = runtime.readLegacyValues(LEGACY_STORAGE_KEYS.journey);
-  return journeyStorageAdapter.legacyFallback(legacy[LEGACY_STORAGE_KEYS.journey[0]] ?? null);
+  return restoreDailyCardState(
+    envelopeState,
+    journeyStorageAdapter.legacyFallback(legacy[LEGACY_STORAGE_KEYS.journey[0]] ?? null),
+  );
 }
 
 export function didJourneyWritePersist(

@@ -1,3 +1,4 @@
+import { isSupportedLocale } from '@shared/i18n';
 import { createEmptyDraftPortrait } from '@entities/personality-profile';
 import type { JourneyMemorySnapshot } from '@features/journey-memory';
 import type { JourneyState } from '@features/journey';
@@ -245,8 +246,7 @@ export function migrateLegacyStorage(input: LegacyStorageInput): ProductStorageM
     safeParse(first(input.values, LEGACY_STORAGE_KEYS.tarotPreferences), 'preferences', warnings),
   );
   const birthDate = first(input.values, LEGACY_STORAGE_KEYS.numerologyBirthDate) ?? '';
-  const locale =
-    localeRaw === 'en' || localeRaw === 'ru' || localeRaw === 'uk' ? localeRaw : input.locale;
+  const locale = isSupportedLocale(localeRaw) ? localeRaw : input.locale;
   const validDeckTheme =
     deckTheme === 'cosmic-minimal' ||
     deckTheme === 'deep-water' ||

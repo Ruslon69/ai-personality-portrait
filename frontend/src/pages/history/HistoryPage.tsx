@@ -20,6 +20,8 @@ export function HistoryPage() {
       locale={locale}
       onBack={() => navigate(ROUTES.profile)}
       onExplore={() => navigate(ROUTES.tarot)}
+      onExplorePortrait={() => navigate(ROUTES.portrait)}
+      onManageReadings={() => navigate(ROUTES.tarotHistory)}
       onOpenPortrait={(profile) => openPortrait(profile.id)}
       onOpenReading={(record) => {
         tarotSessionActions.saveReading(record.reading);

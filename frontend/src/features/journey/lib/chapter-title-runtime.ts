@@ -1,4 +1,4 @@
-import type { Locale } from '@shared/i18n';
+import { supportedLocales } from '@shared/i18n';
 
 import { chapterTitleVariants, type ChapterTitleKey } from '../data';
 import { normalizeChapterTitle, selectUniqueChapterTitle } from './select-chapter-title';
@@ -10,7 +10,7 @@ export type JourneyChapterTitleRuntimeReport = {
   valid: boolean;
 };
 
-const locales: readonly Locale[] = ['ru', 'en', 'uk'];
+const locales = supportedLocales;
 const keys = Object.keys(chapterTitleVariants.ru) as readonly ChapterTitleKey[];
 
 export function runJourneyChapterTitleRuntimeSuite(): JourneyChapterTitleRuntimeReport {

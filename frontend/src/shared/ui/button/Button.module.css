@@ -9,8 +9,8 @@
   gap: var(--space-2);
   padding: calc(var(--space-2) + var(--space-1)) var(--space-5);
   border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--color-surface-raised) 82%, transparent);
+  border-radius: 0.5rem;
+  background: var(--sa-bg-soft);
   color: var(--color-text);
   cursor: pointer;
   font-size: 0.9375rem;
@@ -47,29 +47,23 @@
 }
 
 .root[data-prominence='primary'] {
-  border-color: var(--color-action-primary);
-  background: var(--color-action-primary);
-  color: var(--color-on-action-primary);
-  font-weight: var(--font-weight-semibold);
-  box-shadow:
-    0 0.0625rem 0 color-mix(in srgb, var(--color-on-action-primary) 18%, transparent) inset,
-    0 0.5rem 1.25rem color-mix(in srgb, var(--color-action-primary) 20%, transparent);
+  border-color: var(--sa-action-border);
+  background: var(--sa-action-fill);
+  color: var(--sa-action-ink);
+  font-weight: var(--font-weight-medium);
+  box-shadow: var(--sa-action-shadow);
 }
-
 .root[data-prominence='primary']:hover:not(:disabled) {
-  border-color: var(--color-action-primary-hover);
-  background: var(--color-action-primary-hover);
-  box-shadow:
-    0 0.0625rem 0 color-mix(in srgb, var(--color-on-action-primary) 20%, transparent) inset,
-    0 0.625rem 1.5rem color-mix(in srgb, var(--color-action-primary) 24%, transparent);
+  background: var(--sa-action-fill-hover);
+  border-color: var(--sa-action-border);
 }
-
 .root[data-prominence='primary']:active:not(:disabled) {
-  box-shadow: 0 0.25rem 0.75rem color-mix(in srgb, var(--color-action-primary) 18%, transparent);
-  opacity: 0.94;
+  box-shadow: none;
+  opacity: 0.92;
 }
 
 .root[data-prominence='secondary'] {
+  color: var(--sa-gold);
   border-color: color-mix(in srgb, var(--color-border-strong) 50%, var(--color-border));
   background: transparent;
   box-shadow: none;
@@ -94,7 +88,7 @@
 }
 
 .root[data-prominence='quiet'] {
-  min-block-size: 2.5rem;
+  min-block-size: 2.75rem;
   padding: var(--space-2);
   border-color: transparent;
   background: transparent;
@@ -132,5 +126,11 @@
   .root:focus-visible {
     outline: 0.125rem solid Highlight;
     outline-offset: 0.125rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    transition: none;
   }
 }

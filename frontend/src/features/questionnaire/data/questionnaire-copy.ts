@@ -22,6 +22,46 @@ export const questionnaireCopy: Record<
     skip: string;
   }
 > = {
+  es: {
+    back: 'Volver',
+    category: {
+      communication: 'comunicación',
+      decisions: 'forma de decidir',
+      energy: 'energía y descanso',
+      motivation: 'motivación',
+      openness: 'apertura a lo nuevo',
+      pressure: 'respuesta a la presión',
+      relationships: 'relaciones',
+      uncertainty: 'respuesta a la incertidumbre',
+    },
+    building: (category) => `Explorando: ${category}`,
+    remaining: (count) =>
+      count === 0
+        ? 'Última pregunta'
+        : `${count === 1 ? 'Queda 1 pregunta' : `Quedan ${count} preguntas`}`,
+    confirming: 'Añadiendo tu respuesta…',
+    checkpointAria: 'Punto del recorrido del retrato',
+    checkpoints: [
+      'Tu forma de decidir empieza a tomar forma.',
+      'Ya vemos varias preferencias que se repiten.',
+      'Queda un poco de contexto sobre cómo te comunicas.',
+      'La base de tu retrato está lista.',
+    ],
+    continue: 'Continuar',
+    optional: 'Pregunta opcional',
+    optionsLegend: (title) => `Opciones de respuesta para: ${title}`,
+    progress: (current, total) => `Paso ${current} de ${total}`,
+    reactions: [
+      'Hemos añadido este contexto.',
+      'Comprendemos mejor cómo sueles actuar aquí.',
+      'Otra respuesta forma parte del retrato.',
+    ],
+    required: 'Pregunta obligatoria',
+    selected: (count) => `${count} ${count === 1 ? 'seleccionada' : 'seleccionadas'}`,
+    selectMultiple: 'Elige una o varias opciones',
+    selectOne: 'Elige una opción',
+    skip: 'Omitir',
+  },
   en: {
     back: 'Back',
     category: {
@@ -34,8 +74,9 @@ export const questionnaireCopy: Record<
       relationships: 'relationships',
       uncertainty: 'response to uncertainty',
     },
-    building: (category) => `Now assembling: ${category}`,
-    remaining: (count) => `${count} situations left`,
+    building: (category) => `Exploring: ${category}`,
+    remaining: (count) =>
+      count === 0 ? 'Final question' : `${count} more ${count === 1 ? 'question' : 'questions'}`,
     confirming: 'Adding your answer…',
     checkpointAria: 'Portrait checkpoint',
     checkpoints: [
@@ -63,7 +104,7 @@ export const questionnaireCopy: Record<
     back: 'Назад',
     category: {
       communication: 'стиль общения',
-      decisions: 'способ решений',
+      decisions: 'принятие решений',
       energy: 'энергия и восстановление',
       motivation: 'мотивация',
       openness: 'интерес к новому',
@@ -71,8 +112,8 @@ export const questionnaireCopy: Record<
       relationships: 'отношения',
       uncertainty: 'неопределённость',
     },
-    building: (category) => `Сейчас собираем: ${category}`,
-    remaining: (count) => `Осталось ситуаций: ${count}`,
+    building: (category) => `Сейчас — ${category}`,
+    remaining: (count) => (count === 0 ? 'Последний вопрос' : `Вопросов впереди: ${count}`),
     confirming: 'Добавляем ваш ответ…',
     checkpointAria: 'Промежуточный результат',
     checkpoints: [
@@ -100,7 +141,7 @@ export const questionnaireCopy: Record<
     back: 'Назад',
     category: {
       communication: 'стиль спілкування',
-      decisions: 'спосіб рішень',
+      decisions: 'ухвалення рішень',
       energy: 'енергія та відновлення',
       motivation: 'мотивація',
       openness: 'інтерес до нового',
@@ -108,8 +149,8 @@ export const questionnaireCopy: Record<
       relationships: 'стосунки',
       uncertainty: 'невизначеність',
     },
-    building: (category) => `Зараз збираємо: ${category}`,
-    remaining: (count) => `Залишилося ситуацій: ${count}`,
+    building: (category) => `Зараз — ${category}`,
+    remaining: (count) => (count === 0 ? 'Останнє запитання' : `Запитань попереду: ${count}`),
     confirming: 'Додаємо вашу відповідь…',
     checkpointAria: 'Проміжний результат',
     checkpoints: [
@@ -136,15 +177,42 @@ export const questionnaireCopy: Record<
 };
 
 export const interestCopy = {
+  es: {
+    eyebrow: 'Un detalle personal',
+    title: '¿Qué despierta tu interés de verdad?',
+    description:
+      'Elige entre 3 y 6 temas. Nos ayudan a buscar ejemplos relevantes, no a definir tu carácter.',
+    count: (count: number) => `${count} de 6 seleccionados`,
+    continue: 'Añadir estos intereses',
+    back: 'Volver a las preguntas',
+    other: 'Otro tema',
+    otherLabel: 'Otro interés (opcional)',
+    otherPlaceholder: 'Por ejemplo, arquitectura',
+    options: {
+      technology: 'Tecnología',
+      creativity: 'Creatividad',
+      people: 'Personas y relaciones',
+      movement: 'Deporte y movimiento',
+      travel: 'Viajes',
+      learning: 'Aprendizaje',
+      business: 'Negocios',
+      games: 'Juegos',
+      music: 'Música',
+      cinema: 'Cine',
+      nature: 'Naturaleza',
+      selfDevelopment: 'Desarrollo personal',
+    },
+  },
   en: {
     eyebrow: 'One personal step',
     title: 'What genuinely holds your attention?',
-    description: 'Choose 3–6 directions. They personalize examples, not define your character.',
+    description:
+      'Choose 3–6 directions. They help us choose relevant examples without defining your character.',
     count: (count: number) => `${count} of 6 selected`,
     continue: 'Add these interests',
     back: 'Back to questions',
     other: 'Something else',
-    otherLabel: 'Optional short interest',
+    otherLabel: 'Another interest (optional)',
     otherPlaceholder: 'For example, architecture',
     options: {
       technology: 'Technology',
@@ -170,7 +238,7 @@ export const interestCopy = {
     continue: 'Добавить интересы',
     back: 'Назад к вопросам',
     other: 'Другое',
-    otherLabel: 'Необязательный короткий интерес',
+    otherLabel: 'Другой интерес (необязательно)',
     otherPlaceholder: 'Например, архитектура',
     options: {
       technology: 'Технологии',
@@ -195,7 +263,7 @@ export const interestCopy = {
     continue: 'Додати інтереси',
     back: 'Назад до запитань',
     other: 'Інше',
-    otherLabel: 'Необов’язковий короткий інтерес',
+    otherLabel: 'Інший інтерес (необов’язково)',
     otherPlaceholder: 'Наприклад, архітектура',
     options: {
       technology: 'Технології',

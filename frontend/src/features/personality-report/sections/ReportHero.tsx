@@ -20,6 +20,13 @@ export function ReportHero({
   onShare,
 }: ReportHeroProps) {
   const copy = {
+    es: [
+      'Reflexión personal',
+      'Compartir reflexión completa',
+      'Compartir',
+      'Creado',
+      'Basado en las fuentes que has elegido',
+    ],
     en: [
       'Personal reflection',
       'Share full reflection',
@@ -74,7 +81,7 @@ export function ReportHero({
                   {copy[3]}
                 </Typography>
                 <Typography as="p" variant="heading-md">
-                  <time dateTime={createdAt}>{formatReportDate(createdAt)}</time>
+                  <time dateTime={createdAt}>{formatReportDate(createdAt, locale)}</time>
                 </Typography>
                 <Typography className={styles.muted} variant="caption">
                   {copy[4]}

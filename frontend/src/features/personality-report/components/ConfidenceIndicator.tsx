@@ -1,3 +1,4 @@
+import { reportCopy } from '../data/report-copy';
 import type { ConfidenceExplanation, ProfileLocale } from '@entities/personality-profile';
 
 import styles from './Explainability.module.css';
@@ -8,7 +9,7 @@ type ConfidenceIndicatorProps = {
 };
 
 export function ConfidenceIndicator({ confidence, locale = 'ru' }: ConfidenceIndicatorProps) {
-  const label = locale === 'en' ? 'Confidence' : locale === 'uk' ? 'Впевненість' : 'Уверенность';
+  const label = reportCopy[locale].confidenceLabel;
   return (
     <div className={styles.confidence} data-confidence={confidence.level}>
       <span className={styles.visuallyHidden}>

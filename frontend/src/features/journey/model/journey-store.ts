@@ -56,6 +56,8 @@ export function createJourneyActions(
   store: Store<JourneyState>,
   dependencies: JourneyActionDependencies,
 ) {
+  const unsavedReadingIds = new Set<string>();
+
   function unchanged<T>(value: T): JourneyMutationResult<T> {
     return { changed: false, persisted: true, value };
   }
@@ -69,10 +71,17 @@ export function createJourneyActions(
     store.setState(update);
     const persistence = dependencies.persist(store.getState());
     if (!persistence.persisted && rollbackOnFailure) store.setState(previous);
+    if (persistence.persisted) unsavedReadingIds.clear();
     return { changed: true, persisted: persistence.persisted, value };
   }
 
   return {
+    isReadingPersisted(readingId: string) {
+      return (
+        store.getState().readings.some((record) => record.reading.id === readingId) &&
+        !unsavedReadingIds.has(readingId)
+      );
+    },
     ensureDailyCard(card: JourneyDailyCard) {
       const state = store.getState();
       if (state.dailyCards[card.dateKey]) return unchanged(undefined);
@@ -96,7 +105,10 @@ export function createJourneyActions(
     recordReading(reading: TarotReading) {
       const state = store.getState();
       const existing = state.readings.find((item) => item.reading.id === reading.id);
-      if (existing) return unchanged(existing.reading);
+      if (existing) {
+        if (!unsavedReadingIds.has(reading.id)) return unchanged(existing.reading);
+        return commit({ readings: state.readings }, existing.reading);
+      }
       const previousSnapshot = buildJourneyMemorySnapshot({
         generatedAt: reading.createdAt,
         locale: reading.context.locale,
@@ -109,7 +121,9 @@ export function createJourneyActions(
         dependencies.now(),
         dependencies.historyLimit(),
       );
-      return commit({ readings: update.records }, update.record.reading);
+      const result = commit({ readings: update.records }, update.record.reading);
+      if (!result.persisted) unsavedReadingIds.add(reading.id);
+      return result;
     },
     deleteReading(readingId: string) {
       const state = store.getState();

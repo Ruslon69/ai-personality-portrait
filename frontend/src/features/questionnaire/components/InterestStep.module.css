@@ -1,20 +1,28 @@
 .root {
-  padding-block: var(--page-hero-padding-block);
+  min-block-size: min(48rem, calc(100dvh - 5rem));
+  padding-block: clamp(2rem, 5vw, 4.5rem);
+  background: radial-gradient(circle at 76% 18%, var(--portrait-gold-soft), transparent 28rem);
 }
 .content {
   display: grid;
-  inline-size: min(100%, var(--content-width-questionnaire));
+  grid-template-columns: minmax(0, 1fr);
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+  inline-size: min(100%, 64rem);
   margin-inline: auto;
   gap: var(--flow-content-gap);
 }
 .card {
-  padding: var(--flow-surface-padding);
-  box-shadow: var(--shadow-low);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
   animation: interest-enter var(--transition-duration-normal) var(--transition-easing-standard);
 }
 .muted,
 .count {
-  color: var(--color-text-muted);
+  color: var(--portrait-muted);
 }
 .fieldset {
   min-inline-size: 0;
@@ -30,12 +38,12 @@
 .interest {
   position: relative;
   display: grid;
-  min-block-size: 3.5rem;
+  min-block-size: 3.75rem;
   align-items: center;
   padding: var(--space-3) var(--space-4);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
+  border: 1px solid var(--portrait-line);
+  border-radius: 0.75rem;
+  background: var(--portrait-surface);
   cursor: pointer;
   gap: var(--space-3);
   grid-template-columns: auto minmax(0, 1fr);
@@ -51,9 +59,9 @@
   opacity: 0;
 }
 .interest:has(input:checked) {
-  border-color: var(--color-interactive);
-  background: color-mix(in srgb, var(--color-interactive) 8%, var(--color-surface));
-  box-shadow: 0 0 0 0.1875rem color-mix(in srgb, var(--color-interactive) 12%, transparent);
+  border-color: var(--portrait-gold);
+  background: linear-gradient(110deg, var(--portrait-gold-soft), var(--portrait-surface));
+  box-shadow: inset 2px 0 var(--portrait-gold);
 }
 .interest:has(input:focus-visible) {
   outline: var(--focus-ring-width) solid var(--color-focus);
@@ -62,13 +70,13 @@
 .interestMark {
   inline-size: 1rem;
   block-size: 1rem;
-  border: 0.125rem solid var(--color-border-strong);
+  border: 1px solid var(--portrait-line);
   border-radius: var(--radius-full);
 }
 .interest:has(input:checked) .interestMark {
-  border-color: var(--color-interactive);
-  background: var(--color-interactive);
-  box-shadow: inset 0 0 0 0.2rem var(--color-surface);
+  border-color: var(--portrait-gold);
+  background: var(--portrait-gold);
+  box-shadow: inset 0 0 0 0.2rem var(--portrait-canvas);
 }
 .otherField {
   display: grid;
@@ -80,6 +88,13 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
+}
+.actions button[data-prominence='primary'] {
+  min-block-size: 3.5rem;
+  border-color: #d7ba82;
+  border-radius: 0.75rem;
+  background: linear-gradient(115deg, #f0dfb7, #c7a468);
+  color: #2b2134;
 }
 .visuallyHidden {
   position: absolute;
@@ -115,5 +130,19 @@
   }
   .interest:has(input:checked) {
     transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .interest input {
+    position: static;
+    inline-size: 1rem;
+    block-size: 1rem;
+    margin: 0;
+    opacity: 1;
+  }
+
+  .interestMark {
+    display: none;
   }
 }

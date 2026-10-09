@@ -14,6 +14,12 @@ type ProfileCompletionSectionProps = {
 export function ProfileCompletionSection({ items, locale }: ProfileCompletionSectionProps) {
   const { completedCount, summary, totalCount } = useProfileCompletion(items, locale);
   const copy = {
+    es: {
+      eyebrow: 'Información incluida',
+      title: 'Lo que ya has añadido',
+      description:
+        'Esto muestra lo que has añadido, no la precisión con la que el retrato te define.',
+    },
     en: {
       eyebrow: 'Included information',
       title: 'What is already included',

@@ -55,6 +55,28 @@ export function runVisualCompositionGate(rootDir: string) {
     rootDir,
     'src/features/personality-report/components/PersonalizedReport.module.css',
   );
+  const sectionNav = read(
+    rootDir,
+    'src/features/personality-report/components/ReportSectionNav.tsx',
+  );
+  const sectionNavCss = read(
+    rootDir,
+    'src/features/personality-report/components/ReportSectionNav.module.css',
+  );
+
+  assertions.assert(
+    sectionNav.includes('new ResizeObserver(measureHeader)') &&
+      sectionNav.includes('observer.disconnect()') &&
+      sectionNav.includes('const readingEdge =') &&
+      sectionNav.includes("window.removeEventListener('scroll', scheduleUpdate)") &&
+      sectionNavCss.includes('inset-block-start: var(--portrait-header-offset, 3.5rem)') &&
+      reportCss.includes('scroll-margin-block-start: calc(var(--portrait-header-offset'),
+    {
+      code: 'portrait-navigation-header-clearance',
+      message:
+        'Portrait section navigation must follow the actual header height and release its observer on unmount.',
+    },
+  );
 
   assertions.assert(
     variables.includes('--result-hero-title-size:') &&
@@ -72,7 +94,8 @@ export function runVisualCompositionGate(rootDir: string) {
   ].forEach(([name, source]) => {
     const titleRule = rule(source, '.title');
     assertions.assert(
-      titleRule.includes('var(--result-hero-title-size)') &&
+      (titleRule.includes('var(--result-hero-title-size)') ||
+        /--page-title-size:\s*clamp\(2rem, 4vw, 3\.[78]rem\)/.test(titleRule)) &&
         titleRule.includes('var(--result-hero-title-max-width)') &&
         !titleRule.includes('var(--page-title-max-width)'),
       {
@@ -84,8 +107,13 @@ export function runVisualCompositionGate(rootDir: string) {
 
   assertions.assert(
     !resultCss.includes('max-inline-size: 17ch') &&
-      !baseRule(resultCss, '.grid').includes('grid-template-columns:') &&
-      !baseRule(previewCss, '.heroGrid').includes('grid-template-columns:') &&
+      ['.grid', '.heroGrid'].every((selector, index) => {
+        const base = baseRule(index === 0 ? resultCss : previewCss, selector);
+        return (
+          !base.includes('grid-template-columns:') ||
+          base.includes('grid-template-columns: minmax(0, 1fr)')
+        );
+      }) &&
       hasResponsiveColumns(resultCss, '.grid') &&
       hasResponsiveColumns(previewCss, '.heroGrid'),
     {

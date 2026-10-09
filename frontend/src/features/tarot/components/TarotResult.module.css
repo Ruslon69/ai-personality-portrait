@@ -1,0 +1,631 @@
+.page {
+  --result-ink: var(--sa-text-primary);
+  --result-muted: var(--sa-text-secondary);
+  --result-gold: var(--sa-gold);
+  --result-line: var(--sa-border-subtle);
+
+  position: relative;
+  isolation: isolate;
+  min-inline-size: 0;
+  overflow-x: clip;
+  color: var(--result-ink);
+  background:
+    radial-gradient(ellipse at 16% 10%, rgb(134 94 153 / 9%), transparent 37%),
+    radial-gradient(ellipse at 86% 55%, rgb(94 74 145 / 7%), transparent 45%), var(--sa-bg-deep);
+}
+
+.page::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0 0 auto;
+  block-size: clamp(22rem, 60vw, 65rem);
+  pointer-events: none;
+  content: '';
+  background: url('/home/cosmic-background-800.webp') center top / cover no-repeat;
+  opacity: 0.07;
+  mask-image: linear-gradient(#000, transparent);
+}
+
+.resultHero {
+  padding-block: clamp(2rem, 4vw, 4rem) 2.5rem;
+}
+
+.resultHeroSurface {
+  max-inline-size: 78rem;
+  margin-inline: auto;
+}
+
+.resultOpening {
+  display: grid;
+  grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
+  align-items: center;
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+.heroCardStage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  min-inline-size: 0;
+  padding-block: 1.5rem;
+}
+
+.heroCardStage [data-variant='leading'] {
+  --tarot-card-width: clamp(15rem, 21vw, 20rem);
+  --tarot-card-height: auto;
+
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.heroCardOrbit {
+  position: absolute;
+  inline-size: min(112%, 27rem);
+  aspect-ratio: 1;
+  border: 1px solid var(--result-line);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgb(212 164 87 / 13%), transparent 69%);
+  transform: rotate(-18deg) scaleY(0.9);
+  pointer-events: none;
+}
+
+.heroCardOrbit::before,
+.heroCardOrbit::after {
+  position: absolute;
+  content: '';
+  border: 1px solid var(--result-line);
+  border-radius: 50%;
+  inset: 9%;
+}
+
+.heroCardOrbit::after {
+  inset: 48% -6%;
+}
+
+.page .resultCopy {
+  min-inline-size: 0;
+  gap: 1.35rem;
+}
+
+.resultHeroBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  color: var(--result-gold);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.resultHeroBadges span + span {
+  color: var(--result-muted);
+}
+
+.page .resultCopy h1 {
+  max-inline-size: 21ch;
+  color: var(--result-ink);
+  font-family: var(--font-family-display);
+  font-size: clamp(2.25rem, 3.4vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+.page .resultSupportingLine {
+  max-inline-size: 58ch;
+  color: var(--result-muted);
+  font-size: clamp(1rem, 1.25vw, 1.15rem);
+  line-height: 1.65;
+}
+
+.resultHeroTakeaway {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1.2rem 1.4rem;
+  border-inline-start: 2px solid var(--result-gold);
+  background: linear-gradient(90deg, rgb(193 151 85 / 9%), transparent);
+}
+
+.resultHeroTakeaway span {
+  color: var(--result-gold);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.resultHeroTakeaway strong {
+  color: var(--result-ink);
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.resultHeroActions,
+.resultActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.page button[data-prominence='primary'] {
+  min-block-size: 3.5rem;
+  padding-inline: 1.8rem;
+  border: 1px solid var(--sa-action-border);
+  border-radius: 0.7rem;
+  color: var(--sa-action-ink);
+  background: var(--sa-action-fill);
+  box-shadow:
+    inset 0 1px 0 rgb(255 247 218 / 60%),
+    0 6px 30px rgb(203 163 96 / 14%);
+  font-weight: 500;
+}
+
+.page button[data-prominence='quiet'],
+.page button[data-prominence='secondary'] {
+  color: var(--result-muted);
+}
+
+.page .resultSavedNote {
+  color: var(--result-muted);
+  font-size: 0.8rem;
+}
+
+.readingSection {
+  padding-block: 0 4rem;
+  scroll-margin-block-start: 5rem;
+}
+
+.readingSection:not([data-visible]) {
+  display: none;
+}
+
+.readingSection[data-visible] {
+  animation: result-arrive 350ms ease-out both;
+}
+
+.page .readingContent {
+  max-inline-size: 76rem;
+  margin-inline: auto;
+  gap: 3.5rem;
+}
+
+.sectionHeading {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.page .sectionHeading [data-variant='eyebrow'] {
+  color: var(--result-gold);
+}
+
+.page h2 {
+  color: var(--result-ink);
+  font-family: var(--font-family-display);
+  font-size: clamp(1.8rem, 2.7vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.resultPatternSection {
+  display: grid;
+  gap: 2rem;
+  padding-block-start: 2rem;
+  border-block-start: 1px solid var(--result-line);
+}
+
+.resultPatternGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem 3rem;
+}
+
+.resultPatternItem {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.65rem;
+  padding-inline-start: 1.5rem;
+}
+
+.resultPatternItem::before {
+  position: absolute;
+  inset: 0.45rem auto auto 0;
+  content: '';
+  inline-size: 0.35rem;
+  aspect-ratio: 1;
+  border: 1px solid var(--result-gold);
+  transform: rotate(45deg);
+}
+
+.resultPatternItem > span {
+  color: var(--result-gold);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.page .resultPatternItem p,
+.resultReflection p {
+  max-inline-size: 58ch;
+  color: var(--result-muted);
+  line-height: 1.7;
+}
+
+.resultReflection {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 1.5rem;
+  padding-block: 2rem;
+  border-block: 1px solid var(--result-line);
+}
+
+.resultReflection > span {
+  color: var(--result-gold);
+  font-family: var(--font-family-display);
+  font-size: 2rem;
+}
+
+.resultReflection strong {
+  color: var(--result-ink);
+  font-weight: 500;
+}
+
+.resultReflection p {
+  margin-block: 0.75rem 0;
+}
+
+.resultDetailsHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1.5rem;
+  margin-block-end: 1.5rem;
+}
+
+.resultDetailsHeading > p {
+  max-inline-size: 38ch;
+  color: var(--result-muted);
+}
+
+.interpretationList {
+  display: grid;
+  gap: 0;
+}
+
+.interpretationCard {
+  container-type: inline-size;
+  padding-block: 1.5rem;
+  border-block-end: 1px solid var(--result-line);
+}
+
+.interpretationHeader {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 2.75rem;
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 3rem);
+  border-radius: 0.3rem;
+}
+
+.resultDetailThumbnail {
+  padding-block: 0.25rem;
+}
+
+.resultDetailThumbnail [data-variant='history'] {
+  --tarot-card-width: clamp(7rem, 11vw, 10rem);
+}
+
+.interpretationTitle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+  gap: 0.8rem;
+}
+
+.interpretationCardMeta {
+  color: var(--result-gold);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.page .interpretationTitle h3 {
+  color: var(--result-ink);
+  font-family: var(--font-family-display);
+  font-size: clamp(1.65rem, 2.6vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.page .resultDetailTakeaway {
+  max-inline-size: 60ch;
+  color: var(--result-muted);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.page .detailTrigger {
+  position: static;
+  min-block-size: 2.75rem;
+  min-inline-size: 2.75rem;
+  align-self: start;
+  color: var(--result-gold);
+  font-size: 1.7rem;
+  font-weight: 400;
+}
+
+.detailTrigger::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  cursor: pointer;
+}
+
+.interpretationHeader:has(button:focus-visible) {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 6px;
+}
+
+.interpretationCard[data-open] {
+  border-color: var(--result-gold);
+}
+
+.interpretationDetail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 3rem;
+  padding: 2rem 0 0.75rem;
+  animation: result-arrive 250ms ease-out both;
+}
+
+.interpretationDetail > div {
+  min-inline-size: 0;
+}
+
+.interpretationDetail strong {
+  color: var(--result-gold);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.interpretationDetail p {
+  color: var(--result-muted);
+  line-height: 1.7;
+}
+
+.interpretationDetail .detailHeadline,
+.interpretationDetail .disclaimer {
+  grid-column: 1 / -1;
+}
+
+.interpretationDetail .detailHeadline {
+  color: var(--result-ink);
+  font-size: 1.15rem;
+}
+
+.page .disclaimer {
+  font-size: 0.85rem;
+}
+
+.resultSecondaryContext {
+  display: grid;
+  max-inline-size: 70ch;
+  gap: 0.75rem;
+  color: var(--result-muted);
+}
+
+.resultSecondaryContext p,
+.resultSecondaryContext small {
+  line-height: 1.65;
+}
+
+.resultActions {
+  padding-block-start: 2rem;
+  border-block-start: 1px solid var(--result-line);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .page button[data-prominence='primary']:hover {
+    color: var(--sa-action-ink);
+    border-color: var(--sa-action-border);
+    background: var(--sa-action-fill-hover);
+    transform: none;
+  }
+
+  .interpretationHeader:hover {
+    background: linear-gradient(90deg, transparent, rgb(198 157 89 / 5%), transparent);
+  }
+}
+
+@keyframes result-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(0.3rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .resultOpening {
+    grid-template-columns: minmax(0, 0.34fr) minmax(0, 0.66fr);
+    gap: 1.5rem;
+  }
+
+  .heroCardStage [data-variant='leading'] {
+    --tarot-card-width: clamp(11rem, 22vw, 15rem);
+  }
+
+  .page .resultCopy h1 {
+    font-size: clamp(2rem, 3.6vw, 2.7rem);
+  }
+}
+
+@media (max-width: 700px) {
+  .resultHero {
+    padding-block: 1rem 2rem;
+  }
+
+  .resultOpening {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  .heroCardStage {
+    padding-block: 0.25rem;
+  }
+
+  .heroCardStage [data-variant='leading'] {
+    --tarot-card-width: 8rem;
+  }
+
+  .heroCardOrbit {
+    inline-size: 15rem;
+  }
+
+  .page .resultCopy {
+    gap: 1rem;
+  }
+
+  .page .resultCopy h1 {
+    max-inline-size: 24ch;
+    font-size: clamp(1.8rem, 7.8vw, 2.2rem);
+  }
+
+  .resultHeroTakeaway {
+    padding: 0.9rem 1rem;
+  }
+
+  .resultHeroTakeaway strong {
+    font-size: 1rem;
+  }
+
+  .resultHeroActions,
+  .resultActions {
+    inline-size: 100%;
+  }
+
+  .page button[data-prominence='primary'] {
+    inline-size: 100%;
+  }
+
+  .page .readingContent {
+    gap: 2.5rem;
+  }
+
+  .resultPatternGrid,
+  .interpretationDetail {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  .resultPatternGrid {
+    border-inline-start: 1px solid var(--result-line);
+    margin-inline-start: 0.25rem;
+  }
+
+  .resultPatternItem::before {
+    inset-inline-start: -0.2rem;
+    background: var(--sa-bg-deep);
+  }
+
+  .resultDetailsHeading {
+    align-items: start;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .interpretationHeader {
+    grid-template-columns: 6.5rem minmax(0, 1fr) 2.75rem;
+    gap: 0.65rem;
+    align-items: start;
+  }
+
+  .resultDetailThumbnail [data-variant='history'] {
+    --tarot-card-width: 6.5rem;
+  }
+
+  .interpretationTitle {
+    padding-block-start: 0.25rem;
+    gap: 0.65rem;
+  }
+
+  .page .interpretationTitle h3 {
+    font-size: 1.45rem;
+    text-wrap: initial;
+  }
+
+  .interpretationCardMeta {
+    font-size: 0.78rem;
+  }
+
+  .page .resultDetailTakeaway {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+}
+
+/* Reflow enlarged text without changing the accepted normal-size composition. */
+@container (max-width: 17rem) {
+  .interpretationHeader {
+    grid-template-columns: minmax(0, 1fr) 2.75rem;
+  }
+
+  .interpretationTitle {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .detailTrigger {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page .readingSection[data-visible] {
+    animation: none;
+  }
+
+  .page button {
+    transition: none;
+  }
+
+  .page *,
+  .page *::after {
+    animation: none;
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .page {
+    --result-ink: CanvasText;
+    --result-muted: CanvasText;
+    --result-gold: LinkText;
+    --result-line: CanvasText;
+
+    background: Canvas;
+  }
+
+  .page::before,
+  .heroCardOrbit {
+    display: none;
+  }
+
+  .page button[data-prominence='primary'] {
+    color: ButtonText;
+    border-color: ButtonText;
+    background: ButtonFace;
+    box-shadow: none;
+  }
+
+  .interpretationCard[data-open] {
+    border-color: Highlight;
+  }
+}

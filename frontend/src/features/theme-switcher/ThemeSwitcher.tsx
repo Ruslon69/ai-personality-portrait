@@ -1,4 +1,6 @@
 import { useTheme } from '@app/providers/theme';
+import { useNotifications } from '@app/providers/notification';
+import { preferenceStorageFeedback } from '@shared/lib/storage/preference-feedback';
 import { formatMessage, useI18n } from '@shared/i18n';
 import { Button } from '@shared/ui';
 
@@ -9,6 +11,7 @@ import type { ThemeSwitcherProps } from './ThemeSwitcher.types';
 export function ThemeSwitcher({ className, ...props }: ThemeSwitcherProps) {
   const { setTheme, theme } = useTheme();
   const { messages } = useI18n();
+  const { notify } = useNotifications();
   const next = getNextTheme(theme);
   const classes = [styles.root, className].filter(Boolean).join(' ');
   const themeMessages = messages.shell.theme;
@@ -23,7 +26,9 @@ export function ThemeSwitcher({ className, ...props }: ThemeSwitcherProps) {
         next: nextLabel,
       })}
       className={classes}
-      onClick={() => setTheme(next)}
+      onClick={() => {
+        if (!setTheme(next)) notify((language) => preferenceStorageFeedback[language], 'error');
+      }}
       {...props}
     >
       <span aria-hidden="true" className={styles.symbol}>

@@ -4,15 +4,121 @@
   min-block-size: 100vh;
   min-block-size: 100dvh;
   max-inline-size: 100%;
+  min-inline-size: 0;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr auto;
-  background: var(--color-marketing-canvas);
+  background: var(--sa-atmosphere), var(--sa-bg-base);
   color: var(--color-text);
+}
+
+.root[data-portrait-flow='true'] {
+  --portrait-gold: var(--sa-gold);
+  --portrait-gold-soft: var(--sa-gold-soft);
+  --portrait-line: var(--sa-border-subtle);
+  --portrait-muted: var(--sa-text-secondary);
+  --portrait-canvas: var(--sa-bg-base);
+  --portrait-surface: color-mix(in srgb, var(--sa-bg-soft) 65%, transparent);
+  inline-size: 100%;
+  min-inline-size: 0;
+  grid-template-columns: minmax(0, 1fr);
+  background: var(--sa-atmosphere), var(--sa-bg-base);
+}
+
+.root[data-utility='true'] {
+  --utility-gold: var(--sa-gold);
+  --utility-gold-soft: var(--sa-gold-soft);
+  --utility-line: var(--sa-border-subtle);
+  min-inline-size: 0;
+  grid-template-columns: minmax(0, 1fr);
+  background:
+    radial-gradient(ellipse at 88% 0, var(--sa-violet-atmosphere), transparent 42rem),
+    var(--sa-bg-base);
+}
+
+.root[data-utility='true'] > header button[aria-controls='app-sidebar'] {
+  display: inline-flex;
+  border-color: transparent;
+  background: transparent;
+}
+
+.root[data-utility='true'] > header > div {
+  flex-wrap: wrap;
+}
+
+.root[data-utility='true'] > header > div > div:first-child {
+  min-inline-size: 8rem;
+}
+
+.root[data-utility='true'] > header > div > div:last-child {
+  flex-wrap: wrap;
+  max-inline-size: 100%;
+}
+
+.root[data-utility='true'] aside[data-drawer='true'] {
+  background: var(--color-marketing-canvas);
+  border-color: var(--utility-line);
+}
+
+.root[data-utility='true'] aside nav a[aria-current='page'] {
+  color: var(--utility-gold);
+  background: var(--utility-gold-soft);
+  box-shadow: inset 2px 0 var(--utility-gold);
+}
+
+.root[data-utility='true'] aside nav a {
+  border-radius: 0;
+}
+
+.root[data-utility='true'] :global(#app-content) :is(h1, h2, h3, p, small, strong) {
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+
+.root[data-portrait-flow='true'] > .body {
+  inline-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.root[data-portrait-flow='true'] :global(#app-content),
+.root[data-portrait-flow='true'] :global(#app-content) > * {
+  inline-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
 }
 
 .body {
   display: grid;
   min-inline-size: 0;
   grid-template-columns: minmax(0, 1fr);
+}
+
+/* Personal results use the existing menu drawer at every width. */
+.root[data-personal-space='true'] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.root .body[data-personal-space='true'] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.root[data-personal-space='true'] > header button[aria-controls='app-sidebar'] {
+  display: inline-flex;
+  background: transparent;
+  border-color: transparent;
+}
+
+@media (max-width: 600px) {
+  .root[data-personal-space='true'] > header > div {
+    padding-inline: min(3vw, 0.75rem);
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+
+  .root[data-personal-space='true'] > header > div > div {
+    flex-shrink: 0;
+    max-inline-size: 100%;
+  }
 }
 
 .skipLink {
@@ -45,5 +151,103 @@
 @media (min-width: 68.75rem) {
   .body[data-compact-sidebar='true'] {
     grid-template-columns: 13rem minmax(0, 1fr);
+  }
+}
+
+/* Result keeps the existing navigation, styled as a quiet utility rail. */
+.root:has(> .body[data-tarot-result='true']) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (max-width: 600px) {
+  .root:has(> .body[data-tarot-result='true']) > header > div > div:last-child {
+    flex-shrink: 0;
+  }
+
+  .root:has(> .body[data-tarot-result='true']) > header button {
+    min-inline-size: 2.75rem;
+    flex-shrink: 0;
+  }
+}
+
+@media (min-width: 64rem) {
+  .body[data-tarot-result='true'] {
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+    background: var(--sa-bg-deep);
+  }
+
+  .body[data-tarot-result='true'] > aside {
+    padding: 2rem 0.5rem;
+    border-inline-end: 1px solid light-dark(rgb(110 90 128 / 15%), rgb(199 169 116 / 12%));
+    background: transparent;
+  }
+
+  .body[data-tarot-result='true'] > aside > div {
+    padding-inline: 0.5rem;
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+  }
+
+  .body[data-tarot-result='true'] nav a {
+    min-block-size: 2.75rem;
+    padding: 0.75rem 0.5rem;
+    border-radius: 0.3rem;
+    color: var(--sa-text-secondary);
+    font-size: 0.86rem;
+    line-height: 1.4;
+  }
+
+  .body[data-tarot-result='true'] nav a[aria-current='page'] {
+    color: var(--sa-gold);
+    background: linear-gradient(90deg, rgb(190 155 96 / 14%), transparent);
+    box-shadow: inset 2px 0 var(--sa-gold);
+    font-weight: 500;
+  }
+}
+
+@media (forced-colors: active) {
+  .root[data-utility='true'] {
+    --color-feedback-error: CanvasText;
+    --color-text-muted: CanvasText;
+  }
+
+  .body[data-tarot-result='true'] nav a {
+    color: LinkText;
+  }
+  .body[data-tarot-result='true'] nav a[aria-current='page'] {
+    color: HighlightText;
+    background: Highlight;
+  }
+}
+
+/* One atmospheric canvas for the quieter disciplines. Home and Tarot retain
+   their accepted artwork and lighting. Fixed light fields keep long text pages
+   from falling back to a flat colour between their sections. */
+.root[data-atmosphere] {
+  --ambient-violet: light-dark(rgb(155 131 184 / 14%), rgb(92 66 143 / 27%));
+  --ambient-indigo: light-dark(rgb(119 140 174 / 10%), rgb(45 66 116 / 24%));
+  --ambient-warm: light-dark(rgb(186 148 93 / 9%), rgb(161 121 82 / 8%));
+  background:
+    radial-gradient(ellipse 70% 70% at 94% 18%, var(--ambient-violet), transparent 80%),
+    radial-gradient(ellipse 80% 75% at 4% 82%, var(--ambient-indigo), transparent 80%),
+    radial-gradient(ellipse 55% 45% at 45% 0, var(--ambient-warm), transparent 90%),
+    var(--sa-bg-base);
+  background-attachment: fixed;
+}
+.root[data-atmosphere='portrait'] {
+  --ambient-violet: light-dark(rgb(155 131 184 / 14%), rgb(103 63 133 / 25%));
+}
+.root[data-atmosphere='numerology'] {
+  --ambient-indigo: light-dark(rgb(119 140 174 / 12%), rgb(51 76 135 / 27%));
+}
+.root[data-atmosphere='archive'],
+.root[data-atmosphere='quiet'] {
+  --ambient-violet: light-dark(rgb(155 131 184 / 10%), rgb(92 66 143 / 19%));
+  --ambient-warm: light-dark(rgb(186 148 93 / 6%), rgb(161 121 82 / 5%));
+}
+@media (forced-colors: active) {
+  .root[data-atmosphere] {
+    background: Canvas;
+    color: CanvasText;
   }
 }

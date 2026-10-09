@@ -185,8 +185,10 @@ export function findJourneyNumberPatterns(
           compatibility: 'compatible',
           entryIds: [entry.id],
           id: stableId('journey-card-number', {
+            calculation: number.calculationId,
             card: card.id,
             entry: entry.id,
+            system: number.systemVersion,
             value: number.value,
           }),
           kind: 'card-number-resonance',

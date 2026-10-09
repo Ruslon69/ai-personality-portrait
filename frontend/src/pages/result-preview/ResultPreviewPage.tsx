@@ -18,7 +18,11 @@ export function ResultPreviewPageContent({
   return (
     <PortraitResultBoundary locale={locale} profile={profile}>
       {(availableProfile) => (
-        <ResultPreview onOpenFullResult={onOpenFullResult} profile={availableProfile} />
+        <ResultPreview
+          locale={locale}
+          onOpenFullResult={onOpenFullResult}
+          profile={availableProfile}
+        />
       )}
     </PortraitResultBoundary>
   );

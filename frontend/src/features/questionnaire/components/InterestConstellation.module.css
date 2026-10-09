@@ -1,15 +1,14 @@
 .root {
   position: relative;
   min-block-size: 13rem;
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-block: 0.0625rem solid var(--portrait-line);
   background:
     radial-gradient(
       circle at center,
-      color-mix(in srgb, var(--color-interactive) 12%, transparent),
+      color-mix(in srgb, var(--portrait-gold) 9%, transparent),
       transparent 36%
     ),
-    var(--surface-accent-subtle);
+    transparent;
   overflow: hidden;
 }
 .lines {
@@ -18,7 +17,7 @@
   inline-size: 100%;
   block-size: 100%;
   fill: none;
-  stroke: color-mix(in srgb, var(--color-interactive) 46%, var(--color-border));
+  stroke: color-mix(in srgb, var(--portrait-gold) 46%, var(--portrait-line));
   stroke-width: 0.65;
   pointer-events: none;
 }
@@ -32,9 +31,9 @@
   inline-size: 2.6rem;
   aspect-ratio: 1;
   translate: -50% -50%;
-  border: 0.1rem solid var(--color-interactive);
+  border: 0.1rem solid var(--portrait-gold);
   border-radius: 50%;
-  background: var(--color-surface);
+  background: var(--portrait-canvas);
   transition: transform var(--motion-assemble-duration) var(--motion-easing-discover);
 }
 .root[data-pattern] .core {
@@ -58,9 +57,9 @@
 .node i {
   inline-size: 0.7rem;
   aspect-ratio: 1;
-  border: 0.1rem solid var(--color-interactive);
+  border: 0.1rem solid var(--portrait-gold);
   border-radius: 50%;
-  background: var(--color-surface);
+  background: var(--portrait-canvas);
   animation: interest-node var(--motion-assemble-duration) var(--motion-easing-discover) both;
 }
 @keyframes interest-line {

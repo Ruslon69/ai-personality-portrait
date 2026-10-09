@@ -1,5 +1,5 @@
 .hero {
-  padding-block: var(--page-hero-padding-block);
+  padding-block: clamp(2rem, 4vw, 3rem) var(--space-5);
 }
 
 .heroContent,
@@ -7,20 +7,29 @@
   max-inline-size: var(--content-width-reading);
 }
 
-.badge {
-  align-self: flex-start;
-}
-
-.heroTitle {
+.heroTitle[data-variant='display'] {
   max-inline-size: var(--page-title-max-width);
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  line-height: 1.2;
 }
 
-.heroTitle:focus {
+.heroContent > div > p[data-variant='lead'] {
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+
+.backLink {
+  align-self: flex-start;
+  min-block-size: 2.75rem;
+  padding-inline-start: 0;
+}
+
+.heroTitle:focus:not(:focus-visible) {
   outline: none;
 }
 
 .section {
-  padding-block: var(--page-section-padding-block);
+  padding-block: var(--space-4);
 }
 
 .muted,
@@ -29,10 +38,13 @@
 }
 
 .settingsSurface {
-  padding: var(--page-surface-padding);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--surface-accent-subtle);
+  max-inline-size: 64rem;
+  padding: clamp(var(--space-5), 4vw, var(--space-7)) 0;
+  border: 0;
+  border-block-start: 0.0625rem solid var(--utility-line);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .fieldset {
@@ -44,25 +56,33 @@
 
 .optionGrid {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-4) var(--space-6);
 }
 
 .choiceCard {
   display: grid;
   align-items: start;
-  padding: var(--space-4);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-md);
+  min-block-size: 2.75rem;
+  padding: var(--space-3) var(--space-2);
+  border: 0;
+
+  border-radius: 0;
+  background: transparent;
   cursor: pointer;
   gap: var(--space-3);
   grid-template-columns: auto minmax(0, 1fr);
   transition:
     border-color var(--transition-duration-fast) var(--transition-easing-standard),
-    box-shadow var(--transition-duration-fast) var(--transition-easing-standard);
+    box-shadow var(--transition-duration-fast) var(--transition-easing-standard),
+    background-color var(--transition-duration-fast) var(--transition-easing-standard);
 }
 
 .choiceCard:hover {
-  border-color: var(--color-border-strong);
+  background: color-mix(in srgb, var(--utility-gold-soft) 60%, transparent);
+}
+
+.choiceCard:has(.control:checked) {
+  background: color-mix(in srgb, var(--utility-gold-soft) 40%, transparent);
 }
 
 .choiceCard:has(.control:focus-visible) {
@@ -74,7 +94,7 @@
   inline-size: 1.25rem;
   block-size: 1.25rem;
   margin: 0.125rem 0 0;
-  accent-color: var(--color-interactive);
+  accent-color: var(--utility-gold);
 }
 
 .control:focus-visible {
@@ -87,12 +107,64 @@
 }
 
 .choiceTitle {
-  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-display);
+  font-size: 1.1rem;
+  font-weight: 400;
 }
 
 .choiceDescription {
   margin-block-start: var(--space-1);
   font-size: var(--font-size-sm);
+}
+
+.goldEyebrow {
+  color: var(--utility-gold);
+}
+
+.goldEyebrow[data-variant='eyebrow'] {
+  color: var(--utility-gold);
+}
+
+.removalNote {
+  display: grid;
+  max-inline-size: 65ch;
+  gap: var(--space-3);
+}
+
+.choiceCard:last-child {
+  border-inline-end: 0;
+}
+
+.dataSection {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-inline-size: 64rem;
+  padding-block: clamp(var(--space-5), 4vw, var(--space-7));
+  border-block: 0.0625rem solid var(--utility-line);
+  gap: clamp(var(--space-5), 4vw, var(--space-7));
+}
+
+.dataFacts {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dataFacts > div {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+}
+
+.dataActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.dataActions > button {
+  min-block-size: 2.75rem;
 }
 
 .visuallyHidden {
@@ -114,8 +186,65 @@
   }
 }
 
+@media (max-width: 47.999rem) {
+  .hero {
+    padding-block-start: var(--space-6);
+  }
+
+  .settingsSurface,
+  .dataSection {
+    padding-block: var(--space-6);
+  }
+
+  .choiceCard {
+    min-block-size: 0;
+    padding: var(--space-3) var(--space-2);
+  }
+
+  .choiceCard:last-child {
+    border-inline-end: 0;
+  }
+
+  .choiceDescription {
+    font-size: 0.875rem;
+  }
+
+  .dataFacts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 29.999rem) {
+  .optionGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .choiceCard {
+    min-block-size: 4.75rem;
+    border-inline-end: 0;
+  }
+
+  .choiceCard:last-child {
+    border-block-end: 0;
+  }
+
+  .dataActions,
+  .dataActions > * {
+    inline-size: 100%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .choiceCard {
     transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .choiceCard:has(.control:checked) {
+    outline: 1px solid CanvasText;
+  }
+  .choiceCard:has(.control:focus-visible) {
+    outline-color: Highlight;
   }
 }

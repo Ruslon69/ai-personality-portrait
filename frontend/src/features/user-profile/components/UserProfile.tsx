@@ -32,6 +32,12 @@ export function UserProfile({
   useEffect(() => focusElementByIdOnNextFrame('profile-title'), []);
   const locale = profile.locale;
   const copy = {
+    es: {
+      greeting: 'Mis resultados',
+      introduction: 'Aquí puedes abrir tu última reflexión personal, el historial o los ajustes.',
+      reminder:
+        'Tú decides sobre tus resultados guardados y tus datos. Las opciones de privacidad y eliminación están siempre disponibles.',
+    },
     en: {
       greeting: 'My results',
       introduction: 'Open your latest personal reflection, history or settings here.',

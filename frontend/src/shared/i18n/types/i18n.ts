@@ -1,6 +1,11 @@
 import type { PropsWithChildren } from 'react';
+import type { localeDefinitions } from '../config/locale-definitions';
 
-export type Locale = 'en' | 'ru' | 'uk';
+export type Locale = {
+  [Code in keyof typeof localeDefinitions]: (typeof localeDefinitions)[Code]['enabled'] extends true
+    ? Code
+    : never;
+}[keyof typeof localeDefinitions];
 
 export type LocalizedCard = {
   description: string;
@@ -18,6 +23,7 @@ export type LocalizedFeature = LocalizedCard & {
 
 export type I18nMessages = {
   shell: {
+    notifications: string;
     footer: string;
     legal: {
       label: string;
@@ -58,6 +64,7 @@ export type I18nMessages = {
   };
   system: {
     compatibility: {
+      action: string;
       description: string;
       title: string;
     };
@@ -162,7 +169,7 @@ export type I18nMessages = {
 export type I18nContextValue = {
   locale: Locale;
   messages: I18nMessages;
-  setLocale: (locale: Locale) => void;
+  setLocale: (locale: Locale) => boolean;
 };
 
 export type I18nProviderProps = PropsWithChildren;

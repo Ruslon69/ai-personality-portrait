@@ -5,7 +5,7 @@ export type ResolvedTheme = Exclude<ThemeMode, 'system'>;
 
 export type ThemeContextValue = {
   resolvedTheme: ResolvedTheme;
-  setTheme: (theme: ThemeMode) => void;
+  setTheme: (theme: ThemeMode) => boolean;
   theme: ThemeMode;
 };
 

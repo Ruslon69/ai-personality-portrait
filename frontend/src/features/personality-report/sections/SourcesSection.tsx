@@ -1,9 +1,6 @@
+import { sourcesCopy } from '../data/sources-copy';
 import { Badge, Container, Stack, Surface, Typography } from '@shared/ui';
-import type {
-  PersonalityProfileSource,
-  ProfileLocale,
-  ProfileSourceStatus,
-} from '@entities/personality-profile';
+import type { PersonalityProfileSource, ProfileLocale } from '@entities/personality-profile';
 
 import { ExpandableReportCard } from '../components/ExpandableReportCard';
 import styles from './ReportSections.module.css';
@@ -12,45 +9,18 @@ type SourcesSectionProps = {
   isExpanded: (id: string) => boolean;
   items: readonly PersonalityProfileSource[];
   locale?: ProfileLocale;
+  contentLocale?: ProfileLocale;
   onToggle: (id: string) => void;
-};
-
-const copy: Record<
-  ProfileLocale,
-  {
-    description: string;
-    eyebrow: string;
-    status: Record<ProfileSourceStatus, string>;
-    title: string;
-  }
-> = {
-  en: {
-    description: 'Observations, interpretations and recommendations remain separate.',
-    eyebrow: 'Sources',
-    status: { included: 'Included', interpretation: 'Optional reading', omitted: 'Not used' },
-    title: 'See what each conclusion is based on',
-  },
-  ru: {
-    description: 'Наблюдения, дополнительные разборы и советы показаны отдельно.',
-    eyebrow: 'Источники выводов',
-    status: { included: 'Учтено', interpretation: 'Доп. разбор', omitted: 'Не использовано' },
-    title: 'Понятно, на чём основан каждый вывод',
-  },
-  uk: {
-    description: 'Спостереження, додаткові розбори й поради показано окремо.',
-    eyebrow: 'Джерела висновків',
-    status: { included: 'Враховано', interpretation: 'Дод. розбір', omitted: 'Не використано' },
-    title: 'Зрозуміло, на чому ґрунтується кожен висновок',
-  },
 };
 
 export function SourcesSection({
   isExpanded,
   items,
   locale = 'ru',
+  contentLocale = locale,
   onToggle,
 }: SourcesSectionProps) {
-  const labels = copy[locale];
+  const labels = sourcesCopy[locale];
   return (
     <section aria-labelledby="sources-section-title" className={styles.sourcesSection}>
       <Container size="wide">
@@ -76,6 +46,7 @@ export function SourcesSection({
                     {labels.status[item.status]}
                   </Badge>
                   <ExpandableReportCard
+                    contentLocale={contentLocale}
                     expanded={isExpanded(`source:${item.id}`)}
                     item={{
                       description: item.description,

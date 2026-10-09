@@ -13,6 +13,7 @@ type OverviewSectionProps = {
 
 export function OverviewSection({ expanded, item, locale = 'ru', onToggle }: OverviewSectionProps) {
   const copy = {
+    es: ['Resumen', 'Tu resultado principal', 'Una mirada más amplia'],
     en: ['Overview', 'Your main result', 'The wider picture'],
     ru: ['Общий разбор', 'Главный вывод', 'Общая картина'],
     uk: ['Загальний розбір', 'Головний висновок', 'Загальна картина'],

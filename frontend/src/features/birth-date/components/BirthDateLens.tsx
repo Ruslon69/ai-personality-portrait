@@ -1,53 +1,25 @@
+import { reduceNumerology } from '@features/numerology/lib/numerology-engine';
 import type { Locale } from '@shared/i18n';
+import { zodiacNames } from '@features/numerology/data/zodiac-copy';
+import { birthDateLensCopy } from '../data/birth-date-lens-copy';
 
 import styles from './BirthDateLens.module.css';
 
 type Props = { birthDate: string; locale: Locale; skipped: boolean };
-const signs = [
-  'Capricorn',
-  'Aquarius',
-  'Pisces',
-  'Aries',
-  'Taurus',
-  'Gemini',
-  'Cancer',
-  'Leo',
-  'Virgo',
-  'Libra',
-  'Scorpio',
-  'Sagittarius',
+const signIds = [
+  'capricorn',
+  'aquarius',
+  'pisces',
+  'aries',
+  'taurus',
+  'gemini',
+  'cancer',
+  'leo',
+  'virgo',
+  'libra',
+  'scorpio',
+  'sagittarius',
 ] as const;
-const localizedSigns = {
-  en: signs,
-  ru: [
-    'Козерог',
-    'Водолей',
-    'Рыбы',
-    'Овен',
-    'Телец',
-    'Близнецы',
-    'Рак',
-    'Лев',
-    'Дева',
-    'Весы',
-    'Скорпион',
-    'Стрелец',
-  ],
-  uk: [
-    'Козоріг',
-    'Водолій',
-    'Риби',
-    'Овен',
-    'Телець',
-    'Близнюки',
-    'Рак',
-    'Лев',
-    'Діва',
-    'Терези',
-    'Скорпіон',
-    'Стрілець',
-  ],
-} as const;
 const boundaries = [20, 19, 21, 20, 21, 21, 23, 23, 23, 23, 22, 22] as const;
 const elements = [
   'earth',
@@ -77,50 +49,12 @@ const modalities = [
   'fixed',
   'mutable',
 ] as const;
-const labels = {
-  en: {
-    empty: 'Optional birth-date insight',
-    skipped: 'The reflection continues without birth-date insights',
-    sign: 'Sign',
-    number: 'Number',
-    element: 'Element',
-    modality: 'How the sign acts',
-    elements: { earth: 'earth', air: 'air', water: 'water', fire: 'fire' },
-    modalities: { cardinal: 'starts things', fixed: 'stays the course', mutable: 'adapts' },
-  },
-  ru: {
-    empty: 'Необязательный разбор по дате рождения',
-    skipped: 'Личный разбор продолжится без даты рождения',
-    sign: 'Знак',
-    number: 'Число',
-    element: 'Элемент',
-    modality: 'Как действует знак',
-    elements: { earth: 'земля', air: 'воздух', water: 'вода', fire: 'огонь' },
-    modalities: { cardinal: 'начинает новое', fixed: 'сохраняет курс', mutable: 'легко меняется' },
-  },
-  uk: {
-    empty: 'Необов’язковий розбір за датою народження',
-    skipped: 'Особистий розбір продовжиться без дати народження',
-    sign: 'Знак',
-    number: 'Число',
-    element: 'Елемент',
-    modality: 'Як діє знак',
-    elements: { earth: 'земля', air: 'повітря', water: 'вода', fire: 'вогонь' },
-    modalities: { cardinal: 'починає нове', fixed: 'тримає курс', mutable: 'легко змінюється' },
-  },
-} as const;
 
 function getLens(date: string) {
   const [year, month, day] = date.split('-').map(Number);
   const signIndex =
     ((month ?? 1) - 1 + ((day ?? 1) >= (boundaries[(month ?? 1) - 1] ?? 31) ? 1 : 0)) % 12;
-  let number = String(`${year ?? ''}${month ?? ''}${day ?? ''}`)
-    .split('')
-    .reduce((sum, digit) => sum + Number(digit), 0);
-  while (number > 9 && number !== 11 && number !== 22)
-    number = String(number)
-      .split('')
-      .reduce((sum, digit) => sum + Number(digit), 0);
+  const number = reduceNumerology([year ?? 0, month ?? 0, day ?? 0]).value;
   return {
     signIndex,
     element: elements[signIndex] ?? 'earth',
@@ -133,8 +67,8 @@ function getLens(date: string) {
 }
 
 export function BirthDateLens({ birthDate, locale, skipped }: Props) {
-  const copy = labels[locale];
-  const lens = birthDate ? getLens(birthDate) : null;
+  const copy = birthDateLensCopy[locale];
+  const lens = birthDate && !skipped ? getLens(birthDate) : null;
   return (
     <div
       aria-live="polite"
@@ -158,7 +92,7 @@ export function BirthDateLens({ birthDate, locale, skipped }: Props) {
         <dl className={styles.details}>
           <div>
             <dt>{copy.sign}</dt>
-            <dd>{localizedSigns[locale][lens.signIndex]}</dd>
+            <dd>{zodiacNames[locale][signIds[lens.signIndex] ?? 'capricorn']}</dd>
           </div>
           <div>
             <dt>{copy.element}</dt>
@@ -168,7 +102,7 @@ export function BirthDateLens({ birthDate, locale, skipped }: Props) {
             <dt>{copy.modality}</dt>
             <dd>{copy.modalities[lens.modality]}</dd>
           </div>
-          <div>
+          <div className={styles.numberFact}>
             <dt>{copy.number}</dt>
             <dd>{lens.number}</dd>
           </div>

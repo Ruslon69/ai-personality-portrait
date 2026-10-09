@@ -2,11 +2,20 @@
   position: fixed;
   z-index: var(--z-index-toast);
   inset-inline-end: var(--space-4);
-  inset-block-end: var(--space-4);
+  inset-block-end: max(var(--space-4), env(safe-area-inset-bottom));
   display: grid;
   inline-size: min(calc(100% - (2 * var(--space-4))), 24rem);
+  max-block-size: 50dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
   gap: var(--space-2);
-  pointer-events: none;
+  pointer-events: auto;
+}
+
+.viewport:focus-visible {
+  outline: 2px solid var(--sa-gold);
+  outline-offset: 3px;
 }
 
 .viewport:empty {
@@ -15,4 +24,20 @@
 
 .viewport > * {
   pointer-events: auto;
+}
+
+:global(body):has(.viewport:not(:empty)) :global(footer) {
+  padding-block-end: calc(
+    var(--sa-notification-reserve, 9rem) + var(--space-5) + env(safe-area-inset-bottom)
+  );
+}
+
+:global(html):has(.viewport:not(:empty)) {
+  scroll-padding-block-end: calc(var(--sa-notification-reserve, 9rem) + var(--space-5));
+}
+
+@media (forced-colors: active) {
+  .viewport:focus-visible {
+    outline-color: Highlight;
+  }
 }

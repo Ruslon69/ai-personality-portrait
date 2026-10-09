@@ -1,0 +1,938 @@
+{
+  "version": "owner-zodiac-v1",
+  "encoding": "Chrome Canvas WebP, quality 0.90, sRGB, high-quality resize; full square retained, no crop/recolor/overlay",
+  "sourceImmutable": true,
+  "entries": [
+    {
+      "sourceNumber": 1,
+      "system": "western",
+      "sign": "aries",
+      "sourcePath": "zodiak/01-Aries.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 2854372,
+      "sha256": "3475c8a0a6a0f624363aa018c700668849cf5473e3bfaf0bf2cff35d20333c09",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/western/aries-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 84378,
+          "sha256": "6aff224b49892108a657d2b1da614ebd815e07674c2bcf07fb17744ab6f595d6"
+        },
+        {
+          "path": "/zodiac/western/aries-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 218258,
+          "sha256": "3e27e35efb78e98880f16372cbc047a3f255ebfe06519edb0d3bb8e131dce22a"
+        },
+        {
+          "path": "/zodiac/western/aries-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 473370,
+          "sha256": "4358a3d99048fe8fdd69fe832a03bec9f9ad0dddf6b01155a1ce4221657ca8df"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 2,
+      "system": "western",
+      "sign": "taurus",
+      "sourcePath": "zodiak/02-Taurus.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3117250,
+      "sha256": "d89cfab545c0222c955d9775c092f176aaf18e0087f72c941bdfc1e856fa6f64",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/western/taurus-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 97116,
+          "sha256": "1ce376a39986e52e1ce63dcbfb6d005cc5e1c8e8171d9bf9c65af885ace65f70"
+        },
+        {
+          "path": "/zodiac/western/taurus-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 256792,
+          "sha256": "48843aa027f3efc5da019b571041f219c1fa12c5b21250a528b8e8ca734824c1"
+        },
+        {
+          "path": "/zodiac/western/taurus-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 561874,
+          "sha256": "c0143adefa5cbdf36c06821587dcc3b8d74d032116c57d3bd5d7810c09b0048a"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 3,
+      "system": "western",
+      "sign": "gemini",
+      "sourcePath": "zodiak/03-Gemini.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 2967150,
+      "sha256": "c6c8fbb0d631b80b2ed3c0d41133c41f8fc1e3bebbdb9e222d4f20a7e712c529",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/western/gemini-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 96276,
+          "sha256": "1deebf21125c76553524cc232f4542ba8121b4ab4c0601c8c396ea7ea7e1399d"
+        },
+        {
+          "path": "/zodiac/western/gemini-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 239364,
+          "sha256": "cc5cf740980ba1ddf04948928429d71e39c8d37a86d511f032873006073fd927"
+        },
+        {
+          "path": "/zodiac/western/gemini-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 518418,
+          "sha256": "d137bbe5d5ad61daccfc5976e6294a6b8995a165dfb00b38bac1f7c6b71f87cf"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 4,
+      "system": "western",
+      "sign": "cancer",
+      "sourcePath": "zodiak/04-Cancer.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3017172,
+      "sha256": "7dfb49d360c84fb6dbad079fe061d91a8c963b2b03e77e4494d76dbe20e12858",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/western/cancer-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 100502,
+          "sha256": "19be9b8b42a04a452be2b8ded10b3582c69b4bf144bc3f4dbb9e06f10d2e5eaa"
+        },
+        {
+          "path": "/zodiac/western/cancer-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 252422,
+          "sha256": "cc0a30d80c328c20cd762a331865f0deca6442cc01039c0cce84c6e1973614e8"
+        },
+        {
+          "path": "/zodiac/western/cancer-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 557022,
+          "sha256": "f36c5589a2febfd19f2a4b059a04dac679070e8e44b1c3c53a1c63d7606f017e"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 5,
+      "system": "western",
+      "sign": "leo",
+      "sourcePath": "zodiak/5.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3002792,
+      "sha256": "052603648e2c32c2504d4f6cc2fd5872fdf38545b9e240a3c7d9570d31ce809f",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/western/leo-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 104396,
+          "sha256": "0021dc4dbeddfb0f3adc8a634c53f245603735be4cd5abf76f700fd42fb97779"
+        },
+        {
+          "path": "/zodiac/western/leo-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 260114,
+          "sha256": "014aabf4d6cefabedf728933dd4c2cc43b6f44c5d19425b0716d34e811280d7a"
+        },
+        {
+          "path": "/zodiac/western/leo-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 554794,
+          "sha256": "25f0bf0927927719edfcd9b314df3386bf07ab60564964fa634d5e8dd2d62289"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 6,
+      "system": "western",
+      "sign": "virgo",
+      "sourcePath": "zodiak/6.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3034466,
+      "sha256": "ae5bd3a04f38e5aba7e69c35914c7a0e97ef23ea52c33a94242e3269086dd535",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/western/virgo-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 104144,
+          "sha256": "f3a0a0a1e94157f92d230ab03255b9dd7b47482bfc7d6718943d9cfa8c524742"
+        },
+        {
+          "path": "/zodiac/western/virgo-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 260056,
+          "sha256": "a7f75cd6dc7b04a37b22db00375c1b09b9467916f7e07b3031cd2e7c510d9b80"
+        },
+        {
+          "path": "/zodiac/western/virgo-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 554136,
+          "sha256": "5dd51cc5baef1c43f7aabce8962e75270baf7d6fa2530bb5cd4c3441ae1fca7e"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 7,
+      "system": "western",
+      "sign": "libra",
+      "sourcePath": "zodiak/7.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 2998851,
+      "sha256": "46203c0588dbe69300ea15464bc59148724731728cd55bf5ffad64cada629880",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/western/libra-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 103694,
+          "sha256": "aa494dcf76bc13859e395872cfe601e74dcda68ccfbaa55b91c0f55fd772a438"
+        },
+        {
+          "path": "/zodiac/western/libra-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 259164,
+          "sha256": "a3723e0fa078a4e1fbdac6eafdbb2445fd96e28d4df5420b751a96dee22c15c9"
+        },
+        {
+          "path": "/zodiac/western/libra-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 550282,
+          "sha256": "c33814160e6fb7f184e875abb2a4e48a1e171b53e6554430d3305952661baf36"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 8,
+      "system": "western",
+      "sign": "scorpio",
+      "sourcePath": "zodiak/8.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3016367,
+      "sha256": "716da11cba1e6a016df96b46376b673a0e6248d8cbaf648997e4218f0d63b0d1",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/western/scorpio-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 106696,
+          "sha256": "c1f82f23a0e7d58870c8cfde7569f7ae9cda9c4395721aed0703417f054dc980"
+        },
+        {
+          "path": "/zodiac/western/scorpio-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 264994,
+          "sha256": "83eaad57f6cbd8c77605b3b2a2c86c78015959150094c4841580649236b42a34"
+        },
+        {
+          "path": "/zodiac/western/scorpio-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 570898,
+          "sha256": "adeee0d45ec69da1865101c18469ccb8c4dcb99053bfba895203919a169d0eba"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 9,
+      "system": "western",
+      "sign": "sagittarius",
+      "sourcePath": "zodiak/9.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 2921802,
+      "sha256": "bea546adb8735a669e6bb9aba0f659a18fec92a92568f3d41dba4709f91a8d68",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/western/sagittarius-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 103666,
+          "sha256": "797a16611ed02defec698954da22ca98a43e36101672b0f4868fc912740853ac"
+        },
+        {
+          "path": "/zodiac/western/sagittarius-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 252944,
+          "sha256": "1719b67d600c664362b5bd9acdebb557b640b5d8b55493062471284d3ab6c44c"
+        },
+        {
+          "path": "/zodiac/western/sagittarius-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 537168,
+          "sha256": "71287187e70a70f2e045576c0c2b8c798dcb6c71c90a8cf3116843c5b705251b"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 10,
+      "system": "western",
+      "sign": "capricorn",
+      "sourcePath": "zodiak/10.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3056265,
+      "sha256": "26d4d815e0d2b7df7104fe6b6a1ba1f3b5ff1d140a51e41a223196c45f08a0ba",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/western/capricorn-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 105326,
+          "sha256": "2162c92742eeec574a75dafbcaf2347a4412cc257cac8ba788e4dba0a9876f63"
+        },
+        {
+          "path": "/zodiac/western/capricorn-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 266342,
+          "sha256": "f00927310c138c192f567c42fac60e81b9f7bc0d13d86da7a112511a01aae892"
+        },
+        {
+          "path": "/zodiac/western/capricorn-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 574044,
+          "sha256": "16cbbf362d43bbab8ec5c8fc1eb9e84d516e8c14a9db35ddb62c42378721da74"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 11,
+      "system": "western",
+      "sign": "aquarius",
+      "sourcePath": "zodiak/11.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3033472,
+      "sha256": "9d804144fa1f5700a283b46e49de39be458037017bf911664565379541faae6f",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/western/aquarius-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 109252,
+          "sha256": "6bbf2920f584fd99d5f5418b8fabd4cfb3e1ebf73c9d06ebb200788ec0ee0229"
+        },
+        {
+          "path": "/zodiac/western/aquarius-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 268870,
+          "sha256": "2315ceee925d5543d322d913b341d116e6fc734d8993f6f35a90433ac2eeec1f"
+        },
+        {
+          "path": "/zodiac/western/aquarius-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 564866,
+          "sha256": "4a39030ca6b409d841dfb2fb70bc3b8397ceea7df250d550a4ddff06c8aa6989"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 12,
+      "system": "western",
+      "sign": "pisces",
+      "sourcePath": "zodiak/12.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3177926,
+      "sha256": "36ea53273b0c90763b3345ed5c10bfcc70f1b733aa8af0121cdba4f092621bb4",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/western/pisces-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 118032,
+          "sha256": "522d67692002e88987e22aed253dc2074779a87357540531b50965904b8bf5bc"
+        },
+        {
+          "path": "/zodiac/western/pisces-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 299276,
+          "sha256": "cdff75d39f7d4a9b00987b6acd53db2a596980b657d3abba84b89b25a7298518"
+        },
+        {
+          "path": "/zodiac/western/pisces-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 618224,
+          "sha256": "8639e7cce4d7d7e1b116aa1aa182e0f393a143a8ae9430b861eb5dd9b6e799fc"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 13,
+      "system": "chinese",
+      "sign": "rat",
+      "sourcePath": "zodiak/13.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3140635,
+      "sha256": "4bf65b119802037fd014e235bb2faf21a78b1eef6d09575ed05d3d1e7b54a8c0",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/chinese/rat-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 122796,
+          "sha256": "da85f671cda38f8e78cbae176ae99d4a0b0404c63ff1b85da724ee422b32517d"
+        },
+        {
+          "path": "/zodiac/chinese/rat-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 307358,
+          "sha256": "566a7d5c8d3f765455797ea32e64fd8e3cebc58bb22bb9d4e3bb2a5e74e0b3be"
+        },
+        {
+          "path": "/zodiac/chinese/rat-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 637998,
+          "sha256": "30a9539b17a77f835da644301231ddce5f004c0518874cfd9dd20d97bcacd7da"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 14,
+      "system": "chinese",
+      "sign": "ox",
+      "sourcePath": "zodiak/14.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3107130,
+      "sha256": "10e649b772dcf580a7cd2d4962aef5f6cf74721206b69f983fc685999806d138",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/chinese/ox-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 118066,
+          "sha256": "bfa946f1bf120fb7987deee88c82c2225e90db8993ce53c80b7d42e1251b54e7"
+        },
+        {
+          "path": "/zodiac/chinese/ox-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 304370,
+          "sha256": "735e1f6993e7e32c0bd624ee67df147cf34c9ab4dbea6d13698ce02dd76886d7"
+        },
+        {
+          "path": "/zodiac/chinese/ox-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 633726,
+          "sha256": "30190aebd7a4dfa30fd2983b0c5dc36608023e458d6c9a9444ff1dfc64a18481"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 15,
+      "system": "chinese",
+      "sign": "tiger",
+      "sourcePath": "zodiak/15.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3033633,
+      "sha256": "6bd8e552ae76658bab912d860d0d720017add142323ed9b83264739eebd2c874",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/chinese/tiger-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 117696,
+          "sha256": "483d10623ca560d0ca806eb924e69c80e86f3faf1885dc55cdbf1ddbd214512a"
+        },
+        {
+          "path": "/zodiac/chinese/tiger-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 292360,
+          "sha256": "16d53b56d728452e6464f4d110c3479692be8043a161d1f724d8b62b3ad653a4"
+        },
+        {
+          "path": "/zodiac/chinese/tiger-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 602584,
+          "sha256": "7d0dce3651937a30dfe7039c0684605edbb68cc5653f6598c9dbfcfff2273d41"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 16,
+      "system": "chinese",
+      "sign": "rabbit",
+      "sourcePath": "zodiak/16.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3087587,
+      "sha256": "57a683558ca729c8bf005ac076911722068bba2d0165524d599d01960ee0cd46",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/chinese/rabbit-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 118750,
+          "sha256": "a8a4150f0702b328b768db877ff60279cc3d509c2d4ffdcfee1b12637c130cd7"
+        },
+        {
+          "path": "/zodiac/chinese/rabbit-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 300824,
+          "sha256": "2d9e607a287e6072daa528a68995d637476fcf2dc08d303093ce55741b13167f"
+        },
+        {
+          "path": "/zodiac/chinese/rabbit-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 624318,
+          "sha256": "e6660cbce3028dd1c32f67257434e8d826edce95d1065f1c6ad4346135566762"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 17,
+      "system": "chinese",
+      "sign": "dragon",
+      "sourcePath": "zodiak/17.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3152641,
+      "sha256": "fddd1e23e06d89a31a6d13e325befa38224026958f26b31a584d69a0eee16b3b",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/chinese/dragon-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 122580,
+          "sha256": "71caac5c4e5574737cb50dd7932ff15105d44a3d99fd936e941011d8eb4be66b"
+        },
+        {
+          "path": "/zodiac/chinese/dragon-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 308938,
+          "sha256": "dcdb0b3830fee2384a336f1338d4993fd13041f2dd6d5acee58a2ee3fce568e5"
+        },
+        {
+          "path": "/zodiac/chinese/dragon-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 648044,
+          "sha256": "29a240741b7fbf3d0f0c2e98d7f5c18690ad6dbecacb7780eda9961b2311be6b"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 18,
+      "system": "chinese",
+      "sign": "snake",
+      "sourcePath": "zodiak/18.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3078191,
+      "sha256": "182747f20775813d62e6ae087ff5d4abc560471cbff4dc5f3350348e045640cd",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/chinese/snake-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 122496,
+          "sha256": "02a5e406c8e6318f27ce5fe4d5df5704dd8ce853b283829f5661ec48494fc06e"
+        },
+        {
+          "path": "/zodiac/chinese/snake-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 304956,
+          "sha256": "ab858429a789b7020feb99c6d62d660090e46cf2f8c82a47f9fabb2b204a9ea3"
+        },
+        {
+          "path": "/zodiac/chinese/snake-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 630166,
+          "sha256": "bea90c039fb27487c02f10c0b0ec7c9d552dd0b34cc061a7580abdbac85c517b"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 19,
+      "system": "chinese",
+      "sign": "horse",
+      "sourcePath": "zodiak/19.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3074664,
+      "sha256": "ed5cec8bb03f4dd06fbce6d6fb832b8e64a349a41b88260152f5f028219ed4e6",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/chinese/horse-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 118642,
+          "sha256": "638495ca0b4e4d156c5fdb097204fcb1915705963382317b94467cf8b126971c"
+        },
+        {
+          "path": "/zodiac/chinese/horse-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 300642,
+          "sha256": "533366c8be11851963c49c42432b4ca9df54b61ac0fc7fbdcf4ddcf702ae7b64"
+        },
+        {
+          "path": "/zodiac/chinese/horse-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 623992,
+          "sha256": "c198a5e028b2aae9e990a9c3ef368519a165fca84574ac472c6406cebfbe4c84"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 20,
+      "system": "chinese",
+      "sign": "goat",
+      "sourcePath": "zodiak/20.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3090335,
+      "sha256": "b3178ba5577936c3fdb9e370c421303dd3eeda5f0c98f31fa783548634a998c6",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/chinese/goat-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 117236,
+          "sha256": "46212bc1e5c9868a2c6a6e4276356c71169defb16112a7d33bf5bd4cbc870c17"
+        },
+        {
+          "path": "/zodiac/chinese/goat-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 299580,
+          "sha256": "4942f6c77acc142b8723bce4c662759d7f0fb96b29c9fb6019dae0045af5a621"
+        },
+        {
+          "path": "/zodiac/chinese/goat-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 620074,
+          "sha256": "46eb27c8766ea76ebbd109efe7007a463cd973eff61e1ca0dc1cf8000063bb8b"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 21,
+      "system": "chinese",
+      "sign": "monkey",
+      "sourcePath": "zodiak/21.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3061684,
+      "sha256": "8e6d3932aed795dbe779672ef4234e196ca2cef26159e0196cbb75640e79ea7b",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/chinese/monkey-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 121488,
+          "sha256": "652e0c4d03ada40482ece456c791a262c3b7fc30cdf4921d62214da76bf83042"
+        },
+        {
+          "path": "/zodiac/chinese/monkey-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 302236,
+          "sha256": "5e9e6520877c95216a0ab14583e67d4e378cbad48cff917fbd57dac5b3ba900b"
+        },
+        {
+          "path": "/zodiac/chinese/monkey-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 622974,
+          "sha256": "6fcab715c5e7119566fe67cddd469412cf022fa9031fb700ad7d5d826ac32787"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 22,
+      "system": "chinese",
+      "sign": "rooster",
+      "sourcePath": "zodiak/22.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3059739,
+      "sha256": "901881f63d05c41c0c47a1504c675875b23784c2c0ca4e683620469007554070",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/chinese/rooster-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 118894,
+          "sha256": "846b579fef88240a784cd8957e504c721932daadc6dc4b9ebb2d53fa74fd1763"
+        },
+        {
+          "path": "/zodiac/chinese/rooster-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 302750,
+          "sha256": "641ad24975fe7d6aa47f64dcc4bc4ac80d14048c05dfa125db61d0cb2a86675c"
+        },
+        {
+          "path": "/zodiac/chinese/rooster-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 627292,
+          "sha256": "49cbb7ea11d43f3b516e5bc5f49efd2c9c1a74a57d6657f64de7d0ceac023f3c"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 23,
+      "system": "chinese",
+      "sign": "dog",
+      "sourcePath": "zodiak/23.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3024009,
+      "sha256": "5237ace45b2d634a79d201572eef775689a6dabab0c5e5f0f49dca9f60925c3d",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/chinese/dog-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 118602,
+          "sha256": "f61229738f6196488d15838b2bc26d26f8ee435c4f5ad48a562061597db76465"
+        },
+        {
+          "path": "/zodiac/chinese/dog-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 300244,
+          "sha256": "a3e87cc8781a79626bee2b149814534ad67e73f340178a2212556679e03aca6e"
+        },
+        {
+          "path": "/zodiac/chinese/dog-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 614100,
+          "sha256": "d2e55528cd9fb2110a6712302f83933efd81755794f9943dbdc271fe95aec587"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    },
+    {
+      "sourceNumber": 25,
+      "system": "chinese",
+      "sign": "pig",
+      "sourcePath": "zodiak/25.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3058534,
+      "sha256": "1a2d2c6d8949c04b2907f839db66782763a4e1a3ef1a7a8677cdcafa82f096cc",
+      "format": "png",
+      "variants": [
+        {
+          "path": "/zodiac/chinese/pig-480.webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 116918,
+          "sha256": "aa14ea675ffe6c98374bd116881ff34b64d927266f31c09f12035016071153b5"
+        },
+        {
+          "path": "/zodiac/chinese/pig-800.webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 302672,
+          "sha256": "3dc4e180b21c9a954609ba0fdd9445ed82d9beb3c13d136e9efcac0aa90da7a0"
+        },
+        {
+          "path": "/zodiac/chinese/pig-1254.webp",
+          "width": 1254,
+          "height": 1254,
+          "bytes": 623748,
+          "sha256": "2ef816d6522d092f11a66699df625b4006a719ae7378b8b5ba8080216c55e9e2"
+        }
+      ],
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "visualReview": "verified"
+    }
+  ],
+  "retiredSources": [
+    {
+      "sourceNumber": 24,
+      "system": "chinese",
+      "sign": "pig",
+      "sourcePath": "zodiak/24.png",
+      "width": 1254,
+      "height": 1254,
+      "aspectRatio": 1,
+      "bytes": 3104703,
+      "sha256": "99b80aaaaad156d849098088235ddc8486dd3097d22eca05cc6b899b5176c1d6",
+      "format": "png",
+      "crop": "none",
+      "objectPosition": "50% 50%",
+      "status": "obsolete",
+      "reason": "Dragon artwork in former Pig slot; replaced by owner-approved Pig source 25",
+      "replacedBySourceNumber": 25
+    }
+  ]
+}

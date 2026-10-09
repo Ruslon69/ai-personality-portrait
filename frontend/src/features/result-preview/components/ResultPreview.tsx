@@ -1,3 +1,6 @@
+import { reportCopy } from '@features/personality-report/data/report-copy';
+import { previewCopy } from './../data/preview-copy';
+import { getSourceReference, type ProfileLocale } from '@entities/personality-profile';
 import { useEffect } from 'react';
 
 import type {
@@ -14,79 +17,27 @@ import styles from './ResultPreview.module.css';
 type ResultPreviewProps = {
   onOpenFullResult: () => void;
   profile: PersonalityProfile;
+  locale?: ProfileLocale;
 };
 
-function getSourceLabel(insight: Insight, profile: PersonalityProfile) {
+function getSourceLabel(insight: Insight, profile: PersonalityProfile, locale: ProfileLocale) {
   const source = profile.sourceDetails.find((item) => item.id === insight.sources[0]?.id);
-  const fallback =
-    profile.locale === 'en'
-      ? 'Confirmed answers'
-      : profile.locale === 'uk'
-        ? 'Підтверджені відповіді'
-        : 'Подтверждённые ответы';
-  return source?.label ?? fallback;
+  const fallback = reportCopy[locale].answersSource;
+  return source ? getSourceReference(source.id, locale).label : fallback;
 }
 
-export function ResultPreview({ onOpenFullResult, profile }: ResultPreviewProps) {
+export function ResultPreview({
+  onOpenFullResult,
+  profile,
+  locale = profile.locale,
+}: ResultPreviewProps) {
   useEffect(() => focusElementByIdOnNextFrame('result-preview-title'), []);
   const observations: readonly Insight[] = profile.strengths.slice(0, 3);
   const recommendations: readonly PersonalityRecommendation[] = profile.recommendations.slice(0, 2);
-  const copy = {
-    en: {
-      badge: 'Your free preview is ready',
-      title: 'Your first portrait is ready',
-      lead: 'Start with three observations assembled from your confirmed answers and selected sources.',
-      important: 'Important',
-      caution:
-        'This is not a diagnosis or a final definition of personality. Use each observation as a question to consider.',
-      observationEyebrow: 'First observations',
-      observationTitle: 'What may already be visible',
-      recommendationEyebrow: 'Small actions',
-      recommendationTitle: 'Two ideas you can test',
-      continueEyebrow: 'Keep exploring',
-      continueTitle: 'See how the observations work together',
-      continueLead:
-        'The full version reveals connections, context and practical steps. It opens locally without payment in this version.',
-      open: 'Open full portrait',
-    },
-    ru: {
-      badge: 'Бесплатная часть готова',
-      title: 'Ваш первый портрет готов',
-      lead: 'Начните с трёх коротких наблюдений, собранных из ваших подтверждённых ответов и выбранных источников.',
-      important: 'Важно',
-      caution:
-        'Это не диагноз и не окончательное определение личности. Используйте каждый вывод как повод поразмышлять о себе.',
-      observationEyebrow: 'Первые наблюдения',
-      observationTitle: 'Что можно заметить уже сейчас',
-      recommendationEyebrow: 'Небольшие действия',
-      recommendationTitle: 'Две идеи, которые легко проверить',
-      continueEyebrow: 'Продолжить исследование',
-      continueTitle: 'Посмотрите, как наблюдения работают вместе',
-      continueLead:
-        'Полная версия раскрывает связи, контекст и практические шаги. На этом этапе она открывается локально, без оплаты.',
-      open: 'Открыть полный портрет',
-    },
-    uk: {
-      badge: 'Безплатна частина готова',
-      title: 'Ваш перший портрет готовий',
-      lead: 'Почніть із трьох коротких спостережень, зібраних із підтверджених відповідей та обраних джерел.',
-      important: 'Важливо',
-      caution:
-        'Це не діагноз і не остаточне визначення особистості. Використовуйте кожен висновок як привід поміркувати про себе.',
-      observationEyebrow: 'Перші спостереження',
-      observationTitle: 'Що можна помітити вже зараз',
-      recommendationEyebrow: 'Невеликі дії',
-      recommendationTitle: 'Дві ідеї, які легко перевірити',
-      continueEyebrow: 'Продовжити дослідження',
-      continueTitle: 'Подивіться, як спостереження працюють разом',
-      continueLead:
-        'Повна версія розкриває зв’язки, контекст і практичні кроки. На цьому етапі вона відкривається локально, без оплати.',
-      open: 'Відкрити повний портрет',
-    },
-  }[profile.locale];
+  const copy = previewCopy[locale];
 
   return (
-    <div className={styles.root}>
+    <div className={styles.root} lang={locale} data-result-locale={profile.locale}>
       <section aria-labelledby="result-preview-title" className={styles.hero}>
         <Container size="wide">
           <Surface className={styles.heroSurface} elevation="low">
@@ -94,27 +45,27 @@ export function ResultPreview({ onOpenFullResult, profile }: ResultPreviewProps)
               <Stack align="start" className={styles.heroMain} gap="lg">
                 <div className={styles.resultState}>
                   <Badge tone="success">{copy.badge}</Badge>
-                  <PortraitMark
-                    className={styles.mark}
-                    identity={profile.visualIdentity}
-                    size="sm"
-                  />
                 </div>
                 <Stack gap="sm">
                   <Typography
                     as="h1"
                     className={styles.title}
+                    lang={profile.locale}
                     id="result-preview-title"
                     tabIndex={-1}
                     variant="display"
                   >
                     {profile.revealHeadline}
                   </Typography>
-                  <Typography className={styles.lead} variant="lead">
+                  <Typography className={styles.lead} lang={profile.locale} variant="lead">
                     {profile.revealLead}
                   </Typography>
                 </Stack>
               </Stack>
+
+              <div aria-hidden="true" className={styles.signature}>
+                <PortraitMark className={styles.mark} identity={profile.visualIdentity} size="lg" />
+              </div>
 
               <Surface className={styles.heroNote} elevation="medium">
                 <Stack gap="xs">
@@ -150,12 +101,19 @@ export function ResultPreview({ onOpenFullResult, profile }: ResultPreviewProps)
                 >
                   <Stack gap="md">
                     <Badge className={styles.sourceBadge} tone="info">
-                      {getSourceLabel(observation, profile)}
+                      {getSourceLabel(observation, profile, locale)}
                     </Badge>
-                    <Typography as="h3" id={`${observation.id}-title`} variant="heading-sm">
+                    <Typography
+                      as="h3"
+                      lang={profile.locale}
+                      id={`${observation.id}-title`}
+                      variant="heading-sm"
+                    >
                       {observation.title}
                     </Typography>
-                    <Typography className={styles.muted}>{observation.description}</Typography>
+                    <Typography className={styles.muted} lang={profile.locale}>
+                      {observation.description}
+                    </Typography>
                   </Stack>
                 </Card>
               ))}
@@ -178,11 +136,12 @@ export function ResultPreview({ onOpenFullResult, profile }: ResultPreviewProps)
               </Stack>
 
               <div className={styles.recommendationList}>
-                {recommendations.map((recommendation, index) => (
-                  <article className={styles.recommendation} key={recommendation.id}>
-                    <span aria-hidden="true" className={styles.recommendationNumber}>
-                      {index + 1}
-                    </span>
+                {recommendations.map((recommendation) => (
+                  <article
+                    lang={profile.locale}
+                    className={styles.recommendation}
+                    key={recommendation.id}
+                  >
                     <Stack gap="sm">
                       <Typography as="h3" variant="heading-sm">
                         {recommendation.title}

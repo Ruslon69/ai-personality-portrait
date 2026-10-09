@@ -1,17 +1,39 @@
 import type { JourneyState } from '@features/journey/types';
+import { normalizeDailyCards } from '@features/journey/lib/normalize-daily-cards';
 
 import { canonicalParse } from '../serialization';
 import type { JourneyStorageSection, ProductStorageAdapter } from '../types';
 import { cloneJson, isRecord } from '../utils';
 import { validateProductStorageSection } from '../validation';
 
-function isJourneyState(value: unknown): value is JourneyState {
-  return (
-    isRecord(value) &&
-    typeof value.identity === 'string' &&
-    isRecord(value.dailyCards) &&
-    Array.isArray(value.readings)
-  );
+function recoverJourneyState(value: unknown): JourneyState | null {
+  return isRecord(value) && typeof value.identity === 'string' && Array.isArray(value.readings)
+    ? { ...cloneJson(value as JourneyState), dailyCards: normalizeDailyCards(value.dailyCards) }
+    : null;
+}
+
+/** A successful legacy write may outlive an envelope write that fell back to memory. */
+export function restoreDailyCardState(
+  envelope: JourneyState | null,
+  legacy: JourneyState | null,
+): JourneyState | null {
+  if (!envelope) return legacy;
+  if (!legacy || legacy.identity !== envelope.identity) return envelope;
+  const dailyCards = { ...envelope.dailyCards };
+  Object.entries(legacy.dailyCards).forEach(([dateKey, saved]) => {
+    const current = dailyCards[dateKey];
+    if (!current) dailyCards[dateKey] = saved;
+    else if (
+      !current.openedAt &&
+      saved.openedAt &&
+      current.selection.cardId === saved.selection.cardId &&
+      current.selection.orientation === saved.selection.orientation &&
+      current.selection.positionId === saved.selection.positionId
+    )
+      dailyCards[dateKey] = { ...current, openedAt: saved.openedAt };
+  });
+  // Only the Daily Card open state is reconciled. Envelope readings remain authoritative.
+  return { ...envelope, dailyCards };
 }
 
 export function mergeJourneyStates(current: JourneyState, incoming: JourneyState): JourneyState {
@@ -38,14 +60,12 @@ export function mergeJourneyStates(current: JourneyState, incoming: JourneyState
 
 export const journeyStorageAdapter: ProductStorageAdapter<JourneyState, JourneyStorageSection> = {
   fromEnvelope(section) {
-    return section ? cloneJson(section.data) : null;
+    return section ? recoverJourneyState(section.data) : null;
   },
   legacyFallback(raw) {
     if (!raw) return null;
     const parsed = canonicalParse(raw);
-    return parsed.status === 'success' && isJourneyState(parsed.value)
-      ? cloneJson(parsed.value)
-      : null;
+    return parsed.status === 'success' ? recoverJourneyState(parsed.value) : null;
   },
   mergeStrategy: mergeJourneyStates,
   ownership: 'envelope-primary',

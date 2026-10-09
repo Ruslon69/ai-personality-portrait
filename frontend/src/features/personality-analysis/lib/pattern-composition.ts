@@ -1,3 +1,4 @@
+import { portraitHeroPhrase } from '../data/portrait-assembly-copy';
 import type {
   ContextualContrast,
   Insight,
@@ -31,6 +32,14 @@ const facetPreferences: Readonly<Record<PersonalityFacetId, readonly TraitId[]>>
 };
 
 const facetLabels = {
+  es: {
+    thinking: 'Pensamiento',
+    communication: 'Comunicación',
+    motivation: 'Motivación',
+    decisions: 'Decisiones',
+    energy: 'Energía',
+    adaptation: 'Adaptación',
+  },
   en: {
     thinking: 'Thinking',
     communication: 'Communication',
@@ -57,22 +66,6 @@ const facetLabels = {
   },
 } as const;
 
-function phrase(
-  locale: ProfileLocale,
-  primary: string,
-  secondary: string,
-  interest?: string,
-  hasInterpretations?: boolean,
-) {
-  if (locale === 'en') {
-    return `You combine ${primary} with ${secondary}${interest ? `, especially when exploring ${interest}` : ''}${hasInterpretations ? ' — with optional birth-date insights shown separately' : ''}.`;
-  }
-  if (locale === 'uk') {
-    return `Ви поєднуєте ${primary} і ${secondary}${interest ? `, особливо коли досліджуєте ${interest}` : ''}${hasInterpretations ? ' — а доповнення за датою народження показано окремо' : ''}.`;
-  }
-  return `Вы сочетаете ${primary} и ${secondary}${interest ? `, особенно когда вас интересует ${interest}` : ''}${hasInterpretations ? ' — а дополнение по дате рождения показано отдельно' : ''}.`;
-}
-
 export function createHeroPhrase(input: PatternCompositionInput) {
   const primary = input.ranked[0];
   const secondary = input.ranked[1] ?? primary;
@@ -80,8 +73,7 @@ export function createHeroPhrase(input: PatternCompositionInput) {
   const interest = input.interests[0]
     ? getInterestLabel(input.interests[0], input.locale, 'object')
     : undefined;
-  return phrase(
-    input.locale,
+  return portraitHeroPhrase[input.locale](
     getTraitTemplate(primary.id, input.locale).label,
     getTraitTemplate(secondary.id, input.locale).label,
     interest,
@@ -90,6 +82,17 @@ export function createHeroPhrase(input: PatternCompositionInput) {
 }
 
 const revealHeadlines: Record<ProfileLocale, Record<TraitId, string>> = {
+  es: {
+    adaptability: 'Puedes cambiar el enfoque sin perder el objetivo',
+    autonomy: 'Prefieres decidir con independencia',
+    connection: 'La confianza importa en tus relaciones',
+    directness: 'Las palabras claras te ayudan a cuidar las relaciones',
+    initiative: 'Conviertes pronto las ideas en primeros pasos',
+    openness: 'Consideras más de una respuesta posible',
+    practicality: 'Prefieres las ideas que puedes probar',
+    reflection: 'Te tomas tiempo para comprender antes de actuar',
+    structure: 'Un plan claro te ayuda ante la incertidumbre',
+  },
   en: {
     adaptability: 'You can change your approach and keep the goal',
     autonomy: 'You prefer to make decisions independently',
@@ -127,21 +130,25 @@ const revealHeadlines: Record<ProfileLocale, Record<TraitId, string>> = {
 
 const contrastHeadlines: Record<string, Record<ProfileLocale, string>> = {
   'adaptability:structure': {
+    es: 'Combinas un plan claro con flexibilidad',
     en: 'You combine a clear plan with flexibility',
     ru: 'Вы сочетаете понятный план с гибкостью',
     uk: 'Ви поєднуєте зрозумілий план із гнучкістю',
   },
   'initiative:reflection': {
+    es: 'Primero reflexionas, después actúas',
     en: 'You think first and then act',
     ru: 'Сначала вы думаете, а затем действуете',
     uk: 'Спочатку ви думаєте, а потім дієте',
   },
   'autonomy:connection': {
+    es: 'Necesitas tanto independencia como cercanía',
     en: 'You need both independence and closeness',
     ru: 'Вам нужны и самостоятельность, и близость',
     uk: 'Вам потрібні й самостійність, і близькість',
   },
   'openness:practicality': {
+    es: 'La curiosidad se vuelve útil con un pequeño experimento',
     en: 'Curiosity becomes useful through a small experiment',
     ru: 'Любопытство становится полезным через небольшой эксперимент',
     uk: 'Цікавість стає корисною через невеликий експеримент',
@@ -149,6 +156,18 @@ const contrastHeadlines: Record<string, Record<ProfileLocale, string>> = {
 };
 
 const traitSummaries: Record<ProfileLocale, Record<TraitId, string>> = {
+  es: {
+    adaptability:
+      'Cuando cambian las circunstancias, puedes ajustar el enfoque sin perder de vista el objetivo.',
+    autonomy: 'Prefieres decidir por tu cuenta y necesitas espacio para actuar con independencia.',
+    connection: 'Te sientes más a gusto en relaciones con confianza y atención genuina.',
+    directness: 'Valoras las palabras claras y prefieres abordar lo importante abiertamente.',
+    initiative: 'Cuando una idea te parece valiosa, te animas a dar el primer paso.',
+    openness: 'Consideras varias posibilidades antes de quedarte con una respuesta.',
+    practicality: 'Confías más en las ideas cuando puedes probarlas en la vida real.',
+    reflection: 'Sueles comprender la situación antes de actuar.',
+    structure: 'Dividir una situación en pasos claros te ayuda a orientarte.',
+  },
   en: {
     adaptability: 'When circumstances change, you can adjust without losing sight of the goal.',
     autonomy: 'You prefer to make your own decisions and need room to act independently.',
@@ -158,7 +177,7 @@ const traitSummaries: Record<ProfileLocale, Record<TraitId, string>> = {
     openness: 'You consider several possibilities before settling on one answer.',
     practicality: 'You trust ideas more when you can test them in real life.',
     reflection: 'You tend to understand a situation before you act.',
-    structure: 'A clear plan helps you make decisions when there is uncertainty.',
+    structure: 'Breaking a situation into clear next steps helps you find your bearings.',
   },
   ru: {
     adaptability: 'Когда обстоятельства меняются, вы умеете перестроиться и не потерять цель.',
@@ -169,7 +188,8 @@ const traitSummaries: Record<ProfileLocale, Record<TraitId, string>> = {
     openness: 'Перед выбором вы рассматриваете несколько возможных вариантов.',
     practicality: 'Вы больше доверяете идеям, которые можно проверить на деле.',
     reflection: 'Обычно вам важно сначала разобраться, а потом действовать.',
-    structure: 'Понятный план помогает вам принимать решения в неопределённости.',
+    structure:
+      'Вам легче сориентироваться, когда можно разбить ситуацию на понятные следующие шаги.',
   },
   uk: {
     adaptability: 'Коли обставини змінюються, ви вмієте перебудуватися й не втратити мету.',
@@ -180,7 +200,8 @@ const traitSummaries: Record<ProfileLocale, Record<TraitId, string>> = {
     openness: 'Перед вибором ви розглядаєте кілька можливих варіантів.',
     practicality: 'Ви більше довіряєте ідеям, які можна перевірити на практиці.',
     reflection: 'Зазвичай вам важливо спочатку розібратися, а потім діяти.',
-    structure: 'Зрозумілий план допомагає вам приймати рішення в невизначеності.',
+    structure:
+      'Вам легше зорієнтуватися, коли можна розкласти ситуацію на зрозумілі наступні кроки.',
   },
 };
 
@@ -277,6 +298,12 @@ const contrastRules: readonly ContrastRule[] = [
         meaning: 'Структура для вас может быть опорой, а не жёстким сценарием.',
         suggestion: 'Перед стартом отделите обязательную часть плана от той, которую можно менять.',
       },
+      es: {
+        usual: 'Un plan claro suele ayudarte a ver el siguiente paso.',
+        context: 'Cuando las circunstancias cambian, puedes ajustar el método.',
+        meaning: 'La estructura puede ser un apoyo para ti, no un guion rígido.',
+        suggestion: 'Separa lo esencial del plan de aquello que puede cambiar.',
+      },
       en: {
         usual: 'A clear plan usually helps you see the next step.',
         context: 'When circumstances change, you can adjust the method.',
@@ -299,6 +326,13 @@ const contrastRules: readonly ContrastRule[] = [
         context: 'Но при ясной цели вы способны быстро перейти к первому действию.',
         meaning: 'Пауза и инициативность могут включаться на разных этапах одного решения.',
         suggestion: 'Дайте себе короткое время на проверку, а затем выберите один тестовый шаг.',
+      },
+      es: {
+        usual: 'A menudo quieres comprender el contexto antes de formarte una opinión.',
+        context: 'Con un propósito claro, puedes pasar pronto a la acción.',
+        meaning: 'La reflexión y la iniciativa pueden ser etapas distintas de una misma decisión.',
+        suggestion:
+          'Reserva un breve tiempo para revisar y elige después un paso que puedas probar.',
       },
       en: {
         usual: 'You often want to understand the context before forming a position.',
@@ -323,6 +357,13 @@ const contrastRules: readonly ContrastRule[] = [
         meaning: 'Самостоятельность не исключает потребность в точном, безопасном диалоге.',
         suggestion: 'Сразу обозначайте, нужен вам разговор или время, после которого вы вернётесь.',
       },
+      es: {
+        usual: 'Te importan tu propio ritmo y el espacio para decidir.',
+        context: 'Con personas de confianza, una conversación de apoyo puede ser un recurso.',
+        meaning: 'La independencia no excluye la necesidad de una conversación clara y segura.',
+        suggestion:
+          'Di si necesitas hablar ahora o hacer una pausa, y acuerda cuándo retomar el contacto.',
+      },
       en: {
         usual: 'Your own pace and room to decide matter to you.',
         context: 'With trusted people, supportive contact can become a resource.',
@@ -346,6 +387,13 @@ const contrastRules: readonly ContrastRule[] = [
         meaning:
           'Любопытство становится особенно полезным, когда получает форму небольшого эксперимента.',
         suggestion: 'Проверяйте новую идею на одном ограниченном участке, не меняя всё сразу.',
+      },
+      es: {
+        usual: 'Una idea te resulta más útil cuando puedes probarla en la práctica.',
+        context:
+          'Los enfoques nuevos y las perspectivas inesperadas también despiertan tu interés.',
+        meaning: 'Tu curiosidad puede funcionar mejor si se convierte en un pequeño experimento.',
+        suggestion: 'Prueba la idea nueva en un ámbito concreto en lugar de cambiarlo todo.',
       },
       en: {
         usual: 'An idea feels more useful when you can test it in practice.',

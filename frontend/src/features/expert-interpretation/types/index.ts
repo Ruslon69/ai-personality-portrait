@@ -125,7 +125,7 @@ export type InterpretationWording = {
 };
 
 export type AuthorialVoiceContract = {
-  address: 'second-person-singular';
+  address: 'second-person-singular' | 'second-person-respectful';
   allowedProductTerms: readonly string[];
   forbiddenTerms: readonly string[];
   principles: readonly (

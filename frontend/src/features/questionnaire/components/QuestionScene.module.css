@@ -1,9 +1,8 @@
 .root {
   position: relative;
-  min-block-size: 6rem;
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--color-interactive) 4%, var(--color-surface));
+  min-block-size: 5.25rem;
+  border: 0;
+  background: radial-gradient(circle at center, var(--portrait-gold-soft), transparent 58%);
   overflow: hidden;
   pointer-events: none;
 }
@@ -22,16 +21,16 @@
   inline-size: 1.15rem;
   aspect-ratio: 1;
   translate: -50% -50%;
-  border: 0.15rem solid var(--color-interactive);
+  border: 1px solid var(--portrait-gold);
   border-radius: 50%;
-  background: var(--color-surface);
+  background: var(--portrait-canvas);
 }
 .element {
   inline-size: 2.6rem;
   block-size: 1.4rem;
-  border: 0.0625rem solid var(--color-border-strong);
-  border-radius: var(--radius-sm);
-  background: var(--color-surface);
+  border: 1px solid var(--portrait-line);
+  border-radius: 50%;
+  background: var(--portrait-canvas);
 }
 .element[data-element='1'] {
   inset: 18% auto auto 14%;
@@ -45,7 +44,7 @@
 .path {
   block-size: 0.1rem;
   inline-size: 28%;
-  background: color-mix(in srgb, var(--color-interactive) 48%, transparent);
+  background: color-mix(in srgb, var(--portrait-gold) 48%, transparent);
   transform-origin: left;
 }
 .path[data-path='1'] {
@@ -103,7 +102,7 @@
   transform: translate(-0.45rem, -0.25rem);
 }
 .root[data-active] .element[data-element='3'] {
-  border-color: var(--color-interactive);
+  border-color: var(--portrait-gold);
   transform: translate(-0.25rem, 0.4rem);
 }
 .root[data-active] .path {

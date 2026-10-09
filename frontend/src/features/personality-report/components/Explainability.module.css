@@ -1,92 +1,20 @@
 .explainCard {
-  --source-accent: var(--color-feedback-info);
+  --source-accent: var(--portrait-gold);
 
   position: relative;
   min-block-size: 100%;
   min-inline-size: 0;
-  padding: var(--page-card-padding);
-  border-color: color-mix(in srgb, var(--color-border) 86%, var(--color-interactive));
-  background:
-    radial-gradient(
-      circle at 100% 0,
-      color-mix(in srgb, var(--color-interactive) 5%, transparent),
-      transparent 38%
-    ),
-    var(--surface-accent-subtle);
+  padding: clamp(1.5rem, 3vw, 2.25rem) 0;
+  border: 0;
+  border-block-start: 1px solid var(--portrait-line);
+  border-radius: 0;
+  background: transparent;
   animation: insight-enter var(--transition-duration-reveal) var(--transition-easing-reveal) both;
   animation-delay: var(--insight-delay);
   transition:
     border-color var(--transition-duration-normal) var(--transition-easing-standard),
     background-color var(--transition-duration-normal) var(--transition-easing-standard);
 }
-.insightMotif {
-  position: absolute;
-  inset: var(--space-4) var(--space-4) auto auto;
-  display: grid;
-  inline-size: 4.5rem;
-  aspect-ratio: 1;
-  place-items: center;
-  opacity: 0.32;
-  pointer-events: none;
-}
-.insightMotif i {
-  position: absolute;
-  inline-size: 2.4rem;
-  block-size: 0.12rem;
-  border-radius: var(--radius-full);
-  background: var(--color-interactive);
-  transition:
-    transform var(--motion-discover-duration) var(--motion-easing-discover),
-    opacity var(--motion-focus-duration);
-}
-.insightMotif i:nth-child(2) {
-  rotate: 60deg;
-}
-.insightMotif i:nth-child(3) {
-  rotate: -60deg;
-}
-.insightMotif span {
-  inline-size: 0.55rem;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--color-interactive);
-}
-.explainCard[data-format='paired'] .insightMotif i:nth-child(1) {
-  transform: translateX(-0.7rem);
-}
-.explainCard[data-format='paired'] .insightMotif i:nth-child(2) {
-  transform: translateX(0.7rem);
-  rotate: 0deg;
-}
-.explainCard[data-format='context'] .insightMotif i {
-  transform: rotate(18deg);
-}
-.explainCard[data-format='application'] .insightMotif i:nth-child(1) {
-  transform: scaleX(0.55);
-  transform-origin: left;
-}
-.explainCard[data-format='hypothesis'] .insightMotif {
-  outline: 0.0625rem dashed var(--color-interactive);
-  border-radius: 50%;
-}
-.explainCard[data-format='interpretation'] .insightMotif i {
-  border: 0.0625rem solid var(--color-interactive);
-  border-radius: 50%;
-  background: transparent;
-}
-.explainCard:is(:hover, :focus-within) .insightMotif {
-  opacity: 0.62;
-}
-.explainCard[data-format='paired']:is(:hover, :focus-within) .insightMotif i {
-  transform: translateX(0);
-}
-.explainCard[data-format='application']:is(:hover, :focus-within) .insightMotif i:nth-child(1) {
-  transform: scaleX(1);
-}
-.explainCard[data-format='context']:is(:hover, :focus-within) .insightMotif i {
-  transform: rotate(-12deg);
-}
-
 .explainCard,
 .explainCard * {
   word-break: normal;
@@ -103,19 +31,14 @@
 
 .explainCard[data-variant='featured'] {
   padding: clamp(var(--space-6), 5vw, var(--space-8));
-  border-color: color-mix(in srgb, var(--color-interactive) 38%, var(--color-border));
-  background:
-    radial-gradient(
-      circle at 100% 0,
-      color-mix(in srgb, var(--color-interactive) 10%, transparent),
-      transparent 42%
-    ),
-    var(--color-surface);
-  box-shadow: var(--shadow-low);
+  border-block: 0;
+  border-inline-start: 1px solid var(--portrait-gold);
+  background: linear-gradient(90deg, var(--portrait-gold-soft), transparent 72%);
+  box-shadow: none;
 }
 
 .explainCard[data-expanded='true'] {
-  border-color: color-mix(in srgb, var(--color-interactive) 46%, var(--color-border));
+  border-color: var(--portrait-line);
 }
 
 .explainCard[data-format='hypothesis'] {
@@ -129,7 +52,7 @@
       transparent 65%,
       color-mix(in srgb, var(--color-interactive) 7%, transparent)
     ),
-    var(--surface-accent-subtle);
+    transparent;
 }
 
 .explainCard[data-format='paired']::before {
@@ -137,13 +60,19 @@
   inline-size: 2.5rem;
   block-size: 0.125rem;
   border-radius: var(--radius-full);
-  background: var(--color-interactive);
+  background: var(--portrait-line);
   content: '';
   margin-block-end: var(--space-3);
 }
 
 .cardBadge {
   align-self: flex-start;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--portrait-gold);
+  font-weight: 400;
 }
 
 .insightDescription,
@@ -155,7 +84,13 @@
 .explanationCopy,
 .transparencyLead,
 .transparencyPoint p {
-  color: var(--color-text-muted);
+  color: var(--portrait-muted);
+}
+.explainCard h3[data-variant] {
+  font-family: var(--font-family-display);
+  font-size: clamp(1.35rem, 2vw, 1.85rem);
+  font-weight: 400;
+  font-synthesis: none;
 }
 
 .insightMeta {
@@ -165,7 +100,7 @@
   flex-wrap: wrap;
   gap: var(--space-3);
   padding-block: var(--space-3);
-  border-block: 0.0625rem solid color-mix(in srgb, var(--color-border) 76%, transparent);
+  border-block-start: 0;
 }
 
 .sourceList {
@@ -198,16 +133,16 @@
   max-inline-size: 100%;
   flex: 0 0 auto;
   gap: var(--space-2);
-  padding: var(--space-1) var(--space-3);
-  border: 0.0625rem solid color-mix(in srgb, var(--chip-accent) 34%, var(--color-border));
-  border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--chip-accent) 7%, var(--color-surface));
-  color: var(--color-text);
+  padding: var(--space-1) 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--portrait-muted);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-tight);
-  overflow-wrap: normal;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .sourceChip[data-category='signal'] {
@@ -293,12 +228,14 @@
 
 .confidenceCopy {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   min-inline-size: 0;
   gap: var(--space-1);
 }
 
 .confidenceCopy > * {
-  overflow-wrap: break-word;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
 }
 
 .confidenceCopy strong {
@@ -335,7 +272,9 @@
   display: grid;
   min-inline-size: 0;
   gap: var(--space-6);
-  padding-block-start: var(--space-5);
+  padding: var(--space-5) clamp(1rem, 3vw, 2rem);
+  border-inline-start: 1px solid var(--portrait-line);
+  background: linear-gradient(90deg, var(--sa-violet-atmosphere), transparent 85%);
 }
 
 .explanationSection {
@@ -346,15 +285,16 @@
 
 .evidenceGroups {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
 }
 
 .evidenceGroup {
   min-inline-size: 0;
-  padding: var(--space-4);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  padding: var(--space-3) 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .evidenceGroupTitle {
@@ -372,6 +312,7 @@
 
 .evidenceList {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
   margin: 0;
   padding: 0;
@@ -380,14 +321,18 @@
 
 .evidenceList li {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-inline-size: 0;
   gap: var(--space-1);
   padding-inline-start: var(--space-4);
-  border-inline-start: 0.125rem solid
-    color-mix(in srgb, var(--color-interactive) 44%, var(--color-border));
+  border-inline-start: 1px solid var(--portrait-line);
 }
 
 .evidenceList strong {
   font-size: var(--font-size-sm);
+}
+.evidenceList :is(strong, span) {
+  overflow-wrap: anywhere;
 }
 
 .evidenceList span {
@@ -431,25 +376,36 @@
   align-items: stretch;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-4);
-  border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--color-interactive) 5%, var(--color-surface));
+  padding: var(--space-3) 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .timelineNode {
   display: inline-flex;
   align-items: center;
-  min-inline-size: max-content;
+  min-inline-size: 0;
   max-inline-size: 100%;
-  flex: 0 0 auto;
+  flex: 0 1 auto;
   gap: var(--space-2);
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.timelineNode > span:not(.timelineSymbol) {
+  min-inline-size: 0;
+  flex: 1 1 auto;
 }
 
 .timelineNode:not(:last-child)::after {
+  inline-size: 1.25em;
+  block-size: 1.25em;
+  flex: 0 0 1.25em;
+  line-height: 1.25;
+  text-align: center;
   margin-inline-start: auto;
   color: var(--color-border-strong);
   content: '→';
@@ -460,6 +416,7 @@
   display: inline-grid;
   inline-size: 1.75rem;
   block-size: 1.75rem;
+  flex: 0 0 auto;
   place-items: center;
   border: 0.0625rem solid var(--color-border);
   border-radius: var(--radius-full);
@@ -490,15 +447,39 @@
   background: color-mix(in srgb, var(--color-interactive) 7%, var(--color-surface));
 }
 
-.explainToggle {
+.explainToggle[data-prominence='quiet'] {
   align-self: flex-start;
   min-block-size: 2.75rem;
-  padding-inline: var(--space-3);
+  justify-content: flex-start;
+  padding-inline: 0 var(--space-2);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--portrait-gold);
   font-weight: var(--font-weight-medium);
+}
+.explainToggle[data-prominence='quiet']:hover:not(:disabled) {
+  border-color: var(--portrait-gold);
+  background: transparent;
+  color: var(--color-text);
+}
+.explainToggle[data-prominence='quiet']:focus-visible {
+  border-color: var(--portrait-gold);
+  outline: 2px solid var(--color-focus);
+  outline-offset: 0.2rem;
+  box-shadow: none;
+}
+.explainCard[data-expanded='true'] .explainToggle {
+  border-color: var(--portrait-line);
 }
 
 .toggleIcon {
-  display: inline-block;
+  display: inline-grid;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  place-items: center;
+  border: 1px solid var(--sa-border-gold);
+  border-radius: 50%;
   margin-inline-start: var(--space-2);
   transition: transform var(--transition-duration-normal) var(--transition-easing-standard);
 }
@@ -514,15 +495,12 @@
 .transparencyPanel {
   overflow: hidden;
   padding: var(--page-surface-padding);
-  border: 0.0625rem solid color-mix(in srgb, var(--color-interactive) 28%, var(--color-border));
-  border-radius: var(--radius-lg);
-  background:
-    radial-gradient(
-      circle at 100% 0,
-      color-mix(in srgb, var(--color-interactive) 8%, transparent),
-      transparent 36%
-    ),
-    var(--color-surface);
+  border: 0;
+  border-block-start: 1px solid var(--portrait-line);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding-inline: 0;
 }
 
 .transparencyHeading {
@@ -531,6 +509,7 @@
 
 .transparencyFlow {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   margin: 0;
   padding: 0;
   counter-reset: transparency-step;
@@ -543,6 +522,8 @@
   align-items: center;
   gap: var(--space-3);
   counter-increment: transparency-step;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
 }
 
 .transparencyFlow li::before {
@@ -591,7 +572,7 @@
 
 @media (min-width: 64rem) {
   .explainCard[data-expanded='true'] .evidenceGroups {
-    grid-template-columns: repeat(2, minmax(18rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
   }
 
   .timeline {
@@ -618,16 +599,14 @@
   }
 }
 
-@media (max-width: 29.999rem) {
-  .explainToggle {
-    inline-size: 100%;
+@media (forced-colors: active) {
+  .explainToggle[data-prominence='quiet'] {
+    border-color: LinkText;
+    color: LinkText;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .insightMotif i {
-    transition: none;
-  }
   .explainCard {
     animation: none;
   }
@@ -636,4 +615,11 @@
   .toggleIcon {
     transition: none;
   }
+}
+
+.explanationSection h4[data-variant] {
+  font-family: var(--font-family-display);
+  font-size: clamp(1.15rem, 1.6vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.45;
 }

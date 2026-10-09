@@ -1,12 +1,12 @@
 import type { AuthorialVoiceContract } from '../../types';
 
 export const AUTHORIAL_VOICE: AuthorialVoiceContract = {
-  address: 'second-person-singular',
+  address: 'second-person-respectful',
   allowedProductTerms: [
-    'твоя трактовка',
-    'твой расклад',
+    'ваша трактовка',
+    'ваш расклад',
     'персональная трактовка',
-    'твой следующий шаг',
+    'ваш следующий шаг',
     'текущая тема',
     'эта карта',
     'этот период',

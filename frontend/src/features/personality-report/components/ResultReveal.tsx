@@ -1,30 +1,23 @@
+import { revealCopy } from './../data/reveal-copy';
+import type { ProfileLocale } from '@entities/personality-profile';
 import { PortraitMark, type PersonalityProfile } from '@entities/personality-profile';
+import { focusElementByIdOnNextFrame } from '@shared/lib/focus';
 import { Badge, Button, Container, Stack, Surface, Typography } from '@shared/ui';
 
 import styles from './ResultReveal.module.css';
 
-type Props = { opened: boolean; onOpen: () => void; profile: PersonalityProfile };
+type Props = {
+  opened: boolean;
+  onOpen: () => void;
+  profile: PersonalityProfile;
+  locale?: ProfileLocale;
+};
 
-export function ResultReveal({ opened, onOpen, profile }: Props) {
-  const copy = {
-    en: {
-      eyebrow: 'Your portrait is ready',
-      symbol: 'Your personal abstract portrait mark',
-      open: 'Open my portrait',
-    },
-    ru: {
-      eyebrow: 'Ваш портрет готов',
-      symbol: 'Ваш персональный абстрактный знак портрета',
-      open: 'Открыть мой портрет',
-    },
-    uk: {
-      eyebrow: 'Ваш портрет готовий',
-      symbol: 'Ваш персональний абстрактний знак портрета',
-      open: 'Відкрити мій портрет',
-    },
-  }[profile.locale];
+export function ResultReveal({ opened, onOpen, profile, locale = profile.locale }: Props) {
+  const copy = revealCopy[locale];
   const open = () => {
     onOpen();
+    focusElementByIdOnNextFrame('summary-title');
   };
   return (
     <section
@@ -50,20 +43,23 @@ export function ResultReveal({ opened, onOpen, profile }: Props) {
                 <Typography
                   as="h1"
                   className={styles.title}
+                  lang={profile.locale}
                   id="full-report-title"
                   tabIndex={-1}
                   variant="display"
                 >
                   {profile.revealHeadline}
                 </Typography>
-                <Typography className={styles.lead} variant="lead">
+                <Typography className={styles.lead} lang={profile.locale} variant="lead">
                   {profile.revealLead}
                 </Typography>
               </Stack>
-              <Button onClick={open} prominence="primary" size="large">
-                {copy.open}
-                <span aria-hidden="true"> →</span>
-              </Button>
+              {!opened ? (
+                <Button onClick={open} prominence="primary" size="large">
+                  {copy.open}
+                  <span aria-hidden="true"> →</span>
+                </Button>
+              ) : null}
             </Stack>
           </div>
         </Surface>

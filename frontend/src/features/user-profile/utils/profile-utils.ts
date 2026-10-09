@@ -1,26 +1,21 @@
+import { formatDate } from '@shared/i18n';
+import { profileUiCopy } from '../data/profile-ui-copy';
 import type { ProfileCompletionStatus, ProfileLocale } from '@entities/personality-profile';
 
 const completionStatusLabels: Record<ProfileLocale, Record<ProfileCompletionStatus, string>> = {
+  es: { complete: 'Incluido', missing: 'Se puede añadir', skipped: 'Omitido' },
   en: { complete: 'Included', missing: 'Can be added', skipped: 'Skipped' },
   ru: { complete: 'Добавлено', missing: 'Можно добавить', skipped: 'Пропущено' },
   uk: { complete: 'Додано', missing: 'Можна додати', skipped: 'Пропущено' },
 };
 
 export function formatProfileDate(value: string, locale: ProfileLocale = 'ru') {
-  const date = new Date(value);
-  const language = locale === 'en' ? 'en-GB' : locale === 'uk' ? 'uk-UA' : 'ru-RU';
-  const formatter = new Intl.DateTimeFormat(language, {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-
-  if (!Number.isNaN(date.getTime())) return formatter.format(date);
-  return locale === 'en'
-    ? 'Date unavailable'
-    : locale === 'uk'
-      ? 'Дату не вказано'
-      : 'Дата не указана';
+  return formatDate(
+    value,
+    locale,
+    { day: 'numeric', month: 'long', year: 'numeric' },
+    profileUiCopy[locale].missingDate,
+  );
 }
 
 export function getCompletionStatusLabel(

@@ -1,5 +1,5 @@
 import type { ThemeMode } from '@app/providers/theme';
-import { Container, Stack, Surface, Typography } from '@shared/ui';
+import { Button, Container, Stack, Toast, Typography } from '@shared/ui';
 
 import type { AppearanceOption } from '../types';
 import type { UserSettingsCopy } from '../data';
@@ -10,6 +10,9 @@ type AppearanceSettingsSectionProps = {
   onChange: (theme: ThemeMode) => void;
   options: readonly AppearanceOption[];
   value: ThemeMode;
+  storageError: string;
+  onRetry: () => void;
+  retryLabel: string;
 };
 
 export function AppearanceSettingsSection({
@@ -17,14 +20,17 @@ export function AppearanceSettingsSection({
   onChange,
   options,
   value,
+  storageError,
+  onRetry,
+  retryLabel,
 }: AppearanceSettingsSectionProps) {
   return (
     <section aria-labelledby="appearance-settings-title" className={styles.section}>
       <Container size="wide">
-        <Surface className={styles.settingsSurface} elevation="low">
+        <div className={styles.settingsSurface}>
           <Stack gap="lg">
             <Stack className={styles.sectionIntroduction} gap="sm">
-              <Typography as="p" variant="eyebrow">
+              <Typography as="p" className={styles.goldEyebrow} variant="eyebrow">
                 {copy.eyebrow}
               </Typography>
               <Typography as="h2" id="appearance-settings-title" variant="heading-lg">
@@ -34,7 +40,11 @@ export function AppearanceSettingsSection({
             </Stack>
 
             <fieldset
-              aria-describedby="appearance-settings-description"
+              aria-describedby={
+                storageError
+                  ? 'appearance-settings-description appearance-settings-error'
+                  : 'appearance-settings-description'
+              }
               className={styles.fieldset}
             >
               <legend className={styles.visuallyHidden}>{copy.legend}</legend>
@@ -60,8 +70,16 @@ export function AppearanceSettingsSection({
                 ))}
               </div>
             </fieldset>
+            {storageError ? (
+              <Toast id="appearance-settings-error" tone="error">
+                <p>{storageError}</p>
+                <Button onClick={onRetry} prominence="secondary">
+                  {retryLabel}
+                </Button>
+              </Toast>
+            ) : null}
           </Stack>
-        </Surface>
+        </div>
       </Container>
     </section>
   );

@@ -1,0 +1,95 @@
+.root {
+  position: relative;
+  display: grid;
+  min-block-size: min(42rem, calc(100svh - 5rem));
+  padding-block: clamp(4rem, 12vw, 8rem);
+  place-items: center;
+  overflow: clip;
+}
+
+.root::before {
+  position: absolute;
+  inset: 8% 5% auto auto;
+  inline-size: min(32rem, 72vw);
+  aspect-ratio: 1;
+  border: 0.0625rem solid color-mix(in srgb, var(--portrait-gold) 15%, transparent);
+  border-radius: 50%;
+  box-shadow: 0 0 7rem color-mix(in srgb, #5f4d9b 13%, transparent);
+  content: '';
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-inline-size: 0;
+  max-inline-size: 43rem;
+  justify-items: start;
+  gap: var(--space-5);
+  overflow-wrap: anywhere;
+}
+
+.eyebrow {
+  color: var(--portrait-gold);
+}
+
+.content h1 {
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+
+.description {
+  max-inline-size: 48ch;
+  color: var(--portrait-muted);
+}
+
+.mark {
+  position: relative;
+  display: grid;
+  inline-size: 3.5rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 0.0625rem solid var(--portrait-line);
+  border-radius: 50%;
+}
+
+.mark::before,
+.mark::after,
+.mark i {
+  position: absolute;
+  inline-size: 0.45rem;
+  aspect-ratio: 1;
+  background: var(--portrait-gold);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  content: '';
+}
+
+.mark::before {
+  inset: 0.4rem auto auto 0.65rem;
+  opacity: 0.48;
+  scale: 0.65;
+}
+
+.mark::after {
+  inset: auto 0.35rem 0.7rem auto;
+  opacity: 0.6;
+  scale: 0.75;
+}
+
+@media (max-width: 30rem) {
+  .root {
+    min-block-size: calc(100svh - 4.5rem);
+    padding-block: var(--space-10);
+  }
+}
+
+@media (forced-colors: active) {
+  .root::before {
+    display: none;
+  }
+
+  .mark {
+    border-color: CanvasText;
+  }
+}

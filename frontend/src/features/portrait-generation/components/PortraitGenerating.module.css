@@ -1,6 +1,7 @@
 .root {
   min-block-size: min(46rem, calc(100dvh - 8rem));
-  padding-block: var(--page-hero-padding-block);
+  padding-block: clamp(2rem, 5vw, 4.5rem);
+  background: radial-gradient(circle at 50% 16%, var(--portrait-gold-soft), transparent 30rem);
 }
 
 .content {
@@ -20,27 +21,30 @@
 .title {
   max-inline-size: var(--flow-title-max-width);
 }
+.title {
+  font-family: var(--font-family-display);
+  font-weight: 400;
+  font-synthesis: none;
+}
 
 .lead {
   max-inline-size: var(--content-width-reading);
 }
 
 .stageSurface {
-  padding: var(--flow-surface-padding);
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
+  padding: var(--space-4) 0;
+  border: 0;
+  border-radius: 0;
   background:
-    radial-gradient(
-      circle at 100% 0,
-      color-mix(in srgb, var(--color-interactive) 11%, transparent),
-      transparent 44%
-    ),
-    var(--color-surface);
+    radial-gradient(circle at 100% 0, var(--portrait-gold-soft), transparent 44%), transparent;
+}
+.stageSurface[data-elevation] {
+  box-shadow: none;
 }
 
 .liveStatus {
   min-block-size: 0;
-  color: var(--color-text-muted);
+  color: var(--portrait-muted);
 }
 
 .stageList {
@@ -56,7 +60,7 @@
   align-items: start;
   padding: var(--space-3);
   border-radius: var(--radius-md);
-  color: var(--color-text-muted);
+  color: var(--portrait-muted);
   gap: var(--space-3);
   grid-template-columns: auto minmax(0, 1fr);
   transition:
@@ -66,9 +70,8 @@
 }
 
 .stage[data-status='current'] {
-  background: color-mix(in srgb, var(--color-interactive) 9%, var(--color-surface));
+  background: linear-gradient(90deg, var(--portrait-gold-soft), transparent);
   color: var(--color-text);
-  transform: translateX(var(--space-1));
 }
 
 .stage[data-status='complete'] {
@@ -81,16 +84,17 @@
   block-size: 2rem;
   align-items: center;
   justify-content: center;
-  border: 0.0625rem solid var(--color-border);
+  border: 1px solid var(--portrait-line);
   border-radius: var(--radius-full);
-  background: var(--color-surface);
+  background: var(--portrait-canvas);
   color: inherit;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
 }
 
 .stage[data-status='current'] .marker {
-  border-color: var(--color-interactive);
+  border-color: var(--portrait-gold);
+  color: var(--portrait-gold);
 }
 
 .stageTitle {

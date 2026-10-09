@@ -1,8 +1,9 @@
 import {
+  getProductStorageService,
   persistPreferencesToProductStorage,
   readPreferencesFromProductStorage,
 } from '@features/product-storage/runtime/browser-runtime';
-import { createStore } from '@store';
+import { createStore, type Store } from '@store';
 
 import {
   DEFAULT_TAROT_PREFERENCES,
@@ -14,17 +15,34 @@ function readPreferences() {
   return normalizeTarotPreferences(readPreferencesFromProductStorage().tarot);
 }
 
+export function createTarotPreferencesActions(
+  store: Store<TarotPreferences>,
+  persist: (preferences: TarotPreferences) => boolean,
+) {
+  let lastWritePersisted = false;
+  store.subscribe(() => {
+    lastWritePersisted = persist(store.getState());
+  });
+  return {
+    restoreDefaults() {
+      store.setState({ ...DEFAULT_TAROT_PREFERENCES });
+      return lastWritePersisted;
+    },
+    update(patch: Partial<TarotPreferences>) {
+      store.setState(patch);
+      return lastWritePersisted;
+    },
+  };
+}
+
 export const tarotPreferencesStore = createStore<TarotPreferences>(readPreferences());
-
-tarotPreferencesStore.subscribe(() => {
-  persistPreferencesToProductStorage({ tarot: tarotPreferencesStore.getState() });
-});
-
-export const tarotPreferencesActions = {
-  restoreDefaults() {
-    tarotPreferencesStore.setState({ ...DEFAULT_TAROT_PREFERENCES });
+export const tarotPreferencesActions = createTarotPreferencesActions(
+  tarotPreferencesStore,
+  (preferences) => {
+    const write = persistPreferencesToProductStorage({ tarot: preferences });
+    return (
+      write.legacyWritten ||
+      (write.envelopeWritten && getProductStorageService().getCapability() === 'persistent')
+    );
   },
-  update(patch: Partial<TarotPreferences>) {
-    tarotPreferencesStore.setState(patch);
-  },
-};
+);

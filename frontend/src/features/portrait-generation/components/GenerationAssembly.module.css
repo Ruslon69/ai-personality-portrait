@@ -4,15 +4,14 @@
   --assembly-rotation: 0deg;
   position: relative;
   min-block-size: 16rem;
-  border: 0.0625rem solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-block: 0.0625rem solid var(--portrait-line);
   background:
     radial-gradient(
       circle at 50% 58%,
-      color-mix(in srgb, var(--color-interactive) 14%, transparent),
+      color-mix(in srgb, var(--portrait-gold) 10%, transparent),
       transparent 32%
     ),
-    var(--surface-accent-subtle);
+    transparent;
   overflow: hidden;
 }
 .sources {
@@ -24,9 +23,9 @@
 }
 .sources span {
   padding: var(--space-2);
-  border: 0.0625rem solid var(--color-border);
+  border: 0.0625rem solid var(--portrait-line);
   border-radius: var(--radius-full);
-  background: var(--color-surface);
+  background: var(--portrait-canvas);
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
 }
@@ -36,7 +35,7 @@
   inline-size: 100%;
   block-size: 100%;
   fill: none;
-  stroke: color-mix(in srgb, var(--color-interactive) 48%, transparent);
+  stroke: color-mix(in srgb, var(--portrait-gold) 48%, transparent);
   stroke-width: 0.7;
   pointer-events: none;
 }
@@ -58,9 +57,9 @@
 .engine i {
   inline-size: 2.5rem;
   aspect-ratio: 1;
-  border: 0.12rem solid var(--color-interactive);
+  border: 0.12rem solid var(--portrait-gold);
   border-radius: 50%;
-  background: var(--color-surface);
+  background: var(--portrait-canvas);
   transform: rotate(var(--assembly-rotation));
   transition: transform var(--motion-transform-duration) var(--motion-easing-discover);
 }
@@ -78,7 +77,7 @@
   position: absolute;
   inline-size: 2rem;
   aspect-ratio: 1;
-  border: 0.0625rem solid var(--color-interactive);
+  border: 0.0625rem solid var(--portrait-gold);
   border-radius: 50%;
 }
 .mark i:nth-child(2) {
@@ -91,7 +90,7 @@
   inline-size: 0.7rem;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: var(--color-interactive);
+  background: var(--portrait-gold);
 }
 @media (max-width: 30rem) {
   .root {

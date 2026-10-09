@@ -1,49 +1,93 @@
+/* Soul Arkana foundation. Disciplines vary illumination, not the palette.
+ * Light uses warm paper and ink; forced colors defer to the user's system.
+ */
 :root {
-  /*
-   * Product surfaces keep platform-aware defaults. Marketing roles are temporary
-   * semantic direction tokens and can be retuned without changing components.
-   */
-  --color-background: Canvas;
-  --color-surface: Canvas;
-  --color-surface-raised: ButtonFace;
-  --color-surface-overlay: Canvas;
-  --color-text: CanvasText;
-  --color-text-muted: GrayText;
-  --color-text-disabled: GrayText;
-  --color-border: ButtonBorder;
-  --color-border-strong: CanvasText;
-  --color-interactive: Highlight;
-  --color-on-interactive: HighlightText;
-  --color-focus: Highlight;
-  --color-feedback-success: CanvasText;
-  --color-feedback-warning: CanvasText;
-  --color-feedback-error: CanvasText;
-  --color-feedback-info: CanvasText;
-  --color-overlay: color-mix(in srgb, CanvasText 48%, transparent);
+  --sa-bg-deep: light-dark(#eee9e2, #080d1c);
+  --sa-bg-base: light-dark(#f7f3ed, #0c1224);
+  --sa-bg-elevated: light-dark(#fffcf7, #181e33);
+  --sa-bg-soft: light-dark(#eee8e4, #12192d);
+  --sa-violet-deep: light-dark(#e8e0ed, #1b1932);
+  --sa-violet-atmosphere: light-dark(rgb(117 91 148 / 10%), rgb(90 67 136 / 12%));
+  --sa-ambient-indigo: light-dark(rgb(99 126 172 / 10%), rgb(48 74 133 / 24%));
+  --sa-ambient-plum: light-dark(rgb(151 118 163 / 10%), rgb(112 69 138 / 19%));
+  --sa-gold: light-dark(#795725, #dec394);
+  --sa-gold-soft: light-dark(rgb(121 87 37 / 8%), rgb(222 195 148 / 5%));
+  --sa-gold-muted: light-dark(#94764b, #ad966f);
+  --sa-text-primary: light-dark(#292437, #f1ebe2);
+  --sa-text-secondary: light-dark(#60566c, #c3bdce);
+  --sa-text-muted: light-dark(#6d6276, #a8a2b7);
+  --sa-border-subtle: light-dark(rgb(108 87 124 / 20%), rgb(157 144 178 / 20%));
+  --sa-border-gold: light-dark(rgb(121 87 37 / 35%), rgb(222 195 148 / 32%));
+  --sa-glow-soft: radial-gradient(ellipse at center, var(--sa-gold-soft), transparent 70%);
+  --sa-shadow-depth: 0 1rem 3rem light-dark(rgb(44 32 61 / 12%), rgb(2 5 15 / 40%));
+  --sa-action-fill: linear-gradient(115deg, #e5cea0, #bda06c);
+  --sa-action-fill-hover: linear-gradient(115deg, #efddb5, #cfb17a);
+  --sa-action-ink: #292032;
+  --sa-action-border: #c6a773;
+  --sa-action-shadow: inset 0 1px rgb(255 247 218 / 45%), 0 0.4rem 1.4rem rgb(189 145 74 / 9%);
+  --sa-atmosphere:
+    radial-gradient(ellipse at 85% 8%, var(--sa-violet-atmosphere), transparent 46rem),
+    radial-gradient(ellipse at 8% 65%, var(--sa-gold-soft), transparent 42rem);
 
-  --color-action-primary: light-dark(oklch(0.47 0.18 282), oklch(0.76 0.14 282));
-  --color-action-primary-hover: light-dark(oklch(0.42 0.19 282), oklch(0.81 0.13 282));
-  --color-on-action-primary: light-dark(oklch(0.99 0.004 285), oklch(0.15 0.025 282));
-  --color-action-secondary: light-dark(oklch(0.98 0.012 282), oklch(0.22 0.03 282));
-  --color-action-secondary-hover: light-dark(oklch(0.95 0.025 282), oklch(0.27 0.04 282));
+  --color-background: var(--sa-bg-base);
+  --color-surface: var(--sa-bg-base);
+  --color-surface-raised: var(--sa-bg-soft);
+  --color-surface-overlay: var(--sa-bg-elevated);
+  --color-text: var(--sa-text-primary);
+  --color-text-muted: var(--sa-text-secondary);
+  --color-text-disabled: var(--sa-text-muted);
+  --color-border: var(--sa-border-subtle);
+  --color-border-strong: var(--sa-border-gold);
+  --color-interactive: var(--sa-gold);
+  --color-on-interactive: var(--sa-bg-deep);
+  --color-focus: var(--sa-gold);
+  --color-focus-ring: var(--color-focus);
+  --color-feedback-success: light-dark(#36644d, #a1c8b1);
+  --color-feedback-warning: var(--sa-gold);
+  --color-feedback-error: light-dark(#973e43, #edaaaa);
+  --color-feedback-info: var(--sa-gold);
+  --color-overlay: light-dark(rgb(31 22 44 / 40%), rgb(2 5 15 / 65%));
+  --color-action-primary: var(--sa-gold);
+  --color-action-primary-hover: var(--sa-gold);
+  --color-on-action-primary: var(--sa-action-ink);
+  --color-action-secondary: var(--sa-bg-soft);
+  --color-action-secondary-hover: var(--sa-gold-soft);
 
-  --color-marketing-canvas: light-dark(oklch(0.985 0.008 278), oklch(0.135 0.022 278));
-  --color-marketing-surface: light-dark(oklch(0.995 0.005 278), oklch(0.18 0.027 278));
-  --color-marketing-surface-raised: light-dark(oklch(0.97 0.018 278), oklch(0.225 0.035 278));
-  --color-marketing-border: light-dark(oklch(0.84 0.035 278), oklch(0.38 0.045 278));
-  --color-marketing-border-strong: light-dark(oklch(0.67 0.07 278), oklch(0.56 0.075 278));
-  --color-marketing-accent: light-dark(oklch(0.53 0.17 282), oklch(0.74 0.145 282));
-  --color-marketing-accent-secondary: light-dark(oklch(0.58 0.12 210), oklch(0.75 0.11 210));
-  --color-marketing-accent-warm: light-dark(oklch(0.68 0.12 55), oklch(0.77 0.11 55));
-  --color-marketing-glow-primary: color-mix(
-    in srgb,
-    var(--color-marketing-accent) 24%,
-    transparent
-  );
-  --color-marketing-glow-secondary: color-mix(
-    in srgb,
-    var(--color-marketing-accent-secondary) 18%,
-    transparent
-  );
-  --color-marketing-grid: color-mix(in srgb, var(--color-marketing-border-strong) 22%, transparent);
+  --color-marketing-canvas: var(--sa-bg-base);
+  --color-marketing-surface: var(--sa-bg-soft);
+  --color-marketing-surface-raised: var(--sa-bg-elevated);
+  --color-marketing-border: var(--sa-border-subtle);
+  --color-marketing-border-strong: var(--sa-border-gold);
+  --color-marketing-accent: var(--sa-gold);
+  --color-marketing-accent-secondary: var(--sa-gold-muted);
+  --color-marketing-accent-warm: var(--sa-gold);
+  --color-marketing-glow-primary: var(--sa-gold-soft);
+  --color-marketing-glow-secondary: var(--sa-violet-atmosphere);
+  --color-marketing-grid: var(--sa-border-subtle);
+}
+
+@media (forced-colors: active) {
+  :root {
+    --sa-bg-deep: Canvas;
+    --sa-bg-base: Canvas;
+    --sa-bg-elevated: Canvas;
+    --sa-bg-soft: Canvas;
+    --sa-gold: LinkText;
+    --sa-gold-muted: CanvasText;
+    --sa-text-primary: CanvasText;
+    --sa-text-secondary: CanvasText;
+    --sa-text-muted: GrayText;
+    --sa-border-subtle: CanvasText;
+    --sa-border-gold: ButtonText;
+    --sa-action-fill: ButtonFace;
+    --sa-action-fill-hover: ButtonFace;
+    --sa-action-ink: ButtonText;
+    --sa-action-border: ButtonText;
+    --sa-action-shadow: none;
+    --color-focus: Highlight;
+    --color-interactive: LinkText;
+    --color-on-interactive: Canvas;
+    --color-text-disabled: GrayText;
+    --color-feedback-error: CanvasText;
+  }
 }

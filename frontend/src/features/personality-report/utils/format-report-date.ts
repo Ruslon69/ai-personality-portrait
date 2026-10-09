@@ -1,15 +1,12 @@
-const reportDateFormatter = new Intl.DateTimeFormat('ru-RU', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-});
+import { formatDate, type Locale } from '@shared/i18n';
 
-export function formatReportDate(value: string) {
-  const date = new Date(value);
+const missingDate: Record<Locale, string> = {
+  ru: 'Дата не указана',
+  es: 'Fecha no indicada',
+  en: 'Date not provided',
+  uk: 'Дату не вказано',
+};
 
-  if (Number.isNaN(date.getTime())) {
-    return 'Дата не указана';
-  }
-
-  return reportDateFormatter.format(date);
+export function formatReportDate(value: string, locale: Locale = 'ru') {
+  return formatDate(value, locale, undefined, missingDate[locale]);
 }

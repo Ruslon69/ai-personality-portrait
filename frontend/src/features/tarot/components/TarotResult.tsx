@@ -2,13 +2,14 @@ import { useMemo, useRef, useState } from 'react';
 
 import { useMediaQuery } from '@hooks';
 import type { Locale } from '@shared/i18n';
-import { Badge, Button, Container, Stack, Surface, Typography } from '@shared/ui';
+import { productContractCopy } from '@shared/i18n/product-contract-copy';
+import { Button, Container, Stack, Typography } from '@shared/ui';
 
 import { tarotCardById, tarotCopy, tarotSpreadById } from '../data';
 import { createTarotResultHeroPresentation } from '../lib';
 import type { TarotReading } from '../types';
 import { TarotCardView } from './TarotCardView';
-import styles from './Tarot.module.css';
+import styles from './TarotResult.module.css';
 
 function firstSentence(value: string) {
   return (
@@ -37,6 +38,8 @@ export function TarotResult({
   savedPresentation?: { headline: string; motifs: readonly string[] };
 }) {
   const copy = tarotCopy[locale];
+  const contentLocale = reading.context.locale;
+  const contentCopy = tarotCopy[contentLocale];
   const spread = tarotSpreadById.get(reading.spreadId)!;
   const leadingSelection =
     reading.selections.find((selection) => selection.cardId === reading.leadingCardId) ??
@@ -72,55 +75,63 @@ export function TarotResult({
   }
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} lang={locale} data-result-locale={contentLocale}>
       <section aria-labelledby="reading-title" className={styles.resultHero}>
         <Container size="wide">
-          <Surface className={styles.resultHeroSurface} elevation="low">
+          <div className={styles.resultHeroSurface}>
             <div className={styles.resultOpening}>
-              <div className={styles.heroCardStage}>
+              <div className={styles.heroCardStage} lang={contentLocale}>
                 <span aria-hidden="true" className={styles.heroCardOrbit} />
                 <TarotCardView
                   isRevealed
-                  locale={locale}
+                  locale={contentLocale}
                   position={
                     leadingPosition
-                      ? `${copy.leadingCard} · ${leadingPosition.label[locale]}`
-                      : copy.leadingCard
+                      ? `${contentCopy.leadingCard} · ${leadingPosition.label[contentLocale]}`
+                      : contentCopy.leadingCard
                   }
                   selection={leadingSelection}
+                  showPosition={false}
                   theme={reading.context.deckTheme}
                   variant="leading"
                 />
               </div>
               <Stack align="start" className={styles.resultCopy} gap="lg">
                 <div className={styles.resultHeroBadges}>
-                  <Badge tone="warning">{copy.resultEyebrow}</Badge>
-                  {isSaved ? <Badge tone="success">{copy.savedReading}</Badge> : null}
+                  <span lang={contentLocale}>{spread.title[contentLocale]}</span>
+                  {isSaved ? <span>{copy.savedReading}</span> : <span>{copy.resultEyebrow}</span>}
                 </div>
-                <Typography as="h1" id="reading-title" variant="display">
+                <Typography as="h1" lang={contentLocale} id="reading-title" variant="display">
                   {heroPresentation.headline}
                 </Typography>
-                <Typography className={styles.resultSupportingLine} variant="lead">
+                <Typography
+                  lang={contentLocale}
+                  className={styles.resultSupportingLine}
+                  variant="lead"
+                >
                   {heroPresentation.heroSummary}
                 </Typography>
                 <div className={styles.resultHeroTakeaway}>
                   <span>{copy.practicalDirection}</span>
-                  <strong>{reading.practicalFocus}</strong>
+                  <strong lang={contentLocale}>{reading.practicalFocus}</strong>
                 </div>
                 <div className={styles.resultHeroActions}>
                   <Button onClick={beginReading} prominence="primary" size="large">
                     {copy.beginReading} <span aria-hidden="true">→</span>
                   </Button>
-                  <Button onClick={onOpenHistory} prominence="secondary">
+                  <Button onClick={onOpenHistory} prominence="quiet">
                     {copy.history}
                   </Button>
                 </div>
-                {isSaved ? (
-                  <Typography className={styles.resultSavedNote}>{copy.savedLocally}</Typography>
-                ) : null}
+                <Typography
+                  className={styles.resultSavedNote}
+                  role={isSaved ? undefined : 'status'}
+                >
+                  {isSaved ? copy.savedLocally : productContractCopy[locale].tarotUnsaved}
+                </Typography>
               </Stack>
             </div>
-          </Surface>
+          </div>
         </Container>
       </section>
       <section
@@ -152,7 +163,7 @@ export function TarotResult({
                 ).map(([label, value]) => (
                   <article className={styles.resultPatternItem} key={label}>
                     <span>{label}</span>
-                    <Typography>{value}</Typography>
+                    <Typography lang={contentLocale}>{value}</Typography>
                   </article>
                 ))}
               </div>
@@ -161,7 +172,7 @@ export function TarotResult({
               <span aria-hidden="true">?</span>
               <div>
                 <strong>{copy.reflectionQuestion}</strong>
-                <p>{heroPresentation.reflectionQuestion}</p>
+                <p lang={contentLocale}>{heroPresentation.reflectionQuestion}</p>
               </div>
             </section>
             <section aria-labelledby="supporting-cards-title" className={styles.resultDetails}>
@@ -191,11 +202,11 @@ export function TarotResult({
                     >
                       <div className={styles.interpretationHeader}>
                         {selection ? (
-                          <div className={styles.resultDetailThumbnail}>
+                          <div className={styles.resultDetailThumbnail} lang={contentLocale}>
                             <TarotCardView
                               index={index}
                               isRevealed
-                              locale={locale}
+                              locale={contentLocale}
                               selection={selection}
                               showPosition={false}
                               theme={reading.context.deckTheme}
@@ -205,32 +216,39 @@ export function TarotResult({
                           </div>
                         ) : null}
                         <div className={styles.interpretationTitle}>
-                          <span className={styles.interpretationCardMeta}>
-                            {position?.label[locale]} · {card?.name[locale]}
+                          <span className={styles.interpretationCardMeta} lang={contentLocale}>
+                            {position?.label[contentLocale]}
                             {selection
                               ? ` · ${
                                   selection.orientation === 'reversed'
-                                    ? copy.reversed
-                                    : copy.upright
+                                    ? contentCopy.reversed
+                                    : contentCopy.upright
                                 }`
                               : ''}
                           </span>
-                          <Typography as="h3" variant="heading-md">
-                            {interpretation.headline}
+                          <Typography
+                            as="h3"
+                            id={`${triggerId}-title`}
+                            lang={contentLocale}
+                            variant="heading-md"
+                          >
+                            {card?.name[contentLocale]}
                           </Typography>
-                          <Typography className={styles.resultDetailTakeaway}>
+                          <Typography className={styles.resultDetailTakeaway} lang={contentLocale}>
                             {firstSentence(interpretation.meaningInPosition)}
                           </Typography>
                         </div>
                         <Button
-                          aria-label={`${isOpen ? copy.showLess : copy.showMore}: ${position?.label[locale] ?? card?.name[locale] ?? index + 1}`}
+                          aria-label={isOpen ? copy.showLess : copy.showMore}
+                          aria-describedby={`${triggerId}-title`}
                           aria-controls={detailId}
                           aria-expanded={isOpen}
                           id={triggerId}
+                          className={styles.detailTrigger}
                           onClick={() => setExpandedId(isOpen ? null : interpretation.id)}
-                          prominence="secondary"
+                          prominence="quiet"
                         >
-                          {isOpen ? copy.showLess : copy.showMore}
+                          <span aria-hidden="true">{isOpen ? '−' : '+'}</span>
                         </Button>
                       </div>
                       {isOpen ? (
@@ -240,23 +258,26 @@ export function TarotResult({
                           id={detailId}
                           role="region"
                         >
+                          <Typography className={styles.detailHeadline} lang={contentLocale}>
+                            {interpretation.headline}
+                          </Typography>
                           <div>
                             <strong>{copy.whyHere}</strong>
-                            <p>{interpretation.contextLink}</p>
+                            <p lang={contentLocale}>{interpretation.contextLink}</p>
                           </div>
                           <div>
                             <strong>{copy.connections}</strong>
-                            <p>{interpretation.connections}</p>
+                            <p lang={contentLocale}>{interpretation.connections}</p>
                           </div>
                           <div>
                             <strong>{copy.practical}</strong>
-                            <p>{interpretation.practicalTheme}</p>
+                            <p lang={contentLocale}>{interpretation.practicalTheme}</p>
                           </div>
                           <div>
                             <strong>{copy.reflectionQuestion}</strong>
-                            <p>{interpretation.reflectionQuestion}</p>
+                            <p lang={contentLocale}>{interpretation.reflectionQuestion}</p>
                           </div>
-                          <Typography className={styles.disclaimer}>
+                          <Typography className={styles.disclaimer} lang={contentLocale}>
                             {interpretation.uncertainty}
                           </Typography>
                         </div>
@@ -270,7 +291,7 @@ export function TarotResult({
               <Typography as="p" variant="eyebrow">
                 {copy.secondaryContext}
               </Typography>
-              <Typography>{heroPresentation.secondaryContext}</Typography>
+              <Typography lang={contentLocale}>{heroPresentation.secondaryContext}</Typography>
               <small>{copy.secondaryContextNote}</small>
             </aside>
             <div aria-label={copy.resultActionsLabel} className={styles.resultActions} role="group">

@@ -54,6 +54,7 @@ export function historySnapshotForRecord(record: JourneyReadingRecord): TarotHis
     snapshot.resultHeadline.trim().length > 0 &&
     Array.isArray(snapshot.motifs) &&
     snapshot.motifs.length <= 3 &&
+    snapshot.motifs.every((motif) => typeof motif === 'string') &&
     Array.isArray(snapshot.selections) &&
     JSON.stringify(snapshot.selections) === JSON.stringify(record.reading.selections)
     ? snapshot

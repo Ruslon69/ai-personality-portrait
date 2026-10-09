@@ -14,6 +14,8 @@ import {
   createDailyCard,
   createTarotHistorySnapshot,
   getLocalDateKey,
+  historySnapshotForRecord,
+  normalizeTarotHistoryRecords,
 } from '../../features/journey/lib';
 import { journeyStore } from '../../features/journey/model';
 import type { JourneyReadingRecord } from '../../features/journey/types';
@@ -49,6 +51,30 @@ export function checkPersonalSpace(assertions: QualityAssertions) {
     },
   };
   const before = JSON.stringify(record);
+  for (const motif of [{ invalid: 'object' }, null, 42, ['nested']]) {
+    const damaged = structuredClone(record);
+    damaged.snapshot!.motifs = [motif] as unknown as readonly string[];
+    const storedBefore = JSON.stringify(damaged);
+    const recovered = normalizeTarotHistoryRecords([damaged, null, { reading: null }]);
+    const expectedSnapshot = createTarotHistorySnapshot(reading);
+    const html = render(<SavedReading record={recovered[0]!} locale="es" onOpen={noop} />);
+    assertions.assert(
+      recovered.length === 1 &&
+        JSON.stringify(historySnapshotForRecord(damaged)) === JSON.stringify(expectedSnapshot) &&
+        JSON.stringify(recovered[0]!.snapshot) === JSON.stringify(expectedSnapshot) &&
+        recovered[0]!.reading === damaged.reading &&
+        recovered[0]!.savedAt === damaged.savedAt &&
+        recovered[0]!.favorite === damaged.favorite &&
+        html.includes(reading.summary) &&
+        JSON.stringify(damaged) === storedBefore &&
+        JSON.stringify(record) === before,
+      {
+        code: `personal-space-corrupt-motif-${JSON.stringify(motif)}`,
+        message:
+          'Malformed presentation motifs must recover from the immutable reading without crashing the archive, rewriting stored data or losing the valid reading.',
+      },
+    );
+  }
   const daily = createDailyCard('profile-render-fixture', getLocalDateKey());
   try {
     for (const locale of ['ru', 'en', 'uk', 'es'] as const satisfies readonly Locale[]) {
